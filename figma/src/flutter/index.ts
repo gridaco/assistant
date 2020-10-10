@@ -9,6 +9,7 @@ import {
 import { TextBuilder, WidgetBuilder } from "./builders";
 import { mostFrequent } from "../utils/array-utils";
 import { SingleChildScrollView, MainAxisSize, CrossAxisAlignment, Column, Row, SizedBox, Widget, Stack } from "@bridged.xyz/flutter-builder"
+import { roundNumber } from "../ui-utils/numbers.normalizer";
 
 let parentId = "";
 const DEFAULT_COMPONENT_NAME = "Component";
@@ -191,12 +192,12 @@ function addSpacingIfNeeded(node: ReflectSceneNode,
     if (node.parent.itemSpacing > 0 && index < length - 1) {
       if (node.parent.layoutMode === "HORIZONTAL") {
         return new SizedBox({
-          width: node.parent.itemSpacing
+          width: roundNumber(node.parent.itemSpacing)
         })
       } else {
         // node.parent.layoutMode === "VERTICAL"
         return new SizedBox({
-          height: node.parent.itemSpacing
+          height: roundNumber(node.parent.itemSpacing)
         })
       }
     }

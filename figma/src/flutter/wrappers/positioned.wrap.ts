@@ -2,6 +2,7 @@ import { ReflectSceneNode } from "../../node-convert/mixin";
 import { Align, Alignment, Positioned, Widget } from "@bridged.xyz/flutter-builder";
 import { parentCoordinates } from "../../figma-utils/parent-coordinates";
 import { commonPosition } from "../../figma-utils/common-position";
+import { roundNumber } from "../../ui-utils/numbers.normalizer";
 
 export function wrapWithPositioned(node: ReflectSceneNode,
   child: Widget,
@@ -25,8 +26,8 @@ export function wrapWithPositioned(node: ReflectSceneNode,
       const diffY = (node.y - parentY);
       return new Positioned(
         {
-          left: diffX,
-          top: diffY,
+          left: roundNumber(diffX),
+          top: roundNumber(diffY),
           child: child
         }
       )

@@ -12,8 +12,13 @@ class App extends React.Component {
 
   constructor(props) {
     super(props);
-    firebase.analytics()
+
     this.state = { code: "//\n//\n//\n// there is no selected node\n//\n//\n//", previewImage: null };
+    try {
+      firebase.analytics()
+    } catch (e) {
+      console.warn("firebase is disabled. it seems you are contributing to this project!, no worries, other functionalyties will work fine.")
+    }
   }
 
   componentDidMount() {
@@ -49,7 +54,9 @@ class App extends React.Component {
     open("https://bridged.xyz/");
   }
 
-
+  onClickReportIssue(e) {
+    open("https://github.com/bridgedxyz/assistant/issues/new/choose");
+  }
 
   render() {
     return <div>
@@ -63,6 +70,12 @@ class App extends React.Component {
         open in console
       </button>
       <BoxTab /> */}
+      <button onClick={this.onClickReportIssue}>
+        report issue
+      </button>
+      <button onClick={this.onClickOpenConsole}>
+        visit website
+      </button>
     </div>
   }
 }

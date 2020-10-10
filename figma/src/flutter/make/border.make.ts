@@ -1,5 +1,6 @@
 import { Border } from "@bridged.xyz/flutter-builder";
 import { ReflectSceneNode } from "../../node-convert/mixin";
+import { roundNumber } from "../../ui-utils/numbers.normalizer";
 import { makeColor } from "./color.make";
 
 // generate the border, when it exists
@@ -13,7 +14,7 @@ export function makeBorder(node: ReflectSceneNode): Border {
         ? Border.all(
             {
                 color: makeColor(node.strokes),
-                width: node.strokeWeight
+                width: roundNumber(node.strokeWeight)
             }
         )
         : undefined;

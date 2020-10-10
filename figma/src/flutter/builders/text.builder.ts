@@ -2,6 +2,7 @@ import { AltTextNode } from "../../node-convert/mixin";
 import { SizedBox, Text, Widget } from "@bridged.xyz/flutter-builder";
 import { makeText } from "../make/text.make";
 import { WidgetBuilder } from "./default.builder";
+import { roundNumber } from "../../ui-utils/numbers.normalizer";
 
 export class TextBuilder extends WidgetBuilder {
   constructor(args: {
@@ -30,8 +31,8 @@ export class TextBuilder extends WidgetBuilder {
     if ((this.node as AltTextNode).textAutoResize === "NONE") {
       return new SizedBox({
         child: child,
-        width: this.node.width,
-        height: this.node.height
+        width: roundNumber(this.node.width),
+        height: roundNumber(this.node.height)
       })
     }
 

@@ -11,6 +11,7 @@ import { nearestValue } from "../../utils/convert";
 import { Container, Widget, EdgeInsetsGeometry, Padding, Alignment, AlignmentGeometry, Color, BoxDecoration, LinearGradient, Gradient, BoxShape } from "@bridged.xyz/flutter-builder"
 import { retrieveFill } from "../../figma-utils/retrieve-fill";
 import { makeBorder, makeColorFromRGBO, makeBoxShadow, makeBorderRadius } from "../make";
+import { roundNumber } from "../../ui-utils/numbers.normalizer";
 
 
 
@@ -39,8 +40,8 @@ export function wrapWithContainer(node: AltRectangleNode | AltEllipseNode | AltF
     console.log("wrapping with container. child - ", child)
     return new Container(
       {
-        width: propSize.w,
-        height: propSize.h,
+        width: roundNumber(propSize.w),
+        height: roundNumber(propSize.h),
         child: child,
         padding: propPadding,
         decoration: propBoxDecoration instanceof BoxDecoration ? propBoxDecoration : undefined,

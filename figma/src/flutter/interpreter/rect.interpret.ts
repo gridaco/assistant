@@ -5,6 +5,7 @@ import { Container } from "@bridged.xyz/flutter-builder/dist/widgets";
 import { makeColorFromRGBO } from "../make/color.make";
 import interpretGradient from "./gradient.interpret"
 import { interpretRectCorner } from "./corner.interpret";
+import { roundNumber } from "../../ui-utils/numbers.normalizer";
 
 export function interpretRect(rect: RectangleNode): Container {
     const fills = rect.fills as Array<Paint>
@@ -78,8 +79,8 @@ export function interpretRect(rect: RectangleNode): Container {
 
     return new Container(
         {
-            width: rect.width,
-            height: rect.height,
+            width: roundNumber(rect.width),
+            height: roundNumber(rect.height),
             decoration: decoration
         }
     );
