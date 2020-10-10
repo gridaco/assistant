@@ -1,0 +1,40 @@
+mixin propertyValue(type)
+    //- if type.name === "arrayOf" || type.name === "objectOf"
+    //-     | #{type.name}[!{type.value.name}]
+    //- else if type.name === "instanceOf"
+    //-     | instanceOf(!{type.value})
+    //- else if type.raw
+    //-     | !{type.raw}
+    //- else
+    //-     | #{type.name}
+
+mixin propertyValues(values)
+    - var list = values.length ? values : [values]
+    each value, index in list
+        +propertyValue(value)
+        | #{(index < list.length - 1) ? '|' : ''}
+
+mixin propType(name, propType)
+    //- if propType.name === "union"
+    //-     |   #{name}={union[
+    //-     +propertyValues(propType.value)
+    //-     | ]}
+    //- else
+    //-     |   #{name}={
+    //-     +propertyValue(propType)
+    //-     | }
+
+mixin tsOrFlowType(name, type)
+        |   #{name}={
+        +propertyValue(type)
+        | }
+
+mixin property(prop)
+    //- if prop.value.flowType
+    //-     +tsOrFlowType(prop.name, prop.value.flowType)
+    //- else if prop.value.tsType
+    //-     +tsOrFlowType(prop.name, prop.value.tsType)
+    //- else
+    //-     +propType(prop.name, prop.value.type)
+
+block snippet

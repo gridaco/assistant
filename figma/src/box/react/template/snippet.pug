@@ -1,0 +1,18 @@
+extends base
+
+block snippet
+    | <#{componentName}
+    if props.length > 0
+        |
+        |
+        each prop, index in props
+            +property(prop)
+            if index !== (props.length -1)
+                |
+                |
+    if hasChildren
+        | >
+        |   {children}
+        | </#{componentName}>
+    else
+        |  />

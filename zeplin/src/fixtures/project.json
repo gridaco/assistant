@@ -1,0 +1,124 @@
+{
+    "name": "Sample extension project",
+    "type": "ios",
+    "density": "1x",
+    "remPreferences": {
+        "rootFontSize": 16,
+        "useForMeasurements": true,
+        "useForFontSizes": true
+    },
+    "colors": [
+        {
+            "r": 255,
+            "g": 0,
+            "b": 0,
+            "a": 1,
+            "name": "red"
+        },
+        {
+            "r": 0,
+            "g": 255,
+            "b": 0,
+            "a": 1,
+            "name": "green"
+        },
+        {
+            "r": 0,
+            "g": 0,
+            "b": 255,
+            "a": 1,
+            "name": "blue"
+        },
+        {
+            "r": 255,
+            "g": 255,
+            "b": 0,
+            "a": 1,
+            "name": "yellow"
+        },
+        {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 1,
+            "name": "black"
+        },
+        {
+            "r": 0,
+            "g": 0,
+            "b": 0,
+            "a": 0.5,
+            "name": "black50"
+        },
+        {
+            "r": 255,
+            "g": 255,
+            "b": 255,
+            "a": 1,
+            "name": "white"
+        }
+    ],
+    "textStyles": [
+        {
+            "name": "Sample text style",
+            "fontFace": "SFProText-Regular",
+            "fontSize": 20,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "fontFamily": "SFProText",
+            "fontStretch": "normal",
+            "textAlign": "left",
+            "weightText": "regular",
+            "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 1
+            }
+        },
+        {
+            "name": "Sample text style with color",
+            "fontFace": "SFProText-Regular",
+            "fontSize": 20,
+            "fontWeight": 400,
+            "fontStyle": "normal",
+            "fontFamily": "SFProText",
+            "fontStretch": "normal",
+            "textAlign": "left",
+            "weightText": "regular",
+            "color": {
+                "r": 255,
+                "g": 0,
+                "b": 0,
+                "a": 1
+            }
+        }
+    ],
+    "spacingSections": [
+        {
+            "name": "Simple spacing",
+            "description": "",
+            "baseTokenId": 1,
+            "spacingTokens": [
+                {
+                    "token": "base",
+                    "color": { "r": 127, "b": 127, "g": 127, "a": 1 },
+                    "value": 16,
+                    "_id": 1
+                },
+                {
+                    "token": "double",
+                    "color": { "r": 255, "b": 255, "g": 255, "a": 1 },
+                    "value": 32,
+                    "_id": 2
+                },
+                {
+                    "token": "half",
+                    "color": { "r": 63, "b": 63, "g": 63, "a": 1 },
+                    "value": 8,
+                    "_id": 3
+                }
+            ]
+        }
+    ]
+}

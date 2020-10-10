@@ -1,0 +1,552 @@
+{
+  "snapshot": {
+    "backgroundColor": { "r": 255, "b": 255, "g": 255, "a": 1 },
+    "source": "sketch",
+    "height": 960,
+    "densityScale": 1,
+    "width": 1024,
+    "links": [],
+    "componentNames": [
+      "Simple Component",
+      "Component with description"
+    ],
+    "url": "https://cdn.zeplin.io/5e2ef1da1b3cdb167efd54f9/screens/B0E3646F-9ED1-4DE8-B83D-3AB7AF80B5DE.png",
+    "_id": "5e38085266ecb97b1faaa969",
+    "density": "1x",
+    "assets": [],
+    "layers": [
+      {
+        "type": "shape",
+        "name": "Sample layer",
+        "opacity": 1,
+        "blendMode": "normal",
+        "borderRadius": 0,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 320,
+          "height": 768
+        },
+        "content": "",
+        "borders": [],
+        "fills": [],
+        "shadows": [],
+        "textStyles": [],
+        "assets": []
+      },
+      {
+        "type": "text",
+        "name": "Text layer with multiple styles",
+        "exportable": false,
+        "rotation": 0,
+        "opacity": 1,
+        "blendMode": "normal",
+        "borderRadius": 0,
+        "rect": {
+          "y": 44,
+          "x": 0,
+          "width": 220,
+          "height": 24
+        },
+        "content": "Type something red",
+        "borders": [],
+        "fills": [],
+        "shadows": [],
+        "textStyles": [
+          {
+            "range": {
+              "location": 0,
+              "length": 4
+            },
+            "style": {
+              "fontFace": "SFProText-Medium",
+              "fontSize": 20,
+              "fontWeight": 500,
+              "fontStyle": "normal",
+              "fontFamily": "SFProText",
+              "fontStretch": "normal",
+              "textAlign": "left",
+              "weightText": "medium",
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 1
+              }
+            }
+          },
+          {
+            "range": {
+              "location": 5,
+              "length": 9
+            },
+            "style": {
+              "fontFace": "SFProText-Regular",
+              "fontSize": 20,
+              "fontWeight": 400,
+              "fontStyle": "normal",
+              "fontFamily": "SFProText",
+              "fontStretch": "normal",
+              "textAlign": "left",
+              "weightText": "regular",
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 1
+              }
+            }
+          },
+          {
+            "range": {
+              "location": 15,
+              "length": 3
+            },
+            "style": {
+              "fontFace": "SFProText-Regular",
+              "fontSize": 20,
+              "fontWeight": 400,
+              "fontStyle": "normal",
+              "fontFamily": "SFProText",
+              "fontStretch": "normal",
+              "textAlign": "left",
+              "weightText": "regular",
+              "color": {
+                "r": 255,
+                "g": 0,
+                "b": 0,
+                "a": 1
+              }
+            }
+          }
+        ],
+        "assets": []
+      },
+      {
+        "type": "text",
+        "name": "Text layer",
+        "exportable": false,
+        "rotation": 0,
+        "opacity": 1,
+        "blendMode": "normal",
+        "borderRadius": 0,
+        "rect": {
+          "y": 0,
+          "x": 0,
+          "width": 220,
+          "height": 24
+        },
+        "content": "Type something",
+        "borders": [],
+        "fills": [],
+        "shadows": [],
+        "textStyles": [
+          {
+            "range": {
+              "location": 0,
+              "length": 14
+            },
+            "style": {
+              "fontFace": "SFProText-Regular",
+              "fontSize": 20,
+              "fontWeight": 400,
+              "fontStyle": "normal",
+              "fontFamily": "SFProText",
+              "fontStretch": "normal",
+              "textAlign": "left",
+              "weightText": "regular",
+              "color": {
+                "r": 0,
+                "g": 0,
+                "b": 0,
+                "a": 1
+              }
+            }
+          }
+        ],
+        "assets": []
+      },
+      {
+        "type": "shape",
+        "name": "Layer with blur",
+        "exportable": false,
+        "rotation": 0,
+        "opacity": 1,
+        "blendMode": "normal",
+        "borderRadius": 0,
+        "rect": {
+          "y": 530,
+          "x": 170,
+          "width": 100,
+          "height": 100
+        },
+        "content": "",
+        "borders": [],
+        "fills": [
+          {
+            "fillType": "color",
+            "blendMode": "normal",
+            "color": {
+              "r": 0,
+              "g": 255,
+              "b": 255,
+              "a": 1
+            }
+          }
+        ],
+        "shadows": [],
+        "textStyles": [],
+        "assets": [],
+        "blur": {
+          "type": "gaussian",
+          "radius": 10
+        }
+      },
+      {
+        "type": "shape",
+        "name": "Exportable layer",
+        "exportable": true,
+        "rotation": 0,
+        "opacity": 1,
+        "blendMode": "normal",
+        "borderRadius": 0,
+        "rect": {
+          "y": 530,
+          "x": 50,
+          "width": 100,
+          "height": 100
+        },
+        "content": "",
+        "borders": [],
+        "fills": [
+          {
+            "fillType": "color",
+            "blendMode": "normal",
+            "color": {
+              "r": 255,
+              "g": 255,
+              "b": 0,
+              "a": 1
+            }
+          }
+        ],
+        "shadows": [],
+        "textStyles": [],
+        "assets": []
+      },
+      {
+        "type": "shape",
+        "name": "Layer with border radius",
+        "exportable": false,
+        "rotation": 0,
+        "opacity": 1,
+        "blendMode": "normal",
+        "borderRadius": 20,
+        "rect": {
+          "y": 410,
+          "x": 50,
+          "width": 100,
+          "height": 100
+        },
+        "content": "",
+        "borders": [],
+        "fills": [
+          {
+            "fillType": "color",
+            "blendMode": "normal",
+            "color": {
+              "r": 255,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            }
+          }
+        ],
+        "shadows": [],
+        "textStyles": [],
+        "assets": []
+      },
+      {
+        "type": "shape",
+        "name": "Rotated layer",
+        "exportable": false,
+        "rotation": -45,
+        "opacity": 1,
+        "blendMode": "normal",
+        "borderRadius": 0,
+        "rect": {
+          "y": 410,
+          "x": 170,
+          "width": 103,
+          "height": 100
+        },
+        "content": "",
+        "borders": [],
+        "fills": [
+          {
+            "fillType": "color",
+            "blendMode": "normal",
+            "color": {
+              "r": 0,
+              "g": 255,
+              "b": 0,
+              "a": 1
+            }
+          }
+        ],
+        "shadows": [],
+        "textStyles": [],
+        "assets": []
+      },
+      {
+        "type": "shape",
+        "name": "Transparent layer with blend mode",
+        "exportable": false,
+        "rotation": 0,
+        "opacity": 0.3,
+        "blendMode": "multiply",
+        "borderRadius": 0,
+        "rect": {
+          "y": 290,
+          "x": 170,
+          "width": 103,
+          "height": 100
+        },
+        "content": "",
+        "borders": [],
+        "fills": [
+          {
+            "fillType": "color",
+            "blendMode": "normal",
+            "color": {
+              "r": 0,
+              "g": 255,
+              "b": 0,
+              "a": 1
+            }
+          }
+        ],
+        "shadows": [],
+        "textStyles": [],
+        "assets": []
+      },
+      {
+        "type": "shape",
+        "name": "Layer with shadow",
+        "exportable": false,
+        "rotation": 0,
+        "opacity": 1,
+        "blendMode": "normal",
+        "borderRadius": 0,
+        "rect": {
+          "y": 290,
+          "x": 50,
+          "width": 100,
+          "height": 100
+        },
+        "content": "",
+        "borders": [],
+        "fills": [],
+        "shadows": [
+          {
+            "type": "outer",
+            "offsetX": 0,
+            "offsetY": 2,
+            "blurRadius": 4,
+            "spread": 6,
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 0.5
+            }
+          }
+        ],
+        "textStyles": [],
+        "assets": []
+      },
+      {
+        "type": "shape",
+        "name": "Layer with gradient fill",
+        "exportable": false,
+        "rotation": 0,
+        "opacity": 1,
+        "blendMode": "normal",
+        "borderRadius": 0,
+        "rect": {
+          "y": 120,
+          "x": 0,
+          "width": 100,
+          "height": 100
+        },
+        "content": "",
+        "borders": [],
+        "fills": [
+          {
+            "fillType": "gradient",
+            "blendMode": "normal",
+            "gradient": {
+              "type": "linear",
+              "from": {
+                "x": 0.5,
+                "y": 0
+              },
+              "to": {
+                "x": 0.5,
+                "y": 1
+              },
+              "colorStops": [
+                {
+                  "color": {
+                    "r": 255,
+                    "g": 255,
+                    "b": 255,
+                    "a": 0.5
+                  },
+                  "position": 0
+                },
+                {
+                  "color": {
+                    "r": 0,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0.5
+                  },
+                  "position": 1
+                }
+              ]
+            }
+          }
+        ],
+        "shadows": [],
+        "textStyles": [],
+        "assets": []
+      },
+      {
+        "type": "shape",
+        "name": "Layer with fill",
+        "exportable": false,
+        "rotation": 0,
+        "opacity": 1,
+        "blendMode": "normal",
+        "borderRadius": 0,
+        "rect": {
+          "y": 0,
+          "x": 0,
+          "width": 100,
+          "height": 100
+        },
+        "content": "",
+        "borders": [],
+        "fills": [
+          {
+            "fillType": "color",
+            "blendMode": "normal",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 255,
+              "a": 1
+            }
+          }
+        ],
+        "shadows": [],
+        "textStyles": [],
+        "assets": []
+      },
+      {
+        "type": "shape",
+        "name": "Layer with gradient border",
+        "exportable": false,
+        "rotation": 0,
+        "opacity": 1,
+        "blendMode": "normal",
+        "borderRadius": 0,
+        "rect": {
+          "y": 120,
+          "x": 0,
+          "width": 100,
+          "height": 100
+        },
+        "content": "",
+        "borders": [
+          {
+            "position": "outside",
+            "thickness": 6,
+            "fillType": "gradient",
+            "blendMode": "normal",
+            "gradient": {
+              "type": "radial",
+              "from": {
+                "x": 0.5,
+                "y": 0
+              },
+              "to": {
+                "x": 0.5,
+                "y": 1
+              },
+              "colorStops": [
+                {
+                  "color": {
+                    "r": 255,
+                    "g": 0,
+                    "b": 0,
+                    "a": 1
+                  },
+                  "position": 0
+                },
+                {
+                  "color": {
+                    "r": 255,
+                    "g": 0,
+                    "b": 0,
+                    "a": 0
+                  },
+                  "position": 1
+                }
+              ]
+            }
+          }
+        ],
+        "fills": [],
+        "shadows": [],
+        "textStyles": [],
+        "assets": []
+      },
+      {
+        "type": "shape",
+        "name": "Layer with border",
+        "exportable": false,
+        "rotation": 0,
+        "opacity": 1,
+        "blendMode": "normal",
+        "borderRadius": 0,
+        "rect": {
+          "y": 0,
+          "x": 0,
+          "width": 100,
+          "height": 100
+        },
+        "content": "",
+        "borders": [
+          {
+            "position": "inside",
+            "thickness": 2,
+            "fillType": "color",
+            "blendMode": "normal",
+            "color": {
+              "r": 0,
+              "g": 0,
+              "b": 0,
+              "a": 1
+            }
+          }
+        ],
+        "fills": [],
+        "shadows": [],
+        "textStyles": [],
+        "assets": []
+      }
+    ]
+  }
+}
