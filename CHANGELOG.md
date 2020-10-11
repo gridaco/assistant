@@ -1,6 +1,8 @@
 # CHANGELOG
 
-this changelog follows guideline at [keepachangelog.com](https://keepachangelog.com/en/1.0.0/)
+>  this changelog follows guideline at [keepachangelog.com](https://keepachangelog.com/en/1.0.0/)
+
+
 
 
 
@@ -33,6 +35,32 @@ Initial release of Bridged's figma plugin (a.k.a assistant)
 - Figma plugin ui built with react + plain css
 - Supported : Fimga / Flutter
 - Flutter code exporter built with [flutter-builder](https://github.com/bridgedxyz/flutter-builder)
+
+
+
+### Info
+
+[v0.1.0]
+
+**name** : Bridged (design to flutter)
+
+**description** : 
+
+Bridged's assistant plugin that generates usable & readable flutter code for production. Run this plugin, Select any design of yours, It will generate ready-to-use formatted native flutter code for you.
+
+*Notice*
+
+No matter how big and complex frame you select, it will generate the code. Anyway we recommend you to use it on a component level for best experience. Code may not be manageable if you are tring to build full-screen level code in one single code base.
+
+contribute on [github](https://github.com/bridgedxyz/assistant)
+
+**tags**: flutter, lint, code, figma to code, prototyping, hosting
+
+**support contact**: https://github.com/bridgedxyz/assistant/issues/new/choose
+
+----
+
+
 
 
 

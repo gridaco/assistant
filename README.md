@@ -8,6 +8,10 @@ title: bridged figma plugin
   <meta name="title" content="bridged assistant">
 
 
+![](./doc/cover.jpg)
+
+
+
 # Bridged Assistant figma plugin (figma to flutter)
 
 
