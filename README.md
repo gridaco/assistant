@@ -47,6 +47,14 @@ Use `console.log` statements to inspect values in your code.
 
 To open the developer console in the Figma desktop app, go to `Plugins` → `Development` → `Open Console`.
 
+
+
+### Change Log
+
+visit [CHANGELOG.md](./CHANGELOG.md)
+
+
+
 ### Docs
 
 - [Create Figma Plugin docs](https://github.com/yuanqing/create-figma-plugin#docs)
