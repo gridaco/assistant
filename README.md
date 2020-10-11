@@ -8,7 +8,7 @@ title: bridged figma plugin
   <meta name="title" content="bridged assistant">
 
 
-![](./doc/cover.jpg)
+![](./branding/assistant-cover-v0.1.0.png)
 
 
 
