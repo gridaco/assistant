@@ -20,7 +20,7 @@ title: bridged figma plugin
 > link is temporarily dead. it's being reviewed by figma team. until this plugin is available publicly, you have to build it on local and run it. guideline at [here](/figma)
 
 
-install via figma plugin [link here](https://www.figma.com/community/plugin/890215203225987901/Bridged)
+install via figma plugin [link here](https://www.figma.com/community/plugin/896445082033423994)
 
 
 ## Flutter code builder
