@@ -11,7 +11,7 @@
   "license": "https://github.com/bridgedxyz/contributing-and-license",
   "author": "bridged.xyz by softmarshmallow <woojoo@softmarshmallow.com>",
   "dependencies": {
-    "@bridged.xyz/flutter-builder": "^1.23.0-7.0.pre.34",
+    "@bridged.xyz/flutter-builder": "^1.23.0-7.0.pre.36",
     "@bridged.xyz/box": "0.0.1",
     "@create-figma-plugin/utilities": "0.0.77",
     "@figma/plugin-typings": "^1.16.1",
