@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ReactBoxSnippetGenerator } from "../../box/react";
+import { ReactBoxSnippetGenerator } from "@bridged.xyz/box";
 
 function buildFolderSelector(): HTMLInputElement {
     const fileSelector = document.createElement('input');
@@ -28,8 +28,8 @@ export class BoxDirectoryInput extends React.Component {
             const files = event.path[0].files as Array<File>
             console.log(event)
 
-            for (const file of files){
-                if(file.name == "Button.tsx"){
+            for (const file of files) {
+                if (file.name == "Button.tsx") {
                     readFile(file)
                 }
             }
@@ -38,7 +38,7 @@ export class BoxDirectoryInput extends React.Component {
                 reader.addEventListener('load', (event) => {
                     // converts base64 octet-stream to plain text
                     const data = event.target.result as string
-                    if(data.includes("data:application/octet-stream;base64,")){
+                    if (data.includes("data:application/octet-stream;base64,")) {
                         const fin = atob((event.target.result as string).replace("data:application/octet-stream;base64,", ''))
                         const res = new ReactBoxSnippetGenerator().process({
                             code: fin,
@@ -50,7 +50,7 @@ export class BoxDirectoryInput extends React.Component {
                 });
                 reader.readAsDataURL(file);
             }
-            
+
         }
     }
 

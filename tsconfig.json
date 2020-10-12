@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es6",
+    "lib": ["es6", "dom", "es2017"],
     "outDir": "dist",
     "jsx": "react",
     "experimentalDecorators": true,

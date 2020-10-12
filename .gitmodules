@@ -1,0 +1,4 @@
+[submodule "packages/flutter-builder"]
+	path = packages/flutter-builder
+	url = https://github.com/bridgedxyz/flutter-builder.git
+	branch = main

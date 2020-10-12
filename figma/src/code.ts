@@ -1,4 +1,3 @@
-
 import { convertIntoAltNode } from "./node-convert/conversion";
 import { generateSource } from "./flutter";
 import { retrieveFlutterColors } from "./flutter/utils/fetch-colors";
@@ -50,7 +49,6 @@ function run() {
     rawNode = figma.currentPage.selection[0]
     parentNodeId = figma.currentPage.selection[0].parent?.id ?? "";
 
-    let result = "";
 
 
     const convertedSelection = convertIntoAltNode(
@@ -58,12 +56,7 @@ function run() {
         null
     );
 
-
-    result = generateSource(convertedSelection, parentNodeId);
-
-    // result = interpretRect(rawNode as RectangleNode).build().finalize()
-
-    console.log(result);
+    const result = generateSource(convertedSelection, parentNodeId);
 
     figma.ui.postMessage({
         type: "result",

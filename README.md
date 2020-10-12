@@ -17,10 +17,22 @@ title: bridged figma plugin
 
 ## Usage
 
-> link is temporarily dead. it's being reviewed by figma team. until this plugin is available publicly, you have to build it on local and run it. guideline at [here](/figma)
+> link is temporarily dead. it's being reviewed by figma team. until this plugin is available publicly, you have to build it on local and run it.
 
 
 install via figma plugin [link here](https://www.figma.com/community/plugin/896445082033423994)
+
+
+``` shell
+yarn
+
+# run figma plugin in dev mode
+yarn figma
+
+# run sketch plugin in dev mode
+yarn sketch
+```
+> we use yarn workspace for maintaining this project as monorepository.
 
 
 ## Flutter code builder

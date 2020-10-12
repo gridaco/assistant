@@ -1,6 +1,6 @@
 {
-  "name": "@bridged.xyz/assistant-figma",
-  "version": "1.0.0",
+  "name": "figma",
+  "version": "0.1.0",
   "keywords": [
     "figma",
     "bridged",
@@ -8,11 +8,13 @@
     "flutter-figma",
     "figma-plugin"
   ],
-  "license": "MIT",
+  "license": "https://github.com/bridgedxyz/contributing-and-license",
   "author": "bridged.xyz by softmarshmallow <woojoo@softmarshmallow.com>",
   "dependencies": {
     "@bridged.xyz/flutter-builder": "^1.23.0-7.0.pre.34",
+    "@bridged.xyz/box": "0.0.1",
     "@create-figma-plugin/utilities": "0.0.77",
+    "@figma/plugin-typings": "^1.16.1",
     "copy-to-clipboard": "^3.3.1",
     "css-loader": "^3.1.0",
     "dart-style": "^1.3.2-dev",
@@ -37,13 +39,13 @@
     "webpack": "^4.38.0"
   },
   "devDependencies": {
-    "@figma/plugin-typings": "^1.16.1",
-    "@types/firebase": "^3.2.1",
     "@types/fs-extra": "^9.0.1",
+    "@types/node": "^14.11.8",
     "@types/pug": "^2.0.4",
     "@types/react": "^16.9.49",
     "@types/react-dom": "^16.9.8",
     "dotenv-webpack": "^2.0.0",
+    "typescript": "^4.0.3",
     "webpack-cli": "^3.3.6"
   },
   "scripts": {

@@ -1,6 +1,12 @@
 import * as React from 'react'
-import { openOnStoryBook } from '../../box'
 import { BoxDirectoryInput } from './box-directory-input'
+
+
+const TEST_STORYBOOK_ROOT = "https://5f7d1f04988db70022c94c9a-bxsgusmnlc.chromatic.com"
+export function openOnStoryBook(path: string) {
+    open(`${TEST_STORYBOOK_ROOT}/?path=${path}`)
+}
+
 export class BoxTab extends React.Component {
 
     onClickOpenStorybook(e) {
@@ -11,22 +17,22 @@ export class BoxTab extends React.Component {
         open("https://github.com/softmarshmallow/fontend-patterns/tree/main/react/storybook")
     }
 
-    componentDidMount(){
+    componentDidMount() {
         window.onmessage = (ev: MessageEvent) => {
             const msg = ev.data.pluginMessage;
             switch (msg.type) {
-              case "result":
-              case "preview":
+                case "result":
+                case "preview":
             }
-          }
+        }
     }
-      
+
     render() {
         return (
             <div>
                 <h6>Box section start</h6>
                 <p>currently selected component is... {}</p>
-                <div/>
+                <div />
                 <button onClick={this.onClickOpenStorybook}>
                     open in storybook
                 </button>
@@ -34,7 +40,7 @@ export class BoxTab extends React.Component {
                     open in github
                 </button>
                 <BoxDirectoryInput />
-                <div/>
+                <div />
                 <h6>Box section end</h6>
             </div>
         )

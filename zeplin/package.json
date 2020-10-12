@@ -2,6 +2,7 @@
   "name": "zeplin",
   "version": "0.1.0",
   "description": "zeplin extension for birdged",
+	"license": "https://github.com/bridgedxyz/contributing-and-license",
   "scripts": {
     "start": "zem start",
     "build": "zem build",

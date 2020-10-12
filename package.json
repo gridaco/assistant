@@ -1,0 +1,19 @@
+{
+	"name": "@bridged.xyz/assistant",
+	"version": "0.1.0",
+	"private": true,
+	"license": "https://github.com/bridgedxyz/contributing-and-license",
+	"description": "Bridged assistant mono repository. for figma, sketch, zeplin.",
+	"workspaces": [
+		"packages/*",
+		"figma",
+		"sketch",
+		"zeplin"
+	],
+	"repository": "https://github.com/bridgedxyz/assistant",
+	"author": "bridged.xyz softmarshmallow <woojoo@softmarshmallow.com>",
+	"scripts":{
+		"figma": "yarn workspace figma run webpack:watch",
+		"sketch": "yarn workspace sketch run render"
+	}
+}
