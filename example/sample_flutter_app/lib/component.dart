@@ -3,35 +3,40 @@ class Component extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Container(
-        width: 100,
-        height: 100,
-        decoration: BoxDecoration(
-          color: Color(
-            0xffffb290,
-          ),
-          borderRadius: BorderRadius.circular(
-            24,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Color(
-                0xffffff,
-              ),
-              offset: Offset(
-                4,
-                4,
-              ),
-              blurRadius: 24,
-              spreadRadius: -12,
+      child: Opacity(
+        opacity: 0.5,
+        child: Container(
+          width: 247,
+          height: 77,
+          decoration: BoxDecoration(
+            border: Border.all(
+              width: 1,
             ),
-            BoxShadow(
-              color: Color(
-                0x3fffd689,
+            boxShadow: [
+              BoxShadow(
+                color: Color(
+                  0x3f000000,
+                ),
+                offset: Offset(
+                  0,
+                  4,
+                ),
+                blurRadius: 4,
               ),
-              blurRadius: 4,
+            ],
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(
+                  0xffffff,
+                ),
+                Color(
+                  0xffffff,
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
