@@ -24,6 +24,10 @@ install via figma plugin [link here](https://www.figma.com/community/plugin/8964
 
 
 ``` shell
+git clone https://github.com/bridgedxyz/assistant.git
+
+cd assistant
+
 yarn
 
 # run figma plugin in dev mode
