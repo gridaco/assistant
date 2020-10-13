@@ -2,3 +2,6 @@
 	path = packages/flutter-builder
 	url = https://github.com/bridgedxyz/flutter-builder.git
 	branch = main
+[submodule "packages/lint"]
+	path = packages/lint
+	url = https://github.com/bridgedxyz/lint
