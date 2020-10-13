@@ -3,7 +3,7 @@ import { BoxDecoration } from "@bridged.xyz/flutter-builder/dist/painting/box-de
 import { Gradient } from "@bridged.xyz/flutter-builder/dist/painting/gradient";
 import { Container } from "@bridged.xyz/flutter-builder/dist/widgets";
 import { makeColorFromRGBO } from "../make/color.make";
-import interpretGradient from "./gradient.interpret"
+import { interpretGradient } from "./gradient.interpret"
 import { interpretRectCorner } from "./corner.interpret";
 import { roundNumber } from "../../ui-utils/numbers.normalizer";
 

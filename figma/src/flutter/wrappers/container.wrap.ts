@@ -12,6 +12,7 @@ import { Container, Widget, EdgeInsetsGeometry, Padding, Alignment, AlignmentGeo
 import { retrieveFill } from "../../figma-utils/retrieve-fill";
 import { makeBorder, makeColorFromRGBO, makeBoxShadow, makeBorderRadius } from "../make";
 import { roundNumber } from "../../ui-utils/numbers.normalizer";
+import { interpretGradient } from "../interpreter/gradient.interpret";
 
 
 
@@ -94,21 +95,8 @@ export function makeBoxDecorationColor(fills: ReadonlyArray<Paint> | PluginAPI["
     const opacity = fill.opacity ?? 1.0;
     return makeColorFromRGBO(fill.color, opacity)
   } else if (fill?.type === "GRADIENT_LINEAR") {
-    const direction = gradientDirection(gradientAngle(fill));
-
-    const colors: Array<Color> = fill.gradientStops
-      .map((d) => {
-        return makeColorFromRGBO(d.color, d.color.a);
-      })
-
-    // ${direction},
-    return new LinearGradient({
-      begin: direction.begin,
-      end: direction.end,
-      colors: colors
-    })
+    return interpretGradient(fill)
   }
-
   return undefined;
 }
 

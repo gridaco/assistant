@@ -19,6 +19,7 @@ function getThemedTextStyleByName(textStyleName: string): TextStyle {
             }
         }
     }
+    throw `No matching textstyle guideline for name "${textStyleName}" found.`
 }
 
 export function makeTextStyle(node: AltTextNode): TextStyle {

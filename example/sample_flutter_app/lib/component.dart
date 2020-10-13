@@ -3,97 +3,41 @@ class Component extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Container(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              child: Stack(
-                children: [
-                  Container(
-                    width: 23,
-                    height: 20,
-                    decoration: BoxDecoration(
-                      color: Color(
-                        0xffffc600,
-                      ),
-                      borderRadius: BorderRadius.circular(
-                        4,
-                      ),
-                    ),
-                  ),
-                  Positioned.fill(
-                    child: Align(
-                      alignment: Alignment.topCenter,
-                    ),
-                  ),
-                ],
-              ),
-              width: 23,
-              height: 20,
+      child: Opacity(
+        opacity: 0.5,
+        child: Container(
+          width: 247,
+          height: 77,
+          decoration: BoxDecoration(
+            border: Border.all(
+              width: 1,
             ),
-            SizedBox(
-              height: 1.6666666666666667,
-            ),
-            Text(
-              "low preview quality warning",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w400,
-                fontFamily: "Roboto",
-              ),
-            ),
-            SizedBox(
-              height: 1.6666666666666667,
-            ),
-            SizedBox(
-              child: Text(
-                "there are some unresolved linting warnings on design section, so the built code and preview functionality might not be production ready.",
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  fontFamily: "Roboto",
+            boxShadow: [
+              BoxShadow(
+                color: Color(
+                  0x3f000000,
                 ),
+                offset: Offset(
+                  0,
+                  4,
+                ),
+                blurRadius: 4,
               ),
-              width: 366,
+            ],
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(
+                  0xffffff,
+                ),
+                Color(
+                  0xffffff,
+                ),
+              ],
             ),
-            SizedBox(
-              height: 1.6666666666666667,
-            ),
-            Container(
-              child: Stack(
-                children: [
-                  Container(
-                    child: Container(
-                      width: 180,
-                      height: 44,
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Color(
-                            0xff373737,
-                          ),
-                          width: 1,
-                        ),
-                        borderRadius: BorderRadius.circular(
-                          4,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned.fill(
-                    child: Align(
-                      alignment: Alignment.center,
-                    ),
-                  ),
-                ],
-              ),
-              width: 180,
-              height: 44,
-            ),
-          ],
+          ),
         ),
-        width: 366,
       ),
     );
   }
