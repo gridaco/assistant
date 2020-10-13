@@ -9,9 +9,10 @@
     }
   ],
   "menu": {
-    "title": "assistant",
+    "title": "bridged",
     "items": [
       "my-command-identifier"
-    ]
+    ],
+    "isRoot": true
   }
 }

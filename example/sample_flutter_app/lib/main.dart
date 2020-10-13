@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sample_flutter_app/computer/computer.dart';
+import 'package:sample_flutter_app/human/human.dart';
 
-import 'component.dart';
+import 'computer/component.dart';
 
 void main() {
   runApp(MyApp());
@@ -62,7 +64,17 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       body: Center(
-        child: Component(),
+        child: Column(
+          children: [
+            RaisedButton(onPressed: (){
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => WrittenExamples()));
+            }, child: Text("human"),),
+            RaisedButton(onPressed: (){
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => GeneratedExamples()));
+            }, child: Text("computer"),),
+          ],
+        )
+
       ),
     );
   }

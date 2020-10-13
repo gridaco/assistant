@@ -57,6 +57,11 @@ flutter widget builder is done by [figma/flutter](/flutter) and the core builder
 - ✅ Best code quality (I Assure,) in this planet
 
 
+## Component Detection
+> rule based button / input / icon detection with [@reflect.bridged.xyz/detection](./packages/detection)
+> Higher quality ML based detection available at [Bridged's context engine](https://github.com/bridgedxyz/context)
+
+
 ### Debugging
 
 Use `console.log` statements to inspect values in your code.

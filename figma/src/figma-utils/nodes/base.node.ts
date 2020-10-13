@@ -7,3 +7,8 @@ export class ReflectNode {
     pluginData: { [key: string]: string };
 }
 
+
+
+interface ReflectReactionMixin extends ReactionMixin {
+    hasInteraction(): boolean
+}

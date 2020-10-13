@@ -9,10 +9,11 @@
     }
   ],
   "menu": {
-    "title": "assistant",
+    "title": "bridged",
     "items": [
       "my-command-identifier"
-    ]
+    ],
+    "isRoot": true
   },
   "version": "0.1.0",
   "name": "assistant",
