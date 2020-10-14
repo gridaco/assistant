@@ -1,6 +1,8 @@
 import { convertIntoAltNode } from "./node-convert/conversion";
 import { generateSource } from "./flutter";
 import { retrieveFlutterColors } from "./flutter/utils/fetch-colors";
+import { hideAllExcept, hideAllOnly } from "./dev-tools/hide-all";
+import { on } from "process";
 
 let parentNodeId: string;
 let layerName = false;
@@ -109,15 +111,23 @@ figma.ui.onmessage = (msg) => {
     }
     // endregion test
 
-    if (msg.type == "randomize-selection") {
+    else if (msg.type == "randomize-selection") {
         randimizeText()
     }
+
+    else if (msg.type == "hide-all-except") {
+        hideAllExceptFromCurrentSelection(msg.data.except)
+    }
+    else if (msg.type == "hide-all-only") {
+        hideAllOnlyFromCurrentSelection(msg.data.only)
+    }
+
 
     else if (msg.type == "copied") {
         figma.notify("copied to clipboard", { timeout: 1 })
     }
 
-    if (msg.type === "flutter") {
+    else if (msg.type === "flutter") {
         run();
     } else if (msg.type === "layerName" && msg.data !== layerName) {
         layerName = msg.data;
@@ -125,6 +135,21 @@ figma.ui.onmessage = (msg) => {
     }
 };
 
+function hideAllExceptFromCurrentSelection(except: NodeType) {
+    if (rawNode.type != "FRAME") {
+        figma.notify("hide-all tools can be used only for framenode")
+    } else {
+        hideAllExcept(rawNode, except)
+    }
+}
+
+function hideAllOnlyFromCurrentSelection(only: NodeType) {
+    if (rawNode.type != "FRAME") {
+        figma.notify("hide-all tools can be used only for framenode")
+    } else {
+        hideAllOnly(rawNode, only)
+    }
+}
 
 // content randomizer, work on progress..
 async function randimizeText() {

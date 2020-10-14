@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { BoxTab } from './app/components/box-tab';
+import { DevTools } from './app/components/dev-tools';
 import Highlight from './app/components/highlight';
 import { Preview } from './app/components/preview';
 import firebase from './firebase/firebase-init';
@@ -76,6 +77,9 @@ class App extends React.Component {
       <button onClick={this.onClickOpenConsole}>
         visit website
       </button>
+      <div>
+        <DevTools></DevTools>
+      </div>
     </div>
   }
 }
