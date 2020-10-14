@@ -45,11 +45,13 @@ module.exports = (env, argv) => ({
 
     // minimize
     optimization: {
-        minimize: true,
+        minimize: false,
         minimizer: [new TerserPlugin({
-            terserOptions:{
+            terserOptions: {
                 sourceMap: true,
-                compress:{
+                compress: {
+                    keep_classnames: true, // keep class name cause, flutter-builder uses class name reflection.
+                    keep_fnames: true,
                     drop_console: true,
                     conditionals: true,
                     unused: true,
@@ -59,7 +61,7 @@ module.exports = (env, argv) => ({
                     join_vars: true,
                     warnings: false
                 },
-                output:{
+                output: {
                     comments: false
                 }
             }
