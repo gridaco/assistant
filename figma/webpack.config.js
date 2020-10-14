@@ -2,6 +2,7 @@ const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 const Dotenv = require('dotenv-webpack');
+const TerserPlugin = require('terser-webpack-plugin');
 
 
 module.exports = (env, argv) => ({
@@ -40,6 +41,29 @@ module.exports = (env, argv) => ({
     output: {
         filename: '[name].js',
         path: path.resolve(__dirname, 'dist'), // Compile into a folder called "dist"
+    },
+
+    // minimize
+    optimization: {
+        minimize: true,
+        minimizer: [new TerserPlugin({
+            terserOptions:{
+                sourceMap: true,
+                compress:{
+                    drop_console: true,
+                    conditionals: true,
+                    unused: true,
+                    comparisons: true,
+                    dead_code: true,
+                    if_return: true,
+                    join_vars: true,
+                    warnings: false
+                },
+                output:{
+                    comments: false
+                }
+            }
+        })],
     },
 
     // Tells Webpack to generate "ui.html" and to inline "ui.ts" into it
