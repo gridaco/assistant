@@ -10,6 +10,11 @@ class GeneratedExamples extends StatefulWidget{
 class _GeneratedExamplesState extends State<GeneratedExamples>{
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: _buildBody(),
+    );
+  }
+  Widget _buildBody(){
     return Component();
   }
 }

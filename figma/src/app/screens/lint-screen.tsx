@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Preview } from "../components/preview";
 
 
 export class LintScreen extends React.Component {
@@ -15,6 +16,8 @@ export class LintScreen extends React.Component {
     }
 
     render() {
-        return <>lint</>
+        return <>
+            <Preview data={undefined} name="selected node name" />
+        </>
     }
 }
