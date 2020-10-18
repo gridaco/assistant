@@ -1,4 +1,4 @@
-## Icon detection
+# Icon detection
 
 **size**
 - [must] be smaller than 80px
