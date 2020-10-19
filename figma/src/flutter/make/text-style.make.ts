@@ -25,11 +25,11 @@ function getThemedTextStyleByName(textStyleName: string): TextStyle {
 export function makeTextStyle(node: AltTextNode): TextStyle {
     try {
         const textStyle = getTextStyleById(node.textStyleId as string)
-        console.log(`name of textstyle is... ${textStyle.name}`);
+        // console.log(`name of textstyle is... ${textStyle.name}`);
         return getThemedTextStyleByName(textStyle.name);
     } catch (e) {
-        console.log(`no textstyle for node ${node.name}. skipping to custom textStyle builder. (cannot use theme)`)
-        console.error(e)
+        // console.log(`no textstyle for node ${node.name}. skipping to custom textStyle builder. (cannot use theme)`)
+        // console.error(e)
     }
 
     let fontSize: number
@@ -38,7 +38,6 @@ export function makeTextStyle(node: AltTextNode): TextStyle {
     }
 
     let decoration: TextDecoration
-    console.error(node.textDecoration)
     if (node.textDecoration === "UNDERLINE") {
         decoration = TextDecoration.underline;
     }

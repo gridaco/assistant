@@ -38,7 +38,7 @@ export function wrapWithContainer(node: AltRectangleNode | AltEllipseNode | AltF
 
   if (propSize || propBoxDecoration) {
     // Container is a container if [propSize] or [propBoxDecoration] are set.
-    console.log("wrapping with container. child - ", child)
+    // console.log("wrapping with container. child - ", child)
     return new Container(
       {
         width: roundNumber(propSize.w),
@@ -50,7 +50,7 @@ export function wrapWithContainer(node: AltRectangleNode | AltEllipseNode | AltF
       }
     )
   } else if (propPadding) {
-    console.log("wrapping with padding")
+    // console.log("wrapping with padding")
     return new Padding(
       {
         padding: propPadding,

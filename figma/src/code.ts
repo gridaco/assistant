@@ -3,6 +3,7 @@ import { generateSource } from "./flutter";
 import { retrieveFlutterColors } from "./flutter/utils/fetch-colors";
 import { hideAllExcept, hideAllOnly } from "./dev-tools/hide-all";
 import { on } from "process";
+import { runLints } from "./lint/lint";
 
 let parentNodeId: string;
 let layerName = false;
@@ -53,6 +54,8 @@ function run() {
     rawNode = figma.currentPage.selection[0]
     parentNodeId = figma.currentPage.selection[0].parent?.id ?? "";
 
+    // run linter
+    runLints(rawNode)
 
 
     const convertedSelection = convertIntoAltNode(
@@ -60,11 +63,11 @@ function run() {
         null
     );
 
-    const result = generateSource(convertedSelection, parentNodeId);
+    const generatedCode = generateSource(convertedSelection, parentNodeId);
 
     figma.ui.postMessage({
         type: "result",
-        data: result,
+        data: generatedCode,
     });
 
     // send preview image

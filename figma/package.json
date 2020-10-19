@@ -13,6 +13,7 @@
   "dependencies": {
     "@bridged.xyz/box": "0.0.1",
     "@bridged.xyz/flutter-builder": "^1.23.0-7.0.pre.36",
+    "@reflect.bridged.xyz/linter": "0.0.1",
     "@create-figma-plugin/utilities": "0.0.77",
     "@figma/plugin-typings": "^1.17.1",
     "copy-to-clipboard": "^3.3.1",

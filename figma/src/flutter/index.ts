@@ -43,7 +43,7 @@ function flutterWidgetGenerator(sceneNode: ReadonlyArray<ReflectSceneNode> | Ref
   if (Array.isArray(sceneNode)) {
     let widgets: Array<Widget> = [];
 
-    console.log("flutterWidgetGenerator:: targetting list of nodes")
+    // console.log("flutterWidgetGenerator:: targetting list of nodes")
     sceneNode = sceneNode as ReadonlyArray<ReflectSceneNode>
     const sceneLen = sceneNode.length;
 
@@ -61,16 +61,16 @@ function flutterWidgetGenerator(sceneNode: ReadonlyArray<ReflectSceneNode> | Ref
     // filter undefined widgets
     widgets = widgets.filter((w) => w != undefined)
     if (widgets.length == 1) {
-      console.log("flutterWidgetGenerator complete", widgets[0])
+      // console.log("flutterWidgetGenerator complete", widgets[0])
       return widgets[0]
     }
-    console.log("flutterWidgetGenerator complete", widgets)
+    // console.log("flutterWidgetGenerator complete", widgets)
     return widgets
 
   } else {
 
-    console.log("flutterWidgetGenerator:: targetting single node")
-    console.log(sceneNode)
+    // console.log("flutterWidgetGenerator:: targetting single node")
+    // console.log(sceneNode)
     sceneNode = sceneNode as ReflectSceneNode
     return handleNode(sceneNode)
 
@@ -78,16 +78,13 @@ function flutterWidgetGenerator(sceneNode: ReadonlyArray<ReflectSceneNode> | Ref
 
 
   function handleNode(node: ReflectSceneNode): Widget {
-    console.log(`starting handling node of ${node.name} type of ${node.type}`)
+    // console.log(`starting handling node of ${node.name} type of ${node.type}`)
     if (node.type === "RECTANGLE" || node.type === "ELLIPSE") {
       const container = flutterContainer(node, undefined)
-      console.log("node.type was rectangle or elipse. due to that, returning container.", container)
+      // console.log("node.type was rectangle or elipse. due to that, returning container.", container)
       return container
     }
 
-    //  else if (node.type === "VECTOR") {
-    // comp = flutterVector(node);
-    // }
     else if (node.type === "GROUP") {
       return flutterGroup(node)
     } else if (node.type === "FRAME") {
