@@ -1,7 +1,7 @@
 import {
   AltEllipseNode,
   AltFrameNode,
-  AltRectangleNode,
+  ReflectRectangleNode,
   AltGroupNode,
   AltTextNode,
   ReflectSceneNode
@@ -104,7 +104,7 @@ function flutterGroup(node: AltGroupNode): Widget {
   );
 }
 
-function flutterContainer(node: AltFrameNode | AltGroupNode | AltRectangleNode | AltEllipseNode,
+function flutterContainer(node: AltFrameNode | AltGroupNode | ReflectRectangleNode | AltEllipseNode,
   child?: Widget): Widget {
   const builder = new WidgetBuilder({ child: child, node: node });
 

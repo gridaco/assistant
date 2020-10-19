@@ -2,7 +2,7 @@ import { ReflectSceneNode } from "../../node-convert/mixin";
 import { rgbTo8hex } from "../../utils/color";
 import { convertToSize } from "../convert/size.convert";
 import {
-  AltRectangleNode,
+  ReflectRectangleNode,
   AltEllipseNode,
   AltFrameNode,
 } from "../../node-convert/mixin";
@@ -13,7 +13,7 @@ import { makeBorderRadius } from "../make/border-radius.make";
 import { wrapWithPadding } from "./padding.wrap";
 
 // https://api.flutter.dev/flutter/material/Material-class.html
-export function wrapWithMaterial(node: AltRectangleNode | AltEllipseNode | AltFrameNode,
+export function wrapWithMaterial(node: ReflectRectangleNode | AltEllipseNode | AltFrameNode,
   child: Widget): Widget {
   // ignore the view when size is zero or less
   // while technically it shouldn't get less than 0, due to rounding errors,
@@ -46,7 +46,7 @@ export function wrapWithMaterial(node: AltRectangleNode | AltEllipseNode | AltFr
   return material;
 }
 
-function materialColor(node: AltRectangleNode | AltEllipseNode | AltFrameNode): Color {
+function materialColor(node: ReflectRectangleNode | AltEllipseNode | AltFrameNode): Color {
   const color = makeColor(node.fills);
   if (!color) {
     return Colors.transparent;
@@ -54,7 +54,7 @@ function materialColor(node: AltRectangleNode | AltEllipseNode | AltFrameNode): 
   return color;
 }
 
-function materialShape(node: AltRectangleNode | AltEllipseNode | AltFrameNode): ShapeBorder | BorderRadiusGeometry {
+function materialShape(node: ReflectRectangleNode | AltEllipseNode | AltFrameNode): ShapeBorder | BorderRadiusGeometry {
   if (node.type === "ELLIPSE" || node.strokes?.length > 0) {
     return makeShape(node);
   } else {

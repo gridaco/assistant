@@ -1,7 +1,7 @@
 import { convertNodesOnRectangle } from "./nodes-on-rect.convert";
 import {
   ReflectSceneNode,
-  AltRectangleNode,
+  ReflectRectangleNode,
   AltFrameNode,
   AltTextNode,
   AltGroupNode,
@@ -23,7 +23,7 @@ export function convertSingleNodeToAlt(node: SceneNode,
 }
 
 export function frameNodeToAlt(node: FrameNode | InstanceNode | ComponentNode,
-  altParent: AltFrameNode | AltGroupNode | null = null): AltRectangleNode | AltFrameNode | AltGroupNode {
+  altParent: AltFrameNode | AltGroupNode | null = null): ReflectRectangleNode | AltFrameNode | AltGroupNode {
   if (node.children.length === 0) {
     // if it has no children, convert frame to rectangle
     return frameToRectangleNode(node, altParent);
@@ -50,8 +50,8 @@ export function frameNodeToAlt(node: FrameNode | InstanceNode | ComponentNode,
 
 // auto convert Frame to Rectangle when Frame has no Children
 function frameToRectangleNode(node: FrameNode | InstanceNode | ComponentNode,
-  altParent: AltFrameNode | AltGroupNode | null): AltRectangleNode {
-  const newNode = new AltRectangleNode();
+  altParent: AltFrameNode | AltGroupNode | null): ReflectRectangleNode {
+  const newNode = new ReflectRectangleNode();
 
   newNode.id = node.id;
   newNode.name = node.name;
@@ -83,7 +83,7 @@ export function convertIntoAltNodes(sceneNode: ReadonlyArray<SceneNode>,
       if (node.type === "RECTANGLE" || node.type === "ELLIPSE") {
         let altNode;
         if (node.type === "RECTANGLE") {
-          altNode = new AltRectangleNode();
+          altNode = new ReflectRectangleNode();
           convertRectangleCorner(altNode, node);
         }
         if (node.type === "ELLIPSE") {
@@ -145,7 +145,7 @@ export function convertIntoAltNodes(sceneNode: ReadonlyArray<SceneNode>,
         convertIntoAltText(altNode, node);
         return altNode;
       } else if (node.type === "VECTOR") {
-        const altNode = new AltRectangleNode();
+        const altNode = new ReflectRectangleNode();
         altNode.id = node.id;
         altNode.name = node.name;
 

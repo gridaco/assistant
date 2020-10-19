@@ -1,7 +1,7 @@
 export type ReflectSceneNode =
   | AltFrameNode
   | AltGroupNode
-  | AltRectangleNode
+  | ReflectRectangleNode
   | AltEllipseNode
   | AltTextNode;
 
@@ -70,9 +70,74 @@ export interface AltFrameMixin {
   clipsContent: boolean;
   guides: ReadonlyArray<Guide>;
 }
-export class AltRectangleNode {
+
+
+
+export class AltDefaultShapeMixin
+  implements AltBaseNodeMixin,
+  AltBlendMixin,
+  AltGeometryMixin,
+  AltRectangleCornerMixin,
+  AltCornerMixin,
+  AltLayoutMixin {
+
+  id: string;
+  parent: (ReflectSceneNode & AltChildrenMixin) | null;
+  name: string;
+  readonly pluginData: { [key: string]: string };
+
+
+  opacity: number;
+  blendMode: "PASS_THROUGH" | BlendMode;
+  isMask: boolean;
+  effects: ReadonlyArray<Effect>;
+  effectStyleId: string;
+  visible: boolean;
+  radius: number;
+
+
+  fills: ReadonlyArray<Paint> | PluginAPI["mixed"];
+  strokes: ReadonlyArray<Paint>;
+  strokeWeight: number;
+  strokeMiterLimit: number;
+  strokeAlign: "CENTER" | "INSIDE" | "OUTSIDE";
+  strokeCap: StrokeCap | PluginAPI["mixed"];
+  strokeJoin: StrokeJoin | PluginAPI["mixed"];
+  dashPattern: ReadonlyArray<number>;
+  fillStyleId: string | PluginAPI["mixed"];
+  strokeStyleId: string;
+
+
+
+  topLeftRadius: number;
+  topRightRadius: number;
+  bottomLeftRadius: number;
+  bottomRightRadius: number;
+
+  cornerRadius: number | PluginAPI["mixed"];
+  cornerSmoothing: number;
+
+
+  x: number;
+  y: number;
+  rotation: number;
+
+  width: number;
+  height: number;
+
+  layoutAlign: "MIN" | "CENTER" | "MAX" | "STRETCH";
+}
+
+
+
+
+export class ReflectRectangleNode extends AltDefaultShapeMixin implements
+  AltCornerMixin,
+  AltRectangleCornerMixin {
   readonly type = "RECTANGLE";
 }
+
+
 export class AltEllipseNode {
   readonly type = "ELLIPSE";
 }
@@ -86,18 +151,6 @@ export class AltTextNode {
   readonly type = "TEXT";
 }
 
-export interface AltDefaultShapeMixin
-  extends AltBaseNodeMixin,
-  AltBlendMixin,
-  AltGeometryMixin,
-  AltRectangleCornerMixin,
-  AltCornerMixin,
-  AltLayoutMixin { }
-
-export interface AltRectangleNode
-  extends AltDefaultShapeMixin,
-  AltCornerMixin,
-  AltRectangleCornerMixin { }
 
 export interface AltEllipseNode extends AltDefaultShapeMixin, AltCornerMixin { }
 
@@ -146,7 +199,7 @@ export interface AltBaseNodeMixin {
   id: string;
   parent: (ReflectSceneNode & AltChildrenMixin) | null;
   name: string;
-  pluginData: { [key: string]: string };
+  readonly pluginData: { [key: string]: string };
 }
 
 export interface AltChildrenMixin {

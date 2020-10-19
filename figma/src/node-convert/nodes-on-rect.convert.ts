@@ -1,5 +1,5 @@
 import {
-  AltRectangleNode,
+  ReflectRectangleNode,
   AltFrameNode,
   AltGroupNode,
   ReflectSceneNode,
@@ -29,7 +29,7 @@ export function convertNodesOnRectangle(node: AltFrameNode | AltGroupNode): AltF
     // dangerous cast, but this is always true
     const parentNode = node.children.find(
       (d) => d.id === key
-    ) as AltRectangleNode;
+    ) as ReflectRectangleNode;
 
     // retrieve the position. Key should always be at the left side, so even when other items are removed, the index is kept the same.
     const indexPosition = updatedChildren.findIndex((d) => d.id === key);
@@ -63,7 +63,7 @@ export function convertNodesOnRectangle(node: AltFrameNode | AltGroupNode): AltF
   return node;
 }
 
-function convertRectangleToFrame(rect: AltRectangleNode) {
+function convertRectangleToFrame(rect: ReflectRectangleNode) {
   // if a Rect with elements inside were identified, extract this Rect
   // outer methods are going to use it.
   const frameNode = new AltFrameNode();

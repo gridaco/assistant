@@ -1,7 +1,7 @@
 import { AltGroupNode, AltTextNode } from "../../node-convert/mixin";
 import {
     ReflectSceneNode,
-    AltRectangleNode,
+    ReflectRectangleNode,
     AltEllipseNode,
     AltFrameNode,
 } from "../../node-convert/mixin";
@@ -16,10 +16,10 @@ import { wrapWithVisibility } from "../wrappers/visibility.wrap";
 
 export class WidgetBuilder {
     child: Widget;
-    node: AltRectangleNode | AltEllipseNode | AltFrameNode | AltGroupNode | AltTextNode
+    node: ReflectRectangleNode | AltEllipseNode | AltFrameNode | AltGroupNode | AltTextNode
 
     constructor(args: {
-        node: AltRectangleNode | AltEllipseNode | AltFrameNode | AltGroupNode | AltTextNode
+        node: ReflectRectangleNode | AltEllipseNode | AltFrameNode | AltGroupNode | AltTextNode
         child?: Widget
     }) {
         this.child = args.child

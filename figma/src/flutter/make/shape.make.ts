@@ -1,10 +1,10 @@
 import { ShapeBorder, Border, BorderSide, CircleBorder, RoundedRectangleBorder } from "@bridged.xyz/flutter-builder";
-import { AltRectangleNode, AltEllipseNode, AltFrameNode } from "../../node-convert/mixin";
+import { ReflectRectangleNode, AltEllipseNode, AltFrameNode } from "../../node-convert/mixin";
 import { makeBorderRadius } from "./border-radius.make";
 import { makeColor } from "./color.make";
 
 // TODO this is not fully implemented.
-export function makeShape(node: AltRectangleNode | AltEllipseNode | AltFrameNode): ShapeBorder {
+export function makeShape(node: ReflectRectangleNode | AltEllipseNode | AltFrameNode): ShapeBorder {
     const strokeColor = makeColor(node.strokes);
     const side: Border = strokeColor && node.strokeWeight > 0
         ? new BorderSide({

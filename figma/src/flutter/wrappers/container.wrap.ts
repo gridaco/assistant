@@ -1,7 +1,7 @@
 import { AltGroupNode } from "../../node-convert/mixin";
 import { convertToSize } from "../convert";
 import {
-  AltRectangleNode,
+  ReflectRectangleNode,
   AltEllipseNode,
   AltFrameNode,
 } from "../../node-convert/mixin";
@@ -16,7 +16,7 @@ import { interpretGradient } from "../interpreter/gradient.interpret";
 
 
 
-export function wrapWithContainer(node: AltRectangleNode | AltEllipseNode | AltFrameNode | AltGroupNode,
+export function wrapWithContainer(node: ReflectRectangleNode | AltEllipseNode | AltFrameNode | AltGroupNode,
   child?: Widget): Widget {
   // ignore the view when size is zero or less
   // while technically it shouldn't get less than 0, due to rounding errors,
@@ -63,7 +63,7 @@ export function wrapWithContainer(node: AltRectangleNode | AltEllipseNode | AltF
   }
 }
 
-function makeBoxDecoration(node: AltRectangleNode | AltEllipseNode | AltFrameNode): BoxDecoration | Color {
+function makeBoxDecoration(node: ReflectRectangleNode | AltEllipseNode | AltFrameNode): BoxDecoration | Color {
   const propBackgroundColor = makeBoxDecorationColor(node.fills);
   const propBorder = makeBorder(node);
   const propBoxShadow = makeBoxShadow(node);

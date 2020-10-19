@@ -1,7 +1,7 @@
 import { BorderRadiusGeometry, BorderRadius, Radius } from "@bridged.xyz/flutter-builder";
-import { AltRectangleNode, AltEllipseNode, AltFrameNode } from "../../node-convert/mixin";
+import { ReflectRectangleNode, AltEllipseNode, AltFrameNode } from "../../node-convert/mixin";
 
-export function makeBorderRadius(node: AltRectangleNode | AltEllipseNode | AltFrameNode): BorderRadiusGeometry {
+export function makeBorderRadius(node: ReflectRectangleNode | AltEllipseNode | AltFrameNode): BorderRadiusGeometry {
     if (node.type === "ELLIPSE")
         return undefined;
     if (node.cornerRadius === 0 ||
