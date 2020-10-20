@@ -1,5 +1,5 @@
 import { Widget, TextAlign, Text } from "@bridged.xyz/flutter-builder";
-import { AltTextNode } from "../../node-convert/mixin";
+import { AltTextNode } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
 import { makeTextStyle } from "./text-style.make";
 
 /**

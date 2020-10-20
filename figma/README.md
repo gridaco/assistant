@@ -1,4 +1,4 @@
-  <meta name="description" content="generate flutter code from figma">
+  <meta name="description" content="generate flutter code from figma, with design linting.">
   <meta name="title" content="bridged figma plugin. figma to flutter code exporter">
 
 
@@ -22,7 +22,7 @@ $ yarn install
 ```
 
 ```
-$ yarn run webpack:watch
+$ yarn run dev
 ```
 
 ### Installing the plugin

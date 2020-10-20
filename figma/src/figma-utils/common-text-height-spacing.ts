@@ -1,11 +1,9 @@
-import { AltTextNode } from "../node-convert/mixin";
+import { AltTextNode } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
 
-export const commonLineHeight = (node: AltTextNode): number => {
-  if (
-    node.lineHeight !== figma.mixed &&
+export function commonLineHeight(node: AltTextNode): number {
+  if (node.lineHeight !== figma.mixed &&
     node.lineHeight.unit !== "AUTO" &&
-    Math.round(node.lineHeight.value) !== 0
-  ) {
+    Math.round(node.lineHeight.value) !== 0) {
     if (node.lineHeight.unit === "PIXELS") {
       return node.lineHeight.value;
     } else {
@@ -18,13 +16,11 @@ export const commonLineHeight = (node: AltTextNode): number => {
   }
 
   return 0;
-};
+}
 
-export const commonLetterSpacing = (node: AltTextNode): number => {
-  if (
-    node.letterSpacing !== figma.mixed &&
-    Math.round(node.letterSpacing.value) !== 0
-  ) {
+export function commonLetterSpacing(node: AltTextNode): number {
+  if (node.letterSpacing !== figma.mixed &&
+    Math.round(node.letterSpacing.value) !== 0) {
     if (node.letterSpacing.unit === "PIXELS") {
       return node.letterSpacing.value;
     } else {
@@ -36,4 +32,4 @@ export const commonLetterSpacing = (node: AltTextNode): number => {
   }
 
   return 0;
-};
+}

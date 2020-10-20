@@ -1,5 +1,5 @@
 import { retrieveFill } from "../../figma-utils/retrieve-fill";
-import { ReflectSceneNode } from "../../node-convert/mixin";
+import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
 import { rgbTo6hex } from "../../utils/color";
 
 export function retrieveFlutterColors(sceneNode: Array<ReflectSceneNode>): Array<contrastedColor> {

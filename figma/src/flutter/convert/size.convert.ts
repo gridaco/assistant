@@ -1,5 +1,5 @@
 import { nodeWidthHeight } from "../../figma-utils/node-width-height";
-import { ReflectSceneNode } from "../../node-convert/mixin";
+import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
 
 export type Size = {
   w: number

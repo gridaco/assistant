@@ -1,8 +1,7 @@
-import { convertIntoAltNode } from "./node-convert/conversion";
+import { convertIntoAltNode } from "@bridged.xyz/design-sdk/lib/nodes/conversion";
 import { generateSource } from "./flutter";
 import { retrieveFlutterColors } from "./flutter/utils/fetch-colors";
 import { hideAllExcept, hideAllOnly } from "./dev-tools/hide-all";
-import { on } from "process";
 import { runLints } from "./lint/lint";
 
 let parentNodeId: string;
@@ -56,7 +55,6 @@ function run() {
 
     // run linter
     runLints(rawNode)
-
 
     const convertedSelection = convertIntoAltNode(
         figma.currentPage.selection,

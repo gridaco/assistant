@@ -11,21 +11,9 @@
 
 
 ## naming conventions
-default icons path is "icons/" for your figma component
+> Follow reflect's icon [naming convention](https://www.notion.so/bridgedxyz/icon-naming-convention-7852e9590b064d509dc097f7580dc4c5)
 
-*naming guide for on/off icons*
-```
-icons/star/on
-icons/star/off
-
-or
-
-icons/star-on
-icons/star-off
-```
-dash and sub directory will be automatically converted to snake_case. for example "icons/star-on" and "icons/star/on" will be `star_on`
-
-you can use [flint](https://github.com/bridgedxyz/flint) for figma icons linting
+you can use [lint](https://github.com/bridgedxyz/lint) for icons linting
 
 ## Futrher Platform supports
 

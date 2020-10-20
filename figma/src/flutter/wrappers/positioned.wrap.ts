@@ -1,4 +1,4 @@
-import { ReflectSceneNode } from "../../node-convert/mixin";
+import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
 import { Align, Alignment, Positioned, Widget } from "@bridged.xyz/flutter-builder";
 import { parentCoordinates } from "../../figma-utils/parent-coordinates";
 import { commonPosition } from "../../figma-utils/common-position";

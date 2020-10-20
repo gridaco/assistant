@@ -1,5 +1,5 @@
 import { Opacity, Widget } from "@bridged.xyz/flutter-builder";
-import { AltBlendMixin } from "../../node-convert/mixin";
+import { AltBlendMixin } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
 
 /**
  * Wrap widget with opacity if possible

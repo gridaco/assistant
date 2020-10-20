@@ -1,5 +1,5 @@
 import { Widget, Visibility } from "@bridged.xyz/flutter-builder";
-import { ReflectSceneNode } from "../../node-convert/mixin";
+import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
 
 /**
  * Wrap widget with visibility if possible

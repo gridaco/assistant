@@ -8,12 +8,17 @@ title: bridged figma plugin
   <meta name="title" content="bridged assistant">
 
 
-![](./branding/assistant-cover-v0.1.0.png)
+![bridged assistant](./branding/assistant-cover-v0.1.0.png)
 
 
 
-# Bridged Assistant figma plugin (figma to flutter)
-
+# Bridged Assistant plugin (figma to flutter)
+- ✅ Human readable code generation.
+- ✅ code generation built with CoLI, developed especially for assistant usage, ensuring the best code generation quality.
+- ✅ Slots support (Component with parameters)
+- ✅ Modularized code generation / readability. All production level code, code beign generated as Functions, Varables, Ect..
+- ✅ Design Linting - Visaully makes sence, Structure made sence.
+- ✅ Cloud Resource Copy. Copy your resource in 1 second. (No need to download images and move under `res/`)
 
 ## Usage
 
@@ -23,20 +28,33 @@ title: bridged figma plugin
 install via figma plugin [link here](https://www.figma.com/community/plugin/896445082033423994)
 
 
+> Cloning and running the project.
+> we use yarn workspace for maintaining this project as monorepository.
+> Some additional steps are required to run this project properly.
 ``` shell
-git clone https://github.com/bridgedxyz/assistant.git
+# [REQUIRED] we use git submodules for `packages/`. you have to explicitly execute this command instead default clone.
+git clone --recurse-submodules https://github.com/bridgedxyz/assistant.git
 
 cd assistant
 
+# [REQUIRED] yarn will install dependencies, link packages, and generate compiled code of packages, so it can be referenced by root projects.
 yarn
 
-# run figma plugin in dev mode
+# [OPTIONAL 1] run figma plugin in dev mode
 yarn figma
 
-# run sketch plugin in dev mode
+# [OPTIONAL 2]run sketch plugin in dev mode
 yarn sketch
 ```
-> we use yarn workspace for maintaining this project as monorepository.
+
+*soon as the subpackages are released as stable, we will remove git submodule dependency for ease of use. until then, this will be the primary repository and all the edits and PRs will be caused by this project.*
+
+
+### Pre-requisites
+
+- [Node.js](https://nodejs.org/)
+- [Figma desktop app](https://figma.com/downloads/)
+
 
 
 ## Flutter code builder
@@ -61,7 +79,7 @@ flutter widget builder is done by [figma/flutter](/flutter) and the core builder
 - ✅ Best code quality (I Assure,) in this planet
 
 
-## Component Detection
+## UI Element Detection
 > rule based button / input / icon detection with [@reflect.bridged.xyz/detection](./packages/detection)
 > Higher quality ML based detection available at [Bridged's context engine](https://github.com/bridgedxyz/context)
 
@@ -80,26 +98,19 @@ visit [CHANGELOG.md](./CHANGELOG.md)
 
 
 
-### Docs
-
-- [Create Figma Plugin docs](https://github.com/yuanqing/create-figma-plugin#docs)
-- [Figma plugin API docs](https://figma.com/plugin-docs/api/)
-
-
 
 ## Development guide
 
-*This plugin is built with [Create Figma Plugin](https://github.com/yuanqing/create-figma-plugin).*
-
-### Pre-requisites
-
-- [Node.js](https://nodejs.org/)
-- [Figma desktop app](https://figma.com/downloads/)
 
 ### Building the plugin
 
 See [plugin README](/plugin/README.md)
 
+
+### Docs
+
+- [Create Figma Plugin docs](https://github.com/yuanqing/create-figma-plugin#docs)
+- [Figma plugin API docs](https://figma.com/plugin-docs/api/)
 
 
 

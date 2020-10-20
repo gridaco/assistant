@@ -1,10 +1,9 @@
-import { AltGroupNode, AltTextNode } from "../../node-convert/mixin";
 import {
     ReflectSceneNode,
     ReflectRectangleNode,
     AltEllipseNode,
-    AltFrameNode,
-} from "../../node-convert/mixin";
+    AltFrameNode, AltGroupNode, AltTextNode
+} from "@bridged.xyz/design-sdk/lib/nodes/mixin";
 
 import { Widget } from "@bridged.xyz/flutter-builder";
 import { retrieveFill } from "../../figma-utils/retrieve-fill";

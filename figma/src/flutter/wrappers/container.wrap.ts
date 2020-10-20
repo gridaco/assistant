@@ -1,10 +1,10 @@
-import { AltGroupNode } from "../../node-convert/mixin";
 import { convertToSize } from "../convert";
 import {
   ReflectRectangleNode,
   AltEllipseNode,
   AltFrameNode,
-} from "../../node-convert/mixin";
+  AltGroupNode
+} from "@bridged.xyz/design-sdk/lib/nodes/mixin";
 import { makeEdgeInsets } from "../make";
 import { gradientAngle } from "../../utils/color";
 import { nearestValue } from "../../utils/convert";

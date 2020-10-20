@@ -18,3 +18,14 @@
 
 **Web**
 1:1 ~ 1:30
+
+
+## Rule Spec (not fully implemented yet)
+``` ts
+<DetectionRule>{
+    minHeight: 500,
+    minWidth: 300,
+    maxWidth: 3000,
+    mustBeRoot: true
+}
+```

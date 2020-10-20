@@ -1,5 +1,5 @@
 import { Border } from "@bridged.xyz/flutter-builder";
-import { ReflectSceneNode } from "../../node-convert/mixin";
+import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
 import { roundNumber } from "../../ui-utils/numbers.normalizer";
 import { makeColor } from "./color.make";
 

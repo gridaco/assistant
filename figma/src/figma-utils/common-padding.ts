@@ -1,4 +1,4 @@
-import { AltFrameMixin, AltDefaultShapeMixin } from "../node-convert/mixin";
+import { AltFrameMixin, AltDefaultShapeMixin } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
 
 type paddingType = {
   horizontal: number;

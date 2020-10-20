@@ -1,11 +1,11 @@
-import { ReflectSceneNode } from "../../node-convert/mixin";
 import { rgbTo8hex } from "../../utils/color";
 import { convertToSize } from "../convert/size.convert";
 import {
   ReflectRectangleNode,
   AltEllipseNode,
   AltFrameNode,
-} from "../../node-convert/mixin";
+  ReflectSceneNode
+} from "@bridged.xyz/design-sdk/lib/nodes/mixin";
 import { BorderRadiusGeometry, ShapeBorder, Colors, Color, Padding, Container, Widget } from "@bridged.xyz/flutter-builder";
 import { makeColor } from "../make/color.make";
 import { makeShape as makeShape } from "../make/shape.make";

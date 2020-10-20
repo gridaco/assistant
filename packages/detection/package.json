@@ -1,4 +1,14 @@
 {
     "name": "@reflect.bridged.xyz/detection",
-    "version": "0.1.0"
+    "version": "0.1.0",
+    "scripts": {
+        "postinstall": "tsc"
+    },
+    "dependencies": {
+        "minimatch": "^3.0.4"
+    },
+    "devDependencies": {
+        "@types/minimatch": "^3.0.3",
+        "typescript": "^3.4.3"
+    }
 }

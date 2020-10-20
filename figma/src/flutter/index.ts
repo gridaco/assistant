@@ -5,7 +5,7 @@ import {
   AltGroupNode,
   AltTextNode,
   ReflectSceneNode
-} from "../node-convert/mixin";
+} from "@bridged.xyz/design-sdk/lib/nodes/mixin";
 import { TextBuilder, WidgetBuilder } from "./builders";
 import { mostFrequent } from "../utils/array-utils";
 import { SingleChildScrollView, MainAxisSize, CrossAxisAlignment, Column, Row, SizedBox, Widget, Stack } from "@bridged.xyz/flutter-builder"
@@ -23,19 +23,11 @@ export function generateSource(sceneNode: ReflectSceneNode,
     throw "result cannot be in array form."
   }
 
-  // add function wrapper
-  const code = `
-class ${DEFAULT_COMPONENT_NAME} extends StatelessWidget{
-  @override
-  Widget build(BuildContext context){
-    return ${result.build().finalize()}
-  }
-}
-  `
+  return result.build().finalize();
 
-  return new SingleChildScrollView({
-    child: result
-  }).build().finalize()
+  // return new SingleChildScrollView({
+  //   child: result
+  // }).build().finalize()
 }
 
 

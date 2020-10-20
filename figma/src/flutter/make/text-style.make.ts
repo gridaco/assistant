@@ -1,6 +1,6 @@
 import { FontStyle, FontWeight, TextDecoration, TextStyle, Theme } from "@bridged.xyz/flutter-builder";
 import { commonLetterSpacing } from "../../figma-utils/common-text-height-spacing";
-import { AltTextNode } from "../../node-convert/mixin";
+import { AltTextNode } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
 import { typographyIntelisenceMapping } from "../../utils/text-style-map";
 import { getTextStyleById } from "../../utils/figma-api-extended";
 import { convertFontWeight } from "../../utils/text-convert";

@@ -1,5 +1,5 @@
 import { Widget, Transform } from "@bridged.xyz/flutter-builder";
-import { AltLayoutMixin } from "../../node-convert/mixin";
+import { AltLayoutMixin } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
 
 /**
  * https://api.flutter.dev/flutter/widgets/Transform-class.html
