@@ -1,4 +1,3 @@
-import { DEFAULT_ICON_NAMING_CONVENTION_PATTERNS } from "./naming-convention";
 import rule from "./icon.rules"
 import { DetectionResult } from "..";
 import { checkIfSquare } from "../rules/processors/square.check";

@@ -5,7 +5,8 @@
         "postinstall": "tsc"
     },
     "dependencies": {
-        "minimatch": "^3.0.4"
+        "minimatch": "^3.0.4",
+        "@reflect.bridged.xyz/linter": "0.0.1"
     },
     "devDependencies": {
         "@types/minimatch": "^3.0.3",
