@@ -1,5 +1,5 @@
 import { ShapeBorder, Border, BorderSide, CircleBorder, RoundedRectangleBorder } from "@bridged.xyz/flutter-builder";
-import { ReflectRectangleNode, ReflectEllipseNode, ReflectFrameNode } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
+import { ReflectRectangleNode, ReflectEllipseNode, ReflectFrameNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
 import { makeBorderRadius } from "./border-radius.make";
 import { makeColor } from "./color.make";
 

@@ -4,7 +4,7 @@ import {
   ReflectEllipseNode,
   ReflectFrameNode,
   ReflectGroupNode
-} from "@bridged.xyz/design-sdk/lib/nodes/mixin";
+} from "@bridged.xyz/design-sdk/lib/nodes/types";
 import { makeEdgeInsets } from "../make";
 import { gradientAngle } from "../../utils/color";
 import { nearestValue } from "../../utils/convert";

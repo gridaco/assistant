@@ -1,4 +1,4 @@
-import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
+import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
 
 export const magicMargin = 32;
 

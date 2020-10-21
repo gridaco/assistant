@@ -1,9 +1,8 @@
 import {
-    ReflectSceneNode,
     ReflectRectangleNode,
     ReflectEllipseNode,
     ReflectFrameNode, ReflectGroupNode, ReflectTextNode
-} from "@bridged.xyz/design-sdk/lib/nodes/mixin";
+} from "@bridged.xyz/design-sdk/lib/nodes/types";
 
 import { Widget } from "@bridged.xyz/flutter-builder";
 import { retrieveFill } from "../../figma-utils/retrieve-fill";

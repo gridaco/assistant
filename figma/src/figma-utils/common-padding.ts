@@ -1,4 +1,4 @@
-import { ReflectFrameNode, ReflectDefaultShapeMixin } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
+import { ReflectFrameNode, ReflectDefaultShapeMixin } from "@bridged.xyz/design-sdk/lib/nodes/types";
 
 type paddingType = {
   horizontal: number;

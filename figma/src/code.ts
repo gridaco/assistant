@@ -54,8 +54,15 @@ function run() {
     rawNode = figma.currentPage.selection[0]
     parentNodeId = figma.currentPage.selection[0].parent?.id ?? "";
 
+    // FIXME
+    const safeParent = rawNode.parent as any
+    const convertedSelection = convertIntoReflectNode(
+        rawNode,
+        safeParent
+    );
+
     //#region  run linter
-    const feedbacks = runLints(rawNode)
+    const feedbacks = runLints(convertedSelection)
     console.warn(feedbacks)
     figma.ui.postMessage({
         type: EK_LINT_FEEDBACK,
@@ -63,11 +70,6 @@ function run() {
     });
     //#endregion
 
-
-    const convertedSelection = convertIntoReflectNode(
-        figma.currentPage.selection,
-        null
-    );
 
     const generatedCode = generateSource(convertedSelection, parentNodeId);
 

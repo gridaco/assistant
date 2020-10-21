@@ -1,4 +1,4 @@
-import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
+import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
 import { commonPadding } from "../../figma-utils/common-padding";
 import { EdgeInsets, EdgeInsetsGeometry } from "@bridged.xyz/flutter-builder";
 

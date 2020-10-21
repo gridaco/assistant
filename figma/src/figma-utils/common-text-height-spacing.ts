@@ -1,4 +1,4 @@
-import { ReflectTextNode } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
+import { ReflectTextNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
 
 export function commonLineHeight(node: ReflectTextNode): number {
   if (node.lineHeight !== figma.mixed &&

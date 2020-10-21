@@ -5,11 +5,12 @@ import {
   ReflectGroupNode,
   ReflectTextNode,
   ReflectSceneNode
-} from "@bridged.xyz/design-sdk/lib/nodes/mixin";
+} from "@bridged.xyz/design-sdk/lib/nodes/types";
 import { TextBuilder, WidgetBuilder } from "./builders";
 import { mostFrequent } from "../utils/array-utils";
-import { SingleChildScrollView, MainAxisSize, CrossAxisAlignment, Column, Row, SizedBox, Widget, Stack } from "@bridged.xyz/flutter-builder"
+import { MainAxisSize, CrossAxisAlignment, Column, Row, SizedBox, Widget, Stack } from "@bridged.xyz/flutter-builder"
 import { roundNumber } from "../ui-utils/numbers.normalizer";
+
 
 let parentId = "";
 const DEFAULT_COMPONENT_NAME = "Component";

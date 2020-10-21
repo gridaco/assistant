@@ -3,7 +3,8 @@ import lintNamingConventions from "@reflect.bridged.xyz/linter/lib/naming.lint"
 import { detectIfIcon } from "@reflect.bridged.xyz/detection/lib/icon.detection"
 import { detectIfScreen } from "@reflect.bridged.xyz/detection/lib/screen.detection";
 import { ReflectLintFeedback } from "@reflect.bridged.xyz/linter/lib/feedbacks";
-export function runLints(node: SceneNode) {
+import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes";
+export function runLints(node: ReflectSceneNode) {
     // reject if selected node is too big for it's size or child count.
     if (node.width > 3000) {
         throw 'node too big for processing.'
@@ -23,10 +24,12 @@ export function runLints(node: SceneNode) {
 
     // test
     // detection 
-    const iconDetect = detectIfIcon(node)
+    // FIXME "as any"
+    const iconDetect = detectIfIcon(node as any)
     console.warn(iconDetect)
 
-    const screenDetect = detectIfScreen(node)
+    // FIXME "as any"
+    const screenDetect = detectIfScreen(node as any)
     console.warn(screenDetect)
     // test
 

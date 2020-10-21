@@ -1,5 +1,5 @@
 import { Widget, Transform } from "@bridged.xyz/flutter-builder";
-import { ReflectLayoutMixin } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
+import { ReflectLayoutMixin } from "@bridged.xyz/design-sdk/lib/nodes/types";
 
 /**
  * https://api.flutter.dev/flutter/widgets/Transform-class.html

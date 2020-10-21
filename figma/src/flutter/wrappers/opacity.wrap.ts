@@ -1,5 +1,5 @@
 import { Opacity, Widget } from "@bridged.xyz/flutter-builder";
-import { ReflectBlendMixin } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
+import { ReflectBlendMixin } from "@bridged.xyz/design-sdk/lib/nodes/types";
 
 /**
  * Wrap widget with opacity if possible
