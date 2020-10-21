@@ -58,7 +58,7 @@ function run() {
     const feedbacks = runLints(rawNode)
     console.warn(feedbacks)
     figma.ui.postMessage({
-        type: EK_PREVIEW_SOURCE,
+        type: EK_LINT_FEEDBACK,
         data: feedbacks
     });
     //#endregion

@@ -1,3 +1,4 @@
+import { Typography } from "@material-ui/core";
 import { ReflectLintFeedback } from "@reflect.bridged.xyz/linter/lib/feedbacks";
 import * as React from "react";
 import { Preview } from "../components/preview";
@@ -17,31 +18,31 @@ export class LintScreen extends React.Component<any, State> {
     }
 
     componentDidMount() {
-        window.onmessage = (ev: MessageEvent) => {
-            console.log(ev)
+        window.addEventListener("message", (ev: MessageEvent) => {
             const msg = ev.data.pluginMessage;
+            console.log(msg)
             if (msg.type == EK_LINT_FEEDBACK) {
                 const feedbacks = msg.data as Array<ReflectLintFeedback>
                 this.setState((state, props) => {
                     return { feedbacks: feedbacks }
                 });
             }
-        }
+        });
     }
 
     render() {
         const { feedbacks } = this.state
         return <>
             <Preview data={undefined} name="selected node name" />
-            <div>
+            <ul>
                 {feedbacks.map(function (item) {
-                    return <div>
-                        <li>{item.name}</li>
-                        <li>{item.message}</li>
-                    </div>;
+                    return <li key={item.name}>
+                        <Typography variant="h6">{item.name}</Typography>
+                        <Typography variant="body2">{item.userMessage}</Typography>
+                    </li>
                 })}
 
-            </div>
+            </ul>
         </>
     }
 }

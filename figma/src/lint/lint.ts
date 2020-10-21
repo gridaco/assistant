@@ -1,5 +1,5 @@
-import { lintMissingConstraints } from "@reflect.bridged.xyz/linter/lib/structure/constraints.lint";
-import lintNamingConventions from "@reflect.bridged.xyz/linter/lib/naming"
+import { lintMissingConstraints } from "@reflect.bridged.xyz/linter/lib/structure.lint/constraints.lint";
+import lintNamingConventions from "@reflect.bridged.xyz/linter/lib/naming.lint"
 import { detectIfIcon } from "@reflect.bridged.xyz/detection/lib/icon.detection"
 import { detectIfScreen } from "@reflect.bridged.xyz/detection/lib/screen.detection";
 import { ReflectLintFeedback } from "@reflect.bridged.xyz/linter/lib/feedbacks";
@@ -12,10 +12,14 @@ export function runLints(node: SceneNode) {
     const feedbacks: Array<ReflectLintFeedback> = []
 
     const constraintsWarnings = lintMissingConstraints(node)
-    feedbacks.push(...(constraintsWarnings as Array<ReflectLintFeedback>))
+    if (Array.isArray(constraintsWarnings)) {
+        feedbacks.push(...(constraintsWarnings))
+    }
 
     const namingFeedbacks = lintNamingConventions(node.name)
-    feedbacks.push(...(namingFeedbacks as Array<ReflectLintFeedback>))
+    if (Array.isArray(namingFeedbacks)) {
+        feedbacks.push(...(namingFeedbacks))
+    }
 
     // test
     // detection 

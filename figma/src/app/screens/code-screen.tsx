@@ -16,27 +16,29 @@ export class CodeScreen extends React.Component {
     }
 
     componentDidMount() {
+        window.addEventListener("message", this.onMessage);
+    }
 
-        // subscribe code
-        window.onmessage = (ev: MessageEvent) => {
-
-
-            const msg = ev.data.pluginMessage;
-
-            switch (msg.type) {
-                case EK_GENERATED_CODE_PLAIN:
-                    const code = format(msg.data);
-                    this.setState((state, props) => {
-                        return { code: code };
-                    });
-                    break;
-                case EK_PREVIEW_SOURCE:
-                    this.setState((state, props) => {
-                        return { previewImage: msg.data.source, name: msg.data.name };
-                    });
-                    break;
-            }
+    onMessage = (ev: MessageEvent) => {
+        const msg = ev.data.pluginMessage;
+        switch (msg.type) {
+            case EK_GENERATED_CODE_PLAIN:
+                const code = format(msg.data);
+                this.setState((state, props) => {
+                    return { code: code };
+                });
+                break;
+            case EK_PREVIEW_SOURCE:
+                this.setState((state, props) => {
+                    return { previewImage: msg.data.source, name: msg.data.name };
+                });
+                break;
         }
+    }
+
+
+    componentWillUnmount() {
+        window.removeEventListener("message", this.onMessage)
     }
 
 
