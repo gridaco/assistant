@@ -1,9 +1,9 @@
 import { convertToSize } from "../convert";
 import {
   ReflectRectangleNode,
-  AltEllipseNode,
-  AltFrameNode,
-  AltGroupNode
+  ReflectEllipseNode,
+  ReflectFrameNode,
+  ReflectGroupNode
 } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
 import { makeEdgeInsets } from "../make";
 import { gradientAngle } from "../../utils/color";
@@ -16,7 +16,7 @@ import { interpretGradient } from "../interpreter/gradient.interpret";
 
 
 
-export function wrapWithContainer(node: ReflectRectangleNode | AltEllipseNode | AltFrameNode | AltGroupNode,
+export function wrapWithContainer(node: ReflectRectangleNode | ReflectEllipseNode | ReflectFrameNode | ReflectGroupNode,
   child?: Widget): Widget {
   // ignore the view when size is zero or less
   // while technically it shouldn't get less than 0, due to rounding errors,
@@ -63,7 +63,7 @@ export function wrapWithContainer(node: ReflectRectangleNode | AltEllipseNode | 
   }
 }
 
-function makeBoxDecoration(node: ReflectRectangleNode | AltEllipseNode | AltFrameNode): BoxDecoration | Color {
+function makeBoxDecoration(node: ReflectRectangleNode | ReflectEllipseNode | ReflectFrameNode): BoxDecoration | Color {
   const propBackgroundColor = makeBoxDecorationColor(node.fills);
   const propBorder = makeBorder(node);
   const propBoxShadow = makeBoxShadow(node);

@@ -2,18 +2,18 @@ import { rgbTo8hex } from "../../utils/color";
 import { convertToSize } from "../convert/size.convert";
 import {
   ReflectRectangleNode,
-  AltEllipseNode,
-  AltFrameNode,
+  ReflectEllipseNode,
+  ReflectFrameNode,
   ReflectSceneNode
 } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
-import { BorderRadiusGeometry, ShapeBorder, Colors, Color, Padding, Container, Widget } from "@bridged.xyz/flutter-builder";
+import { BorderRadiusGeometry, ShapeBorder, Colors, Color, Container, Widget } from "@bridged.xyz/flutter-builder";
 import { makeColor } from "../make/color.make";
 import { makeShape as makeShape } from "../make/shape.make";
 import { makeBorderRadius } from "../make/border-radius.make";
 import { wrapWithPadding } from "./padding.wrap";
 
 // https://api.flutter.dev/flutter/material/Material-class.html
-export function wrapWithMaterial(node: ReflectRectangleNode | AltEllipseNode | AltFrameNode,
+export function wrapWithMaterial(node: ReflectRectangleNode | ReflectEllipseNode | ReflectFrameNode,
   child: Widget): Widget {
   // ignore the view when size is zero or less
   // while technically it shouldn't get less than 0, due to rounding errors,
@@ -46,7 +46,7 @@ export function wrapWithMaterial(node: ReflectRectangleNode | AltEllipseNode | A
   return material;
 }
 
-function materialColor(node: ReflectRectangleNode | AltEllipseNode | AltFrameNode): Color {
+function materialColor(node: ReflectRectangleNode | ReflectEllipseNode | ReflectFrameNode): Color {
   const color = makeColor(node.fills);
   if (!color) {
     return Colors.transparent;
@@ -54,7 +54,7 @@ function materialColor(node: ReflectRectangleNode | AltEllipseNode | AltFrameNod
   return color;
 }
 
-function materialShape(node: ReflectRectangleNode | AltEllipseNode | AltFrameNode): ShapeBorder | BorderRadiusGeometry {
+function materialShape(node: ReflectRectangleNode | ReflectEllipseNode | ReflectFrameNode): ShapeBorder | BorderRadiusGeometry {
   if (node.type === "ELLIPSE" || node.strokes?.length > 0) {
     return makeShape(node);
   } else {

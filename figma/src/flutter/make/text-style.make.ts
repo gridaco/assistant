@@ -1,6 +1,6 @@
 import { FontStyle, FontWeight, TextDecoration, TextStyle, Theme } from "@bridged.xyz/flutter-builder";
 import { commonLetterSpacing } from "../../figma-utils/common-text-height-spacing";
-import { AltTextNode } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
+import { ReflectTextNode } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
 import { typographyIntelisenceMapping } from "../../utils/text-style-map";
 import { getTextStyleById } from "../../utils/figma-api-extended";
 import { convertFontWeight } from "../../utils/text-convert";
@@ -22,7 +22,7 @@ function getThemedTextStyleByName(textStyleName: string): TextStyle {
     throw `No matching textstyle guideline for name "${textStyleName}" found.`
 }
 
-export function makeTextStyle(node: AltTextNode): TextStyle {
+export function makeTextStyle(node: ReflectTextNode): TextStyle {
     try {
         const textStyle = getTextStyleById(node.textStyleId as string)
         // console.log(`name of textstyle is... ${textStyle.name}`);

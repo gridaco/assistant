@@ -1,10 +1,10 @@
 import { Widget, Transform } from "@bridged.xyz/flutter-builder";
-import { AltLayoutMixin } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
+import { ReflectLayoutMixin } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
 
 /**
  * https://api.flutter.dev/flutter/widgets/Transform-class.html
  */
-export function wrapWithRotation(node: AltLayoutMixin,
+export function wrapWithRotation(node: ReflectLayoutMixin,
     child: Widget): Widget {
     if (node.rotation !== undefined && child &&
         Math.round(node.rotation) !== 0) {

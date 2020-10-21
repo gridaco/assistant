@@ -1,4 +1,4 @@
-import { convertIntoAltNode } from "@bridged.xyz/design-sdk/lib/nodes/conversion";
+import { convertIntoReflectNode } from "@bridged.xyz/design-sdk/lib/nodes/conversion";
 import { generateSource } from "./flutter";
 import { retrieveFlutterColors } from "./flutter/utils/fetch-colors";
 import { hideAllExcept, hideAllOnly } from "./dev-tools/hide-all";
@@ -64,7 +64,7 @@ function run() {
     //#endregion
 
 
-    const convertedSelection = convertIntoAltNode(
+    const convertedSelection = convertIntoReflectNode(
         figma.currentPage.selection,
         null
     );

@@ -1,9 +1,9 @@
 import {
-  AltEllipseNode,
-  AltFrameNode,
+  ReflectEllipseNode,
+  ReflectFrameNode,
   ReflectRectangleNode,
-  AltGroupNode,
-  AltTextNode,
+  ReflectGroupNode,
+  ReflectTextNode,
   ReflectSceneNode
 } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
 import { TextBuilder, WidgetBuilder } from "./builders";
@@ -87,7 +87,7 @@ function flutterWidgetGenerator(sceneNode: ReadonlyArray<ReflectSceneNode> | Ref
   }
 }
 
-function flutterGroup(node: AltGroupNode): Widget {
+function flutterGroup(node: ReflectGroupNode): Widget {
   return flutterContainer(
     node,
     new Stack({
@@ -96,7 +96,7 @@ function flutterGroup(node: AltGroupNode): Widget {
   );
 }
 
-function flutterContainer(node: AltFrameNode | AltGroupNode | ReflectRectangleNode | AltEllipseNode,
+function flutterContainer(node: ReflectFrameNode | ReflectGroupNode | ReflectRectangleNode | ReflectEllipseNode,
   child?: Widget): Widget {
   const builder = new WidgetBuilder({ child: child, node: node });
 
@@ -107,7 +107,7 @@ function flutterContainer(node: AltFrameNode | AltGroupNode | ReflectRectangleNo
   return builder.child;
 }
 
-function flutterText(node: AltTextNode): Widget {
+function flutterText(node: ReflectTextNode): Widget {
   const builder = new TextBuilder({
     child: undefined,
     node: node
@@ -121,7 +121,7 @@ function flutterText(node: AltTextNode): Widget {
   return builder.child;
 }
 
-function flutterFrame(node: AltFrameNode): Widget {
+function flutterFrame(node: ReflectFrameNode): Widget {
   const children = flutterWidgetGenerator(node.children);
 
   if (node.children.length === 1) {
@@ -144,7 +144,7 @@ function flutterFrame(node: AltFrameNode): Widget {
 
 
 type RowOrColumn = "Row" | "Column"
-function makeRowColumn(node: AltFrameNode, children: Array<Widget>): Widget {
+function makeRowColumn(node: ReflectFrameNode, children: Array<Widget>): Widget {
   // ROW or COLUMN
   const rowOrColumn: RowOrColumn = node.layoutMode === "HORIZONTAL" ? "Row" : "Column";
 

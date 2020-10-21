@@ -1,8 +1,8 @@
 import {
     ReflectSceneNode,
     ReflectRectangleNode,
-    AltEllipseNode,
-    AltFrameNode, AltGroupNode, AltTextNode
+    ReflectEllipseNode,
+    ReflectFrameNode, ReflectGroupNode, ReflectTextNode
 } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
 
 import { Widget } from "@bridged.xyz/flutter-builder";
@@ -15,10 +15,10 @@ import { wrapWithVisibility } from "../wrappers/visibility.wrap";
 
 export class WidgetBuilder {
     child: Widget;
-    node: ReflectRectangleNode | AltEllipseNode | AltFrameNode | AltGroupNode | AltTextNode
+    node: ReflectRectangleNode | ReflectEllipseNode | ReflectFrameNode | ReflectGroupNode | ReflectTextNode
 
     constructor(args: {
-        node: ReflectRectangleNode | AltEllipseNode | AltFrameNode | AltGroupNode | AltTextNode
+        node: ReflectRectangleNode | ReflectEllipseNode | ReflectFrameNode | ReflectGroupNode | ReflectTextNode
         child?: Widget
     }) {
         this.child = args.child
@@ -27,7 +27,7 @@ export class WidgetBuilder {
 
     wrapWithContainer(): this {
         // do not wrap if, "text"
-        if (this.node instanceof AltTextNode) {
+        if (this.node instanceof ReflectTextNode) {
             return this;
         }
 

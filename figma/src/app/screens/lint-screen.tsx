@@ -30,6 +30,11 @@ export class LintScreen extends React.Component<any, State> {
         });
     }
 
+    onFeedbackTap = (e) => {
+        // move to target element
+    }
+
+
     render() {
         const { feedbacks } = this.state
         return <>

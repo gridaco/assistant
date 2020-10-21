@@ -1,12 +1,12 @@
 import { Widget, TextAlign, Text } from "@bridged.xyz/flutter-builder";
-import { AltTextNode } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
+import { ReflectTextNode } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
 import { makeTextStyle } from "./text-style.make";
 
 /**
  * makes Text from TextNode
  * @param node text node from desing
  */
-export function makeText(node: AltTextNode): Text {
+export function makeText(node: ReflectTextNode): Text {
     // only undefined in testing
     let alignHorizontal = node.textAlignHorizontal?.toString()?.toLowerCase() ?? "left";
     alignHorizontal =

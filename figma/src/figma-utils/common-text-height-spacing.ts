@@ -1,6 +1,6 @@
-import { AltTextNode } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
+import { ReflectTextNode } from "@bridged.xyz/design-sdk/lib/nodes/mixin";
 
-export function commonLineHeight(node: AltTextNode): number {
+export function commonLineHeight(node: ReflectTextNode): number {
   if (node.lineHeight !== figma.mixed &&
     node.lineHeight.unit !== "AUTO" &&
     Math.round(node.lineHeight.value) !== 0) {
@@ -18,7 +18,7 @@ export function commonLineHeight(node: AltTextNode): number {
   return 0;
 }
 
-export function commonLetterSpacing(node: AltTextNode): number {
+export function commonLetterSpacing(node: ReflectTextNode): number {
   if (node.letterSpacing !== figma.mixed &&
     Math.round(node.letterSpacing.value) !== 0) {
     if (node.letterSpacing.unit === "PIXELS") {
