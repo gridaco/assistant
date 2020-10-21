@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { EK_GENERATED_CODE_PLAIN, EK_PREVIEW_SOURCE } from '../constants/ek.constant'
 import { BoxDirectoryInput } from './box-directory-input'
 
 
@@ -21,8 +22,8 @@ export class BoxTab extends React.Component {
         window.onmessage = (ev: MessageEvent) => {
             const msg = ev.data.pluginMessage;
             switch (msg.type) {
-                case "result":
-                case "preview":
+                case EK_GENERATED_CODE_PLAIN:
+                case EK_PREVIEW_SOURCE:
             }
         }
     }

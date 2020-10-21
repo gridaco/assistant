@@ -1,0 +1,5 @@
+// EK stands for "Event Key"
+
+export const EK_LINT_FEEDBACK = "EK_LINT_FEEDBACK";
+export const EK_GENERATED_CODE_PLAIN = "EK_GENERATED_CODE_PLAIN"
+export const EK_PREVIEW_SOURCE = "EK_PREVIEW_SOURCE"

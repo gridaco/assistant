@@ -3,6 +3,7 @@ import { generateSource } from "./flutter";
 import { retrieveFlutterColors } from "./flutter/utils/fetch-colors";
 import { hideAllExcept, hideAllOnly } from "./dev-tools/hide-all";
 import { runLints } from "./lint/lint";
+import { EK_GENERATED_CODE_PLAIN, EK_LINT_FEEDBACK, EK_PREVIEW_SOURCE } from "./app/constants/ek.constant";
 
 let parentNodeId: string;
 let layerName = false;
@@ -53,8 +54,15 @@ function run() {
     rawNode = figma.currentPage.selection[0]
     parentNodeId = figma.currentPage.selection[0].parent?.id ?? "";
 
-    // run linter
-    runLints(rawNode)
+    //#region  run linter
+    const feedbacks = runLints(rawNode)
+    console.warn(feedbacks)
+    figma.ui.postMessage({
+        type: EK_PREVIEW_SOURCE,
+        data: feedbacks
+    });
+    //#endregion
+
 
     const convertedSelection = convertIntoAltNode(
         figma.currentPage.selection,
@@ -64,7 +72,7 @@ function run() {
     const generatedCode = generateSource(convertedSelection, parentNodeId);
 
     figma.ui.postMessage({
-        type: "result",
+        type: EK_GENERATED_CODE_PLAIN,
         data: generatedCode,
     });
 
@@ -78,7 +86,7 @@ function run() {
         }
     }).then(d => {
         figma.ui.postMessage({
-            type: "preview",
+            type: EK_PREVIEW_SOURCE,
             data: {
                 source: d,
                 name: rawNode.name

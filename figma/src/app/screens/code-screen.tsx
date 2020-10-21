@@ -2,6 +2,7 @@ import * as React from "react";
 import { format } from "../../utils/dart-format";
 import Highlight from "../components/highlight";
 import { Preview } from "../components/preview";
+import { EK_GENERATED_CODE_PLAIN, EK_PREVIEW_SOURCE } from "../constants/ek.constant";
 
 
 
@@ -23,13 +24,13 @@ export class CodeScreen extends React.Component {
             const msg = ev.data.pluginMessage;
 
             switch (msg.type) {
-                case "result":
+                case EK_GENERATED_CODE_PLAIN:
                     const code = format(msg.data);
                     this.setState((state, props) => {
                         return { code: code };
                     });
                     break;
-                case "preview":
+                case EK_PREVIEW_SOURCE:
                     this.setState((state, props) => {
                         return { previewImage: msg.data.source, name: msg.data.name };
                     });
