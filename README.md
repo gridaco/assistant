@@ -117,7 +117,7 @@ See [plugin README](/plugin/README.md)
 ### LEGAL
 > read [LICENSE](./LICENSE).
 
-***to shortly breif,***
+***to shortly brief,***
 - any form of modifing this software, including clone, fork, merge is allowed with no restrictions.
 - making profit "by using" this software is allowed with no restrictions.
 - making profit "by re-distributing" is not allowed. recap, you cannot publish this plugin as an alternative to this original plugin.
