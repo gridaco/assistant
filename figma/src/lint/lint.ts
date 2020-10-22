@@ -17,7 +17,7 @@ export function runLints(node: ReflectSceneNode) {
         feedbacks.push(...(constraintsWarnings))
     }
 
-    const namingFeedbacks = lintNamingConventions(node.name)
+    const namingFeedbacks = lintNamingConventions(node)
     if (Array.isArray(namingFeedbacks)) {
         feedbacks.push(...(namingFeedbacks))
     }
