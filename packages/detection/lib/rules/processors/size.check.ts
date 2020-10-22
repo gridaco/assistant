@@ -1,3 +1,4 @@
+import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes";
 import { SizingRule } from "../rule.base";
 
 /**
@@ -5,7 +6,7 @@ import { SizingRule } from "../rule.base";
  * @param node 
  * @param rule 
  */
-export function checkIfValidSize(node: SceneNode, rule: SizingRule): boolean {
+export function checkIfValidSize(node: ReflectSceneNode, rule: SizingRule): boolean {
 
     const validMinSize: boolean = rule.minSize ? (node.width > rule.minSize && node.height > rule.minSize) : true
     const validMaxSize: boolean = rule.maxSize ? (node.width < rule.maxSize && node.height < rule.maxSize) : true

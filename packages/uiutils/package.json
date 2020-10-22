@@ -1,4 +1,10 @@
 {
     "name": "@reflect.bridged.xyz/uiutils",
-    "version": "0.0.1"
+    "version": "0.0.1",
+    "scripts": {
+        "postinstall": "tsc"
+    },
+    "devDependencies": {
+        "typescript": "3.4.3"
+    }
 }

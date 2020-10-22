@@ -10,9 +10,7 @@ export class CodeScreen extends React.Component {
 
     constructor(props) {
         super(props);
-
         this.state = { code: "//\n//\n//\n// there is no selected node\n//\n//\n//", previewImage: null };
-
     }
 
     componentDidMount() {
@@ -36,11 +34,9 @@ export class CodeScreen extends React.Component {
         }
     }
 
-
     componentWillUnmount() {
         window.removeEventListener("message", this.onMessage)
     }
-
 
     onClickReportIssue(e) {
         open("https://github.com/bridgedxyz/assistant/issues/new/choose");

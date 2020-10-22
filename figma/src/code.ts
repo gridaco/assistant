@@ -3,7 +3,7 @@ import { generateSource } from "./flutter";
 import { retrieveFlutterColors } from "./flutter/utils/fetch-colors";
 import { hideAllExcept, hideAllOnly } from "./dev-tools/hide-all";
 import { runLints } from "./lint/lint";
-import { EK_GENERATED_CODE_PLAIN, EK_LINT_FEEDBACK, EK_PREVIEW_SOURCE } from "./app/constants/ek.constant";
+import { EK_COPIED, EK_FOCUS_REQUEST, EK_GENERATED_CODE_PLAIN, EK_LINT_FEEDBACK, EK_PREVIEW_SOURCE } from "./app/constants/ek.constant";
 
 let parentNodeId: string;
 let layerName = false;
@@ -124,6 +124,13 @@ figma.ui.onmessage = (msg) => {
     }
     // endregion test
 
+
+    else if (msg.type == EK_FOCUS_REQUEST) {
+        const target = figma.getNodeById(msg.data.id) as SceneNode
+        figma.currentPage.selection = [target];
+        figma.viewport.scrollAndZoomIntoView([target]);
+    }
+
     else if (msg.type == "randomize-selection") {
         randimizeText()
     }
@@ -136,7 +143,7 @@ figma.ui.onmessage = (msg) => {
     }
 
 
-    else if (msg.type == "copied") {
+    else if (msg.type == EK_COPIED) {
         figma.notify("copied to clipboard", { timeout: 1 })
     }
 

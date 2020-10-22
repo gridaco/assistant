@@ -7,7 +7,7 @@ import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
  *
  * Input is expected to be node.parent.
  */
-export function parentCoordinates(node: ReflectSceneNode): [number, number] {
+export function coordinates(node: ReflectSceneNode): [number, number] {
   const parentX = "layoutMode" in node ? 0 : node.x;
   const parentY = "layoutMode" in node ? 0 : node.y;
 

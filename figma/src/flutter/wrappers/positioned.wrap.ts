@@ -1,9 +1,8 @@
 import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
 import { Align, Alignment, Positioned, Widget } from "@bridged.xyz/flutter-builder";
-import { parentCoordinates } from "../../figma-utils/parent-coordinates";
+import { coordinates } from "../../figma-utils/coordinates";
 import { commonPosition } from "../../figma-utils/common-position";
-import { roundNumber } from "../../ui-utils/numbers.normalizer";
-
+import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib/pixels";
 export function wrapWithPositioned(node: ReflectSceneNode,
   child: Widget,
   parentId: string = ""): Widget {
@@ -20,7 +19,7 @@ export function wrapWithPositioned(node: ReflectSceneNode,
     } else {
       // this is necessary because Group have absolute position, while Frame is relative.
       // output is always going to be relative to the parent.
-      const [parentX, parentY] = parentCoordinates(node.parent);
+      const [parentX, parentY] = coordinates(node.parent);
 
       const diffX = (node.x - parentX);
       const diffY = (node.y - parentY);

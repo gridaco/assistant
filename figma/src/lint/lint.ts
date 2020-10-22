@@ -1,7 +1,6 @@
 import { lintMissingConstraints } from "@reflect.bridged.xyz/linter/lib/structure.lint/constraints.lint";
 import lintNamingConventions from "@reflect.bridged.xyz/linter/lib/naming.lint"
-import { detectIfIcon } from "@reflect.bridged.xyz/detection/lib/icon.detection"
-import { detectIfScreen } from "@reflect.bridged.xyz/detection/lib/screen.detection";
+import { detect } from "@reflect.bridged.xyz/detection/lib"
 import { ReflectLintFeedback } from "@reflect.bridged.xyz/linter/lib/feedbacks";
 import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes";
 export function runLints(node: ReflectSceneNode) {
@@ -23,14 +22,7 @@ export function runLints(node: ReflectSceneNode) {
     }
 
     // test
-    // detection 
-    // FIXME "as any"
-    const iconDetect = detectIfIcon(node as any)
-    console.warn(iconDetect)
-
-    // FIXME "as any"
-    const screenDetect = detectIfScreen(node as any)
-    console.warn(screenDetect)
+    detect(node)
     // test
 
     return feedbacks

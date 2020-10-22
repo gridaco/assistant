@@ -143,7 +143,7 @@ export function nodeWidthHeight(node: ReflectSceneNode,
 }
 
 // makes the view size bigger when there is a stroke
-const getNodeSizeWithStrokes = (node: ReflectSceneNode): Array<number> => {
+function getNodeSizeWithStrokes(node: ReflectSceneNode): Array<number> {
   let nodeHeight = node.height;
   let nodeWidth = node.width;
 
@@ -185,19 +185,18 @@ const getNodeSizeWithStrokes = (node: ReflectSceneNode): Array<number> => {
   }
 
   return [nodeWidth, nodeHeight];
-};
+}
 
-const childLargerThanMaxSize = (node: ReflectSceneNode, axis: "x" | "y") => {
+function childLargerThanMaxSize(node: ReflectSceneNode, axis: "x" | "y") {
   if ("children" in node && node.children.length > 0) {
     const widthHeight: "width" | "height" = axis === "x" ? "width" : "height";
     const lastChild = node.children[node.children.length - 1];
 
-    const maxLen =
-      lastChild[axis] + lastChild[widthHeight] - node.children[0][axis];
+    const maxLen = lastChild[axis] + lastChild[widthHeight] - node.children[0][axis];
     return maxLen > 256;
   }
   return false;
-};
+}
 
 type responsive =
   | ""
@@ -213,10 +212,8 @@ type responsive =
   | "1/12";
 // removed 5/12, 7/12 and 11/12 because they were disrupting more than helping.
 
-const calculateResponsiveW = (
-  node: ReflectSceneNode,
-  nodeWidth: number
-): responsive => {
+function calculateResponsiveW(node: ReflectSceneNode,
+  nodeWidth: number): responsive {
   let propWidth: responsive = "";
 
   if (nodeWidth > 256 || childLargerThanMaxSize(node, "x")) {
@@ -230,12 +227,10 @@ const calculateResponsiveW = (
   let parentWidth;
 
   // add padding back to the layout width, so it can be full when compared with parent.
-  if (
-    node.parent &&
+  if (node.parent &&
     "layoutMode" in node.parent &&
     (node.parent.paddingLeft || node.parent.paddingRight) &&
-    node.parent.layoutMode !== "NONE"
-  ) {
+    node.parent.layoutMode !== "NONE") {
     parentWidth =
       node.parent.width - node.parent.paddingLeft - node.parent.paddingRight;
     // currently ignoring h-full
@@ -244,21 +239,19 @@ const calculateResponsiveW = (
   }
 
   // todo what if the element is ~1/2 but there is a margin? This won't detect it
-
   // 0.01 of tolerance is enough for 5% of diff, i.e.: 804 / 400
   const dividedWidth = nodeWidth / parentWidth;
 
-  const calculateResp = (div: number, str: responsive) => {
+  function calculateResp(div: number, str: responsive) {
     if (Math.abs(dividedWidth - div) < 0.01) {
       propWidth = str;
       return true;
     }
     return false;
-  };
+  }
 
   // they will try to set the value, and if false keep calculating
   // todo is there a better way of writing this?
-
   const checkList: Array<[number, responsive]> = [
     [1, "full"],
     [1 / 2, "1/2"],
@@ -283,9 +276,8 @@ const calculateResponsiveW = (
   // if (!resultFound && isWidthFull(node, nodeWidth, parentWidth)) {
   //   propWidth = "full";
   // }
-
   return propWidth;
-};
+}
 
 // set the width to max if the view is near the corner
 // export const isWidthFull = (

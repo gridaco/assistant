@@ -1,6 +1,6 @@
 import { BoxShadow, Offset } from "@bridged.xyz/flutter-builder";
 import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
-import { roundNumber } from "../../ui-utils/numbers.normalizer";
+import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib/pixels";
 import { makeColorFromRGBO } from "./color.make";
 
 export function makeBoxShadow(node: ReflectSceneNode): Array<BoxShadow> {

@@ -3,7 +3,9 @@ import { DetectionResult } from "..";
 import { checkIfSquare } from "../rules/processors/square.check";
 import { checkIfValidSize } from "../rules/processors/size.check";
 import { checkIfValidName } from "../rules/processors/name.check";
-export function detectIfIcon(node: SceneNode): DetectionResult {
+import { ReflectSceneNode } from '@bridged.xyz/design-sdk/lib/nodes'
+
+export function detectIfIcon(node: ReflectSceneNode): DetectionResult {
     const name = node.name;
     const isNameValid = checkIfValidName(name, rule)
     if (isNameValid) {

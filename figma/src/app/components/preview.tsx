@@ -1,9 +1,11 @@
+import { Typography } from "@material-ui/core";
 import * as React from "react";
 import "./preview.css"
 
 interface Props {
     data: Uint8Array,
-    name: string
+    name: string,
+    type?: string
 }
 
 interface State {
@@ -38,6 +40,7 @@ export class Preview extends React.Component<Props, State>{
             </div>
 
         return <div className="preview">
+            <Typography variant="caption">{this.props.type}</Typography>
             {render}
         </div>
     }

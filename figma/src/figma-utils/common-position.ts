@@ -1,7 +1,7 @@
 import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
-import { parentCoordinates } from "./parent-coordinates";
+import { coordinates } from "./coordinates";
 
-type position =
+type Position =
   | ""
   | "Absolute"
   | "TopStart"
@@ -14,9 +14,8 @@ type position =
   | "BottomCenter"
   | "BottomEnd";
 
-export const commonPosition = (node: ReflectSceneNode): position => {
+export function commonPosition(node: ReflectSceneNode): Position {
   // if node is same size as height, position is not necessary
-
   // detect if Frame's width is same as Child when Frame has Padding.
   // warning: this may return true even when false, if size is same, but position is different. However, it would be an unexpected layout.
   let hPadding = 0;
@@ -26,18 +25,15 @@ export const commonPosition = (node: ReflectSceneNode): position => {
     vPadding = (node.parent.paddingTop ?? 0) + (node.parent.paddingBottom ?? 0);
   }
 
-  if (
-    !node.parent ||
+  if (!node.parent ||
     (node.width === node.parent.width - hPadding &&
-      node.height === node.parent.height - vPadding)
-  ) {
+      node.height === node.parent.height - vPadding)) {
     return "";
   }
 
   // position is absolute, parent is relative
   // return "absolute inset-0 m-auto ";
-
-  const [parentX, parentY] = parentCoordinates(node.parent);
+  const [parentX, parentY] = coordinates(node.parent);
 
   // if view is too small, anything will be detected; this is necessary to reduce the tolerance.
   let threshold = 8;
@@ -46,19 +42,16 @@ export const commonPosition = (node: ReflectSceneNode): position => {
   }
 
   // < 4 is a threshold. If === is used, there can be rounding errors (28.002 !== 28)
-  const centerX =
-    Math.abs(2 * (node.x - parentX) + node.width - node.parent.width) <
+  const centerX = Math.abs(2 * (node.x - parentX) + node.width - node.parent.width) <
     threshold;
-  const centerY =
-    Math.abs(2 * (node.y - parentY) + node.height - node.parent.height) <
+  const centerY = Math.abs(2 * (node.y - parentY) + node.height - node.parent.height) <
     threshold;
 
   const minX = node.x - parentX < threshold;
   const minY = node.y - parentY < threshold;
 
   const maxX = node.parent.width - (node.x - parentX + node.width) < threshold;
-  const maxY =
-    node.parent.height - (node.y - parentY + node.height) < threshold;
+  const maxY = node.parent.height - (node.y - parentY + node.height) < threshold;
 
   // this needs to be on top, because Tailwind is incompatible with Center, so this will give preference.
   if (minX && minY) {
@@ -100,4 +93,4 @@ export const commonPosition = (node: ReflectSceneNode): position => {
   }
 
   return "Absolute";
-};
+}

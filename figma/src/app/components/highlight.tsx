@@ -7,6 +7,7 @@ import "./highlight.css"
 // https://github.com/FormidableLabs/prism-react-renderer/issues/22#issuecomment-553042928
 import Prism from 'prism-react-renderer/prism';
 import dartLang from 'refractor/lang/dart';
+import { EK_COPIED } from '../constants/ek.constant';
 dartLang(Prism);
 // endregion
 
@@ -18,7 +19,7 @@ type Props = {
 export default class Highlight extends React.Component<Props> {
     onCopyClicked = (e) => {
         copy(this.props.code);
-        parent.postMessage({ pluginMessage: { type: 'copied' } }, '*')
+        parent.postMessage({ pluginMessage: { type: EK_COPIED } }, '*')
     }
     render() {
         return <code>
