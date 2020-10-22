@@ -43,7 +43,8 @@ function retrieveAbsolutePos(node: ReflectSceneNode, child: Widget): Widget | Ab
   const positionedAlign = (align: string): Positioned => {
     return Positioned.fill({
       child: new Align({
-        alignment: Alignment[align]
+        alignment: Alignment[align],
+        child: child
       })
     })
   }

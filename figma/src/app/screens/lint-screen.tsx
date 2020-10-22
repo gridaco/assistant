@@ -40,8 +40,8 @@ export class LintScreen extends React.Component<any, State> {
         return <>
             <Preview data={undefined} name="selected node name" />
             <ul>
-                {feedbacks.map(function (item) {
-                    return <li key={item.name}>
+                {feedbacks.map(function (item, i) {
+                    return <li key={i}>
                         <Typography variant="h6">{item.name}</Typography>
                         <Typography variant="body2">{item.userMessage}</Typography>
                     </li>

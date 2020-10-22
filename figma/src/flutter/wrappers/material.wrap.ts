@@ -64,9 +64,12 @@ function materialShape(node: ReflectRectangleNode | ReflectEllipseNode | Reflect
 
 function getClipping(node: ReflectSceneNode): string {
   let clip = false;
-  if (node.type === "FRAME" && node.cornerRadius && node.cornerRadius !== 0) {
-    clip = node.clipsContent;
+  if (node instanceof ReflectFrameNode) {
+    if (node.cornerRadius && node.cornerRadius !== 0) {
+      clip = node.clipsContent;
+    }
   }
+
   return clip ? "clipBehavior: Clip.antiAlias, " : "";
 }
 

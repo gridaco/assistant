@@ -5,7 +5,7 @@ import {
   ReflectGroupNode,
   ReflectTextNode,
   ReflectSceneNode
-} from "@bridged.xyz/design-sdk/lib/nodes/types";
+} from "@bridged.xyz/design-sdk/lib/nodes";
 import { TextBuilder, WidgetBuilder } from "./builders";
 import { mostFrequent } from "../utils/array-utils";
 import { MainAxisSize, CrossAxisAlignment, Column, Row, SizedBox, Widget, Stack } from "@bridged.xyz/flutter-builder"
@@ -72,20 +72,24 @@ function flutterWidgetGenerator(sceneNode: ReadonlyArray<ReflectSceneNode> | Ref
 
   function handleNode(node: ReflectSceneNode): Widget {
     // console.log(`starting handling node of ${node.name} type of ${node.type}`)
-    if (node.type === "RECTANGLE" || node.type === "ELLIPSE") {
+    if (node instanceof ReflectRectangleNode || node instanceof ReflectEllipseNode) {
       const container = flutterContainer(node, undefined)
       // console.log("node.type was rectangle or elipse. due to that, returning container.", container)
       return container
     }
 
-    else if (node.type === "GROUP") {
+    else if (node instanceof ReflectGroupNode) {
       return flutterGroup(node)
-    } else if (node.type === "FRAME") {
+    } else if (node instanceof ReflectFrameNode) {
       return flutterFrame(node)
-    } else if (node.type === "TEXT") {
+    } else if (node instanceof ReflectTextNode) {
       return flutterText(node)
     }
   }
+}
+
+function a(a: ReflectFrameNode) {
+
 }
 
 function flutterGroup(node: ReflectGroupNode): Widget {
@@ -176,7 +180,7 @@ function makeRowColumn(node: ReflectFrameNode, children: Array<Widget>): Widget 
 function addSpacingIfNeeded(node: ReflectSceneNode,
   index: number,
   length: number): Widget {
-  if (node.parent?.type === "FRAME" && node.parent.layoutMode !== "NONE") {
+  if (node.parent instanceof ReflectFrameNode && node.parent.layoutMode !== "NONE") {
     // check if itemSpacing is set and if it isn't the last value.
     // Don't add the SizedBox at last value. In Figma, itemSpacing CAN be negative; here it can't.
     if (node.parent.itemSpacing > 0 && index < length - 1) {

@@ -26,13 +26,13 @@ export function wrapWithContainer(node: ReflectRectangleNode | ReflectEllipseNod
   }
 
   // ignore for Groups
-  const propBoxDecoration = node.type === "GROUP" ? undefined : makeBoxDecoration(node);
+  const propBoxDecoration = node instanceof ReflectGroupNode ? undefined : makeBoxDecoration(node);
   const propSize = convertToSize(node);
 
   // todo Image, Gradient & multiple fills
 
   let propPadding: EdgeInsetsGeometry
-  if (node.type === "FRAME") {
+  if (node instanceof ReflectFrameNode) {
     propPadding = makeEdgeInsets(node);
   }
 
@@ -70,7 +70,7 @@ function makeBoxDecoration(node: ReflectRectangleNode | ReflectEllipseNode | Ref
   const propBorderRadius = makeBorderRadius(node);
 
   // modify the circle's shape when type is ellipse
-  const propShape: BoxShape = node.type === "ELLIPSE" ? BoxShape.circle : undefined;
+  const propShape: BoxShape = node instanceof ReflectEllipseNode ? BoxShape.circle : undefined;
 
   // generate the decoration, or just the backgroundColor when color is SOLID.
   const isNotSolid = propBorder || propShape || propBorder || propBorderRadius || propBackgroundColor
