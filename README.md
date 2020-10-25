@@ -23,6 +23,8 @@ title: bridged figma plugin
 ## Usage
 
 > install figma plugin via below link. note that the published plugin is allways behind few new features behind this repository. for trying out the latest and mindblowing features, please build from your local environment directly.
+
+
 install via figma plugin [link here](https://www.figma.com/community/plugin/896445082033423994)
 
 
