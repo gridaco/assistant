@@ -1,6 +1,10 @@
 # sample_flutter_app
 
-Sample flutter app built with bridged's figma plugin
+Sample flutter app built with bridged's figma plugin.
+
+## Target design file
+here is a origin target design file for this example flutter code generation result.
+[Link here](https://www.figma.com/file/iypAHagtcSp3Osfo2a7EDz/?node-id=164%3A2621)
 
 ## Getting Started
 
