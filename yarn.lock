@@ -952,6 +952,11 @@
   resolved "https://registry.yarnpkg.com/@emotion/hash/-/hash-0.8.0.tgz#bbbff68978fefdbe68ccb533bc8cbe1d1afb5413"
   integrity sha512-kBJtf7PH6aWwZ6fka3zQ0p6SBYzx4fl1LoZXE2RrnYST9Xljm7WfKJrU4g/Xr3Beg72MLrp1AWNUmuYJTL7Cow==
 
+"@figma/plugin-typings@1.16.1":
+  version "1.16.1"
+  resolved "https://registry.yarnpkg.com/@figma/plugin-typings/-/plugin-typings-1.16.1.tgz#87c2dc32f81058c61199e14c014155fd411a29b0"
+  integrity sha512-8zJHr0UASf2eDBGW/jNV1PLB1FqNyMpy1Z7v5XODHUEDkoXO/UBfeRohx0SqIz44z/0eSG4youSzYUZoZbdeqg==
+
 "@figma/plugin-typings@^1.17.1":
   version "1.17.1"
   resolved "https://registry.yarnpkg.com/@figma/plugin-typings/-/plugin-typings-1.17.1.tgz#c69b8ccc461d70552b381adefccaf0fee56c8342"
