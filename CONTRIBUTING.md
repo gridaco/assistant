@@ -14,6 +14,6 @@ Sample design is used for evaluating code generation quality check. Both good an
 
 
 
-## Writting ui codes.
+## Writing ui codes (react).
 
 if using material-ui, read the following [guidelines](https://material-ui.com/guides/minimizing-bundle-size/).
