@@ -2,7 +2,6 @@ import { FontStyle, FontWeight, TextDecoration, TextStyle, Theme } from "@bridge
 import { commonLetterSpacing } from "../../figma-utils/common-text-height-spacing";
 import { ReflectTextNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
 import { typographyIntelisenceMapping } from "../../utils/text-style-map";
-import { getTextStyleById } from "../../utils/figma-api-extended";
 import { convertFontWeight } from "../../utils/text-convert";
 
 /**
@@ -24,9 +23,7 @@ function getThemedTextStyleByName(textStyleName: string): TextStyle {
 
 export function makeTextStyle(node: ReflectTextNode): TextStyle {
     try {
-        const textStyle = getTextStyleById(node.textStyleId as string)
-        // console.log(`name of textstyle is... ${textStyle.name}`);
-        return getThemedTextStyleByName(textStyle.name);
+        return getThemedTextStyleByName(node.textStyle.name);
     } catch (e) {
         // console.log(`no textstyle for node ${node.name}. skipping to custom textStyle builder. (cannot use theme)`)
         // console.error(e)
