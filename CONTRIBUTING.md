@@ -2,9 +2,18 @@
 
 
 ## access design (readonly)
+
+**The plugin desing**
+
+The design of the plugin user interface. Here, you can find what to develop.
 [figma](https://www.figma.com/file/4hqwYFw6FKw1njvzEl3VUh/figma-plugin?node-id=0%3A1)
 
+**The sample design**
 
-## Writting ui codes.
+Sample design is used for evaluating code generation quality check. Both good and bad examples are provided. [Link here](https://www.figma.com/file/iypAHagtcSp3Osfo2a7EDz/?node-id=164%3A2621).
+
+
+
+## Writing ui codes (react).
 
 if using material-ui, read the following [guidelines](https://material-ui.com/guides/minimizing-bundle-size/).

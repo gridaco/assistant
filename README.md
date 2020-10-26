@@ -112,9 +112,13 @@ See [plugin README](/plugin/README.md)
 - [Create Figma Plugin docs](https://github.com/yuanqing/create-figma-plugin#docs)
 - [Figma plugin API docs](https://figma.com/plugin-docs/api/)
 
+## Contributing
+
+See this project's contributing guideline [here](./CONTRIBUTING.md).
+And general bridged project contribution and collaboration guideline [here](https://github.com/bridgedxyz/contributing-and-license).
 
 
-### LEGAL
+## LEGAL
 > read [LICENSE](./LICENSE).
 
 ***to shortly brief,***
