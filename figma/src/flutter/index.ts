@@ -10,6 +10,7 @@ import { TextBuilder, WidgetBuilder } from "./builders";
 import { mostFrequent } from "../utils/array-utils";
 import { MainAxisSize, CrossAxisAlignment, Column, Row, SizedBox, Widget, Stack } from "@bridged.xyz/flutter-builder"
 import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib/pixels";
+import { quickLook } from "../dev-tools/quicklook";
 
 
 let parentId = "";
@@ -23,6 +24,8 @@ export function generateSource(sceneNode: ReflectSceneNode,
   if (Array.isArray(result)) {
     throw "result cannot be in array form."
   }
+
+  quickLook("quicklook", result)
 
   return result.build().finalize();
 

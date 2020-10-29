@@ -6,6 +6,7 @@
     "jsx": "react",
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "removeComments": true,
     "noImplicitAny": false,
     "moduleResolution": "node",

@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import { default as PrismHighlight, defaultProps, Language } from "prism-react-renderer";
-import * as copy from 'copy-to-clipboard';
+import copy from 'copy-to-clipboard';
 import "./highlight.css"
 
 // region custom dart support
