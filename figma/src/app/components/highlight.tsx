@@ -10,6 +10,7 @@ import dartLang from 'refractor/lang/dart';
 import { EK_COPIED } from '../constants/ek.constant';
 import { quickLook } from '../../dev-tools/quicklook';
 import { Widget } from '@bridged.xyz/flutter-builder';
+import { notify } from '@bridged.xyz/design-sdk/lib/figma';
 dartLang(Prism);
 // endregion
 
@@ -38,23 +39,21 @@ export default class Highlight extends React.Component<Props, State> {
     }
 
     onQuickLookClicked = (e) => {
-        this.setState((p, s) => {
-            return {
-                isLaunchingConsole: true
-            }
-        })
+        const setLoadingState = (loading: boolean) => {
+            this.setState((p, s) => {
+                return {
+                    isLaunchingConsole: loading
+                }
+            })
+        }
+
+        setLoadingState(true)
         quickLook('quicklook', this.props.code).then((r) => {
-            this.setState((p, s) => {
-                return {
-                    isLaunchingConsole: false
-                }
-            })
+            setLoadingState(false)
+            notify(parent, "quick look ready !")
         }).catch((e) => {
-            this.setState((p, s) => {
-                return {
-                    isLaunchingConsole: false
-                }
-            })
+            setLoadingState(false)
+            notify(parent, "compile failed. view console for details.", 2)
         })
 
     }
