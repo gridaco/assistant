@@ -63,28 +63,32 @@ export default function App() {
     console.warn("firebase is disabled. it seems you are contributing to this project!, no worries, other functionalyties will work fine.")
   }
 
-  return (
-    <div>
-      <Tabs value={value} onChange={handleChange} aria-label="primary tab">
-        <Tab label="code" {...a11yProps(0)} />
-        <Tab label="lint" {...a11yProps(1)} />
-        <Tab label="slots" {...a11yProps(2)} />
-        <Tab label="devtool" {...a11yProps(3)} />
-      </Tabs>
-      <TabPanel value={value} index={0}>
-        <CodeScreen />
+  if (process.env.NODE_ENV == "production") {
+    return <CodeScreen />
+  } else {
+    return (
+      <div>
+        <Tabs value={value} onChange={handleChange} aria-label="primary tab">
+          <Tab label="code" {...a11yProps(0)} />
+          <Tab label="lint" {...a11yProps(1)} />
+          <Tab label="slots" {...a11yProps(2)} />
+          <Tab label="devtool" {...a11yProps(3)} />
+        </Tabs>
+        <TabPanel value={value} index={0}>
+          <CodeScreen />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <LintScreen />
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          slots
       </TabPanel>
-      <TabPanel value={value} index={1}>
-        <LintScreen />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        slots
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        <DevTools />
-      </TabPanel>
-    </div>
-  );
+        <TabPanel value={value} index={3}>
+          <DevTools />
+        </TabPanel>
+      </div>
+    )
+  }
 }
 
 

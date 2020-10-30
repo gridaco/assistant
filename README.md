@@ -61,7 +61,7 @@ yarn sketch
 
 
 
-![](doc/images/plugin-flutter-example.png)
+![](doc/gifs/quicklook-demo-v002.gif)
 
 
 

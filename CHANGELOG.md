@@ -14,7 +14,7 @@
 - [packages/detection] Screen detection - determines if selected node should be considered as an screen or not.
 - [packages/detection] Pattern detection - detects the patttern from givven layout (node), finds the pattern from it if exists. (used for List layout detection)
 - [packages/detection] List detection - determines if selected node is a list of specific component, or complex layout.
-- [packages/design-sdk] using design SDK for better capability.
+
 
 
 ### Will be added
@@ -28,6 +28,10 @@
 - [Lint] Primal naming & grouping linting for better code export quality. this is tracked sperately on [lint](https://github.com/bridgedxyz/lint)
 
 
+## [0.1.2] - 2020-10-30
+> Mainly update of quicklook feature. Make your design compiled within few seconds.
+- [packages/design-sdk] using design SDK for better capability.
+[features/quicklook] Newly added.
 
 
 
