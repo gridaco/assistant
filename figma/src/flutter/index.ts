@@ -14,8 +14,8 @@ import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib/pixels";
 
 let parentId = "";
 const DEFAULT_COMPONENT_NAME = "Component";
-export function generateSource(sceneNode: ReflectSceneNode,
-  parentIdSrc: string = ""): string {
+export function generateWidget(sceneNode: ReflectSceneNode,
+  parentIdSrc: string = ""): Widget {
   parentId = parentIdSrc;
 
   let result = flutterWidgetGenerator(sceneNode);
@@ -24,7 +24,7 @@ export function generateSource(sceneNode: ReflectSceneNode,
     throw "result cannot be in array form."
   }
 
-  return result.build().finalize();
+  return result
 
   // return new SingleChildScrollView({
   //   child: result

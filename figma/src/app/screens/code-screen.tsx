@@ -1,3 +1,4 @@
+import { Widget } from "@bridged.xyz/flutter-builder";
 import * as React from "react";
 import { format } from "../../utils/dart-format";
 import Highlight from "../components/highlight";
@@ -5,12 +6,19 @@ import { Preview } from "../components/preview";
 import { EK_GENERATED_CODE_PLAIN, EK_PREVIEW_SOURCE } from "../constants/ek.constant";
 
 
+interface State {
+    code: string,
+    widget: Widget,
+    previewImage: string,
+    name: string
+}
 
-export class CodeScreen extends React.Component {
+
+export class CodeScreen extends React.Component<any, State> {
 
     constructor(props) {
         super(props);
-        this.state = { code: "//\n//\n//\n// there is no selected node\n//\n//\n//", previewImage: null };
+        this.state = { name: 'not selected', code: "//\n//\n//\n// there is no selected node\n//\n//\n//", previewImage: null, widget: null };
     }
 
     componentDidMount() {
@@ -21,9 +29,11 @@ export class CodeScreen extends React.Component {
         const msg = ev.data.pluginMessage;
         switch (msg.type) {
             case EK_GENERATED_CODE_PLAIN:
-                const code = format(msg.data);
+                const code = format(msg.data.code);
+                const widget = msg.data.widget
+                console.log('widget', widget)
                 this.setState((state, props) => {
-                    return { code: code };
+                    return { code: code, widget: widget };
                 });
                 break;
             case EK_PREVIEW_SOURCE:
@@ -49,7 +59,7 @@ export class CodeScreen extends React.Component {
     render() {
         return <div>
             <Preview data={(this.state as any).previewImage} name={(this.state as any).name}></Preview>
-            <Highlight language="dart" code={(this.state as any).code}></Highlight>
+            <Highlight language="dart" code={(this.state).code} widget={(this.state).widget} ></Highlight>
             <button onClick={this.onClickReportIssue}>
                 report issue
       </button>

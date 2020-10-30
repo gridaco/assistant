@@ -4,7 +4,6 @@ const path = require('path')
 const Dotenv = require('dotenv-webpack');
 const TerserPlugin = require('terser-webpack-plugin');
 
-
 module.exports = (env, argv) => ({
     mode: argv.mode === 'production' ? 'production' : 'development',
 
