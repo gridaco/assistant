@@ -6,7 +6,6 @@ import {
   ReflectGroupNode
 } from "@bridged.xyz/design-sdk/lib/nodes/types";
 import { makeEdgeInsets } from "../make";
-import { gradientAngle } from "../../utils/color";
 import { nearestValue } from "../../utils/convert";
 import { Container, Widget, EdgeInsetsGeometry, Padding, Alignment, AlignmentGeometry, Color, BoxDecoration, LinearGradient, Gradient, BoxShape } from "@bridged.xyz/flutter-builder"
 import { retrieveFill } from "../../figma-utils/retrieve-fill";

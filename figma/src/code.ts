@@ -1,5 +1,5 @@
 import { convertIntoReflectNode } from "@bridged.xyz/design-sdk/lib/nodes/conversion";
-import { generateSource } from "./flutter";
+import { generateWidget } from "./flutter";
 import { retrieveFlutterColors } from "./flutter/utils/fetch-colors";
 import { hideAllExcept, hideAllOnly } from "./dev-tools/hide-all";
 import { runLints } from "./lint/lint";
@@ -71,11 +71,14 @@ function run() {
     //#endregion
 
 
-    const generatedCode = generateSource(convertedSelection, parentNodeId);
+    const widget = generateWidget(convertedSelection, parentNodeId);
 
     figma.ui.postMessage({
         type: EK_GENERATED_CODE_PLAIN,
-        data: generatedCode,
+        data: {
+            code: widget.build().finalize(),
+            widget: widget
+        },
     });
 
     // send preview image

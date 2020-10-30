@@ -10,13 +10,12 @@ import { TextBuilder, WidgetBuilder } from "./builders";
 import { mostFrequent } from "../utils/array-utils";
 import { MainAxisSize, CrossAxisAlignment, Column, Row, SizedBox, Widget, Stack } from "@bridged.xyz/flutter-builder"
 import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib/pixels";
-import { quickLook } from "../dev-tools/quicklook";
 
 
 let parentId = "";
 const DEFAULT_COMPONENT_NAME = "Component";
-export function generateSource(sceneNode: ReflectSceneNode,
-  parentIdSrc: string = ""): string {
+export function generateWidget(sceneNode: ReflectSceneNode,
+  parentIdSrc: string = ""): Widget {
   parentId = parentIdSrc;
 
   let result = flutterWidgetGenerator(sceneNode);
@@ -25,9 +24,7 @@ export function generateSource(sceneNode: ReflectSceneNode,
     throw "result cannot be in array form."
   }
 
-  quickLook("quicklook", result)
-
-  return result.build().finalize();
+  return result
 
   // return new SingleChildScrollView({
   //   child: result
