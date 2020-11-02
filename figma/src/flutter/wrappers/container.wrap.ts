@@ -12,7 +12,7 @@ import { retrieveFill } from "../../figma-utils/retrieve-fill";
 import { makeBorder, makeColorFromRGBO, makeBoxShadow, makeBorderRadius } from "../make";
 import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib/pixels";
 import { interpretGradient } from "../interpreter/gradient.interpret";
-import { interpretImage, interpretImageFills } from "../interpreter/image.interpret";
+import { interpretImageFills } from "../interpreter/image.interpret";
 
 
 
