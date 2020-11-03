@@ -2,8 +2,10 @@
  * Detection rule is used for pre-processing filtering the input node is valid for further processing.
  */
 
+import { ReflectSceneNodeType } from "@bridged.xyz/design-sdk/lib/nodes";
+
 export interface TypesRule {
-    allowedTypes?: Array<NodeType>
+    allowedTypes?: Array<ReflectSceneNodeType>
 }
 
 export interface SizingRule {

@@ -57,7 +57,6 @@
   "scripts": {
     "webpack:watch": "webpack --watch",
     "build": "webpack -p --mode=production",
-    "dev": "webpack --watch",
-    "postinstall": "tsc"
+    "dev": "webpack --watch"
   }
 }
