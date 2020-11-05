@@ -8,3 +8,6 @@
 [submodule "packages/design-sdk"]
 	path = packages/design-sdk
 	url = https://github.com/bridgedxyz/design-sdk.git
+[submodule "packages/reflect-detection"]
+	path = packages/reflect-detection
+	url = https://github.com/bridgedxyz/reflect-detection.git

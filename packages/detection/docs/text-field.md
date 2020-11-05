@@ -1,2 +1,0 @@
-- [is] marked as input by designer
-- [score] is instance or component
