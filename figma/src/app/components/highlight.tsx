@@ -52,6 +52,7 @@ export default class Highlight extends React.Component<Props, State> {
             setLoadingState(false)
             notify(parent, "quick look ready !")
         }).catch((e) => {
+            console.error(e)
             setLoadingState(false)
             notify(parent, "compile failed. view console for details.", 2)
         })

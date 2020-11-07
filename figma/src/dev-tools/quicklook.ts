@@ -1,6 +1,5 @@
 import { composeSimpleApplication, Widget } from "@bridged.xyz/flutter-builder";
-import { upload } from "uguu-api"
-import { compileComplete } from "dart-services"
+import { buildAndHostSimpleApp } from "@bridged.xyz/client-sdk/dist/build/flutter"
 
 function getConsoleQuicklookUrl(sourceUrl: string) {
     return `https://console.bridged.xyz/quicklook?url=${sourceUrl}`;
@@ -9,11 +8,16 @@ function getConsoleQuicklookUrl(sourceUrl: string) {
 export async function quickLook(id: string, component: Widget | string) {
     console.log('quicklook starting..')
     const dartSource = composeSimpleApplication(component)
-    const compiled = await compileComplete(dartSource)
+    const url = await buildAndHostSimpleApp({
+        dart: dartSource,
+        id: id,
+        short: false
+    })
     console.log('compiled!')
-    const uploaded = await upload(`${id}.js`, new Blob([compiled.result]))
     console.log('uploaded!')
-    const quicklookUrl = getConsoleQuicklookUrl(uploaded.url)
+    // const compiled = await compileComplete(dartSource)
+    // const uploaded = await upload(`${id}.js`, new Blob([compiled.result]))
+    const quicklookUrl = getConsoleQuicklookUrl(url)
     open(quicklookUrl)
-    console.log('launched!')
+    // console.log('launched!')
 }
