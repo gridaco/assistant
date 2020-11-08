@@ -8,9 +8,9 @@ import {
 } from "@bridged.xyz/design-sdk/lib/nodes";
 import { TextBuilder, WidgetBuilder } from "./builders";
 import { mostFrequent } from "../utils/array-utils";
-import { MainAxisSize, CrossAxisAlignment, Column, Row, SizedBox, Widget, Stack } from "@bridged.xyz/flutter-builder"
+import { MainAxisSize, CrossAxisAlignment, Column, Row, SizedBox, Widget, Stack, Text } from "@bridged.xyz/flutter-builder"
 import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib/pixels";
-import { makeSafelyAsList } from "./utils/make-as-safe-list";
+import { makeSafelyAsList, makeSafelyAsStackList } from "./utils/make-as-safe-list";
 
 
 let parentId = "";
@@ -93,8 +93,9 @@ function flutterGroup(node: ReflectGroupNode): Widget {
   return flutterContainer(
     node,
     new Stack({
-      // safely make childeren as list type
-      children: makeSafelyAsList<Widget>(flutterWidgetGenerator(node.children))
+      children: makeSafelyAsStackList(
+        flutterWidgetGenerator(node.children)
+      )
     })
   );
 }
@@ -136,10 +137,11 @@ function flutterFrame(node: ReflectFrameNode): Widget {
   } else {
     // node.layoutMode === "NONE" && node.children.length > 1
     // children needs to be absolute
+
     return flutterContainer(
       node,
       new Stack({
-        children: children as Array<Widget>
+        children: makeSafelyAsStackList(children)
       })
     );
   }

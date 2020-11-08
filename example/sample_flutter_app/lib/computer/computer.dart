@@ -11,6 +11,7 @@ class _GeneratedExamplesState extends State<GeneratedExamples>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // body: _buildBody()
       body: SingleChildScrollView(
         child: _buildBody(),
       ),
