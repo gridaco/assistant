@@ -11,7 +11,7 @@ export async function quickLook(id: string, component: Widget | string) {
     const url = await buildAndHostSimpleApp({
         dart: dartSource,
         id: id,
-        short: false
+        short: true
     })
     console.log('compiled!')
     console.log('uploaded!')
