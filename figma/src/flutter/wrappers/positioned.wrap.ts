@@ -3,6 +3,7 @@ import { Align, Alignment, Positioned, Widget } from "@bridged.xyz/flutter-build
 import { coordinates } from "../../figma-utils/coordinates";
 import { commonPosition } from "../../figma-utils/common-position";
 import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib/pixels";
+import { makeSaflyAsSingle } from "../utils/make-as-safe-single";
 export function wrapWithPositioned(node: ReflectSceneNode,
   child: Widget,
   parentId: string = ""): Widget {
@@ -27,7 +28,7 @@ export function wrapWithPositioned(node: ReflectSceneNode,
         {
           left: roundNumber(diffX),
           top: roundNumber(diffY),
-          child: child
+          child: makeSaflyAsSingle(child)
         }
       )
     }

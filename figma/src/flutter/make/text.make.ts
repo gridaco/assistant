@@ -49,8 +49,19 @@ export function makeText(node: ReflectTextNode): Text {
 
 function escapeDartString(text: string): string {
     const splittedChars = text.split("\n");
-    const charsWithLineBreak = splittedChars.length > 1 ? splittedChars.join("\\n") : text;
-    // $ -> \$
-    const dollarSignEscape = charsWithLineBreak.replace('$', '\\$')
-    return dollarSignEscape;
+    text = splittedChars.length > 1 ? splittedChars.join("\\n") : text;
+
+    // $ -> \$''"
+    const re_dollar_sign = new RegExp('$', 'g');
+    text = text.replace(re_dollar_sign, '\\$')
+
+    // " -> \"
+    const re_double_quote = new RegExp('"', 'g');
+    text = text.replace(re_double_quote, '\\"')
+
+    // ' -> \'
+    const re_single_quote = new RegExp("'", 'g');
+    text = text.replace(re_single_quote, "\\'")
+
+    return text;
 }
