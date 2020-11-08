@@ -4,8 +4,6 @@
 
 
 
-
-
 ## UNRELEASED
 
 > unreleased features will be added here
@@ -26,6 +24,17 @@
 - [Flutter] Star Node support with XImage (svg)
 - [Flutter] Poligon Node support with XImage (svg)
 - [Lint] Primal naming & grouping linting for better code export quality. this is tracked sperately on [lint](https://github.com/bridgedxyz/lint)
+
+
+## [0.1.3] - 2020-11-08
+> Update focused on quicklook and resolving flutter compile issues.
+
+- 2 major error causing building-logic is fixed.
+- now there are know known compile issues.
+- the remaining issue is related to console, a flutter web runtime error, which cannot be resolved this time.
+- quicklook has major performance boost, up to 5 times faster loading time.
+- dart character escape is implemented
+
 
 
 ## [0.1.2] - 2020-10-30
