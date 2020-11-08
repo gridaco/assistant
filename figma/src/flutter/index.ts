@@ -10,6 +10,7 @@ import { TextBuilder, WidgetBuilder } from "./builders";
 import { mostFrequent } from "../utils/array-utils";
 import { MainAxisSize, CrossAxisAlignment, Column, Row, SizedBox, Widget, Stack } from "@bridged.xyz/flutter-builder"
 import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib/pixels";
+import { makeSafelyAsList } from "./utils/make-as-safe-list";
 
 
 let parentId = "";
@@ -88,15 +89,12 @@ function flutterWidgetGenerator(sceneNode: ReadonlyArray<ReflectSceneNode> | Ref
   }
 }
 
-function a(a: ReflectFrameNode) {
-
-}
-
 function flutterGroup(node: ReflectGroupNode): Widget {
   return flutterContainer(
     node,
     new Stack({
-      children: flutterWidgetGenerator(node.children) as Array<Widget>
+      // safely make childeren as list type
+      children: makeSafelyAsList<Widget>(flutterWidgetGenerator(node.children))
     })
   );
 }
@@ -160,6 +158,9 @@ function makeRowColumn(node: ReflectFrameNode, children: Array<Widget>): Widget 
   const crossAxisColumn = rowOrColumn === "Column" ? CrossAxisAlignment[layoutAlign] : undefined
 
   const mainAxisSize: MainAxisSize = MainAxisSize.min
+
+  // safely make childeren as list type
+  children = makeSafelyAsList<Widget>(children)
 
   switch (rowOrColumn) {
     case "Row":

@@ -933,16 +933,6 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@bridged.xyz/client-sdk@^0.0.1-13":
-  version "0.0.1-13"
-  resolved "https://registry.yarnpkg.com/@bridged.xyz/client-sdk/-/client-sdk-0.0.1-13.tgz#03158ae4758f2abdd01f1ada3567f500c9983bea"
-  integrity sha512-8IxRCNaM7HVDQQLI0J/yevGFXSjxWKl+ADecSI020ZpUq4fNofv5NX0KqUVfNcOGt1hslSWp4mtn6C6iqsmKDg==
-  dependencies:
-    aws-sdk "^2.783.0"
-    axios "^0.21.0"
-    dart-services "^0.2.0"
-    form-data "^3.0.0"
-
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"
@@ -1556,6 +1546,11 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
 
+"@reflect.bridged.xyz/linter@0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@reflect.bridged.xyz/linter/-/linter-0.0.1.tgz#c529d01f97076fd1406380fda31375e67e15b212"
+  integrity sha512-fg6Zq9hv15wcrONlu8YGp3gK94n2ENoNFardwvgDqsDc7W8ea9NkIWKyHuE9t5BekEhd3Z9sBgHlOrArUiE61Q==
+
 "@sinonjs/commons@^1.7.0":
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.8.1.tgz#e7df00f98a203324f6dc7cc606cad9d4a8ab2217"
@@ -1756,7 +1751,7 @@
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
   integrity sha512-tHq6qdbT9U1IRSGf14CL0pUlULksvY9OZ+5eEgl1N7t+OA3tGvNpxJCzuKQlsNgCVwbAs670L1vcVQi8j9HjnA==
 
-"@types/node@*", "@types/node@^14.11.2", "@types/node@^14.11.8", "@types/node@latest":
+"@types/node@*", "@types/node@^14.11.2", "@types/node@^14.11.8", "@types/node@^14.14.5", "@types/node@latest":
   version "14.14.6"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.6.tgz#146d3da57b3c636cc0d1769396ce1cfa8991147f"
   integrity sha512-6QlRuqsQ/Ox/aJEQWBEJG7A9+u7oSYl3mem/K8IzxXG/kAGbV1YPD9Bg9Zw3vyxC/YP+zONKwy8hGkSt1jxFMw==
@@ -3211,10 +3206,10 @@ dart-services@^0.1.10:
   dependencies:
     axios "^0.21.0"
 
-dart-services@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/dart-services/-/dart-services-0.2.0.tgz#ef3768bad06c794de9265f4efdf469ef67f11648"
-  integrity sha512-JgerhCa4hjig1MI6TvfUt5vEEy0bIIOp0HOE97c68FG/3e3Hhd4X9J2CHKxn2trb5bBWkZIzJdfOhAIR9ETUMA==
+dart-services@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/dart-services/-/dart-services-0.2.1.tgz#9daff06054aea8e3014e414596af349d4b27596d"
+  integrity sha512-uiR81BbxI3W1MczQ6Wm/+33y5CJ7kE+0q4YUKm/IhIZ5/M/G6s4csLHZ2fNoTd//5tGSa2L0GwWGD3DjfxnYrA==
   dependencies:
     axios "^0.21.0"
 

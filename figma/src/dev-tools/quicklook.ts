@@ -1,5 +1,5 @@
 import { composeSimpleApplication, Widget } from "@bridged.xyz/flutter-builder";
-import { buildAndHostSimpleApp } from "@bridged.xyz/client-sdk/dist/build/flutter"
+import { buildAndHostSimpleApp } from "@bridged.xyz/client-sdk/lib/build/flutter"
 
 function getConsoleQuicklookUrl(sourceUrl: string) {
     return `https://console.bridged.xyz/quicklook?url=${sourceUrl}`;
