@@ -9,6 +9,7 @@ function getConsoleQuicklookUrl(sourceUrl: string) {
 export async function quickLook(id: string, component: Widget | string) {
     console.log('quicklook starting..')
     const dartSource = composeSimpleApplication(component)
+    console.info('the final app code for quicklook is...', dartSource)
     const url = await buildAndHostSimpleApp({
         dart: dartSource,
         id: id,

@@ -153,11 +153,6 @@ function makeRowColumn(node: ReflectFrameNode, children: Array<Widget>): Widget 
   // ROW or COLUMN
   const rowOrColumn: RowOrColumn = node.layoutMode === "HORIZONTAL" ? "Row" : "Column";
 
-  const mostFreq = mostFrequent(node.children.map((d) => d.layoutAlign));
-
-  const layoutAlign = mostFreq === "MIN" ? "start" : "center";
-
-  const crossAxisColumn = rowOrColumn === "Column" ? CrossAxisAlignment[layoutAlign] : undefined
 
   const mainAxisSize: MainAxisSize = MainAxisSize.min
 
@@ -171,11 +166,39 @@ function makeRowColumn(node: ReflectFrameNode, children: Array<Widget>): Widget 
         mainAxisSize: mainAxisSize,
       })
     case "Column":
+      // get the most frequent layoutAlign of children, and prioritize it by accepting 'MIN' first.
+      // why? -> converting two MIN nodes to autolayout converts longer node as a MIN. and cannot be changed by figma's userinterface.
+      const mostFreq = mostFrequent(node.children.map((d) => d.layoutAlign), ['MIN', 'MAX', 'STRETCH', 'CENTER']);
+      // console.log(`mostFreq lyaout of children under ${node.name}`, mostFreq)
+
+      // FIXME - this is not working with auto layout.
+      // E.g. autolayout to left, the layoutAlign of the child text will be set to CENTER, Not MIN. wich is not a bug, but need extra logics for handling them.
+
+      const crossAxisAlignment = makeCrossAxisAlignment(mostFreq)
       return new Column({
         children: children,
         mainAxisSize: mainAxisSize,
-        crossAxisAlignment: crossAxisColumn
+        crossAxisAlignment: crossAxisAlignment
       })
+  }
+}
+
+/**
+ * returns CrossAxisAlignment by layoutAlign
+ * @param layoutAlign 
+ */
+function makeCrossAxisAlignment(layoutAlign: string): CrossAxisAlignment {
+  switch (layoutAlign) {
+    case "MIN":
+      return CrossAxisAlignment.start
+    case "MAX":
+      return CrossAxisAlignment.end
+    case "STRETCH":
+      return CrossAxisAlignment.stretch
+    case "CENTER":
+      return CrossAxisAlignment.center
+    default:
+      return CrossAxisAlignment.center
   }
 }
 

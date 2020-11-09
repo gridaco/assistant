@@ -12,6 +12,8 @@
 - [packages/detection] Screen detection - determines if selected node should be considered as an screen or not.
 - [packages/detection] Pattern detection - detects the patttern from givven layout (node), finds the pattern from it if exists. (used for List layout detection)
 - [packages/detection] List detection - determines if selected node is a list of specific component, or complex layout.
+- [interpreter/text] Dart String escape optimized, and fixed with execution order
+- [interpreter/column] column crossAxisAlignment fixed with explicit order providence. Now supports start, end, center and stretch.
 
 
 
