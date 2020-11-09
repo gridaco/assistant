@@ -8,7 +8,7 @@ import "./highlight.css"
 import Prism from 'prism-react-renderer/prism';
 import dartLang from 'refractor/lang/dart';
 import { EK_COPIED } from '../constants/ek.constant';
-import { quickLook } from '../../dev-tools/quicklook';
+import { quickLook } from '../../quicklook';
 import { Widget } from '@bridged.xyz/flutter-builder';
 import { notify } from '@bridged.xyz/design-sdk/lib/figma';
 dartLang(Prism);
