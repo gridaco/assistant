@@ -1,4 +1,5 @@
 import { Color } from "@bridged.xyz/flutter-builder";
+import { Snippet } from "@bridged.xyz/flutter-builder/lib/builder/buildable-tree";
 import { retrieveFill } from "../../figma-utils/retrieve-fill";
 import { rgbTo8hex } from "../../utils/color";
 
@@ -22,12 +23,12 @@ export function makeColorFromRGBO(color: RGB, opacity: number): Color {
     try {
         if (color.r + color.g + color.b === 0 && opacity === 1) {
             return Color.fromHex("#000000")
-            // return Colors.black
+            // TOOD - change with return Colors.black
         }
 
         if (color.r + color.g + color.b === 3 && opacity === 1) {
-            return Color.fromHex("#FFFFFF")
-            // return Colors.white;
+            return Color.fromHex("#FFFFFFFF")
+            // TOOD - change with  return Colors.white;
         }
 
         return Color.fromHex(rgbTo8hex(color, opacity));
