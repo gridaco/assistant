@@ -35,6 +35,10 @@ export function generateWidget(sceneNode: ReflectSceneNode,
 
 function flutterWidgetGenerator(sceneNode: ReadonlyArray<ReflectSceneNode> | ReflectSceneNode): Array<Widget> | Widget {
   if (Array.isArray(sceneNode)) {
+    // only handle visible nodes
+    // sceneNode = sceneNode.filter((n) => { return n.visible });
+
+
     let widgets: Array<Widget> = [];
 
     // console.log("flutterWidgetGenerator:: targetting list of nodes")
@@ -67,6 +71,10 @@ function flutterWidgetGenerator(sceneNode: ReadonlyArray<ReflectSceneNode> | Ref
     // console.log(sceneNode)
     sceneNode = sceneNode as ReflectSceneNode
     return handleNode(sceneNode)
+    // if (sceneNode.visible) {
+    // } else {
+    //   console.info(`ignoring node ${sceneNode.name} since it is not visible.`)
+    // }
 
   }
 
@@ -126,6 +134,7 @@ function flutterText(node: ReflectTextNode): Widget {
 }
 
 function flutterFrame(node: ReflectFrameNode): Widget {
+  console.log('handling frame', node.name, node.id, node.layoutMode)
   const children = flutterWidgetGenerator(node.children);
 
   if (node.children.length === 1) {

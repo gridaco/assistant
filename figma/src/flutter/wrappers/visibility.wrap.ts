@@ -8,7 +8,7 @@ export function wrapWithVisibility(node: ReflectSceneNode,
     child: Widget): Widget {
     if (node.visible !== undefined && node.visible === false && child) {
         return new Visibility({
-            visible: node.visible,
+            visible: false, // node.visible
             child: child
         })
     }

@@ -29,7 +29,7 @@ async function showUI() {
 showUI()
 
 function run() {
-
+    console.log('document', figma.root.name, figma.root.id, figma.fileKey)
     console.log("selection", figma.currentPage.selection)
     try {
         console.log("constraints",
