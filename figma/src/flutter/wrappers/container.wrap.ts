@@ -7,11 +7,12 @@ import {
 } from "@bridged.xyz/design-sdk/lib/nodes/types";
 import { makeEdgeInsets } from "../make";
 import { nearestValue } from "../../utils/convert";
-import { Container, Widget, EdgeInsetsGeometry, Padding, Alignment, AlignmentGeometry, Color, BoxDecoration, LinearGradient, Gradient, BoxShape } from "@bridged.xyz/flutter-builder"
+import { Container, Widget, EdgeInsetsGeometry, Padding, Alignment, AlignmentGeometry, Color, BoxDecoration, LinearGradient, Gradient, BoxShape, ImageProvider, DecorationImage, BoxFit } from "@bridged.xyz/flutter-builder"
 import { retrieveFill } from "../../figma-utils/retrieve-fill";
 import { makeBorder, makeColorFromRGBO, makeBoxShadow, makeBorderRadius } from "../make";
 import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib/pixels";
 import { interpretGradient } from "../interpreter/gradient.interpret";
+import { interpretImageFills } from "../interpreter/image.interpret";
 
 
 
@@ -63,31 +64,35 @@ export function wrapWithContainer(node: ReflectRectangleNode | ReflectEllipseNod
 }
 
 function makeBoxDecoration(node: ReflectRectangleNode | ReflectEllipseNode | ReflectFrameNode): BoxDecoration | Color {
-  const propBackgroundColor = makeBoxDecorationColor(node.fills);
-  const propBorder = makeBorder(node);
-  const propBoxShadow = makeBoxShadow(node);
-  const propBorderRadius = makeBorderRadius(node);
+  const decorationBackground = makeBoxDecorationFill(node.fills);
+  const decorationBorder = makeBorder(node);
+  const decorationBoxShadow = makeBoxShadow(node);
+  const decorationBorderRadius = makeBorderRadius(node);
 
   // modify the circle's shape when type is ellipse
-  const propShape: BoxShape = node instanceof ReflectEllipseNode ? BoxShape.circle : undefined;
+  const decorationShape: BoxShape = node instanceof ReflectEllipseNode ? BoxShape.circle : undefined;
 
   // generate the decoration, or just the backgroundColor when color is SOLID.
-  const isNotSolid = propBorder || propShape || propBorder || propBorderRadius || propBackgroundColor
+  const isNotSolid = decorationBorder || decorationShape || decorationBorder || decorationBorderRadius || decorationBackground
 
   return isNotSolid
     ? new BoxDecoration({
-      borderRadius: propBorderRadius,
-      shape: propShape,
-      border: propBorder,
-      boxShadow: propBoxShadow,
-      color: propBackgroundColor instanceof Color ? propBackgroundColor as Color : undefined,
-      gradient: propBackgroundColor instanceof Gradient ? propBackgroundColor as Gradient : undefined
+      borderRadius: decorationBorderRadius,
+      shape: decorationShape,
+      image: decorationBackground instanceof ImageProvider ? new DecorationImage({
+        image: decorationBackground,
+        fit: BoxFit.cover
+      }) : undefined,
+      border: decorationBorder,
+      boxShadow: decorationBoxShadow,
+      color: decorationBackground instanceof Color ? decorationBackground as Color : undefined,
+      gradient: decorationBackground instanceof Gradient ? decorationBackground as Gradient : undefined
     })
-    : propBackgroundColor instanceof Color ? propBackgroundColor as Color : undefined
+    : decorationBackground instanceof Color ? decorationBackground as Color : undefined
 }
 
 
-export function makeBoxDecorationColor(fills: ReadonlyArray<Paint> | PluginAPI["mixed"]): Gradient | Color {
+export function makeBoxDecorationFill(fills: ReadonlyArray<Paint> | PluginAPI["mixed"]): Gradient | Color | ImageProvider {
   const fill = retrieveFill(fills);
 
   if (fill?.type === "SOLID") {
@@ -95,6 +100,8 @@ export function makeBoxDecorationColor(fills: ReadonlyArray<Paint> | PluginAPI["
     return makeColorFromRGBO(fill.color, opacity)
   } else if (fill?.type === "GRADIENT_LINEAR") {
     return interpretGradient(fill)
+  } else if (fill?.type == "IMAGE") {
+    return interpretImageFills(fill)
   }
   return undefined;
 }
