@@ -8,3 +8,9 @@
 [submodule "packages/design-sdk"]
 	path = packages/design-sdk
 	url = https://github.com/bridgedxyz/design-sdk.git
+[submodule "packages/reflect-detection"]
+	path = packages/reflect-detection
+	url = https://github.com/bridgedxyz/reflect-detection.git
+[submodule "packages/client-sdk"]
+	path = packages/client-sdk
+	url = https://github.com/bridgedxyz/client-sdk-ts.git

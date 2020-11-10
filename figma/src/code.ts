@@ -31,7 +31,11 @@ showUI()
 function run() {
 
     console.log("selection", figma.currentPage.selection)
-    try { console.log("constraints", (figma.currentPage.selection[0] as any).constraints) }
+    try {
+        console.log("constraints",
+            (figma.currentPage.selection[0] as any).constraints,
+            (figma.currentPage.selection[0] as any).layoutAlign)
+    }
     catch (e) { }
 
     // ignore when nothing was selected

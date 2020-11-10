@@ -8,8 +8,9 @@ import {
 } from "@bridged.xyz/design-sdk/lib/nodes";
 import { TextBuilder, WidgetBuilder } from "./builders";
 import { mostFrequent } from "../utils/array-utils";
-import { MainAxisSize, CrossAxisAlignment, Column, Row, SizedBox, Widget, Stack } from "@bridged.xyz/flutter-builder"
+import { MainAxisSize, CrossAxisAlignment, Column, Row, SizedBox, Widget, Stack, Text } from "@bridged.xyz/flutter-builder"
 import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib/pixels";
+import { makeSafelyAsList, makeSafelyAsStackList } from "./utils/make-as-safe-list";
 
 
 let parentId = "";
@@ -88,15 +89,13 @@ function flutterWidgetGenerator(sceneNode: ReadonlyArray<ReflectSceneNode> | Ref
   }
 }
 
-function a(a: ReflectFrameNode) {
-
-}
-
 function flutterGroup(node: ReflectGroupNode): Widget {
   return flutterContainer(
     node,
     new Stack({
-      children: flutterWidgetGenerator(node.children) as Array<Widget>
+      children: makeSafelyAsStackList(
+        flutterWidgetGenerator(node.children)
+      )
     })
   );
 }
@@ -138,10 +137,11 @@ function flutterFrame(node: ReflectFrameNode): Widget {
   } else {
     // node.layoutMode === "NONE" && node.children.length > 1
     // children needs to be absolute
+
     return flutterContainer(
       node,
       new Stack({
-        children: children as Array<Widget>
+        children: makeSafelyAsStackList(children)
       })
     );
   }
@@ -153,13 +153,11 @@ function makeRowColumn(node: ReflectFrameNode, children: Array<Widget>): Widget 
   // ROW or COLUMN
   const rowOrColumn: RowOrColumn = node.layoutMode === "HORIZONTAL" ? "Row" : "Column";
 
-  const mostFreq = mostFrequent(node.children.map((d) => d.layoutAlign));
-
-  const layoutAlign = mostFreq === "MIN" ? "start" : "center";
-
-  const crossAxisColumn = rowOrColumn === "Column" ? CrossAxisAlignment[layoutAlign] : undefined
 
   const mainAxisSize: MainAxisSize = MainAxisSize.min
+
+  // safely make childeren as list type
+  children = makeSafelyAsList<Widget>(children)
 
   switch (rowOrColumn) {
     case "Row":
@@ -168,11 +166,39 @@ function makeRowColumn(node: ReflectFrameNode, children: Array<Widget>): Widget 
         mainAxisSize: mainAxisSize,
       })
     case "Column":
+      // get the most frequent layoutAlign of children, and prioritize it by accepting 'MIN' first.
+      // why? -> converting two MIN nodes to autolayout converts longer node as a MIN. and cannot be changed by figma's userinterface.
+      const mostFreq = mostFrequent(node.children.map((d) => d.layoutAlign), ['MIN', 'MAX', 'STRETCH', 'CENTER']);
+      // console.log(`mostFreq lyaout of children under ${node.name}`, mostFreq)
+
+      // FIXME - this is not working with auto layout.
+      // E.g. autolayout to left, the layoutAlign of the child text will be set to CENTER, Not MIN. wich is not a bug, but need extra logics for handling them.
+
+      const crossAxisAlignment = makeCrossAxisAlignment(mostFreq)
       return new Column({
         children: children,
         mainAxisSize: mainAxisSize,
-        crossAxisAlignment: crossAxisColumn
+        crossAxisAlignment: crossAxisAlignment
       })
+  }
+}
+
+/**
+ * returns CrossAxisAlignment by layoutAlign
+ * @param layoutAlign 
+ */
+function makeCrossAxisAlignment(layoutAlign: string): CrossAxisAlignment {
+  switch (layoutAlign) {
+    case "MIN":
+      return CrossAxisAlignment.start
+    case "MAX":
+      return CrossAxisAlignment.end
+    case "STRETCH":
+      return CrossAxisAlignment.stretch
+    case "CENTER":
+      return CrossAxisAlignment.center
+    default:
+      return CrossAxisAlignment.center
   }
 }
 

@@ -4,8 +4,6 @@
 
 
 
-
-
 ## UNRELEASED
 
 > unreleased features will be added here
@@ -14,6 +12,8 @@
 - [packages/detection] Screen detection - determines if selected node should be considered as an screen or not.
 - [packages/detection] Pattern detection - detects the patttern from givven layout (node), finds the pattern from it if exists. (used for List layout detection)
 - [packages/detection] List detection - determines if selected node is a list of specific component, or complex layout.
+- [interpreter/text] Dart String escape optimized, and fixed with execution order
+- [interpreter/column] column crossAxisAlignment fixed with explicit order providence. Now supports start, end, center and stretch.
 
 
 
@@ -26,6 +26,16 @@
 - [Flutter] Star Node support with XImage (svg)
 - [Flutter] Poligon Node support with XImage (svg)
 - [Lint] Primal naming & grouping linting for better code export quality. this is tracked sperately on [lint](https://github.com/bridgedxyz/lint)
+
+
+## [0.1.3] - 2020-11-08
+> Update focused on quicklook and resolving flutter compile issues.
+
+- 3 major error causing building-logic is fixed.
+- now there are know known compile issues.
+- stack runtime error resolved.
+- quicklook has major performance boost, up to 5 times faster loading time.
+- dart character escape is implemented
 
 
 ## [0.1.2] - 2020-10-30

@@ -12,8 +12,9 @@
   "author": "bridged.xyz by softmarshmallow <woojoo@softmarshmallow.com>",
   "dependencies": {
     "@bridged.xyz/box": "0.0.1",
+    "@bridged.xyz/client-sdk": "^0.0.1-13",
     "@bridged.xyz/design-sdk": "0.1.0",
-    "@bridged.xyz/flutter-builder": "^1.23.0-7.0.pre.37",
+    "@bridged.xyz/flutter-builder": "^1.23.0-7.0.pre.40",
     "@material-ui/core": "^4.11.0",
     "@reflect.bridged.xyz/detection": "0.1.0",
     "@reflect.bridged.xyz/linter": "0.0.1",
@@ -57,7 +58,6 @@
   "scripts": {
     "webpack:watch": "webpack --watch",
     "build": "webpack -p --mode=production",
-    "dev": "webpack --watch",
-    "postinstall": "tsc"
+    "dev": "webpack --watch"
   }
 }

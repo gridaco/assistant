@@ -35,14 +35,33 @@ export function makeText(node: ReflectTextNode): Text {
         case "ORIGINAL":
             break;
     }
-    const splittedChars = text.split("\n");
-    const charsWithLineBreak = splittedChars.length > 1 ? splittedChars.join("\\n") : text;
-    //#endregion
 
+    //#endregion
+    const escapedText = escapeDartString(text);
     const textStyle = makeTextStyle(node);
 
-    return new Text(charsWithLineBreak, {
+    return new Text(escapedText, {
         style: textStyle,
         textAlign: textAlign
     })
+}
+
+
+function escapeDartString(text: string): string {
+    // \ -> \\
+    text = text.split("\\").join("\\\\");
+
+    // \n -> \\n
+    text = text.split("\n").join("\\n");
+
+    // $ -> \$''"
+    text = text.split('$').join('\\$');
+
+    // " -> \"
+    text = text.split('"').join('\\"');
+
+    // ' -> \'
+    text = text.split("'").join("\\'");
+
+    return text;
 }
