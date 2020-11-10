@@ -7,7 +7,7 @@ import {
 } from "@bridged.xyz/design-sdk/lib/nodes/types";
 import { makeEdgeInsets } from "../make";
 import { nearestValue } from "../../utils/convert";
-import { Container, Widget, EdgeInsetsGeometry, Padding, Alignment, AlignmentGeometry, Color, BoxDecoration, LinearGradient, Gradient, BoxShape, ImageProvider } from "@bridged.xyz/flutter-builder"
+import { Container, Widget, EdgeInsetsGeometry, Padding, Alignment, AlignmentGeometry, Color, BoxDecoration, LinearGradient, Gradient, BoxShape, ImageProvider, DecorationImage, BoxFit } from "@bridged.xyz/flutter-builder"
 import { retrieveFill } from "../../figma-utils/retrieve-fill";
 import { makeBorder, makeColorFromRGBO, makeBoxShadow, makeBorderRadius } from "../make";
 import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib/pixels";
@@ -79,6 +79,10 @@ function makeBoxDecoration(node: ReflectRectangleNode | ReflectEllipseNode | Ref
     ? new BoxDecoration({
       borderRadius: decorationBorderRadius,
       shape: decorationShape,
+      image: decorationBackground instanceof ImageProvider ? new DecorationImage({
+        image: decorationBackground,
+        fit: BoxFit.cover
+      }) : undefined,
       border: decorationBorder,
       boxShadow: decorationBoxShadow,
       color: decorationBackground instanceof Color ? decorationBackground as Color : undefined,
@@ -88,7 +92,7 @@ function makeBoxDecoration(node: ReflectRectangleNode | ReflectEllipseNode | Ref
 }
 
 
-export function makeBoxDecorationFill(fills: ReadonlyArray<Paint> | PluginAPI["mixed"]): Gradient | Color | Promise<ImageProvider> {
+export function makeBoxDecorationFill(fills: ReadonlyArray<Paint> | PluginAPI["mixed"]): Gradient | Color | ImageProvider {
   const fill = retrieveFill(fills);
 
   if (fill?.type === "SOLID") {
