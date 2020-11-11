@@ -1,8 +1,9 @@
-import { FontStyle, FontWeight, TextDecoration, TextStyle, Theme } from "@bridged.xyz/flutter-builder";
+import { Color, FontStyle, FontWeight, TextDecoration, TextStyle, Theme } from "@bridged.xyz/flutter-builder";
 import { commonLetterSpacing } from "../../figma-utils/common-text-height-spacing";
 import { ReflectTextNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
 import { typographyIntelisenceMapping } from "../../utils/text-style-map";
 import { convertFontWeight } from "../../utils/text-convert";
+import { makeColor } from ".";
 
 /**
  * get the code of Text#style (text-style) via the name of the defined textstyle.
@@ -14,7 +15,7 @@ function getThemedTextStyleByName(textStyleName: string): TextStyle {
         for (const canditate of typographyIntelisenceMapping.get(key)) {
             if (textStyleName.toLowerCase().includes(canditate)) {
                 console.log(`the givven name ${textStyleName} matches with ${canditate}. themed style is.. ${key}`)
-                return Theme.of().textStyle[key]
+                return (Theme.of().textTheme[key] as TextStyle)
             }
         }
     }
@@ -22,12 +23,13 @@ function getThemedTextStyleByName(textStyleName: string): TextStyle {
 }
 
 export function makeTextStyle(node: ReflectTextNode): TextStyle {
-    try {
-        return getThemedTextStyleByName(node.textStyle.name);
-    } catch (e) {
-        // console.log(`no textstyle for node ${node.name}. skipping to custom textStyle builder. (cannot use theme)`)
-        // console.error(e)
-    }
+
+
+    // TODO lineSpacing
+
+
+    const fontColor: Color = makeColor(node.fills)
+
 
     let fontSize: number
     if (node.fontSize !== figma.mixed) {
@@ -60,11 +62,22 @@ export function makeTextStyle(node: ReflectTextNode): TextStyle {
         letterSpacing = commonLetterSpacing(node);
     }
 
-    // TODO lineSpacing
-    // TODO color - flutterColor(node.fills)
+    // try to make with themed text style
+    try {
+        const themedTextStyle = getThemedTextStyleByName(node.textStyle.name);
+        return themedTextStyle.copyWith({
+            color: fontColor
+        })
+    } catch (e) {
+        // console.log(`no textstyle for node ${node.name}. skipping to custom textStyle builder. (cannot use theme)`)
+        // console.error(e)
+    }
 
+
+    // make and return new text style
     return new TextStyle(
         {
+            color: fontColor,
             fontSize: fontSize,
             fontWeight: fontWeight,
             fontFamily: fontFamily,
