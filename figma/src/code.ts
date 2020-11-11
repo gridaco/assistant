@@ -1,5 +1,5 @@
 import { convertIntoReflectNode } from "@bridged.xyz/design-sdk/lib/nodes/conversion";
-import { generateWidget } from "./flutter";
+import { buildApp, generateWidget } from "./flutter";
 import { retrieveFlutterColors } from "./flutter/utils/fetch-colors";
 import { hideAllExcept, hideAllOnly } from "./dev-tools/hide-all";
 import { runLints } from "./lint/lint";
@@ -9,7 +9,8 @@ import { makeApp } from "./flutter/make/app.make";
 
 let parentNodeId: string;
 let layerName = false;
-let rawNode: SceneNode;
+export let rawNode: SceneNode;
+export let targetNodeId: string
 
 async function showUI() {
     // load plugin with confugured w/h
@@ -58,7 +59,8 @@ function run() {
 
     // check [ignoreStackParent] description
     rawNode = figma.currentPage.selection[0]
-    parentNodeId = figma.currentPage.selection[0].parent?.id ?? "";
+    parentNodeId = rawNode.parent?.id ?? "";
+    targetNodeId = rawNode.id
 
     // FIXME
     const safeParent = rawNode.parent as any
@@ -77,8 +79,12 @@ function run() {
     //#endregion
 
 
-    const widget = generateWidget(convertedSelection, parentNodeId);
-    const app = makeApp(widget)
+    const buildResult = buildApp(convertedSelection);
+    const widget = buildResult.widget;
+    const app = makeApp({
+        widget: widget,
+        scrollable: buildResult.scrollable
+    })
 
     figma.ui.postMessage({
         type: EK_GENERATED_CODE_PLAIN,

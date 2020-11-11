@@ -2,11 +2,14 @@ import { MaterialApp, Widget } from "@bridged.xyz/flutter-builder";
 import { makeScreen } from "./scaffold.make";
 import { makeTheme } from "./theme.make";
 
-export function makeApp(home: Widget): MaterialApp {
+export function makeApp(home: {
+    widget: Widget
+    scrollable: boolean
+}): MaterialApp {
     return new MaterialApp({
         title: 'app built with bridged.xyz',
         debugShowCheckedModeBanner: false,
-        home: Widget.prebuilt(wrapWithBuilder(makeScreen(home).build().finalize())),
+        home: Widget.prebuilt(wrapWithBuilder(makeScreen(home.widget, home.scrollable).build().finalize())),
         theme: makeTheme()
     });
 }

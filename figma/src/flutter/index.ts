@@ -4,17 +4,38 @@ import {
   ReflectRectangleNode,
   ReflectGroupNode,
   ReflectTextNode,
-  ReflectSceneNode
+  ReflectSceneNode,
+  ReflectLineNode
 } from "@bridged.xyz/design-sdk/lib/nodes";
 import { TextBuilder, WidgetBuilder } from "./builders";
 import { mostFrequent } from "../utils/array-utils";
-import { MainAxisSize, CrossAxisAlignment, Column, Row, SizedBox, Widget, Stack, Text } from "@bridged.xyz/flutter-builder"
+import { MainAxisSize, CrossAxisAlignment, Column, Row, SizedBox, Widget, Stack, Text, Divider } from "@bridged.xyz/flutter-builder"
 import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib/pixels";
 import { makeSafelyAsList, makeSafelyAsStackList } from "./utils/make-as-safe-list";
+import { makeColor } from "./make";
+import { makeDivider } from "./make/divider.make";
 
 
 let parentId = "";
 const DEFAULT_COMPONENT_NAME = "Component";
+
+
+interface AppBuildResult {
+  widget: Widget,
+  scrollable: boolean
+}
+
+let targetId: string;
+let scrollable: boolean
+export function buildApp(sceneNode: ReflectSceneNode): AppBuildResult {
+  scrollable = true // init to true.
+  targetId = sceneNode.id
+  return {
+    widget: generateWidget(sceneNode),
+    scrollable: scrollable
+  }
+}
+
 export function generateWidget(sceneNode: ReflectSceneNode,
   parentIdSrc: string = ""): Widget {
   parentId = parentIdSrc;
@@ -26,10 +47,6 @@ export function generateWidget(sceneNode: ReflectSceneNode,
   }
 
   return result
-
-  // return new SingleChildScrollView({
-  //   child: result
-  // }).build().finalize()
 }
 
 
@@ -74,11 +91,12 @@ function flutterWidgetGenerator(sceneNode: ReadonlyArray<ReflectSceneNode> | Ref
   function handleNode(node: ReflectSceneNode): Widget {
     // console.log(`starting handling node of ${node.name} type of ${node.type}`)
     if (node instanceof ReflectRectangleNode || node instanceof ReflectEllipseNode) {
-      const container = flutterContainer(node, undefined)
-      // console.log("node.type was rectangle or elipse. due to that, returning container.", container)
-      return container
+      return flutterContainer(node, undefined)
     }
-
+    else if (node instanceof ReflectLineNode) {
+      console.warn('handling line node')
+      return makeDivider(node)
+    }
     else if (node instanceof ReflectGroupNode) {
       return flutterGroup(node)
     } else if (node instanceof ReflectFrameNode) {
@@ -137,6 +155,13 @@ function flutterFrame(node: ReflectFrameNode): Widget {
   } else {
     // node.layoutMode === "NONE" && node.children.length > 1
     // children needs to be absolute
+
+    // region
+    // if currently handled node is root node, and it's outcome is stack, then make it not scrollable. (singlechildscrollview with stack usage is not resolved, remaining as issue.)
+    if (node.id == targetId) {
+      scrollable = false
+    }
+    // endregion
 
     return flutterContainer(
       node,
