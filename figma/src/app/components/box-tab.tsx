@@ -22,8 +22,8 @@ export class BoxTab extends React.Component {
         window.addEventListener("message", function (ev: MessageEvent) {
             const msg = ev.data.pluginMessage;
             switch (msg.type) {
-                case EK_GENERATED_CODE_PLAIN:
-                case EK_PREVIEW_SOURCE:
+                // case EK_GENERATED_CODE_PLAIN:
+                // case EK_PREVIEW_SOURCE:
             }
         });
     }
@@ -32,7 +32,7 @@ export class BoxTab extends React.Component {
         return (
             <div>
                 <h6>Box section start</h6>
-                <p>currently selected component is... {}</p>
+                <p>currently selected component is... { }</p>
                 <div />
                 <button onClick={this.onClickOpenStorybook}>
                     open in storybook

@@ -1,9 +1,9 @@
 import { Color, FontStyle, FontWeight, TextDecoration, TextStyle, Theme } from "@bridged.xyz/flutter-builder";
 import { commonLetterSpacing } from "../../figma-utils/common-text-height-spacing";
 import { ReflectTextNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
-import { typographyIntelisenceMapping } from "../../utils/text-style-map";
 import { convertFontWeight } from "../../utils/text-convert";
 import { makeColor } from ".";
+import { TextStyleRepository } from "@bridged.xyz/design-sdk/lib/figma";
 
 /**
  * get the code of Text#style (text-style) via the name of the defined textstyle.
@@ -11,41 +11,44 @@ import { makeColor } from ".";
  * @param textStyleName 
  */
 function getThemedTextStyleByName(textStyleName: string): TextStyle {
-    for (const key of typographyIntelisenceMapping.keys()) {
-        for (const canditate of typographyIntelisenceMapping.get(key)) {
-            if (textStyleName.toLowerCase().includes(canditate)) {
-                console.log(`the givven name ${textStyleName} matches with ${canditate}. themed style is.. ${key}`)
-                return (Theme.of().textTheme[key] as TextStyle)
-            }
+    const styleDef = TextStyleRepository.getStyleDefFromTextStyleName(textStyleName)
+    return (Theme.of().textTheme[styleDef] as TextStyle)
+}
+
+export function makeTextStyleFromDesign(style: globalThis.TextStyle): TextStyle {
+
+    let decoration: TextDecoration = makeTextDecoration(style.textDecoration)
+    const fontFamily: string = style.fontName.family
+    const fontWeight: FontWeight = FontWeight[`w${convertFontWeight(style.fontName.style)}`];
+    // percentage is not supported
+    const letterSpacing = style.letterSpacing.unit === 'PIXELS' ? style.letterSpacing.value : undefined
+    const fontStyle = makeFontStyle(style.fontName)
+
+    return new TextStyle(
+        {
+            fontSize: style.fontSize,
+            fontWeight: fontWeight,
+            fontFamily: fontFamily,
+            fontStyle: fontStyle,
+            letterSpacing: letterSpacing,
+            decoration: decoration,
         }
-    }
-    throw `No matching textstyle guideline for name "${textStyleName}" found.`
+    )
 }
 
 export function makeTextStyle(node: ReflectTextNode): TextStyle {
 
-
     // TODO lineSpacing
 
-
     const fontColor: Color = makeColor(node.fills)
-
 
     let fontSize: number
     if (node.fontSize !== figma.mixed) {
         fontSize = node.fontSize
     }
 
-    let decoration: TextDecoration
-    if (node.textDecoration === "UNDERLINE") {
-        decoration = TextDecoration.underline;
-    }
-
-    let fontStyle: FontStyle
-    if (node.fontName !== figma.mixed &&
-        node.fontName.style.toLowerCase().match("italic")) {
-        fontStyle = FontStyle.italic
-    }
+    const decoration: TextDecoration = makeTextDecoration(node.textDecoration)
+    let fontStyle: FontStyle = makeFontStyle(node.fontName)
 
     let fontFamily: string
     if (node.fontName !== figma.mixed) {
@@ -86,4 +89,26 @@ export function makeTextStyle(node: ReflectTextNode): TextStyle {
             decoration: decoration,
         }
     )
+}
+
+
+
+
+export function makeFontStyle(fontName: FontName | PluginAPI['mixed']): FontStyle {
+    if (fontName === figma.mixed) { return }
+
+    let fontStyle: FontStyle
+    if (fontName && fontName.style.toLowerCase().match("italic")) {
+        fontStyle = FontStyle.italic
+    }
+    return fontStyle
+}
+
+export function makeTextDecoration(textDecoration: globalThis.TextDecoration | PluginAPI['mixed']): TextDecoration {
+    if (textDecoration === figma.mixed) { return }
+    let decoration: TextDecoration
+    if (textDecoration === "UNDERLINE") {
+        decoration = TextDecoration.underline;
+    }
+    return decoration
 }
