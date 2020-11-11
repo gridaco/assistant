@@ -3206,10 +3206,10 @@ dart-services@^0.1.10:
   dependencies:
     axios "^0.21.0"
 
-dart-services@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/dart-services/-/dart-services-0.2.1.tgz#9daff06054aea8e3014e414596af349d4b27596d"
-  integrity sha512-uiR81BbxI3W1MczQ6Wm/+33y5CJ7kE+0q4YUKm/IhIZ5/M/G6s4csLHZ2fNoTd//5tGSa2L0GwWGD3DjfxnYrA==
+dart-services@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/dart-services/-/dart-services-0.2.2.tgz#df3caf6a0babfecbdaaaf60fab3aa947810831d3"
+  integrity sha512-TjoSopE+tup4JxQPX+BdgUrw78jqWq7vgfhRDKqscTw6vAvTqkkRTP2F8MV5VRAG9gMHi5Wt1Zz5fBTgQqFrWA==
   dependencies:
     axios "^0.21.0"
 

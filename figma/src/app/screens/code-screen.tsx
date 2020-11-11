@@ -7,6 +7,7 @@ import { EK_GENERATED_CODE_PLAIN, EK_PREVIEW_SOURCE } from "../constants/ek.cons
 
 
 interface State {
+    app: string,
     code: string,
     widget: Widget,
     previewImage: string,
@@ -18,7 +19,13 @@ export class CodeScreen extends React.Component<any, State> {
 
     constructor(props) {
         super(props);
-        this.state = { name: 'not selected', code: "//\n//\n//\n// there is no selected node\n//\n//\n//", previewImage: null, widget: null };
+        this.state = {
+            name: 'not selected',
+            code: "//\n//\n//\n// there is no selected node\n//\n//\n//",
+            previewImage: null,
+            widget: null,
+            app: null
+        };
     }
 
     componentDidMount() {
@@ -29,11 +36,12 @@ export class CodeScreen extends React.Component<any, State> {
         const msg = ev.data.pluginMessage;
         switch (msg.type) {
             case EK_GENERATED_CODE_PLAIN:
+                const app = format(msg.data.app);
                 const code = format(msg.data.code);
                 const widget = msg.data.widget
                 console.log('widget', widget)
                 this.setState((state, props) => {
-                    return { code: code, widget: widget };
+                    return { code: code, widget: widget, app: app };
                 });
                 break;
             case EK_PREVIEW_SOURCE:
@@ -59,7 +67,7 @@ export class CodeScreen extends React.Component<any, State> {
     render() {
         return <div>
             <Preview data={(this.state as any).previewImage} name={(this.state as any).name}></Preview>
-            <Highlight language="dart" code={(this.state).code} widget={(this.state).widget} ></Highlight>
+            <Highlight language="dart" app={this.state.app} code={(this.state).code} widget={(this.state).widget} ></Highlight>
             <button onClick={this.onClickReportIssue}>
                 report issue
       </button>

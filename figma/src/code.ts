@@ -5,6 +5,7 @@ import { hideAllExcept, hideAllOnly } from "./dev-tools/hide-all";
 import { runLints } from "./lint/lint";
 import { EK_COPIED, EK_FOCUS_REQUEST, EK_GENERATED_CODE_PLAIN, EK_LINT_FEEDBACK, EK_PREVIEW_SOURCE } from "./app/constants/ek.constant";
 import { handleNotify } from "@bridged.xyz/design-sdk/lib/figma";
+import { makeApp } from "./flutter/make/app.make";
 
 let parentNodeId: string;
 let layerName = false;
@@ -77,12 +78,13 @@ function run() {
 
 
     const widget = generateWidget(convertedSelection, parentNodeId);
+    const app = makeApp(widget)
 
     figma.ui.postMessage({
         type: EK_GENERATED_CODE_PLAIN,
         data: {
             code: widget.build().finalize(),
-            widget: widget
+            app: app.build().finalize(),
         },
     });
 

@@ -20,6 +20,7 @@ interface State {
 
 interface Props {
     language: Language | any;
+    app: string
     widget: Widget
     code: string
 };
@@ -48,7 +49,7 @@ export default class Highlight extends React.Component<Props, State> {
         }
 
         setLoadingState(true)
-        quickLook('quicklook', this.props.code).then((r) => {
+        quickLook('quicklook', this.props.app).then((r) => {
             setLoadingState(false)
             notify(parent, "quick look ready !")
         }).catch((e) => {

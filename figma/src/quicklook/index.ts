@@ -1,13 +1,12 @@
-import { composeSimpleApplication } from "@bridged.xyz/flutter-builder/lib/composer";
+import { composeAppWithHome, } from "@bridged.xyz/flutter-builder/lib/composer";
 import { Widget } from "@bridged.xyz/flutter-builder/lib"
-import { buildAndHostSimpleApp } from "@bridged.xyz/client-sdk/lib/build/flutter"
 import { buildConsoleQuicklookUrl } from "@bridged.xyz/client-sdk/lib/projects/quicklook"
 import { upload } from "@bridged.xyz/client-sdk/lib/hosting";
 
 
-export async function quickLook(id: string, component: Widget | string) {
+export async function quickLook(id: string, app: Widget | string) {
     console.log('quicklook starting..')
-    const dartSource = composeSimpleApplication(component)
+    const dartSource = composeAppWithHome(app)
     console.info('the final app code for quicklook is...', dartSource)
     const uploaded = await upload({
         file: dartSource,
