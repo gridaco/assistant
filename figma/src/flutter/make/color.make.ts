@@ -1,5 +1,5 @@
+import { retrieveFill } from "@bridged.xyz/design-sdk/lib/utils";
 import { Color } from "@bridged.xyz/flutter-builder/lib";
-import { retrieveFill } from "../../figma-utils/retrieve-fill";
 import { rgbTo8hex } from "../../utils/color";
 
 /**

@@ -13,6 +13,8 @@ import { MainAxisSize, CrossAxisAlignment, Column, Row, SizedBox, Widget, Stack 
 import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib/pixels";
 import { makeSafelyAsList, makeSafelyAsStackList } from "./utils/make-as-safe-list";
 import { makeDivider } from "./make/divider.make";
+import { detectIfButton } from "@reflect.bridged.xyz/detection/lib/button.detection";
+import { makeButton } from "./make/button.make";
 
 
 let parentId = "";
@@ -88,6 +90,13 @@ function flutterWidgetGenerator(sceneNode: ReadonlyArray<ReflectSceneNode> | Ref
 
 
   function handleNode(node: ReflectSceneNode): Widget {
+
+    const buttonDetectionResult = detectIfButton(node)
+    if (buttonDetectionResult.result) {
+      console.log('this node is detected as button.', node.name)
+      return makeButton(buttonDetectionResult.data)
+    }
+
     // console.log(`starting handling node of ${node.name} type of ${node.type}`)
     if (node instanceof ReflectRectangleNode || node instanceof ReflectEllipseNode) {
       return flutterContainer(node, undefined)

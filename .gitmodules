@@ -14,3 +14,6 @@
 [submodule "packages/client-sdk"]
 	path = packages/client-sdk
 	url = https://github.com/bridgedxyz/client-sdk-ts.git
+[submodule "packages/reflect-core"]
+	path = packages/reflect-core
+	url = https://github.com/bridgedxyz/reflect-core-ts.git
