@@ -7367,6 +7367,11 @@ schema-utils@^3.0.0:
     ajv "^6.12.5"
     ajv-keywords "^3.5.2"
 
+screen-size-specs@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/screen-size-specs/-/screen-size-specs-0.0.1.tgz#b2ca8884a4be9379d9162b0ecf68e9e4ce7aaf62"
+  integrity sha512-AkY740td9TAAQOacmsjfwCGg8yWvs4NzPZxibQczfcBy5S1oZh/dYX9a2uBPAE+0fQa2pJS8SUCkPTnfvmtwbg==
+
 seedrandom@^3.0.5:
   version "3.0.5"
   resolved "https://registry.yarnpkg.com/seedrandom/-/seedrandom-3.0.5.tgz#54edc85c95222525b0c7a6f6b3543d8e0b3aa0a7"

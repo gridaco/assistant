@@ -7,7 +7,7 @@ export function makeTextTheme(): TextTheme {
         try {
             return makeTextStyleFromDesign(TextStyleRepository.getDefaultDesignTextStyleFromRegistry(style))
         } catch (e) {
-            console.warn('failed to build textstyle. err:', e)
+            // console.warn('failed to build textstyle. err:', e)
         }
     }
 
