@@ -1,5 +1,5 @@
 import { TextStyleRepository, TextThemeStyles } from "@bridged.xyz/design-sdk/lib/figma";
-import { TextTheme, TextStyle } from "@bridged.xyz/flutter-builder";
+import { TextTheme, TextStyle } from "@bridged.xyz/flutter-builder/lib";
 import { makeTextStyleFromDesign } from "./text-style.make";
 
 export function makeTextTheme(): TextTheme {
@@ -7,7 +7,7 @@ export function makeTextTheme(): TextTheme {
         try {
             return makeTextStyleFromDesign(TextStyleRepository.getDefaultDesignTextStyleFromRegistry(style))
         } catch (e) {
-            console.warn('failed to build textstyle. err:', e)
+            // console.warn('failed to build textstyle. err:', e)
         }
     }
 

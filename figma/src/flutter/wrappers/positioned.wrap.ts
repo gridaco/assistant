@@ -1,5 +1,5 @@
 import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
-import { Align, Alignment, Positioned, Widget } from "@bridged.xyz/flutter-builder";
+import { Align, Alignment, Positioned, Widget } from "@bridged.xyz/flutter-builder/lib";
 import { coordinates } from "../../figma-utils/coordinates";
 import { commonPosition } from "../../figma-utils/common-position";
 import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib/pixels";

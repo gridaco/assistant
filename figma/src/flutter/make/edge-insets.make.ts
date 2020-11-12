@@ -1,6 +1,6 @@
 import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
 import { commonPadding } from "../../figma-utils/common-padding";
-import { EdgeInsets, EdgeInsetsGeometry } from "@bridged.xyz/flutter-builder";
+import { EdgeInsets, EdgeInsetsGeometry } from "@bridged.xyz/flutter-builder/lib";
 
 // This must happen before Stack or after the Positioned, but not before.
 export function makeEdgeInsets(node: ReflectSceneNode): EdgeInsetsGeometry {

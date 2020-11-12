@@ -4,8 +4,7 @@ import {
     ReflectFrameNode, ReflectGroupNode, ReflectTextNode
 } from "@bridged.xyz/design-sdk/lib/nodes/types";
 
-import { Widget } from "@bridged.xyz/flutter-builder";
-import { retrieveFill } from "../../figma-utils/retrieve-fill";
+import { Widget } from "@bridged.xyz/flutter-builder/lib";
 import { wrapWithContainer } from "../wrappers/container.wrap";
 import { wrapWithOpacity } from "../wrappers/opacity.wrap";
 import { wrapWithPositioned } from "../wrappers/positioned.wrap";

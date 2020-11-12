@@ -1,4 +1,4 @@
-import { Widget, Visibility } from "@bridged.xyz/flutter-builder";
+import { Widget, Visibility } from "@bridged.xyz/flutter-builder/lib";
 import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
 
 /**

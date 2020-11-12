@@ -6,7 +6,7 @@ import {
   ReflectFrameNode,
   ReflectSceneNode
 } from "@bridged.xyz/design-sdk/lib/nodes/types";
-import { BorderRadiusGeometry, ShapeBorder, Colors, Color, Container, Widget } from "@bridged.xyz/flutter-builder";
+import { BorderRadiusGeometry, ShapeBorder, Colors, Color, Container, Widget } from "@bridged.xyz/flutter-builder/lib";
 import { makeColor } from "../make/color.make";
 import { makeShape as makeShape } from "../make/shape.make";
 import { makeBorderRadius } from "../make/border-radius.make";

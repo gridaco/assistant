@@ -1,5 +1,5 @@
-import { retrieveFill } from "../../figma-utils/retrieve-fill";
 import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
+import { retrieveFill } from "@bridged.xyz/design-sdk/lib/utils";
 import { rgbTo6hex } from "../../utils/color";
 
 export function retrieveFlutterColors(sceneNode: Array<ReflectSceneNode>): Array<contrastedColor> {
@@ -43,12 +43,9 @@ type contrastedColor = {
   contrastBlack: number;
 };
 
-const convertColor = (
-  fills: ReadonlyArray<Paint> | PluginAPI["mixed"]
-): contrastedColor | null => {
+function convertColor(fills: ReadonlyArray<Paint> | PluginAPI["mixed"]): contrastedColor | null {
   // kind can be text, bg, border...
   // [when testing] fills can be undefined
-
   const fill = retrieveFill(fills);
 
   if (fill?.type === "SOLID") {
@@ -72,7 +69,7 @@ const convertColor = (
   }
 
   return null;
-};
+}
 
 // from https://dev.to/alvaromontoro/building-your-own-color-contrast-checker-4j7o
 function calculateContrastRatio(color1: RGB, color2: RGB) {

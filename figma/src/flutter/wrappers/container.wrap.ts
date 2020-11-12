@@ -7,12 +7,12 @@ import {
 } from "@bridged.xyz/design-sdk/lib/nodes/types";
 import { makeEdgeInsets } from "../make";
 import { nearestValue } from "../../utils/convert";
-import { Container, Widget, EdgeInsetsGeometry, Padding, Alignment, AlignmentGeometry, Color, BoxDecoration, LinearGradient, Gradient, BoxShape, ImageProvider, DecorationImage, BoxFit } from "@bridged.xyz/flutter-builder"
-import { retrieveFill } from "../../figma-utils/retrieve-fill";
+import { Container, Widget, EdgeInsetsGeometry, Padding, Alignment, AlignmentGeometry, Color, BoxDecoration, LinearGradient, Gradient, BoxShape, ImageProvider, DecorationImage, BoxFit } from "@bridged.xyz/flutter-builder/lib"
 import { makeBorder, makeColorFromRGBO, makeBoxShadow, makeBorderRadius } from "../make";
 import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib/pixels";
 import { interpretGradient } from "../interpreter/gradient.interpret";
 import { interpretImageFills } from "../interpreter/image.interpret";
+import { retrieveFill } from "@bridged.xyz/design-sdk/lib/utils";
 
 
 
