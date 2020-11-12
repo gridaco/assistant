@@ -1,4 +1,5 @@
 import { Icon, Icons } from "@bridged.xyz/flutter-builder/lib"
+import { Snippet } from "@bridged.xyz/flutter-builder/lib/builder/buildable-tree"
 
 /**
  * builds icon widget if value is hold by flutter built-in material icons
@@ -8,6 +9,7 @@ export function makeMaterialIcon(iconName: string): Icon {
     try {
         return new Icon(Icons.fromName(iconName))
     } catch (e) {
-        return undefined
+        // return default icon
+        return new Icon(Snippet.fromStatic('Icons.add'))
     }
 }
