@@ -1,4 +1,4 @@
-import { Widget } from "@bridged.xyz/flutter-builder";
+import { Widget } from "@bridged.xyz/flutter-builder/lib";
 import * as React from "react";
 import { format } from "../../utils/dart-format";
 import Highlight from "../components/highlight";

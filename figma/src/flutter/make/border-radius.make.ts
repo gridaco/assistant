@@ -1,4 +1,4 @@
-import { BorderRadiusGeometry, BorderRadius, Radius } from "@bridged.xyz/flutter-builder";
+import { BorderRadiusGeometry, BorderRadius, Radius } from "@bridged.xyz/flutter-builder/lib";
 import { ReflectRectangleNode, ReflectEllipseNode, ReflectFrameNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
 
 export function makeBorderRadius(node: ReflectRectangleNode | ReflectEllipseNode | ReflectFrameNode): BorderRadiusGeometry {

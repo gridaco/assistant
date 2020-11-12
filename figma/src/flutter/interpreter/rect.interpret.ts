@@ -1,7 +1,4 @@
-import { Color } from "@bridged.xyz/flutter-builder/dist/dart-ui/color";
-import { BoxDecoration } from "@bridged.xyz/flutter-builder/dist/painting/box-decoration";
-import { Gradient } from "@bridged.xyz/flutter-builder/dist/painting/gradient";
-import { Container } from "@bridged.xyz/flutter-builder/dist/widgets";
+import { Container, Gradient, BoxDecoration, Color } from "@bridged.xyz/flutter-builder/lib";
 import { makeColorFromRGBO } from "../make/color.make";
 import { interpretGradient } from "./gradient.interpret"
 import { interpretRectCorner } from "./corner.interpret";

@@ -9,7 +9,7 @@ import {
 } from "@bridged.xyz/design-sdk/lib/nodes";
 import { TextBuilder, WidgetBuilder } from "./builders";
 import { mostFrequent } from "../utils/array-utils";
-import { MainAxisSize, CrossAxisAlignment, Column, Row, SizedBox, Widget, Stack, Text, Divider } from "@bridged.xyz/flutter-builder"
+import { MainAxisSize, CrossAxisAlignment, Column, Row, SizedBox, Widget, Stack } from "@bridged.xyz/flutter-builder/lib"
 import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib/pixels";
 import { makeSafelyAsList, makeSafelyAsStackList } from "./utils/make-as-safe-list";
 import { makeDivider } from "./make/divider.make";

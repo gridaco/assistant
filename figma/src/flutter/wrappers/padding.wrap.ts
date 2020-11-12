@@ -1,4 +1,4 @@
-import { Widget, Padding } from "@bridged.xyz/flutter-builder";
+import { Widget, Padding } from "@bridged.xyz/flutter-builder/lib";
 import { ReflectFrameNode, ReflectEllipseNode, ReflectRectangleNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
 import { makeEdgeInsets } from "../make/edge-insets.make";
 

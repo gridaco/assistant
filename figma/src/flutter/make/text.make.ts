@@ -1,4 +1,4 @@
-import { Widget, TextAlign, Text } from "@bridged.xyz/flutter-builder";
+import { Widget, TextAlign, Text } from "@bridged.xyz/flutter-builder/lib";
 import { ReflectTextNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
 import { makeTextStyle } from "./text-style.make";
 

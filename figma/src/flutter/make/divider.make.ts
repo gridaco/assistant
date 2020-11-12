@@ -1,5 +1,5 @@
 import { ReflectLineNode, ReflectRectangleNode, ReflectSceneNode, ReflectSceneNodeType } from "@bridged.xyz/design-sdk/lib/nodes";
-import { Colors, Divider } from "@bridged.xyz/flutter-builder";
+import { Colors, Divider } from "@bridged.xyz/flutter-builder/lib";
 import { makeColor } from "./color.make";
 
 export function makeDivider(node: ReflectLineNode | ReflectRectangleNode | VectorNode) {

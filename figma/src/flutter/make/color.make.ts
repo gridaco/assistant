@@ -1,5 +1,4 @@
-import { Color } from "@bridged.xyz/flutter-builder";
-import { Snippet } from "@bridged.xyz/flutter-builder/lib/builder/buildable-tree";
+import { Color } from "@bridged.xyz/flutter-builder/lib";
 import { retrieveFill } from "../../figma-utils/retrieve-fill";
 import { rgbTo8hex } from "../../utils/color";
 

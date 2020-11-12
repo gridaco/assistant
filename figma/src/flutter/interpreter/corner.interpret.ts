@@ -1,6 +1,4 @@
-import { BorderRadiusGeometry } from "@bridged.xyz/flutter-builder/dist/painting/border-radius-geomatry";
-import { Radius } from "@bridged.xyz/flutter-builder/dist/dart-ui/radius";
-import { BorderRadius } from "@bridged.xyz/flutter-builder/dist/painting/border-radius";
+import { BorderRadiusGeometry, Radius, BorderRadius } from "@bridged.xyz/flutter-builder/lib";
 
 export function interpretRectCorner(rect: RectangleNode) {
     let borderRadius: BorderRadiusGeometry

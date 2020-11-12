@@ -1,4 +1,4 @@
-import { Color, FontStyle, FontWeight, TextDecoration, TextStyle, Theme } from "@bridged.xyz/flutter-builder";
+import { Color, FontStyle, FontWeight, TextDecoration, TextStyle, Theme } from "@bridged.xyz/flutter-builder/lib";
 import { commonLetterSpacing } from "../../figma-utils/common-text-height-spacing";
 import { ReflectTextNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
 import { convertFontWeight } from "../../utils/text-convert";

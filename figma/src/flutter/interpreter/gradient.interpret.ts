@@ -1,6 +1,4 @@
-import { Color } from "@bridged.xyz/flutter-builder/dist/dart-ui/color";
-import { Gradient } from "@bridged.xyz/flutter-builder/dist/painting/gradient";
-import { LinearGradient } from "@bridged.xyz/flutter-builder/dist/painting/linear-gradient";
+import { Gradient, LinearGradient, Color } from "@bridged.xyz/flutter-builder/lib";
 import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib/pixels";
 import { gradientAngle } from "../../utils/color";
 import { makeColorFromRGBO } from "../make/color.make";
