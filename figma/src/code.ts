@@ -1,11 +1,13 @@
 import { convertIntoReflectNode } from "@bridged.xyz/design-sdk/lib/nodes/conversion";
-import { buildApp, generateWidget } from "./flutter";
+import { buildApp } from "./flutter";
 import { retrieveFlutterColors } from "./flutter/utils/fetch-colors";
 import { hideAllExcept, hideAllOnly } from "./dev-tools/hide-all";
 import { runLints } from "./lint/lint";
-import { EK_COPIED, EK_FOCUS_REQUEST, EK_GENERATED_CODE_PLAIN, EK_LINT_FEEDBACK, EK_PREVIEW_SOURCE } from "./app/constants/ek.constant";
+import { EK_COPIED, EK_FOCUS_REQUEST, EK_GENERATED_CODE_PLAIN, EK_IMAGE_ASSET_REPOSITORY_MAP, EK_LINT_FEEDBACK, EK_PREVIEW_SOURCE } from "./app/constants/ek.constant";
 import { handleNotify } from "@bridged.xyz/design-sdk/lib/figma";
 import { makeApp } from "./flutter/make/app.make";
+import { ImageRepositories } from "./assets-repository";
+
 
 let parentNodeId: string;
 let layerName = false;
@@ -30,7 +32,7 @@ async function showUI() {
 
 showUI()
 
-function run() {
+async function run() {
 
     console.log("selection", figma.currentPage.selection)
     try {
@@ -69,6 +71,13 @@ function run() {
         safeParent
     );
 
+    // if converted node returned nothing
+    if (!convertedSelection) {
+        figma.notify('not a valid selection. this node is ignored with name : "//@ignore"')
+        return
+    }
+
+
     //#region  run linter
     const feedbacks = runLints(convertedSelection)
     console.warn(feedbacks)
@@ -78,8 +87,18 @@ function run() {
     });
     //#endregion
 
-
     const buildResult = buildApp(convertedSelection);
+
+
+    // host images
+    const transportableImageAssetRepository = await ImageRepositories.current.makeTransportable()
+    figma.ui.postMessage({
+        type: EK_IMAGE_ASSET_REPOSITORY_MAP,
+        data: transportableImageAssetRepository
+    })
+
+
+
     const widget = buildResult.widget;
     const app = makeApp({
         widget: widget,

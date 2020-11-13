@@ -92,7 +92,7 @@ function makeBoxDecoration(node: ReflectRectangleNode | ReflectEllipseNode | Ref
 }
 
 
-export function makeBoxDecorationFill(fills: ReadonlyArray<Paint> | PluginAPI["mixed"]): Gradient | Color | ImageProvider {
+export function makeBoxDecorationFill(fills: ReadonlyArray<Paint>): Gradient | Color | ImageProvider {
   const fill = retrieveFill(fills);
 
   if (fill?.type === "SOLID") {

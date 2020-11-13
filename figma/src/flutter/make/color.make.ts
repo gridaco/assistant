@@ -5,7 +5,7 @@ import { rgbTo8hex } from "@reflect.bridged.xyz/uiutils/lib";
 /**
  * Retrieve the SOLID color for Flutter when existent, otherwise ""
  */
-export function makeColor(fills: ReadonlyArray<Paint> | PluginAPI["mixed"]): Color {
+export function makeColor(fills: ReadonlyArray<Paint>): Color {
     const fill = retrieveFill(fills);
 
     if (fill?.type === "SOLID") {

@@ -1,8 +1,8 @@
-import { ReflectLineNode, ReflectRectangleNode, ReflectSceneNode, ReflectSceneNodeType } from "@bridged.xyz/design-sdk/lib/nodes";
-import { Colors, Divider } from "@bridged.xyz/flutter-builder/lib";
+import { ReflectDefaultShapeMixin, ReflectLineNode, ReflectRectangleNode, ReflectSceneNode, ReflectSceneNodeType } from "@bridged.xyz/design-sdk/lib/nodes";
+import { Colors, Divider, VerticalDivider } from "@bridged.xyz/flutter-builder/lib";
 import { makeColor } from "./color.make";
 
-export function makeDivider(node: ReflectLineNode | ReflectRectangleNode | VectorNode) {
+export function makeDivider(node: ReflectDefaultShapeMixin) {
     // todo migrate this to detection logic
     if (node.rotation !== 0) { return }
     // node.strokeCap
@@ -21,12 +21,22 @@ export function makeDivider(node: ReflectLineNode | ReflectRectangleNode | Vecto
     }
 
 
+    // TODO - wrap with sized box if size is special
     if (node instanceof ReflectLineNode) {
-        return new Divider({
+        new Divider({
             // don't use node.height -- for line, it's always 0
             height: node.strokeWeight,
             color: makeColor(node.fills),
             thickness: node.strokeWeight
         })
     }
+}
+
+export function makeVerticalDivider(node: ReflectDefaultShapeMixin) {
+    // TODO - this is not fully implemented
+    return new VerticalDivider({
+        width: node.width,
+        color: makeColor(node.fills),
+        thickness: node.strokeWeight
+    })
 }

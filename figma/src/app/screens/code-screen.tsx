@@ -1,9 +1,11 @@
 import { Widget } from "@bridged.xyz/flutter-builder/lib";
 import * as React from "react";
+import { TransportableImageRepository } from "../../assets-repository";
+import { ImageHostingRepository } from "../../assets-repository/hosting";
 import { format } from "../../utils/dart-format";
 import Highlight from "../components/highlight";
 import { Preview } from "../components/preview";
-import { EK_GENERATED_CODE_PLAIN, EK_PREVIEW_SOURCE } from "../constants/ek.constant";
+import { EK_GENERATED_CODE_PLAIN, EK_IMAGE_ASSET_REPOSITORY_MAP, EK_PREVIEW_SOURCE } from "../constants/ek.constant";
 
 
 interface State {
@@ -49,6 +51,10 @@ export class CodeScreen extends React.Component<any, State> {
                     return { previewImage: msg.data.source, name: msg.data.name };
                 });
                 break;
+            case EK_IMAGE_ASSET_REPOSITORY_MAP:
+                const imageRepo = msg.data as TransportableImageRepository
+                ImageHostingRepository.setRepository(imageRepo)
+                break
         }
     }
 

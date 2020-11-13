@@ -2,6 +2,7 @@ import { ReflectDefaultShapeMixin } from "@bridged.xyz/design-sdk/lib/nodes";
 import { ImageProvider, Image, NetworkImage } from "@bridged.xyz/flutter-builder/lib"
 import { retrieveImageFill, retrievePrimaryImageFill } from "@bridged.xyz/design-sdk/lib/utils/retrieve-image-fills";
 import { ImageRepositories } from "../../assets-repository";
+import { currentBuildingNodeId } from "..";
 
 // TODO - make this non async. It's too costly. generate preview image url local algorythm, upload syncronously.
 
@@ -25,7 +26,7 @@ export function interpretImageFills(fills: ReadonlyArray<Paint> | Paint): ImageP
     }
 
     const hostedImage = ImageRepositories.current.addImage({
-        key: image.hash,
+        key: currentBuildingNodeId,
         hash: image.hash
     })
 

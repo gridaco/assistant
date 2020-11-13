@@ -3,7 +3,8 @@ import { makeColorFromRGBO } from "../make/color.make";
 import { interpretGradient } from "./gradient.interpret"
 import { interpretRectCorner } from "./corner.interpret";
 import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib/pixels";
-export function interpretRect(rect: RectangleNode): Container {
+import { ReflectRectangleNode } from "@bridged.xyz/design-sdk/lib/nodes";
+export function interpretRect(rect: ReflectRectangleNode): Container {
     const fills = rect.fills as Array<Paint>
     const fillsCount = fills.length
     const hasSingleBackgroundFill = fillsCount == 1;

@@ -43,7 +43,7 @@ export function makeTextStyle(node: ReflectTextNode): TextStyle {
     const fontColor: Color = makeColor(node.fills)
 
     let fontSize: number
-    if (node.fontSize !== figma.mixed) {
+    if (node.fontSize) {
         fontSize = node.fontSize
     }
 
@@ -51,12 +51,12 @@ export function makeTextStyle(node: ReflectTextNode): TextStyle {
     let fontStyle: FontStyle = makeFontStyle(node.fontName)
 
     let fontFamily: string
-    if (node.fontName !== figma.mixed) {
+    if (node.fontName) {
         fontFamily = node.fontName.family;
     }
 
     let fontWeight: FontWeight;
-    if (node.fontName !== figma.mixed) {
+    if (node.fontName) {
         fontWeight = FontWeight[`w${convertFontWeight(node.fontName.style)}`]
     }
 
@@ -94,8 +94,8 @@ export function makeTextStyle(node: ReflectTextNode): TextStyle {
 
 
 
-export function makeFontStyle(fontName: FontName | PluginAPI['mixed']): FontStyle {
-    if (fontName === figma.mixed) { return }
+export function makeFontStyle(fontName: FontName): FontStyle {
+    if (!fontName) { return }
 
     let fontStyle: FontStyle
     if (fontName && fontName.style.toLowerCase().match("italic")) {
@@ -104,8 +104,8 @@ export function makeFontStyle(fontName: FontName | PluginAPI['mixed']): FontStyl
     return fontStyle
 }
 
-export function makeTextDecoration(textDecoration: globalThis.TextDecoration | PluginAPI['mixed']): TextDecoration {
-    if (textDecoration === figma.mixed) { return }
+export function makeTextDecoration(textDecoration: globalThis.TextDecoration): TextDecoration {
+    if (!textDecoration) { return }
     let decoration: TextDecoration
     if (textDecoration === "UNDERLINE") {
         decoration = TextDecoration.underline;

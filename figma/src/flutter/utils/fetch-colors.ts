@@ -43,7 +43,7 @@ type contrastedColor = {
   contrastBlack: number;
 };
 
-function convertColor(fills: ReadonlyArray<Paint> | PluginAPI["mixed"]): contrastedColor | null {
+function convertColor(fills: ReadonlyArray<Paint>): contrastedColor | null {
   // kind can be text, bg, border...
   // [when testing] fills can be undefined
   const fill = retrieveFill(fills);

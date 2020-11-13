@@ -1,1 +1,1 @@
-export * from "./image-hosting"
+export * from "./image-repository"

@@ -23,7 +23,7 @@ import { makePlaceHolderImage } from "./make/image.make";
 
 let parentId = "";
 const DEFAULT_COMPONENT_NAME = "Component";
-
+export let currentBuildingNodeId: string
 
 interface AppBuildResult {
   widget: Widget,
@@ -44,6 +44,7 @@ export function buildApp(sceneNode: ReflectSceneNode): AppBuildResult {
 export function generateWidget(sceneNode: ReflectSceneNode,
   parentIdSrc: string = ""): Widget {
   parentId = parentIdSrc;
+  setCurrentNode(sceneNode)
 
   let result = flutterWidgetGenerator(sceneNode);
 
@@ -64,6 +65,7 @@ function flutterWidgetGenerator(sceneNode: ReadonlyArray<ReflectSceneNode> | Ref
     const sceneLen = sceneNode.length;
 
     sceneNode.forEach((node, index) => {
+      setCurrentNode(node)
       widgets.push(
         handleNode(node)
       )
@@ -94,6 +96,7 @@ function flutterWidgetGenerator(sceneNode: ReadonlyArray<ReflectSceneNode> | Ref
 
 
   function handleNode(node: ReflectSceneNode): Widget {
+    setCurrentNode(node)
 
     const buttonDetectionResult = detectIfButton(node)
     if (buttonDetectionResult.result) {
@@ -130,6 +133,11 @@ function flutterWidgetGenerator(sceneNode: ReadonlyArray<ReflectSceneNode> | Ref
       return flutterText(node)
     }
   }
+}
+
+function setCurrentNode(node: { id: string }) {
+  // TODO - move this to build process's instance
+  currentBuildingNodeId = node.id
 }
 
 function flutterGroup(node: ReflectGroupNode): Widget {

@@ -1,5 +1,5 @@
 import { BorderRadiusGeometry, BorderRadius, Radius } from "@bridged.xyz/flutter-builder/lib";
-import { ReflectRectangleNode, ReflectEllipseNode, ReflectFrameNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
+import { ReflectRectangleNode, ReflectEllipseNode, ReflectFrameNode, mixed } from "@bridged.xyz/design-sdk/lib/nodes/types";
 
 export function makeBorderRadius(node: ReflectRectangleNode | ReflectEllipseNode | ReflectFrameNode): BorderRadiusGeometry {
     if (node.type === "ELLIPSE")
@@ -9,7 +9,7 @@ export function makeBorderRadius(node: ReflectRectangleNode | ReflectEllipseNode
         return undefined;
     }
 
-    return node.cornerRadius !== figma.mixed
+    return node.cornerRadius !== mixed
         ? BorderRadius.circular(node.cornerRadius as number)
         : BorderRadius.only(
             {
