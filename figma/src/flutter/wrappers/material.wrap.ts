@@ -1,4 +1,3 @@
-import { rgbTo8hex } from "../../utils/color";
 import { convertToSize } from "../convert/size.convert";
 import {
   ReflectRectangleNode,
@@ -6,6 +5,7 @@ import {
   ReflectFrameNode,
   ReflectSceneNode
 } from "@bridged.xyz/design-sdk/lib/nodes/types";
+import { rgbTo8hex } from "@reflect.bridged.xyz/uiutils/lib"
 import { BorderRadiusGeometry, ShapeBorder, Colors, Color, Container, Widget } from "@bridged.xyz/flutter-builder/lib";
 import { makeColor } from "../make/color.make";
 import { makeShape as makeShape } from "../make/shape.make";

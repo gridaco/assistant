@@ -1,6 +1,11 @@
 import { Icon, Icons } from "@bridged.xyz/flutter-builder/lib"
 import { Snippet } from "@bridged.xyz/flutter-builder/lib/builder/buildable-tree"
 
+
+export function makePlaceholderIcon(): Icon {
+    return new Icon(Snippet.fromStatic('Icons.add'))
+}
+
 /**
  * builds icon widget if value is hold by flutter built-in material icons
  * @param iconName 

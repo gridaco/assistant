@@ -1,6 +1,6 @@
 import { retrieveFill } from "@bridged.xyz/design-sdk/lib/utils";
 import { Color } from "@bridged.xyz/flutter-builder/lib";
-import { rgbTo8hex } from "../../utils/color";
+import { rgbTo8hex } from "@reflect.bridged.xyz/uiutils/lib";
 
 /**
  * Retrieve the SOLID color for Flutter when existent, otherwise ""
