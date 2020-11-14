@@ -1,9 +1,16 @@
+import { ReflectDefaultShapeMixin, ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes"
 import { Icon, Icons } from "@bridged.xyz/flutter-builder/lib"
 import { Snippet } from "@bridged.xyz/flutter-builder/lib/builder/buildable-tree"
+import { makeColor } from "."
 
 
-export function makePlaceholderIcon(): Icon {
-    return new Icon(Snippet.fromStatic('Icons.add'))
+export function makePlaceholderIcon(node: ReflectSceneNode): Icon {
+    let fills = 'fills' in node ? node.primaryFill : undefined;
+
+    return new Icon(Snippet.fromStatic('Icons.add'), {
+        size: node.width,
+        color: makeColor(fills)
+    })
 }
 
 /**

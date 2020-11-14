@@ -18,7 +18,7 @@ import { makeButton } from "./make/button.make";
 import { detectIfIcon } from "@reflect.bridged.xyz/detection/lib/icon.detection";
 import { makeMaterialIcon, makePlaceholderIcon } from "./make/icon.make";
 import { detectIfIllust } from "@reflect.bridged.xyz/detection/lib/illust.detection";
-import { makePlaceHolderImage } from "./make/image.make";
+import { makeIllustImage, makePlaceHolderImage } from "./make/image.make";
 
 
 let parentId = "";
@@ -108,13 +108,14 @@ function flutterWidgetGenerator(sceneNode: ReadonlyArray<ReflectSceneNode> | Ref
     const iconDetectionResult = detectIfIcon(node)
     if (iconDetectionResult.result) {
       console.log('this node is detected as an icon.', node.name)
-      return makePlaceholderIcon()
+      return makePlaceholderIcon(node)
     }
 
     const illustDetectionResult = detectIfIllust(node)
     if (illustDetectionResult.result) {
       console.log('this node is detected as an illust.', node.name)
-      return makePlaceHolderImage(node)
+      // return makePlaceHolderImage(node)
+      return makeIllustImage(node)
     }
 
     // console.log(`starting handling node of ${node.name} type of ${node.type}`)
