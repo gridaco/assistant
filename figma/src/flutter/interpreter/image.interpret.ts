@@ -10,7 +10,7 @@ import { currentBuildingNodeId } from "..";
  * finds the primary image in shape node, upload it to temporary hosting. returns the ImageProvider with hosted image.
  * @param node basically, rect or ellipes node.
  */
-export function interpretImage(node: ReflectDefaultShapeMixin): ImageProvider {
+export function interpretImageFilllNode(node: ReflectDefaultShapeMixin): ImageProvider {
     if (node.hasImage) {
         return interpretImageFills(node.fills as ReadonlyArray<Paint>)
     }

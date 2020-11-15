@@ -158,7 +158,6 @@ export class ImageRepository {
         const imageAssets: Array<ImageAsset> = []
         const jobs: Array<Promise<Uint8Array>> = []
         const keys = Object.keys(this.images)
-        console.log('keys', keys)
         for (const key of keys) {
             const asset: TemporaryImageAsset = this.images[key]
             const job = asset.fetchData()

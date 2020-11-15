@@ -7,6 +7,8 @@ import { makeSaflyAsSingle } from "../utils/make-as-safe-single";
 export function wrapWithPositioned(node: ReflectSceneNode,
   child: Widget,
   parentId: string = ""): Widget {
+  console.log(`wrap:positioned :: wrapping node ${node.toString()} with Positioned with child ${child?.name}`)
+
   // avoid adding Positioned() when parent is not a Stack(), which can happen at the beggining
   if (!node.parent || parentId === node.parent.id || !child) {
     return child;
@@ -14,8 +16,8 @@ export function wrapWithPositioned(node: ReflectSceneNode,
 
   // check if view is in a stack. Group and Frames must have more than 1 element
   if (node.parent.isRelative === true) {
-    const pos = retrieveAbsolutePos(node, child);
-    if (pos !== "Absolute") {
+    const pos = retrieveAbsolutePosOrMakeWidget(node, child);
+    if (pos instanceof Widget) {
       return pos;
     } else {
       // this is necessary because Group have absolute position, while Frame is relative.
@@ -39,14 +41,14 @@ export function wrapWithPositioned(node: ReflectSceneNode,
 
 
 type Absolute = "Absolute"
-function retrieveAbsolutePos(node: ReflectSceneNode, child: Widget): Widget | Absolute {
+function retrieveAbsolutePosOrMakeWidget(node: ReflectSceneNode, child: Widget): Widget | Absolute {
   const positionedAlign = (align: string): Positioned => {
     return Positioned.fill({
       child: new Align({
         alignment: Alignment[align],
         child: child
       })
-    })
+    }).addComment(`wrap:positioned of ${node.toString()}`)
   }
 
   switch (commonPosition(node)) {

@@ -1,7 +1,7 @@
 import { mixed, ReflectRectangleNode } from "@bridged.xyz/design-sdk/lib/nodes";
 import { BorderRadiusGeometry, Radius, BorderRadius } from "@bridged.xyz/flutter-builder/lib";
 
-export function interpretRectCorner(rect: ReflectRectangleNode) {
+export function interpretRectCorner(rect: ReflectRectangleNode): BorderRadiusGeometry {
     let borderRadius: BorderRadiusGeometry
 
     // figma.mixed means lrtb values are mixed.

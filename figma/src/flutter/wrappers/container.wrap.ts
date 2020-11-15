@@ -7,14 +7,15 @@ import {
 } from "@bridged.xyz/design-sdk/lib/nodes/types";
 import { makeEdgeInsets } from "../make";
 import { nearestValue } from "../../utils/convert";
-import { Container, Widget, EdgeInsetsGeometry, Padding, Alignment, AlignmentGeometry, Color, BoxDecoration, LinearGradient, Gradient, BoxShape, ImageProvider, DecorationImage, BoxFit } from "@bridged.xyz/flutter-builder/lib"
+import { Container, Widget, EdgeInsetsGeometry, Padding, Alignment, AlignmentGeometry, Color, BoxDecoration, LinearGradient, Gradient, BoxShape, ImageProvider, DecorationImage, BoxFit, double, Size } from "@bridged.xyz/flutter-builder/lib"
 import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib/pixels";
 import { makeBoxDecoration } from "../make/box-decoration.make";
+import { roundDouble } from "../convert/double.convert";
+import { notEmpty } from "@bridged.xyz/design-sdk/lib/utils";
 
 
 
-export function wrapWithContainer(node: ReflectRectangleNode | ReflectEllipseNode | ReflectFrameNode | ReflectGroupNode,
-  child?: Widget): Widget {
+export function wrapWithContainer(node: ReflectRectangleNode | ReflectEllipseNode | ReflectFrameNode | ReflectGroupNode, child?: Widget, options?: { size: Size }): Widget {
   // ignore the view when size is zero or less
   // while technically it shouldn't get less than 0, due to rounding errors,
   // it can get to values like: -0.000004196293048153166
@@ -22,9 +23,12 @@ export function wrapWithContainer(node: ReflectRectangleNode | ReflectEllipseNod
     return child;
   }
 
+
   // ignore for Groups
   const propBoxDecoration = node instanceof ReflectGroupNode ? undefined : makeBoxDecoration(node);
-  const propSize = convertToSize(node);
+  // if option passed, use option's value
+  const propSize = notEmpty(options?.size) ? options.size : convertToSize(node);
+  console.log('propSize', propSize)
 
   // todo Image, Gradient & multiple fills
 
@@ -38,8 +42,8 @@ export function wrapWithContainer(node: ReflectRectangleNode | ReflectEllipseNod
     // console.log("wrapping with container. child - ", child)
     return new Container(
       {
-        width: roundNumber(propSize.w),
-        height: roundNumber(propSize.h),
+        width: roundDouble(propSize.width),
+        height: roundDouble(propSize.height),
         child: child,
         padding: propPadding,
         decoration: propBoxDecoration instanceof BoxDecoration ? propBoxDecoration : undefined,

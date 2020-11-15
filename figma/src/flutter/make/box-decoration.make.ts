@@ -1,6 +1,7 @@
 import { ReflectEllipseNode, ReflectFrameNode, ReflectRectangleNode } from "@bridged.xyz/design-sdk/lib/nodes";
 import { retrieveFill } from "@bridged.xyz/design-sdk/lib/utils";
 import { BoxDecoration, BoxFit, BoxShape, Color, DecorationImage, Gradient, ImageProvider } from "@bridged.xyz/flutter-builder/lib";
+import { Snippet } from "@bridged.xyz/flutter-builder/lib/builder/buildable-tree";
 import { interpretGradient } from "../interpreter/gradient.interpret";
 import { interpretImageFills } from "../interpreter/image.interpret";
 import { makeBorderRadius } from "./border-radius.make";
@@ -15,7 +16,7 @@ export function makeBoxDecoration(node: ReflectRectangleNode | ReflectEllipseNod
     const decorationBorderRadius = makeBorderRadius(node);
 
     // modify the circle's shape when type is ellipse
-    const decorationShape: BoxShape = node instanceof ReflectEllipseNode ? BoxShape.circle : undefined;
+    const decorationShape: BoxShape = node instanceof ReflectEllipseNode ? BoxShape.circle as Snippet : undefined
 
     // generate the decoration, or just the backgroundColor when color is SOLID.
     const isNotSolid = decorationBorder || decorationShape || decorationBorder || decorationBorderRadius || decorationBackground
@@ -26,7 +27,7 @@ export function makeBoxDecoration(node: ReflectRectangleNode | ReflectEllipseNod
             shape: decorationShape,
             image: decorationBackground instanceof ImageProvider ? new DecorationImage({
                 image: decorationBackground,
-                fit: BoxFit.cover
+                fit: BoxFit.cover as Snippet
             }) : undefined,
             border: decorationBorder,
             boxShadow: decorationBoxShadow,

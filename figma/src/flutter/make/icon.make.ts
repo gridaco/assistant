@@ -1,16 +1,35 @@
-import { ReflectDefaultShapeMixin, ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes"
-import { Icon, Icons } from "@bridged.xyz/flutter-builder/lib"
+import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes"
+import { BoxFit, Icon, Icons, Image } from "@bridged.xyz/flutter-builder/lib"
 import { Snippet } from "@bridged.xyz/flutter-builder/lib/builder/buildable-tree"
+import { IconData } from "@bridged.xyz/flutter-builder/lib/widgets/icon-data"
 import { makeColor } from "."
+import { interpretIcon } from "../interpreter/icon.interpreter"
 
 
-export function makePlaceholderIcon(node: ReflectSceneNode): Icon {
-    let fills = 'fills' in node ? node.primaryFill : undefined;
+export function makeDynamicIcon(node: ReflectSceneNode): Icon | Image {
+    const iconContent = interpretIcon(node)
+    if (iconContent instanceof IconData) {
+        return makeIcon(node, iconContent)
+    } else {
+        return Image.network(iconContent.url, {
+            width: node.width,
+            height: node.height,
+            fit: BoxFit.cover as Snippet
+        }).addComment(`FIXME: Check your design. this is an icon of node ${node.toString()}. we couldn't any matching flutter native icon, so we uploaded the asset to the cloud, load from it.`)
+    }
+}
 
-    return new Icon(Snippet.fromStatic('Icons.add'), {
+export function makeIcon(node: ReflectSceneNode, icon: IconData) {
+    let fills = node.primaryFill
+
+    return new Icon(icon, {
         size: node.width,
         color: makeColor(fills)
     })
+}
+
+export function makePlaceholderIcon(node: ReflectSceneNode): Icon {
+    return makeIcon(node, Snippet.fromStatic('Icons.add'))
 }
 
 /**

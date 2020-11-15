@@ -34,6 +34,8 @@ showUI()
 
 async function run() {
 
+    console.clear()
+    console.warn('log cleared. optimized for new build')
     console.log("selection", figma.currentPage.selection)
     try {
         console.log("constraints",

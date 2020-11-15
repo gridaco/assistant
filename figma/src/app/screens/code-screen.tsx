@@ -41,7 +41,6 @@ export class CodeScreen extends React.Component<any, State> {
                 const app = format(msg.data.app);
                 const code = format(msg.data.code);
                 const widget = msg.data.widget
-                console.log('widget', widget)
                 this.setState((state, props) => {
                     return { code: code, widget: widget, app: app };
                 });
