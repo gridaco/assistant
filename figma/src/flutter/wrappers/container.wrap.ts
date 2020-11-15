@@ -8,11 +8,8 @@ import {
 import { makeEdgeInsets } from "../make";
 import { nearestValue } from "../../utils/convert";
 import { Container, Widget, EdgeInsetsGeometry, Padding, Alignment, AlignmentGeometry, Color, BoxDecoration, LinearGradient, Gradient, BoxShape, ImageProvider, DecorationImage, BoxFit } from "@bridged.xyz/flutter-builder/lib"
-import { makeBorder, makeColorFromRGBO, makeBoxShadow, makeBorderRadius } from "../make";
 import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib/pixels";
-import { interpretGradient } from "../interpreter/gradient.interpret";
-import { interpretImageFills } from "../interpreter/image.interpret";
-import { retrieveFill } from "@bridged.xyz/design-sdk/lib/utils";
+import { makeBoxDecoration } from "../make/box-decoration.make";
 
 
 
@@ -61,49 +58,6 @@ export function wrapWithContainer(node: ReflectRectangleNode | ReflectEllipseNod
   } else {
     return child;
   }
-}
-
-function makeBoxDecoration(node: ReflectRectangleNode | ReflectEllipseNode | ReflectFrameNode): BoxDecoration | Color {
-  const decorationBackground = makeBoxDecorationFill(node.fills);
-  const decorationBorder = makeBorder(node);
-  const decorationBoxShadow = makeBoxShadow(node);
-  const decorationBorderRadius = makeBorderRadius(node);
-
-  // modify the circle's shape when type is ellipse
-  const decorationShape: BoxShape = node instanceof ReflectEllipseNode ? BoxShape.circle : undefined;
-
-  // generate the decoration, or just the backgroundColor when color is SOLID.
-  const isNotSolid = decorationBorder || decorationShape || decorationBorder || decorationBorderRadius || decorationBackground
-
-  return isNotSolid
-    ? new BoxDecoration({
-      borderRadius: decorationBorderRadius,
-      shape: decorationShape,
-      image: decorationBackground instanceof ImageProvider ? new DecorationImage({
-        image: decorationBackground,
-        fit: BoxFit.cover
-      }) : undefined,
-      border: decorationBorder,
-      boxShadow: decorationBoxShadow,
-      color: decorationBackground instanceof Color ? decorationBackground as Color : undefined,
-      gradient: decorationBackground instanceof Gradient ? decorationBackground as Gradient : undefined
-    })
-    : decorationBackground instanceof Color ? decorationBackground as Color : undefined
-}
-
-
-export function makeBoxDecorationFill(fills: ReadonlyArray<Paint>): Gradient | Color | ImageProvider {
-  const fill = retrieveFill(fills);
-
-  if (fill?.type === "SOLID") {
-    const opacity = fill.opacity ?? 1.0;
-    return makeColorFromRGBO(fill.color, opacity)
-  } else if (fill?.type === "GRADIENT_LINEAR") {
-    return interpretGradient(fill)
-  } else if (fill?.type == "IMAGE") {
-    return interpretImageFills(fill)
-  }
-  return undefined;
 }
 
 

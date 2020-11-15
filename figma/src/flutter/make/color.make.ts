@@ -1,5 +1,5 @@
 import { retrieveFill } from "@bridged.xyz/design-sdk/lib/utils";
-import { Color } from "@bridged.xyz/flutter-builder/lib";
+import { Color, Colors } from "@bridged.xyz/flutter-builder/lib";
 import { rgbTo8hex } from "@reflect.bridged.xyz/uiutils/lib";
 
 /**
@@ -20,18 +20,19 @@ export function makeColor(fills: ReadonlyArray<Paint> | Paint): Color | undefine
 
 export function makeColorFromRGBO(color: RGB, opacity: number): Color {
     try {
-        if (color.r + color.g + color.b === 0 && opacity === 1) {
-            return Color.fromHex("#000000")
-            // TOOD - change with return Colors.black
+        if (color.r + color.g + color.b === 0 && opacity === 0) {
+            return Colors.transparent
         }
-
+        if (color.r + color.g + color.b === 0 && opacity === 1) {
+            return Colors.black;
+        }
         if (color.r + color.g + color.b === 3 && opacity === 1) {
-            return Color.fromHex("#FFFFFFFF")
-            // TOOD - change with  return Colors.white;
+            return Colors.white
         }
 
         return Color.fromHex(rgbTo8hex(color, opacity));
     } catch (e) {
+        console.error(`error while converting color to rgba color:${color}, opacity:${opacity}`, e)
         return
     }
 }
