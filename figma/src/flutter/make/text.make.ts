@@ -48,11 +48,20 @@ export function makeText(node: ReflectTextNode): Text {
 
 
 function escapeDartString(text: string): string {
+
+    console.log(text, text.replace('\n', '\\n'))
+
     // \ -> \\
     text = text.split("\\").join("\\\\");
 
     // \n -> \\n
     text = text.split("\n").join("\\n");
+
+    // \r -> \\n
+    text = text.split("\r").join("\\r");
+
+    // \t -> \\t
+    text = text.split("\t").join("\\t");
 
     // $ -> \$''"
     text = text.split('$').join('\\$');

@@ -9,25 +9,32 @@ import {
 } from "@bridged.xyz/design-sdk/lib/nodes";
 import { TextBuilder, WidgetBuilder } from "./builders";
 import { mostFrequent } from "../utils/array-utils";
-import { MainAxisSize, CrossAxisAlignment, Column, Row, SizedBox, Widget, Stack } from "@bridged.xyz/flutter-builder/lib"
+import { MainAxisSize, CrossAxisAlignment, Column, Row, SizedBox, Widget, Stack, Size, MediaQuery } from "@bridged.xyz/flutter-builder/lib"
 import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib/pixels";
 import { makeSafelyAsList, makeSafelyAsStackList } from "./utils/make-as-safe-list";
 import { makeDivider } from "./make/divider.make";
 import { detectIfButton } from "@reflect.bridged.xyz/detection/lib/button.detection";
 import { makeButton } from "./make/button.make";
 import { detectIfIcon } from "@reflect.bridged.xyz/detection/lib/icon.detection";
-import { makeMaterialIcon } from "./make/icon.make";
+import { makeDynamicIcon } from "./make/icon.make";
+import { detectIfIllust } from "@reflect.bridged.xyz/detection/lib/illust.detection";
+import { makeIllustImage } from "./make/image.make";
+import { notEmpty } from "@bridged.xyz/design-sdk/lib/utils";
+import { makeRowColumn } from "./make/column-row.make";
+import { makeStack } from "./make/stack.make";
+import { Snippet } from "@bridged.xyz/flutter-builder/lib/builder/buildable-tree";
 
 
 let parentId = "";
 const DEFAULT_COMPONENT_NAME = "Component";
-
+export let currentBuildingNodeId: string
 
 interface AppBuildResult {
   widget: Widget,
   scrollable: boolean
 }
 
+// the target root widget tree
 let targetId: string;
 let scrollable: boolean
 export function buildApp(sceneNode: ReflectSceneNode): AppBuildResult {
@@ -42,6 +49,7 @@ export function buildApp(sceneNode: ReflectSceneNode): AppBuildResult {
 export function generateWidget(sceneNode: ReflectSceneNode,
   parentIdSrc: string = ""): Widget {
   parentId = parentIdSrc;
+  setCurrentNode(sceneNode)
 
   let result = flutterWidgetGenerator(sceneNode);
 
@@ -54,14 +62,20 @@ export function generateWidget(sceneNode: ReflectSceneNode,
 
 
 function flutterWidgetGenerator(sceneNode: ReadonlyArray<ReflectSceneNode> | ReflectSceneNode): Array<Widget> | Widget {
-  if (Array.isArray(sceneNode)) {
-    let widgets: Array<Widget> = [];
-
-    // console.log("flutterWidgetGenerator:: targetting list of nodes")
+  if (Array.isArray(sceneNode) && sceneNode.length > 0) {
+    // explicit type casting
     sceneNode = sceneNode as ReadonlyArray<ReflectSceneNode>
+
+    // count of input nodes
     const sceneLen = sceneNode.length;
 
+    // initialize output widgets array
+    let widgets: Array<Widget> = [];
+
+    console.log(`widget generator:: targetting list of nodes children of ${sceneNode[0].parent?.toString()}. total count of ${sceneLen}`)
+
     sceneNode.forEach((node, index) => {
+      setCurrentNode(node)
       widgets.push(
         handleNode(node)
       )
@@ -72,8 +86,8 @@ function flutterWidgetGenerator(sceneNode: ReadonlyArray<ReflectSceneNode> | Ref
       );
     });
 
-    // filter undefined widgets
-    widgets = widgets.filter((w) => w != undefined)
+    // filter empty widgets
+    widgets = widgets.filter(w => notEmpty(w))
     if (widgets.length == 1) {
       // console.log("flutterWidgetGenerator complete", widgets[0])
       return widgets[0]
@@ -82,16 +96,18 @@ function flutterWidgetGenerator(sceneNode: ReadonlyArray<ReflectSceneNode> | Ref
     return widgets
 
   } else {
-
-    // console.log("flutterWidgetGenerator:: targetting single node")
-    // console.log(sceneNode)
+    // explicit type casting
     sceneNode = sceneNode as ReflectSceneNode
+    console.log(`widget generator:: targetting single node ${sceneNode.toString()} child of ${sceneNode.parent?.toString()}`)
+
     return handleNode(sceneNode)
 
   }
 
 
   function handleNode(node: ReflectSceneNode): Widget {
+    setCurrentNode(node)
+    console.log(`starting handling node ${node.toString()} type of ${node.type}`)
 
     const buttonDetectionResult = detectIfButton(node)
     if (buttonDetectionResult.result) {
@@ -103,19 +119,26 @@ function flutterWidgetGenerator(sceneNode: ReadonlyArray<ReflectSceneNode> | Ref
     const iconDetectionResult = detectIfIcon(node)
     if (iconDetectionResult.result) {
       console.log('this node is detected as an icon.', node.name)
-      return makeMaterialIcon('add')
+      return makeDynamicIcon(node)
     }
 
-    // console.log(`starting handling node of ${node.name} type of ${node.type}`)
+    const illustDetectionResult = detectIfIllust(node)
+    if (illustDetectionResult.result) {
+      console.log('this node is detected as an illust.', node.name)
+      return makeIllustImage(node)
+    }
+
     if (node instanceof ReflectRectangleNode || node instanceof ReflectEllipseNode) {
+      console.log(`this node ${node.toString()} is a rect || ellipse. making it as a empty container`)
       return flutterContainer(node, undefined)
     }
     else if (node instanceof ReflectLineNode) {
-      console.warn('handling line node')
+      console.log(`this node ${node.toString()} is a line. making it as a divider`)
       return makeDivider(node)
     }
     else if (node instanceof ReflectGroupNode) {
-      return flutterGroup(node)
+      console.log(`this node ${node.toString()} is a group. handling with group handler`)
+      return flutterGroupHandler(node)
     } else if (node instanceof ReflectFrameNode) {
       return flutterFrame(node)
     } else if (node instanceof ReflectTextNode) {
@@ -124,14 +147,16 @@ function flutterWidgetGenerator(sceneNode: ReadonlyArray<ReflectSceneNode> | Ref
   }
 }
 
-function flutterGroup(node: ReflectGroupNode): Widget {
+function setCurrentNode(node: { id: string }) {
+  // TODO - move this to build process's instance
+  currentBuildingNodeId = node.id
+}
+
+function flutterGroupHandler(node: ReflectGroupNode): Widget {
+  console.log(`group handler :: making ${node} as a stack with its children count of ${node.childrenCount}`)
   return flutterContainer(
     node,
-    new Stack({
-      children: makeSafelyAsStackList(
-        flutterWidgetGenerator(node.children)
-      )
-    })
+    makeStack(flutterWidgetGenerator(node.children) as [])
   );
 }
 
@@ -139,8 +164,15 @@ function flutterContainer(node: ReflectFrameNode | ReflectGroupNode | ReflectRec
   child?: Widget): Widget {
   const builder = new WidgetBuilder({ child: child, node: node });
 
+  const isBuildRoot = targetId === node.id
+  const sizeOptions = isBuildRoot ? {
+    size: new Size(MediaQuery.of().size.width, undefined)
+      .addComment('container building for target root node. making the width with "MediaQuery.of().size.width"')
+  } : undefined
+
+
   builder
-    .wrapWithContainer()
+    .wrapWithContainer(sizeOptions)
     .blendWithAttributes()
     .positionInParent(parentId);
   return builder.child;
@@ -161,6 +193,7 @@ function flutterText(node: ReflectTextNode): Widget {
 }
 
 function flutterFrame(node: ReflectFrameNode): Widget {
+  console.log(`start handling frame node ${node.toString()} and its children`)
   const children = flutterWidgetGenerator(node.children);
 
   if (node.children.length === 1) {
@@ -190,64 +223,9 @@ function flutterFrame(node: ReflectFrameNode): Widget {
 }
 
 
-type RowOrColumn = "Row" | "Column"
-function makeRowColumn(node: ReflectFrameNode, children: Array<Widget>): Widget {
-  // ROW or COLUMN
-  const rowOrColumn: RowOrColumn = node.layoutMode === "HORIZONTAL" ? "Row" : "Column";
-
-
-  const mainAxisSize: MainAxisSize = MainAxisSize.min
-
-  // safely make childeren as list type
-  children = makeSafelyAsList<Widget>(children)
-
-  switch (rowOrColumn) {
-    case "Row":
-      return new Row({
-        children: children,
-        mainAxisSize: mainAxisSize,
-      })
-    case "Column":
-      // get the most frequent layoutAlign of children, and prioritize it by accepting 'MIN' first.
-      // why? -> converting two MIN nodes to autolayout converts longer node as a MIN. and cannot be changed by figma's userinterface.
-      const mostFreq = mostFrequent(node.children.map((d) => d.layoutAlign), ['MIN', 'MAX', 'STRETCH', 'CENTER']);
-      // console.log(`mostFreq lyaout of children under ${node.name}`, mostFreq)
-
-      // FIXME - this is not working with auto layout.
-      // E.g. autolayout to left, the layoutAlign of the child text will be set to CENTER, Not MIN. wich is not a bug, but need extra logics for handling them.
-
-      const crossAxisAlignment = makeCrossAxisAlignment(mostFreq)
-      return new Column({
-        children: children,
-        mainAxisSize: mainAxisSize,
-        crossAxisAlignment: crossAxisAlignment
-      })
-  }
-}
-
-/**
- * returns CrossAxisAlignment by layoutAlign
- * @param layoutAlign 
- */
-function makeCrossAxisAlignment(layoutAlign: string): CrossAxisAlignment {
-  switch (layoutAlign) {
-    case "MIN":
-      return CrossAxisAlignment.start
-    case "MAX":
-      return CrossAxisAlignment.end
-    case "STRETCH":
-      return CrossAxisAlignment.stretch
-    case "CENTER":
-      return CrossAxisAlignment.center
-    default:
-      return CrossAxisAlignment.center
-  }
-}
-
-
 function addSpacingIfNeeded(node: ReflectSceneNode,
   index: number,
-  length: number): Widget {
+  length: number): Widget | undefined {
   if (node.parent instanceof ReflectFrameNode && node.parent.layoutMode !== "NONE") {
     // check if itemSpacing is set and if it isn't the last value.
     // Don't add the SizedBox at last value. In Figma, itemSpacing CAN be negative; here it can't.

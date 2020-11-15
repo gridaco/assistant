@@ -1,11 +1,12 @@
-import { rgbTo8hex } from "../../utils/color";
 import { convertToSize } from "../convert/size.convert";
 import {
   ReflectRectangleNode,
   ReflectEllipseNode,
   ReflectFrameNode,
-  ReflectSceneNode
+  ReflectSceneNode,
+  mixed
 } from "@bridged.xyz/design-sdk/lib/nodes/types";
+import { rgbTo8hex } from "@reflect.bridged.xyz/uiutils/lib"
 import { BorderRadiusGeometry, ShapeBorder, Colors, Color, Container, Widget } from "@bridged.xyz/flutter-builder/lib";
 import { makeColor } from "../make/color.make";
 import { makeShape as makeShape } from "../make/shape.make";
@@ -65,7 +66,7 @@ function materialShape(node: ReflectRectangleNode | ReflectEllipseNode | Reflect
 function getClipping(node: ReflectSceneNode): string {
   let clip = false;
   if (node instanceof ReflectFrameNode) {
-    if (node.cornerRadius && node.cornerRadius !== 0) {
+    if (node.cornerRadius != mixed && node.cornerRadius !== 0) {
       clip = node.clipsContent;
     }
   }

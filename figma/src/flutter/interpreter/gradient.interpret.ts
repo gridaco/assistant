@@ -9,13 +9,14 @@ export function interpretGradient(gradient: GradientPaint): Gradient {
     // https://www.figma.com/plugin-docs/api/Transform/
     // https://www.mathworks.com/discovery/affine-transformation.html
     const direction = gradientDirection(gradientAngle(gradient));
+    console.log('start making gradient with', gradient.gradientStops)
 
     let stopPoints: Array<number> = []
     const colors: Array<Color> = []
     for (const stop of gradient.gradientStops) {
         const color = makeColorFromRGBO(stop.color, stop.color.a)
-        console.log(color)
         colors.push(color)
+        console.log('color for gradient: ', color)
 
         // stop point as rounded .00 number
         stopPoints.push(roundNumber(stop.position))

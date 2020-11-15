@@ -1,6 +1,6 @@
 import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
 import { retrieveFill } from "@bridged.xyz/design-sdk/lib/utils";
-import { rgbTo6hex } from "../../utils/color";
+import { rgbTo6hex, calculateContrastRatio } from "@reflect.bridged.xyz/uiutils/lib";
 
 export function retrieveFlutterColors(sceneNode: Array<ReflectSceneNode>): Array<contrastedColor> {
   const selectedChildren = deepFlatten(sceneNode);
@@ -43,7 +43,7 @@ type contrastedColor = {
   contrastBlack: number;
 };
 
-function convertColor(fills: ReadonlyArray<Paint> | PluginAPI["mixed"]): contrastedColor | null {
+function convertColor(fills: ReadonlyArray<Paint>): contrastedColor | null {
   // kind can be text, bg, border...
   // [when testing] fills can be undefined
   const fill = retrieveFill(fills);
@@ -71,28 +71,8 @@ function convertColor(fills: ReadonlyArray<Paint> | PluginAPI["mixed"]): contras
   return null;
 }
 
-// from https://dev.to/alvaromontoro/building-your-own-color-contrast-checker-4j7o
-function calculateContrastRatio(color1: RGB, color2: RGB) {
-  const color1luminance = luminance(color1);
-  const color2luminance = luminance(color2);
 
-  const contrast =
-    color1luminance > color2luminance
-      ? (color2luminance + 0.05) / (color1luminance + 0.05)
-      : (color1luminance + 0.05) / (color2luminance + 0.05);
-
-  return 1 / contrast;
-}
-
-function luminance(color: RGB) {
-  const a = [color.r * 255, color.g * 255, color.b * 255].map(function (v) {
-    v /= 255;
-    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
-  });
-  return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
-}
-
-function deepFlatten(arr: Array<ReflectSceneNode>): Array<ReflectSceneNode> {
+export function deepFlatten(arr: Array<ReflectSceneNode>): Array<ReflectSceneNode> {
   let result: Array<ReflectSceneNode> = [];
 
   arr.forEach((d) => {

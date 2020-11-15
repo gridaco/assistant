@@ -4,7 +4,7 @@ import {
     ReflectFrameNode, ReflectGroupNode, ReflectTextNode
 } from "@bridged.xyz/design-sdk/lib/nodes/types";
 
-import { Widget } from "@bridged.xyz/flutter-builder/lib";
+import { double, Size, Widget } from "@bridged.xyz/flutter-builder/lib";
 import { wrapWithContainer } from "../wrappers/container.wrap";
 import { wrapWithOpacity } from "../wrappers/opacity.wrap";
 import { wrapWithPositioned } from "../wrappers/positioned.wrap";
@@ -23,7 +23,9 @@ export class WidgetBuilder {
         this.node = args.node;
     }
 
-    wrapWithContainer(): this {
+    wrapWithContainer(options?: {
+        size: Size
+    }): this {
         // do not wrap if, "text"
         if (this.node instanceof ReflectTextNode) {
             return this;
@@ -31,7 +33,7 @@ export class WidgetBuilder {
 
         // if child is in array form, don't wrap with container.
         if (!Array.isArray(this.child)) {
-            this.child = wrapWithContainer(this.node, this.child);
+            this.child = wrapWithContainer(this.node, this.child, options);
         }
         return this;
     }

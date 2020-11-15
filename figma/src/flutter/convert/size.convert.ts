@@ -1,10 +1,7 @@
 import { nodeWidthHeight } from "../../figma-utils/node-width-height";
 import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
+import { Size } from "@bridged.xyz/flutter-builder/lib";
 
-export type Size = {
-  w: number
-  h: number
-}
 
 export function convertToSize(node: ReflectSceneNode): Size {
   const size = nodeWidthHeight(node, false);
@@ -17,8 +14,5 @@ export function convertToSize(node: ReflectSceneNode): Size {
     ? size.height
     : undefined;
 
-  return {
-    w: propWidth,
-    h: propHeight
-  }
+  return new Size(propWidth, propHeight)
 }

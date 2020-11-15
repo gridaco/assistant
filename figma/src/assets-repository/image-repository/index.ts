@@ -1,6 +1,4 @@
-// host images that target node holds
-
-// import { upload } from "@bridged.xyz/client-sdk/lib/hosting";
+// hold images that target node holds
 
 export class ImageRepositories {
     static repositories: Map<string, ImageRepository> = new Map<string, ImageRepository>();
@@ -10,6 +8,7 @@ export class ImageRepositories {
     static get current(): ImageRepository {
         if (!this._current) {
             const buildId = `${Date.now()}`
+            console.info('initializing new image repository', buildId)
             this._current = new ImageRepository(buildId)
         }
         return this._current;
@@ -50,6 +49,26 @@ export class ImageRepositories {
         return imageData
     }
 
+
+    /**
+     * 
+     * @param id image node's id
+     */
+    static async fetchDataById(id: string): Promise<Uint8Array> {
+        const node = figma.getNodeById(id)
+        if (node.type == 'DOCUMENT') {
+            return
+        } else {
+            return await node.exportAsync({
+                format: "PNG",
+                constraint: {
+                    value: 300,
+                    type: "WIDTH"
+                }
+            })
+        }
+    }
+
     static isImageHashRegistered(hash: string): boolean {
         return this.imageHashMap.has(hash)
     }
@@ -69,6 +88,14 @@ export abstract class TemporaryAsset<T> {
     abstract fetchData(): T | Promise<T>
 }
 
+export interface ImageAsset {
+    data: Uint8Array
+    key: string
+    url: string
+}
+
+
+
 export class TemporaryImageAsset extends TemporaryAsset<Uint8Array>{
 
     data?: Uint8Array
@@ -81,9 +108,7 @@ export class TemporaryImageAsset extends TemporaryAsset<Uint8Array>{
     }
 
     makeUrl(key: string): string {
-        // TODO -- replace this url as real one.
-        const DEV_TEST_IMAGE = 'https://bridged-service-static.s3-us-west-1.amazonaws.com/branding/bridged-logo-512.png'
-        return DEV_TEST_IMAGE
+        return buildTempImageAssetUrl(key)
     }
 
     async fetchData(): Promise<Uint8Array> {
@@ -91,9 +116,17 @@ export class TemporaryImageAsset extends TemporaryAsset<Uint8Array>{
             // if data exists, return it.
             return this.data
         }
-        return await ImageRepositories.fetchDataByHash(this.hash)
+        // return await ImageRepositories.fetchDataByHash(this.hash)
+        return await ImageRepositories.fetchDataById(this.key)
     }
 }
+
+// interface for sending this as ui.postmessage
+export interface TransportableImageRepository {
+    buildId: string
+    images: ReadonlyArray<ImageAsset>
+}
+
 
 
 export class ImageRepository {
@@ -116,29 +149,38 @@ export class ImageRepository {
             // register image to repository images
             const newImage = new TemporaryImageAsset(props.key, props.hash);
             this.images[props.key] = newImage
+            console.info(`registered image of key ${props.key} to image repository`, this.images)
             return newImage
         }
     }
 
-    async hostImages() {
-        // upload all images async
-        const jobs: Array<Promise<any>> = []
-        for (const key of this.images.keys()) {
-            jobs.push(this.hostImage(key))
+    async makeTransportable(): Promise<TransportableImageRepository> {
+        const imageAssets: Array<ImageAsset> = []
+        const jobs: Array<Promise<Uint8Array>> = []
+        const keys = Object.keys(this.images)
+        for (const key of keys) {
+            const asset: TemporaryImageAsset = this.images[key]
+            const job = asset.fetchData()
+            jobs.push(job)
         }
-        // wait for all images to be fetched from design. and uploaded to hosting server
-        await Promise.all<Uint8Array>(jobs)
-    }
 
-    async hostImage(key: string) {
-        const imageAsset: TemporaryImageAsset = this.images[key]
-        const imageData = await imageAsset.fetchData()
+        const rawImageDatas = await Promise.all(jobs)
+        rawImageDatas.forEach((v, i, a) => {
+            const key = keys[i]
+            imageAssets.push({
+                key: key,
+                data: v,
+                url: buildTempImageAssetUrl(key)
+            })
+        })
 
-        // TODO change to accept preserved-upload
-        // const uploaded = await upload({
-        //     file: imageData,
-        //     name: key,
-        // })
-        // return uploaded.url
+        return {
+            buildId: this.buildId,
+            images: imageAssets
+        }
     }
+}
+
+function buildTempImageAssetUrl(key: string): string {
+    return `bridged://url-reservation/image-hosting/${key}`
 }

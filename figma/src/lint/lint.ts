@@ -23,7 +23,7 @@ export function runLints(node: ReflectSceneNode) {
 
     // test
     const detected = detect(node)
-    console.warn(detected)
+    console.warn('detected', detected)
     // test
 
     return feedbacks
