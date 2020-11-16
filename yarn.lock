@@ -2900,6 +2900,11 @@ cocoascript-class@^0.1.2:
   resolved "https://registry.yarnpkg.com/cocoascript-class/-/cocoascript-class-0.1.2.tgz#dab25f20389946d9986c1812b88ac3783eec42d3"
   integrity sha1-2rJfIDiZRtmYbBgSuIrDeD7sQtM=
 
+coli@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/coli/-/coli-0.0.1.tgz#039d81bb8a45fc53ac51a640e4e8e9f3db6d3acf"
+  integrity sha512-0H1UGi0qix1aRTbAT/jP/ZtqrErb0gIWzSR5UXCnbBwL6YXkzXhiJ9M/gFhKLqjBuedCPk/wk1ev0ws5HPPYNg==
+
 collect-v8-coverage@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/collect-v8-coverage/-/collect-v8-coverage-1.0.1.tgz#cc2c8e94fc18bbdffe64d6534570c8a673b27f59"
