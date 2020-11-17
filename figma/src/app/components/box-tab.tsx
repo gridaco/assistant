@@ -1,5 +1,5 @@
+import Button from '@material-ui/core/Button'
 import * as React from 'react'
-import { EK_GENERATED_CODE_PLAIN, EK_PREVIEW_SOURCE } from '../constants/ek.constant'
 import { BoxDirectoryInput } from './box-directory-input'
 
 
@@ -34,12 +34,12 @@ export class BoxTab extends React.Component {
                 <h6>Box section start</h6>
                 <p>currently selected component is... { }</p>
                 <div />
-                <button onClick={this.onClickOpenStorybook}>
+                <Button onClick={this.onClickOpenStorybook}>
                     open in storybook
-                </button>
-                <button onClick={this.onClickOpenGithub}>
+                </Button>
+                <Button onClick={this.onClickOpenGithub}>
                     open in github
-                </button>
+                </Button>
                 <BoxDirectoryInput />
                 <div />
                 <h6>Box section end</h6>

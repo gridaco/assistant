@@ -11,6 +11,7 @@ import { EK_COPIED } from '../constants/ek.constant';
 import { quickLook } from '../../quicklook';
 import { Widget } from '@bridged.xyz/flutter-builder/lib';
 import { notify } from '@bridged.xyz/design-sdk/lib/figma';
+import Button from '@material-ui/core/Button';
 dartLang(Prism);
 // endregion
 
@@ -63,8 +64,8 @@ export default class Highlight extends React.Component<Props, State> {
     render() {
         return <code>
             <div>
-                <button className="copy" onClick={this.onCopyClicked}>copy code</button>
-                <button className="quick look" disabled={this.state.isLaunchingConsole} onClick={this.onQuickLookClicked}>{this.state.isLaunchingConsole ? 'launching..' : 'quick look'}</button>
+                <Button className="sticky-actions" onClick={this.onCopyClicked}>copy code</Button>
+                <Button className="sticky-actions" disabled={this.state.isLaunchingConsole} onClick={this.onQuickLookClicked}>{this.state.isLaunchingConsole ? 'launching..' : 'quick look'}</Button>
             </div>
             <PrismHighlight {...defaultProps} Prism={Prism} code={this.props.code} language={this.props.language}>
                 {({ className, style, tokens, getLineProps, getTokenProps }) => (
