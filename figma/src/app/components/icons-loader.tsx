@@ -7,6 +7,7 @@ import GridListTile from "@material-ui/core/GridListTile";
 import { EK_CREATE_ICON } from "../constants/ek.constant";
 import { loadSvg, makeIconUrl } from "../../assets-repository/icons-generator";
 import TextField from "@material-ui/core/TextField";
+import LinearProgress from "@material-ui/core/LinearProgress";
 const CONFIG_JSON_S3 = "https://reflect-icons.s3-us-west-1.amazonaws.com/material/config.json"
 
 
@@ -41,7 +42,7 @@ export function IconsLoader() {
         }).slice(0, MAX_PER_LOAD)
         list = <IconList icons={defaultIcons} />
     } else {
-        list = <p>loading configuration...</p>
+        list = <LinearProgress />
     }
 
     return (

@@ -58,14 +58,14 @@ export default class Highlight extends React.Component<Props, State> {
             setLoadingState(false)
             notify(parent, "compile failed. view console for details.", 2)
         })
-
     }
 
     render() {
         return <code>
             <div>
-                <Button className="sticky-actions" onClick={this.onCopyClicked}>copy code</Button>
-                <Button className="sticky-actions" disabled={this.state.isLaunchingConsole} onClick={this.onQuickLookClicked}>{this.state.isLaunchingConsole ? 'launching..' : 'quick look'}</Button>
+                <div style={{ height: "24px" }} />
+                <Button variant="outlined" size="medium" className="sticky-actions" onClick={this.onCopyClicked}>copy code</Button>
+                <Button variant="outlined" size="medium" className="sticky-actions" disabled={this.state.isLaunchingConsole} onClick={this.onQuickLookClicked}>{this.state.isLaunchingConsole ? 'launching..' : 'quick look'}</Button>
             </div>
             <PrismHighlight {...defaultProps} Prism={Prism} code={this.props.code} language={this.props.language}>
                 {({ className, style, tokens, getLineProps, getTokenProps }) => (

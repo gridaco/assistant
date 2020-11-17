@@ -15,7 +15,9 @@ export function makeDynamicIcon(node: ReflectSceneNode): Icon | Image {
             width: node.width,
             height: node.height,
             fit: BoxFit.cover as Snippet
-        }).addComment(`FIXME: Check your design. this is an icon of node ${node.toString()}. we couldn't any matching flutter native icon, so we uploaded the asset to the cloud, load from it.`)
+        })
+            .addComment('Detected as Icon')
+            .addComment(`FIXME: Check your design. this is an icon of node ${node.toString()}. we couldn't any matching flutter native icon, so we uploaded the asset to the cloud, load from it.`)
     }
 }
 

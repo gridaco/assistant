@@ -14,5 +14,6 @@ pre {
 .sticky-actions {
   position: sticky;
   right: 4px;
+  margin-right: 16px;
   top: 4px;
 }
