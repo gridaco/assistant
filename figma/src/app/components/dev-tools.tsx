@@ -1,4 +1,5 @@
 import * as React from "react";
+import { IconsLoader } from "./icons-loader";
 
 
 
@@ -34,6 +35,7 @@ export class DevTools extends React.Component {
             <button onClick={this.hideAllOnlyText}>hide only text</button>
             <button onClick={this.onClickRandomize}>randomize</button>
             <button onClick={this.onClickOpenConsole}>open in console</button>
+            <div><IconsLoader /></div>
         </div>
     }
 }
