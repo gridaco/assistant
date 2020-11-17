@@ -14,5 +14,10 @@
 	"scripts": {
 		"figma": "yarn workspace figma run webpack:watch",
 		"sketch": "yarn workspace sketch run render"
+	},
+	  "collective": {
+	  "type": "opencollective",
+	  "url": "https://opencollective.com/bridged",
+	  "logo": "https://opencollective.com/bridged/logo.txt"
 	}
 }

@@ -18,5 +18,5 @@ export function makeIllustImage(node: ReflectSceneNode): Image {
         width: node.width,
         height: node.height,
         fit: BoxFit.cover as Snippet
-    })
+    }).addComment(`image content of ${node.toString()}`)
 }
