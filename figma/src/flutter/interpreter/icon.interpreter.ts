@@ -6,8 +6,11 @@ import { ImageRepositories, TemporaryImageAsset } from "../../assets-repository"
 export function interpretIcon(node: ReflectSceneNode): IconData | TemporaryImageAsset {
 
     try {
-        const name = node.name.match(/(?<=mdi_)(.*?)*/g)[0]
-        console.log('mdi matching name found', name)
+        // regex is valid, but does not work at this point. inspect this, make it live again.
+        // const re = /(?<=mdi_)(.*?)*/g // finds **mdi_** pattern
+        const splits = node.name.split('mdi_')
+        const name = splits[splits.length - 1]
+        console.log(`mdi matching name found, ${JSON.stringify(name)}`)
         const mdicon = Icons.fromName(name)
         return mdicon
     } catch (e) {

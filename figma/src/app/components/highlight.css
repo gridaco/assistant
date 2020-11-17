@@ -1,19 +1,19 @@
-
-code{
+code {
   width: max-content;
   height: auto;
 }
 
 
 pre {
-  margin-left:-16px;
+  margin-left: -16px;
   margin-right: -16px;
   padding: 8px;
   overflow: scroll;
 }
 
-.copy{
+.sticky-actions {
   position: sticky;
   right: 4px;
+  margin-right: 16px;
   top: 4px;
 }

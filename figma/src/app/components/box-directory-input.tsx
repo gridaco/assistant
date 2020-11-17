@@ -1,5 +1,6 @@
 import * as React from "react";
 import { ReactBoxSnippetGenerator } from "@bridged.xyz/box";
+import Button from "@material-ui/core/Button";
 
 function buildFolderSelector(): HTMLInputElement {
     const fileSelector = document.createElement('input');
@@ -57,7 +58,7 @@ export class BoxDirectoryInput extends React.Component {
     render() {
         return <>
             {/* <input type="file" name="file" multiple /> */}
-            <button onClick={this.handleFileSelect}>Select src dir</button>
+            <Button onClick={this.handleFileSelect}>Select src dir</Button>
         </>
     }
 }

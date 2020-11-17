@@ -3,10 +3,11 @@ import { buildApp } from "./flutter";
 import { retrieveFlutterColors } from "./flutter/utils/fetch-colors";
 import { hideAllExcept, hideAllOnly } from "./dev-tools/hide-all";
 import { runLints } from "./lint/lint";
-import { EK_COPIED, EK_FOCUS_REQUEST, EK_GENERATED_CODE_PLAIN, EK_IMAGE_ASSET_REPOSITORY_MAP, EK_LINT_FEEDBACK, EK_PREVIEW_SOURCE } from "./app/constants/ek.constant";
+import { EK_COPIED, EK_CREATE_ICON, EK_FOCUS_REQUEST, EK_GENERATED_CODE_PLAIN, EK_IMAGE_ASSET_REPOSITORY_MAP, EK_LINT_FEEDBACK, EK_PREVIEW_SOURCE } from "./app/constants/ek.constant";
 import { handleNotify } from "@bridged.xyz/design-sdk/lib/figma";
 import { makeApp } from "./flutter/make/app.make";
 import { ImageRepositories } from "./assets-repository";
+import { insertMaterialIcon } from "./assets-repository/icons-generator";
 
 
 let parentNodeId: string;
@@ -146,6 +147,7 @@ figma.on("selectionchange", () => {
 // efficient? No. Works? Yes.
 // todo pass data instead of relying in types
 figma.ui.onmessage = (msg) => {
+    console.log('event received', msg)
     handleNotify(msg)
     // region test
     if (msg.type === 'create-rectangles') {
@@ -167,6 +169,14 @@ figma.ui.onmessage = (msg) => {
         const target = figma.getNodeById(msg.data.id) as SceneNode
         figma.currentPage.selection = [target];
         figma.viewport.scrollAndZoomIntoView([target]);
+    }
+
+    else if (msg.type == EK_CREATE_ICON) {
+
+        const icon_key = msg.data.key
+        const svgData = msg.data.svg
+        const inserted = insertMaterialIcon(icon_key, svgData)
+        figma.viewport.scrollAndZoomIntoView([inserted])
     }
 
     else if (msg.type == "randomize-selection") {

@@ -1,4 +1,5 @@
 import { Widget } from "@bridged.xyz/flutter-builder/lib";
+import Button from "@material-ui/core/Button";
 import * as React from "react";
 import { TransportableImageRepository } from "../../assets-repository";
 import { ImageHostingRepository } from "../../assets-repository/hosting";
@@ -73,12 +74,8 @@ export class CodeScreen extends React.Component<any, State> {
         return <div>
             <Preview data={(this.state as any).previewImage} name={(this.state as any).name}></Preview>
             <Highlight language="dart" app={this.state.app} code={(this.state).code} widget={(this.state).widget} ></Highlight>
-            <button onClick={this.onClickReportIssue}>
-                report issue
-      </button>
-            <button onClick={this.onClickVisitWebsite}>
-                visit website
-      </button>
+            <Button onClick={this.onClickReportIssue}>report issue</Button>
+            <Button onClick={this.onClickVisitWebsite}>visit website</Button>
         </div>
     }
 }
