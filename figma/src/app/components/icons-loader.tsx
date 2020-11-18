@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react"
-import { IconConfig } from "@bridged.xyz/client-sdk/lib"
+import { IconConfig, loadSvg, makeIconUrl } from "@bridged.xyz/client-sdk/lib"
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import { EK_CREATE_ICON } from "../constants/ek.constant";
-import { loadSvg, makeIconUrl } from "../../assets-repository/icons-generator";
 import TextField from "@material-ui/core/TextField";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import CircularProgress from "@material-ui/core/CircularProgress";
 const CONFIG_JSON_S3 = "https://reflect-icons.s3-us-west-1.amazonaws.com/material/config.json"
 
 
@@ -113,9 +113,11 @@ function IconItem(props: {
     config: IconConfig
 }) {
     const { name, config } = props
+    const [downloading, setDownloading] = useState<boolean>(false)
 
     const onClick = () => {
         console.log(name, 'clicked')
+        setDownloading(true)
         loadSvg(name, config).then((s) => {
             console.log('postmessage', EK_CREATE_ICON)
             parent.postMessage({
@@ -127,16 +129,23 @@ function IconItem(props: {
                     }
                 }
             }, "*")
+        }).finally(() => {
+            setDownloading(false)
         })
     }
 
     return <div>
         <Tooltip title={`${name} (${config.variant})`}>
-            <IconButton aria-label="delete" onClick={onClick}>
-                <svg width="24" height="24">
-                    <image xlinkHref={makeIconUrl(name, config)} width="24" height="24" />
-                </svg>
+            <IconButton aria-label="delete" onClick={onClick} disabled={downloading}>
+                {
+                    downloading ?
+                        <CircularProgress size={24} /> :
+                        <svg width="24" height="24">
+                            <image xlinkHref={makeIconUrl(name, config)} width="24" height="24" />
+                        </svg>
+                }
             </IconButton>
         </Tooltip>
+
     </div>
 }
