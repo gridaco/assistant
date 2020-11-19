@@ -2900,6 +2900,11 @@ cocoascript-class@^0.1.2:
   resolved "https://registry.yarnpkg.com/cocoascript-class/-/cocoascript-class-0.1.2.tgz#dab25f20389946d9986c1812b88ac3783eec42d3"
   integrity sha1-2rJfIDiZRtmYbBgSuIrDeD7sQtM=
 
+coli@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/coli/-/coli-0.0.1.tgz#039d81bb8a45fc53ac51a640e4e8e9f3db6d3acf"
+  integrity sha512-0H1UGi0qix1aRTbAT/jP/ZtqrErb0gIWzSR5UXCnbBwL6YXkzXhiJ9M/gFhKLqjBuedCPk/wk1ev0ws5HPPYNg==
+
 collect-v8-coverage@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/collect-v8-coverage/-/collect-v8-coverage-1.0.1.tgz#cc2c8e94fc18bbdffe64d6534570c8a673b27f59"
@@ -3212,13 +3217,6 @@ cyclist@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
   integrity sha1-WW6WmP0MgOEgOMK4LW6xs1tiJNk=
-
-dart-services@^0.1.10:
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/dart-services/-/dart-services-0.1.10.tgz#a8713d7fad472c1f233f28df9e0b4d398c4d65b1"
-  integrity sha512-Kf+reIQv+/EEqciXlbGF19PMk76JzEY4jnWiWy0lILlNnsaf20GKUIRVlKzv5eJ/R6Gev/NBDbSAWWLBRLyOKA==
-  dependencies:
-    axios "^0.21.0"
 
 dart-services@^0.2.2:
   version "0.2.2"
@@ -8204,14 +8202,6 @@ uglify-js@3.4.x:
   dependencies:
     commander "~2.19.0"
     source-map "~0.6.1"
-
-uguu-api@^0.1.8:
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/uguu-api/-/uguu-api-0.1.8.tgz#509df18b4a6a7aa059f61eed1ec2778cd2b11f78"
-  integrity sha512-V15dAgiuaykeuAcJLYtOcqhAA8i0O+cJ7Sg3lQ4hal6m/SWhaFdZ+Hh5CjkQRcPIfuZqpqffhR08zTD1pOECzw==
-  dependencies:
-    axios "^0.21.0"
-    form-data "^3.0.0"
 
 unicode-canonical-property-names-ecmascript@^1.0.4:
   version "1.0.4"
