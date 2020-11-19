@@ -18,18 +18,3 @@ export function commonLineHeight(node: ReflectTextNode): number {
   return 0;
 }
 
-export function commonLetterSpacing(node: ReflectTextNode): number {
-  if (node.letterSpacing &&
-    Math.round(node.letterSpacing.value) !== 0) {
-    if (node.letterSpacing.unit === "PIXELS") {
-      return node.letterSpacing.value;
-    } else {
-      if (node.fontSize) {
-        // read [commonLineHeight] comment to understand what is going on here.
-        return (node.fontSize * node.letterSpacing.value) / 100;
-      }
-    }
-  }
-
-  return 0;
-}
