@@ -943,11 +943,6 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@bridged.xyz/web-builder@0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@bridged.xyz/web-builder/-/web-builder-0.0.1.tgz#582dc0cecf3dbae13cd9ccd7eb9b736d084dd018"
-  integrity sha512-ocuNlXZmLWZV5bBhwfENnx/Nidnf/fq1ICxxwH2jnBJQCy+ITF1klf4To7zKff3Y6qj9pkxqUbollhhmgYZK5A==
-
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"
@@ -2904,6 +2899,11 @@ cocoascript-class@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/cocoascript-class/-/cocoascript-class-0.1.2.tgz#dab25f20389946d9986c1812b88ac3783eec42d3"
   integrity sha1-2rJfIDiZRtmYbBgSuIrDeD7sQtM=
+
+coli@0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/coli/-/coli-0.0.1.tgz#039d81bb8a45fc53ac51a640e4e8e9f3db6d3acf"
+  integrity sha512-0H1UGi0qix1aRTbAT/jP/ZtqrErb0gIWzSR5UXCnbBwL6YXkzXhiJ9M/gFhKLqjBuedCPk/wk1ev0ws5HPPYNg==
 
 collect-v8-coverage@^1.0.0:
   version "1.0.1"
