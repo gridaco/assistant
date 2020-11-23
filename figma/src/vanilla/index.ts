@@ -51,7 +51,7 @@ function fetchElements(node: ReflectSceneNode, anchor: { x: number, y: number })
             type: 'text',
             width: node.width,
             height: node.height,
-            src: {
+            data: {
                 text: node.characters,
                 textAlign: node.textAlignHorizontal,
                 textAlignVertical: node.textAlignVertical,
@@ -72,9 +72,6 @@ function fetchElements(node: ReflectSceneNode, anchor: { x: number, y: number })
         });
     } else {
 
-        (figma.getNodeById(node.id) as SceneNode).exportAsync({
-            format: "PNG"
-        })
 
         const image = vanillaImageRepo.addImage({
             key: node.id,
@@ -89,7 +86,7 @@ function fetchElements(node: ReflectSceneNode, anchor: { x: number, y: number })
             type: 'other',
             width: node.width,
             height: node.height,
-            src: {
+            data: {
                 src: image.url,
                 width: node.width,
                 height: node.height,
