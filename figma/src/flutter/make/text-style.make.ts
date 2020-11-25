@@ -1,7 +1,6 @@
-import { Color, FontStyle, FontWeight, TextDecoration, TextStyle, Theme } from "@bridged.xyz/flutter-builder/lib";
-import { commonLetterSpacing } from "../../figma-utils/common-text-height-spacing";
+import { Color, FontStyle, FontWeight, TextDecoration, TextStyle as FLTextStyle, Theme } from "@bridged.xyz/flutter-builder/lib";
+import { TextStyle as RFTextStyle, FontStyle as RFFontStyle, TextDecoration as RFTextDecoration } from "@reflect.bridged.xyz/core"
 import { ReflectTextNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
-import { convertFontWeight } from "../../utils/text-convert";
 import { makeColor } from ".";
 import { TextStyleRepository } from "@bridged.xyz/design-sdk/lib/figma";
 import { Snippet } from "@bridged.xyz/flutter-builder/lib/builder/buildable-tree";
@@ -11,21 +10,21 @@ import { Snippet } from "@bridged.xyz/flutter-builder/lib/builder/buildable-tree
  * I.E, "H1" will give you "Theme.of(context).textTheme.headline1"
  * @param textStyleName 
  */
-function getThemedTextStyleByName(textStyleName: string): TextStyle {
+function getThemedTextStyleByName(textStyleName: string): FLTextStyle {
     const styleDef = TextStyleRepository.getStyleDefFromTextStyleName(textStyleName)
-    return (Theme.of().textTheme[styleDef] as TextStyle)
+    return (Theme.of().textTheme[styleDef] as FLTextStyle)
 }
 
-export function makeTextStyleFromDesign(style: globalThis.TextStyle): TextStyle {
+export function makeTextStyleFromDesign(style: RFTextStyle): FLTextStyle {
 
-    let decoration: TextDecoration = makeTextDecoration(style.textDecoration)
-    const fontFamily: string = style.fontName.family
-    const fontWeight: FontWeight = FontWeight[`w${convertFontWeight(style.fontName.style)}`];
+    let decoration: TextDecoration = makeTextDecoration(style.decoration)
+    const fontFamily: string = style.fontFamily
+    const fontWeight: FontWeight = FontWeight[style.fontWeight];
     // percentage is not supported
-    const letterSpacing = style.letterSpacing.unit === 'PIXELS' ? style.letterSpacing.value : undefined
-    const fontStyle = makeFontStyle(style.fontName)
+    const letterSpacing = style.letterSpacing
+    const fontStyle = makeFontStyle(style.fontStyle)
 
-    return new TextStyle(
+    return new FLTextStyle(
         {
             fontSize: style.fontSize,
             fontWeight: fontWeight,
@@ -37,9 +36,8 @@ export function makeTextStyleFromDesign(style: globalThis.TextStyle): TextStyle 
     )
 }
 
-export function makeTextStyle(node: ReflectTextNode): TextStyle {
-
-    // TODO lineSpacing
+// TODO lineSpacing
+export function makeTextStyle(node: ReflectTextNode): FLTextStyle {
 
     const fontColor: Color = makeColor(node.fills)
 
@@ -48,22 +46,22 @@ export function makeTextStyle(node: ReflectTextNode): TextStyle {
         fontSize = node.fontSize
     }
 
-    const decoration: TextDecoration = makeTextDecoration(node.textDecoration)
-    let fontStyle: FontStyle = makeFontStyle(node.fontName)
+    const decoration: TextDecoration = makeTextDecoration(node.textStyle.decoration)
+    let fontStyle: FontStyle = makeFontStyle(node.textStyle.fontStyle)
 
     let fontFamily: string
-    if (node.fontName) {
-        fontFamily = node.fontName.family;
+    if (node.textStyle) {
+        fontFamily = node.textStyle.fontFamily;
     }
 
     let fontWeight: FontWeight;
-    if (node.fontName) {
-        fontWeight = FontWeight[`w${convertFontWeight(node.fontName.style)}`]
+    if (node.textStyle) {
+        fontWeight = FontWeight[`${node.textStyle.fontWeight}`]
     }
 
     let letterSpacing: number
-    if (letterSpacing > 0) {
-        letterSpacing = commonLetterSpacing(node);
+    if (node.textStyle.letterSpacing > 0) {
+        letterSpacing = node.textStyle.letterSpacing
     }
 
     // try to make with themed text style
@@ -79,7 +77,7 @@ export function makeTextStyle(node: ReflectTextNode): TextStyle {
 
 
     // make and return new text style
-    return new TextStyle(
+    return new FLTextStyle(
         {
             color: fontColor,
             fontSize: fontSize,
@@ -95,20 +93,19 @@ export function makeTextStyle(node: ReflectTextNode): TextStyle {
 
 
 
-export function makeFontStyle(fontName: FontName): FontStyle {
-    if (!fontName) { return }
-
-    let fontStyle: FontStyle
-    if (fontName && fontName.style.toLowerCase().match("italic")) {
-        fontStyle = FontStyle.italic as Snippet
+export function makeFontStyle(style: RFFontStyle): FontStyle {
+    switch (style) {
+        case RFFontStyle.italic:
+            return FontStyle.italic as Snippet
+        case RFFontStyle.normal:
+            return // not returning any value, since normal is a default value.
     }
-    return fontStyle
 }
 
-export function makeTextDecoration(textDecoration: globalThis.TextDecoration): TextDecoration {
+export function makeTextDecoration(textDecoration: RFTextDecoration): TextDecoration {
     if (!textDecoration) { return }
     let decoration: TextDecoration
-    if (textDecoration === "UNDERLINE") {
+    if (textDecoration === RFTextDecoration.underline) {
         decoration = TextDecoration.underline as Snippet;
     }
     return decoration

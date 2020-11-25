@@ -3,15 +3,18 @@ import { buildApp } from "./flutter";
 import { retrieveFlutterColors } from "./flutter/utils/fetch-colors";
 import { hideAllExcept, hideAllOnly } from "./dev-tools/hide-all";
 import { runLints } from "./lint/lint";
-import { EK_COPIED, EK_CREATE_ICON, EK_FOCUS_REQUEST, EK_GENERATED_CODE_PLAIN, EK_IMAGE_ASSET_REPOSITORY_MAP, EK_LINT_FEEDBACK, EK_PREVIEW_SOURCE } from "./app/constants/ek.constant";
+import { EK_COMPUTE_STARTED, EK_COPIED, EK_CREATE_ICON, EK_FOCUS_REQUEST, EK_GENERATED_CODE_PLAIN, EK_IMAGE_ASSET_REPOSITORY_MAP, EK_LINT_FEEDBACK, EK_PREVIEW_SOURCE, EK_SET_APP_MODE, EK_VANILLA_TRANSPORT } from "./app/constants/ek.constant";
 import { handleNotify } from "@bridged.xyz/design-sdk/lib/figma";
 import { makeApp } from "./flutter/make/app.make";
 import { ImageRepositories } from "./assets-repository";
 import { insertMaterialIcon } from "./assets-repository/icons-generator";
+import { makeVanilla } from "./vanilla";
+import { AppMode } from "./ui";
 
 
 let parentNodeId: string;
 let layerName = false;
+let appMode: number = 0
 export let rawNode: SceneNode;
 export let targetNodeId: string
 
@@ -32,6 +35,12 @@ async function showUI() {
 
 
 showUI()
+
+
+function delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 
 async function run() {
 
@@ -82,39 +91,59 @@ async function run() {
 
 
     //#region  run linter
-    const feedbacks = runLints(convertedSelection)
-    console.warn(feedbacks)
-    figma.ui.postMessage({
-        type: EK_LINT_FEEDBACK,
-        data: feedbacks
-    });
+    if (appMode == 2) {
+        const feedbacks = runLints(convertedSelection)
+        console.warn(feedbacks)
+        figma.ui.postMessage({
+            type: EK_LINT_FEEDBACK,
+            data: feedbacks
+        });
+    }
     //#endregion
 
-    const buildResult = buildApp(convertedSelection);
+    // region make vanilla
+    if (appMode == 3) {
+        const globalizatoinScreen = makeVanilla(convertedSelection)
+        const vanillaTransportableImageRepository = await globalizatoinScreen.repository.makeTransportable()
+        figma.ui.postMessage({
+            type: EK_IMAGE_ASSET_REPOSITORY_MAP,
+            data: vanillaTransportableImageRepository
+        })
+        figma.ui.postMessage({
+            type: EK_VANILLA_TRANSPORT,
+            data: globalizatoinScreen
+        })
+    }
+    // endregion
 
 
-    // host images
-    const transportableImageAssetRepository = await ImageRepositories.current.makeTransportable()
-    figma.ui.postMessage({
-        type: EK_IMAGE_ASSET_REPOSITORY_MAP,
-        data: transportableImageAssetRepository
-    })
+    if (appMode == 0) {
+        const buildResult = buildApp(convertedSelection);
+
+        // host images
+        const transportableImageAssetRepository = await ImageRepositories.current.makeTransportable()
+        figma.ui.postMessage({
+            type: EK_IMAGE_ASSET_REPOSITORY_MAP,
+            data: transportableImageAssetRepository
+        })
 
 
 
-    const widget = buildResult.widget;
-    const app = makeApp({
-        widget: widget,
-        scrollable: buildResult.scrollable
-    })
+        const widget = buildResult.widget;
+        const app = makeApp({
+            widget: widget,
+            scrollable: buildResult.scrollable
+        })
 
-    figma.ui.postMessage({
-        type: EK_GENERATED_CODE_PLAIN,
-        data: {
-            code: widget.build().finalize(),
-            app: app.build().finalize(),
-        },
-    });
+        figma.ui.postMessage({
+            type: EK_GENERATED_CODE_PLAIN,
+            data: {
+                code: widget.build().finalize(),
+                app: app.build().finalize(),
+            },
+        });
+    }
+
 
     // send preview image
     rawNode.exportAsync({
@@ -141,6 +170,16 @@ async function run() {
 }
 
 figma.on("selectionchange", () => {
+    // region
+    // notify ui that the computing process has been started.
+    // use this for when displaying loading indicator etc.. for general purpose.
+    figma.ui.postMessage({
+        type: EK_COMPUTE_STARTED,
+        data: {
+            mode: appMode
+        }
+    });
+    // endregion
     run();
 });
 
@@ -149,21 +188,11 @@ figma.on("selectionchange", () => {
 figma.ui.onmessage = (msg) => {
     console.log('event received', msg)
     handleNotify(msg)
-    // region test
-    if (msg.type === 'create-rectangles') {
-        const nodes = []
-        for (let i = 0; i < msg.count; i++) {
-            const rect = figma.createRectangle()
-            rect.x = i * 150
-            rect.fills = [{ type: 'SOLID', color: { r: 1, g: 0.5, b: 0 } }]
-            figma.currentPage.appendChild(rect)
-            nodes.push(rect)
-        }
-        figma.currentPage.selection = nodes
-        figma.viewport.scrollAndZoomIntoView(nodes)
-    }
-    // endregion test
 
+    if (msg.type == EK_SET_APP_MODE) {
+        appMode = msg.data
+        console.log(`app mode set event recieved, now setting as ${appMode}`)
+    }
 
     else if (msg.type == EK_FOCUS_REQUEST) {
         const target = figma.getNodeById(msg.data.id) as SceneNode
@@ -172,7 +201,6 @@ figma.ui.onmessage = (msg) => {
     }
 
     else if (msg.type == EK_CREATE_ICON) {
-
         const icon_key = msg.data.key
         const svgData = msg.data.svg
         const inserted = insertMaterialIcon(icon_key, svgData)
@@ -193,13 +221,6 @@ figma.ui.onmessage = (msg) => {
 
     else if (msg.type == EK_COPIED) {
         figma.notify("copied to clipboard", { timeout: 1 })
-    }
-
-    else if (msg.type === "flutter") {
-        run();
-    } else if (msg.type === "layerName" && msg.data !== layerName) {
-        layerName = msg.data;
-        run();
     }
 };
 

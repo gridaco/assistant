@@ -20,3 +20,6 @@
 [submodule "packages/coli"]
 	path = packages/coli
 	url = https://github.com/bridgedxyz/CoLI.git
+[submodule "packages/web-builder"]
+	path = packages/web-builder
+	url = https://github.com/bridgedxyz/web-builder.git

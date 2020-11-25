@@ -9,6 +9,8 @@ import Tab from '@material-ui/core/Tab';
 import { CodeScreen } from './app/screens/code-screen';
 import { LintScreen } from './app/screens/lint-screen';
 import { IconsScreen } from './app/screens/icons-screen';
+import { EK_SET_APP_MODE } from './app/constants/ek.constant';
+import { GlobalizationScreen } from './app/screens/g11n-screen';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -50,12 +52,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 
-enum AppMode {
+export enum AppMode {
   code = 0,
   icon = 1,
   lint = 2,
-  slot = 3,
-  dev = 4
+  g11n = 3,
+  dev = 4,
+  slot = 5,
 }
 
 function appModeToName(appMode: AppMode): string {
@@ -70,6 +73,8 @@ function appModeToName(appMode: AppMode): string {
       return "lint"
     case AppMode.slot:
       return "slots"
+    case AppMode.g11n:
+      return "globalization"
   }
 }
 
@@ -78,15 +83,23 @@ export default function App() {
   const [mode, setMode] = React.useState<AppMode>(AppMode.code);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: AppMode) => {
+    // notify code.ts that app mode has set.
+    parent.postMessage({
+      pluginMessage: {
+        type: EK_SET_APP_MODE,
+        data: newValue
+      }
+    }, "*")
     setMode(newValue);
   };
 
-  // init firebase
+  // region init firebase
   try {
     firebase.analytics()
   } catch (e) {
     console.warn("firebase is disabled. it seems you are contributing to this project!, no worries, other functionalyties will work fine.")
   }
+  // endregion init firebase
 
   if (process.env.NODE_ENV == "production") {
     return <div>
@@ -106,10 +119,10 @@ export default function App() {
       <div>
         <Tabs value={mode} onChange={handleChange} aria-label="primary tab">
           <Tab label={appModeToName(AppMode.code)} {...a11yProps(AppMode.code)} />
-          <Tab label={appModeToName(AppMode.lint)} {...a11yProps(AppMode.lint)} />
-          <Tab label={appModeToName(AppMode.slot)} {...a11yProps(AppMode.slot)} />
-          <Tab label={appModeToName(AppMode.dev)} {...a11yProps(AppMode.dev)} />
           <Tab label={appModeToName(AppMode.icon)} {...a11yProps(AppMode.icon)} />
+          <Tab label={appModeToName(AppMode.lint)} {...a11yProps(AppMode.lint)} />
+          {/* <Tab label={appModeToName(AppMode.dev)} {...a11yProps(AppMode.dev)} /> */}
+          <Tab label={appModeToName(AppMode.g11n)} {...a11yProps(AppMode.g11n)} />
         </Tabs>
         <TabPanel value={mode} type={AppMode.code}>
           <CodeScreen />
@@ -120,11 +133,11 @@ export default function App() {
         <TabPanel value={mode} type={AppMode.lint}>
           <LintScreen />
         </TabPanel>
-        <TabPanel value={mode} type={AppMode.slot}>
-          slots
-      </TabPanel>
-        <TabPanel value={mode} type={AppMode.dev}>
+        {/* <TabPanel value={mode} type={AppMode.dev}>
           <DevTools />
+        </TabPanel> */}
+        <TabPanel value={mode} type={AppMode.g11n}>
+          <GlobalizationScreen />
         </TabPanel>
       </div>
     )

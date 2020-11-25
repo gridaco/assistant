@@ -1,5 +1,5 @@
 // hold images that target node holds
-
+import { IImageRepository } from "@bridged.xyz/client-sdk/lib"
 export class ImageRepositories {
     static repositories: Map<string, ImageRepository> = new Map<string, ImageRepository>();
     static imageHashMap: Map<string, Uint8Array> = new Map<string, Uint8Array>();
@@ -129,7 +129,7 @@ export interface TransportableImageRepository {
 
 
 
-export class ImageRepository {
+export class ImageRepository implements IImageRepository<TemporaryImageAsset>{
     images: Map<string, TemporaryImageAsset> = new Map<string, TemporaryImageAsset>();
 
     constructor(readonly buildId: string) {
@@ -140,7 +140,7 @@ export class ImageRepository {
     }
 
     addImage(props: {
-        key: string, hash: string, data?: Uint8Array
+        key: string, hash?: string, data?: Uint8Array
     }): TemporaryImageAsset {
         if (this.exists(props.key)) {
             console.warn('image you are tring to register to current build repository is already registered.', props.hash)
