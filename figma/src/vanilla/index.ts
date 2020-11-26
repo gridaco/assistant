@@ -49,6 +49,8 @@ function fetchElements(node: ReflectSceneNode, anchor: { x: number, y: number })
             x: relativePositionToAnchor(anchor.x, node.absoluteX),
             y: relativePositionToAnchor(anchor.y, node.absoluteY),
             type: 'text',
+            name: "TODO", // TODO
+            path: "TODO", // TODO
             width: node.width,
             height: node.height,
             data: {
@@ -86,6 +88,8 @@ function fetchElements(node: ReflectSceneNode, anchor: { x: number, y: number })
             type: 'other',
             width: node.width,
             height: node.height,
+            name: node.name,
+            path: node.name,
             data: {
                 src: image.url,
                 width: node.width,
