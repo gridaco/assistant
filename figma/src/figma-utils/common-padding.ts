@@ -1,4 +1,4 @@
-import { ReflectFrameNode, ReflectDefaultShapeMixin } from "@bridged.xyz/design-sdk/lib/nodes/types";
+import { ReflectFrameNode, ReflectDefaultShapeMixin, ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
 
 type Padding = {
   horizontal: number;
@@ -14,7 +14,7 @@ type Padding = {
  * Padding is currently only valid for auto layout.
  * Padding can have values even when AutoLayout is off
  */
-export function commonPadding(node: ReflectFrameNode | ReflectDefaultShapeMixin): { all: number; } | Padding | null {
+export function commonPadding(node: ReflectSceneNode): { all: number; } | Padding | null {
   if ("layoutMode" in node && node.layoutMode !== "NONE") {
     // round the numbers to avoid 5 being different than 5.00001
     // fix it if undefined (in tests)

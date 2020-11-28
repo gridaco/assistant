@@ -1,4 +1,4 @@
-import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
+import { ReflectSceneNode, ReflectSceneNodeType } from "@bridged.xyz/design-sdk/lib/nodes/types";
 
 /**
  * In Figma, Groups have absolute position while Frames have relative.
@@ -6,10 +6,12 @@ import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
  * Usually, after this is called, node.x - parentX is done to solve that scenario.
  *
  * Input is expected to be node.parent.
+ * TODO - inspect this.
  */
 export function coordinates(node: ReflectSceneNode): [number, number] {
-  const parentX = "layoutMode" in node ? 0 : node.x;
-  const parentY = "layoutMode" in node ? 0 : node.y;
-
-  return [parentX, parentY];
+  if (node.type !== ReflectSceneNodeType.group) {
+    return [0, 0]
+  } else {
+    return [node.x, node.y]
+  }
 }

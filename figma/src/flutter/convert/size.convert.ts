@@ -1,18 +1,37 @@
 import { nodeWidthHeight } from "../../figma-utils/node-width-height";
 import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
-import { Size } from "@bridged.xyz/flutter-builder/lib";
+import { double, Double, Size } from "@bridged.xyz/flutter-builder/lib";
+import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib";
+import { Snippet } from "@bridged.xyz/flutter-builder/lib/builder/buildable-tree";
 
-
+/**
+ * converts size for flutter, with autolayout manifest.
+ * @param node
+ */
 export function convertToSize(node: ReflectSceneNode): Size {
   const size = nodeWidthHeight(node, false);
 
-  const propWidth = size.width
-    ? size.width as number
-    : undefined;
+  let propWidth: double;
+  if (typeof size.width === 'number') {
+    propWidth = size.width
+      ? roundNumber(size.width)
+      : undefined;
+  }
+  // if has parent
+  else if (node.hasParent) {
+    // propWidth = Double.infinity as Snippet
+    // TODO - FIXME - handle height. this should not be infinite it it contains something.
+  }
 
-  const propHeight = size.height
-    ? size.height
-    : undefined;
+  let propHeight: double;
+  if (typeof size.height === 'number') {
+    propHeight = size.height
+      ? roundNumber(size.height)
+      : undefined;
+  } else if (node.hasParent) {
+    // propHeight = Double.infinity as Snippet
+    // TODO - FIXME - handle height. can it ever be infinite?
+  }
 
   return new Size(propWidth, propHeight)
 }

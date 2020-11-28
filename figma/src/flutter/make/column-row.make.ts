@@ -1,7 +1,9 @@
 import { ReflectFrameNode } from "@bridged.xyz/design-sdk/lib/nodes";
 import { Column, MainAxisSize, Row, Widget } from "@bridged.xyz/flutter-builder/lib";
-import { mostFrequent } from "../../utils/array-utils";
-import { makeCrossAxisAlignment } from "../interpreter/cross-axis-alignment.interpret";
+import { mostFrequent } from "general-utils/lib/array.utils";
+import { interpretCrossAxisAlignment } from "../interpreter/cross-axis-alignment.interpret";
+import { interpretMainAxisAlignment } from "../interpreter/main-axis-alignment.interpreter";
+import { interpretMainAxisSize } from "../interpreter/main-axis-size.interpret";
 import { makeSafelyAsList } from "../utils/make-as-safe-list";
 
 export type RowOrColumn = "Row" | "Column"
@@ -9,8 +11,8 @@ export function makeRowColumn(node: ReflectFrameNode, children: Array<Widget>): 
     // ROW or COLUMN
     const rowOrColumn: RowOrColumn = node.layoutMode === "HORIZONTAL" ? "Row" : "Column";
 
-
-    const mainAxisSize: MainAxisSize = MainAxisSize.min
+    const mainAxisAlignment = interpretMainAxisAlignment(node.primaryAxisAlignItems)
+    const mainAxisSize: MainAxisSize = interpretMainAxisSize(node)
 
     // safely make childeren as list type
     children = makeSafelyAsList<Widget>(children)
@@ -20,21 +22,47 @@ export function makeRowColumn(node: ReflectFrameNode, children: Array<Widget>): 
             return new Row({
                 children: children,
                 mainAxisSize: mainAxisSize,
+                mainAxisAlignment: mainAxisAlignment
             })
         case "Column":
-            // get the most frequent layoutAlign of children, and prioritize it by accepting 'MIN' first.
-            // why? -> converting two MIN nodes to autolayout converts longer node as a MIN. and cannot be changed by figma's userinterface.
-            const mostFreq = mostFrequent(node.children.map((d) => d.layoutAlign), ['MIN', 'MAX', 'STRETCH', 'CENTER']);
-            // console.log(`mostFreq lyaout of children under ${node.name}`, mostFreq)
-
-            // FIXME - this is not working with auto layout.
-            // E.g. autolayout to left, the layoutAlign of the child text will be set to CENTER, Not MIN. wich is not a bug, but need extra logics for handling them.
-
-            const crossAxisAlignment = makeCrossAxisAlignment(mostFreq)
+            const mostFreq = mostFrequent(node.children.map((d) => d.counterAxisAlignItems), ['MIN', 'MAX', 'CENTER']);
+            const crossAxisAlignment = interpretCrossAxisAlignment(mostFreq)
             return new Column({
                 children: children,
                 mainAxisSize: mainAxisSize,
+                mainAxisAlignment: mainAxisAlignment,
                 crossAxisAlignment: crossAxisAlignment
             })
     }
 }
+
+
+
+/**
+ *
+  const crossAxisAlignment = `crossAxisAlignment: CrossAxisAlignment.${crossAlignType}, `;
+
+  let mainAlignType;
+  switch (node.primaryAxisAlignItems) {
+    case "MIN":
+      mainAlignType = "start";
+      break;
+    case "CENTER":
+      mainAlignType = "center";
+      break;
+    case "MAX":
+      mainAlignType = "end";
+      break;
+    case "SPACE_BETWEEN":
+      mainAlignType = "spaceBetween";
+      break;
+  }
+  const mainAxisAlignment = `mainAxisAlignment: MainAxisAlignment.${mainAlignType}, `;
+
+  let mainAxisSize;
+  if (node.layoutGrow === 1) {
+    mainAxisSize = "mainAxisSize: MainAxisSize.max, ";
+  } else {
+    mainAxisSize = "mainAxisSize: MainAxisSize.min, ";
+  }
+ */
