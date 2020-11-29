@@ -1,4 +1,5 @@
 import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes";
+import { Axis } from "@reflect.bridged.xyz/core/lib";
 
 export const magicMargin = 32;
 
@@ -25,10 +26,10 @@ export function nodeWidthHeight(node: ReflectSceneNode,
     // Stretch means the opposite direction
     if (node.layoutAlign === "STRETCH") {
       switch (node.parent.layoutMode) {
-        case "HORIZONTAL":
+        case Axis.horizontal:
           propHeight = "full";
           break;
-        case "VERTICAL":
+        case Axis.vertical:
           propWidth = "full";
           break;
       }
@@ -36,7 +37,7 @@ export function nodeWidthHeight(node: ReflectSceneNode,
 
     // Grow means the same direction
     if (node.layoutGrow === 1) {
-      if (node.parent.layoutMode === "HORIZONTAL") {
+      if (node.parent.layoutMode === Axis.horizontal) {
         propWidth = "full";
       } else {
         propHeight = "full";
@@ -96,11 +97,11 @@ export function nodeWidthHeight(node: ReflectSceneNode,
   }
 
   if (
-    ("layoutMode" in node && node.layoutMode === "VERTICAL") ||
+    ("layoutMode" in node && node.layoutMode === Axis.vertical) ||
     ("layoutMode" in node &&
-      ((node.layoutMode === "HORIZONTAL" &&
+      ((node.layoutMode === Axis.horizontal &&
         node.counterAxisSizingMode === "AUTO") ||
-        (node.layoutMode === "VERTICAL" &&
+        (node.layoutMode === Axis.vertical &&
           node.primaryAxisSizingMode === "AUTO"))) ||
     (node.type !== "RECTANGLE" && nodeHeight > 384) ||
     childLargerThanMaxSize(node, "y")
@@ -109,16 +110,16 @@ export function nodeWidthHeight(node: ReflectSceneNode,
     propHeight = null;
   }
 
-  if ("layoutMode" in node && node.layoutMode !== "NONE") {
+  if ("layoutMode" in node && node.layoutMode !== undefined) {
     // there is an edge case: frame with no children, layoutMode !== NONE and counterAxis = AUTO, but:
     // in [altConversions] it is already solved: Frame without children becomes a Rectangle.
     switch (node.layoutMode) {
-      case "HORIZONTAL":
+      case Axis.horizontal:
         return {
           width: node.primaryAxisSizingMode === "FIXED" ? propWidth : null,
           height: node.counterAxisSizingMode === "FIXED" ? propHeight : null,
         };
-      case "VERTICAL":
+      case Axis.vertical:
         return {
           width: node.counterAxisSizingMode === "FIXED" ? propWidth : null,
           height: node.primaryAxisSizingMode === "FIXED" ? propHeight : null,
@@ -218,7 +219,7 @@ function calculateResponsiveW(node: ReflectSceneNode,
   if (node.parent &&
     "layoutMode" in node.parent &&
     (node.parent.paddingLeft || node.parent.paddingRight) &&
-    node.parent.layoutMode !== "NONE") {
+    node.parent.layoutMode !== undefined) {
     parentWidth =
       node.parent.width - node.parent.paddingLeft - node.parent.paddingRight;
     // currently ignoring h-full
@@ -279,7 +280,7 @@ const calculateResponsiveWH = (
   }
 
   let parentWidthHeight;
-  if ("layoutMode" in node.parent && node.parent.layoutMode !== "NONE") {
+  if ("layoutMode" in node.parent && node.parent.layoutMode !== undefined) {
     if (axis === "x") {
       // subtract padding from the layout width, so it can be full when compared with parent.
       parentWidthHeight =
