@@ -11,7 +11,7 @@ export function makeRowColumn(node: ReflectFrameNode, children: Array<Widget>): 
     // ROW or COLUMN
     const rowOrColumn: RowOrColumn = node.layoutMode === "HORIZONTAL" ? "Row" : "Column";
 
-    const mainAxisAlignment = interpretMainAxisAlignment(node.primaryAxisAlignItems)
+    const mainAxisAlignment = interpretMainAxisAlignment(node.mainAxisAlignment)
     const mainAxisSize: MainAxisSize = interpretMainAxisSize(node)
 
     // safely make childeren as list type
@@ -25,7 +25,7 @@ export function makeRowColumn(node: ReflectFrameNode, children: Array<Widget>): 
                 mainAxisAlignment: mainAxisAlignment
             })
         case "Column":
-            const crossAxisAlignment = interpretCrossAxisAlignment(node.counterAxisAlignItems)
+            const crossAxisAlignment = interpretCrossAxisAlignment(node.crossAxisAlignment)
             return new Column({
                 children: children,
                 mainAxisSize: mainAxisSize,

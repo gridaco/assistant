@@ -1,18 +1,18 @@
 import { CrossAxisAlignment } from "@bridged.xyz/flutter-builder/lib"
-
+import { CrossAxisAlignment as ReflectCrossAxisAlginment } from "@reflect.bridged.xyz/core/lib"
 /**
  * returns CrossAxisAlignment by counterAxisAlignItems
  * @param counterAxisAlignItems
  */
-export function interpretCrossAxisAlignment(counterAxisAlignItems: string): CrossAxisAlignment {
+export function interpretCrossAxisAlignment(counterAxisAlignItems: ReflectCrossAxisAlginment): CrossAxisAlignment {
     switch (counterAxisAlignItems) {
-        case "MIN":
+        case ReflectCrossAxisAlginment.start:
             return CrossAxisAlignment.start
-        case "MAX":
+        case ReflectCrossAxisAlginment.end:
             return CrossAxisAlignment.end
-        case "STRETCH":
+        case ReflectCrossAxisAlginment.stretch:
             return CrossAxisAlignment.stretch
-        case "CENTER":
+        case ReflectCrossAxisAlginment.center:
             return CrossAxisAlignment.center
         default:
             return CrossAxisAlignment.center
