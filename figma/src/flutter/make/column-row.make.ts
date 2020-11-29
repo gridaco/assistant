@@ -25,8 +25,7 @@ export function makeRowColumn(node: ReflectFrameNode, children: Array<Widget>): 
                 mainAxisAlignment: mainAxisAlignment
             })
         case "Column":
-            const mostFreq = mostFrequent(node.children.map((d) => d.counterAxisAlignItems), ['MIN', 'MAX', 'CENTER']);
-            const crossAxisAlignment = interpretCrossAxisAlignment(mostFreq)
+            const crossAxisAlignment = interpretCrossAxisAlignment(node.counterAxisAlignItems)
             return new Column({
                 children: children,
                 mainAxisSize: mainAxisSize,
