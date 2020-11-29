@@ -1,11 +1,11 @@
 import { CrossAxisAlignment } from "@bridged.xyz/flutter-builder/lib"
 
 /**
- * returns CrossAxisAlignment by layoutAlign
- * @param layoutAlign 
+ * returns CrossAxisAlignment by counterAxisAlignItems
+ * @param counterAxisAlignItems
  */
-export function makeCrossAxisAlignment(layoutAlign: string): CrossAxisAlignment {
-    switch (layoutAlign) {
+export function interpretCrossAxisAlignment(counterAxisAlignItems: string): CrossAxisAlignment {
+    switch (counterAxisAlignItems) {
         case "MIN":
             return CrossAxisAlignment.start
         case "MAX":
