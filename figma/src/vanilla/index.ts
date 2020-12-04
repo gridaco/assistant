@@ -1,6 +1,7 @@
 import { StorableLayerType, TransportLayer, VanillaScreenTransport } from "@bridged.xyz/client-sdk/lib";
 import { ReflectSceneNode, ReflectTextNode } from "@bridged.xyz/design-sdk/lib/nodes";
 import { TextManifest, ImageManifest } from '@reflect.bridged.xyz/core/lib'
+import { rgbaTo8Hex } from "@reflect.bridged.xyz/uiutils/lib";
 import { ImageRepository } from "../assets-repository";
 
 
@@ -31,6 +32,7 @@ export function makeVanilla(node: ReflectSceneNode): VanillaScreenTransport {
         width: node.width,
         height: node.height,
         elements: vanillaElements,
+        backgroundColor: rgbaTo8Hex(node.primaryColor),
         repository: vanillaImageRepo
     }
 }
@@ -44,7 +46,7 @@ function fetchElements(node: ReflectSceneNode, anchor: { x: number, y: number })
         const textStyle = node.textStyle;
         textStyle.color = node.primaryColor
         return [{
-            id: node.id,
+            nodeId: node.id,
             index: node.hierachyIndex,
             x: relativePositionToAnchor(anchor.x, node.absoluteX),
             y: relativePositionToAnchor(anchor.y, node.absoluteY),
@@ -80,7 +82,7 @@ function fetchElements(node: ReflectSceneNode, anchor: { x: number, y: number })
         })
 
         const other: TransportLayer = {
-            id: node.id,
+            nodeId: node.id,
             index: node.hierachyIndex,
             x: relativePositionToAnchor(anchor.x, node.absoluteX),
             y: relativePositionToAnchor(anchor.y, node.absoluteY),

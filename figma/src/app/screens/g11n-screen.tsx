@@ -1,4 +1,4 @@
-import { VanillaScreenTransport } from "@bridged.xyz/client-sdk/lib";
+import { SceneStoreService, StorableSceneType, VanillaScreenTransport } from "@bridged.xyz/client-sdk/lib";
 import { upload } from "@bridged.xyz/client-sdk/lib/hosting";
 import Button from "@material-ui/core/Button";
 import LinearProgress from "@material-ui/core/LinearProgress";
@@ -60,7 +60,10 @@ export class GlobalizationScreen extends React.Component<any, State> {
         const hosted = await ImageHostingRepository.hostImages()
         console.log(hosted)
 
-        const replaced = JSON.stringify(this.state.vanilla, (key, value) => {
+        const scene = this.state.vanilla
+
+        // todo - replaced should be a interface, not a json string.
+        const replaced = JSON.stringify(scene, (key, value) => {
             if (hosted[value]) {
                 return hosted[value]
             } else {
@@ -68,7 +71,25 @@ export class GlobalizationScreen extends React.Component<any, State> {
             }
         }, 2)
 
-        console.log(replaced)
+        const service = new SceneStoreService("", "")
+        const serviceuploaded = await service.registerNewScene({
+            nodeId: scene.id,
+            width: scene.width,
+            height: scene.height,
+            projectId: scene.project,
+            layers: scene.elements,
+            // todo
+            cachedPreview: "",
+            sceneType: StorableSceneType.screen,
+            // todo
+            fileId: "",
+            // todo
+            preview: "",
+            backgroundColor: scene.backgroundColor
+        })
+        console.log('serviceuploaded', serviceuploaded)
+
+        console.log('replaced', replaced)
 
         const uploaded = await upload({
             file: replaced,
