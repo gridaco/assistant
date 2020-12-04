@@ -1,5 +1,5 @@
-import { TransportLayer, VanilaElement, VanillaScreenTransport } from "@bridged.xyz/client-sdk/lib";
-import { ReflectSceneNode, ReflectSceneNodeType, ReflectTextNode } from "@bridged.xyz/design-sdk/lib/nodes";
+import { StorableLayerType, TransportLayer, VanillaScreenTransport } from "@bridged.xyz/client-sdk/lib";
+import { ReflectSceneNode, ReflectTextNode } from "@bridged.xyz/design-sdk/lib/nodes";
 import { TextManifest, ImageManifest } from '@reflect.bridged.xyz/core/lib'
 import { ImageRepository } from "../assets-repository";
 
@@ -11,7 +11,7 @@ const vanillaImageRepo = new ImageRepository('vanilla-image-repository')
  */
 export function makeVanilla(node: ReflectSceneNode): VanillaScreenTransport {
 
-    const vanillaElements: Array<VanilaElement> = []
+    const vanillaElements: Array<TransportLayer> = []
     // 1. loop through all children, if only text, make text manifest.
     // 2. if not a text, go deeper, 
     node.children.forEach(c => {
@@ -37,7 +37,7 @@ export function makeVanilla(node: ReflectSceneNode): VanillaScreenTransport {
 
 
 
-function fetchElements(node: ReflectSceneNode, anchor: { x: number, y: number }): Array<VanilaElement> {
+function fetchElements(node: ReflectSceneNode, anchor: { x: number, y: number }): Array<TransportLayer> {
     // console.log(`fetching elements from ${node.toString()}`)
     if (node instanceof ReflectTextNode) {
         // todo -> make text manifest
@@ -48,12 +48,11 @@ function fetchElements(node: ReflectSceneNode, anchor: { x: number, y: number })
             index: node.hierachyIndex,
             x: relativePositionToAnchor(anchor.x, node.absoluteX),
             y: relativePositionToAnchor(anchor.y, node.absoluteY),
-            type: 'text',
-            name: "TODO", // TODO
-            path: "TODO", // TODO
+            type: StorableLayerType.text,
+            name: node.name,
             width: node.width,
             height: node.height,
-            data: {
+            data: <TextManifest>{
                 text: node.characters,
                 textAlign: node.textAlignHorizontal,
                 textAlignVertical: node.textAlignVertical,
@@ -66,7 +65,7 @@ function fetchElements(node: ReflectSceneNode, anchor: { x: number, y: number })
 
         ]
     }
-    const elements: Array<VanilaElement> = []
+    const elements: Array<TransportLayer> = []
     const containstext = containsText(node)
     if (containstext) {
         node.children.forEach(element => {
@@ -80,17 +79,16 @@ function fetchElements(node: ReflectSceneNode, anchor: { x: number, y: number })
             hash: undefined
         })
 
-        const other: TransportLayer<ImageManifest> = {
+        const other: TransportLayer = {
             id: node.id,
             index: node.hierachyIndex,
             x: relativePositionToAnchor(anchor.x, node.absoluteX),
             y: relativePositionToAnchor(anchor.y, node.absoluteY),
-            type: 'other',
+            type: StorableLayerType.vanilla,
             width: node.width,
             height: node.height,
             name: node.name,
-            path: node.name,
-            data: {
+            data: <ImageManifest>{
                 src: image.url,
                 width: node.width,
                 height: node.height,
