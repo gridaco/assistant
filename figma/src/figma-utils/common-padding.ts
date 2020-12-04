@@ -15,7 +15,7 @@ type Padding = {
  * Padding can have values even when AutoLayout is off
  */
 export function commonPadding(node: ReflectSceneNode): { all: number; } | Padding | null {
-  if ("layoutMode" in node && node.layoutMode !== "NONE") {
+  if ("layoutMode" in node && node.layoutMode !== undefined) {
     // round the numbers to avoid 5 being different than 5.00001
     // fix it if undefined (in tests)
     node.paddingLeft = Math.round(node.paddingLeft ?? 0);

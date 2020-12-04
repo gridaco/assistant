@@ -21,6 +21,7 @@ import { makeIllustImage } from "./make/image.make";
 import { notEmpty } from "@bridged.xyz/design-sdk/lib/utils";
 import { makeRowColumn } from "./make/column-row.make";
 import { makeStack } from "./make/stack.make";
+import { Axis as ReflectAxis } from "@reflect.bridged.xyz/core/lib";
 
 
 let parentId = "";
@@ -197,7 +198,7 @@ function flutterFrame(node: ReflectFrameNode): Widget {
   if (node.children.length === 1) {
     // if there is only one child, there is no need for Container or Row. Padding works indepdently of them.
     return flutterContainer(node, children as Widget);
-  } else if (node.layoutMode !== "NONE") {
+  } else if (node.layoutMode !== undefined) {
     const rowColumn = makeRowColumn(node, children as Array<Widget>);
     return flutterContainer(node, rowColumn);
   } else {
@@ -224,11 +225,11 @@ function flutterFrame(node: ReflectFrameNode): Widget {
 function addSpacingIfNeeded(node: ReflectSceneNode,
   index: number,
   length: number): Widget | undefined {
-  if (node.parent instanceof ReflectFrameNode && node.parent.layoutMode !== "NONE") {
+  if (node.parent instanceof ReflectFrameNode && node.parent.layoutMode !== undefined) {
     // check if itemSpacing is set and if it isn't the last value.
     // Don't add the SizedBox at last value. In Figma, itemSpacing CAN be negative; here it can't.
     if (node.parent.itemSpacing > 0 && index < length - 1) {
-      if (node.parent.layoutMode === "HORIZONTAL") {
+      if (node.parent.layoutMode === ReflectAxis.horizontal) {
         return new SizedBox({
           width: roundNumber(node.parent.itemSpacing)
         })
