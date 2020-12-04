@@ -75,6 +75,10 @@ function fetchElements(node: ReflectSceneNode, anchor: { x: number, y: number })
         });
     } else {
 
+        /**
+         * TODO
+         * if the container is FrameNode, the frame itself should be translated as rect. so it can have same property and work as background
+         */
 
         const image = vanillaImageRepo.addImage({
             key: node.id,

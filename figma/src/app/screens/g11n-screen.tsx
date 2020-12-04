@@ -1,7 +1,8 @@
-import { SceneStoreService, StorableSceneType, VanillaScreenTransport } from "@bridged.xyz/client-sdk/lib";
+import { SceneStoreService, StorableLayerType, StorableSceneType, VanillaScreenTransport } from "@bridged.xyz/client-sdk/lib";
 import { upload } from "@bridged.xyz/client-sdk/lib/hosting";
 import Button from "@material-ui/core/Button";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import { ImageManifest } from "@reflect.bridged.xyz/core/lib";
 import React from "react"
 import { TransportableImageRepository } from "../../assets-repository";
 import { ImageHostingRepository } from "../../assets-repository/hosting";
@@ -71,6 +72,15 @@ export class GlobalizationScreen extends React.Component<any, State> {
             }
         }, 2)
 
+        scene.elements.forEach(element => {
+            if (element.type == StorableLayerType.vanilla) {
+                // the key source is set as template. we need to replace this with uploaded asset.
+                const sourceKey = (element.data as ImageManifest).src;
+                const uploadedSource = hosted[sourceKey];
+                (element.data as ImageManifest).src = uploadedSource;
+            }
+        });
+
         const service = new SceneStoreService("", "")
         const serviceuploaded = await service.registerNewScene({
             nodeId: scene.id,
@@ -89,15 +99,8 @@ export class GlobalizationScreen extends React.Component<any, State> {
         })
         console.log('serviceuploaded', serviceuploaded)
 
-        console.log('replaced', replaced)
-
-        const uploaded = await upload({
-            file: replaced,
-            name: 'translation.json'
-        })
-
-        open(`http://localhost:3000/globalization/?url=${uploaded.url}`)
-
+        const sceneId = serviceuploaded.data.id
+        open(`http://localhost:3000/globalization/?scene=${sceneId}`)
     }
 
 
