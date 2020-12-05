@@ -5,6 +5,7 @@ export enum WorkspaceMode {
     design,
     content,
     settings,
+    toolbox,
 }
 
 export enum WorkScreen {
@@ -14,6 +15,7 @@ export enum WorkScreen {
     g11n,
     dev,
     slot,
+    tool_font_replacer
 }
 
 

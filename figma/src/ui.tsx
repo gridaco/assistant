@@ -15,6 +15,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import { WorkScreen, WorkspaceMode } from './app/states/app-state';
+import { FontReplacerScreen } from './app/screens/tool-box/font-replacer';
 
 
 interface TabPanelProps {
@@ -62,7 +63,11 @@ function workScreenToName(appMode: WorkScreen): string {
       return "slots"
     case WorkScreen.g11n:
       return "globalization"
+    case WorkScreen.tool_font_replacer:
+      return "font replacer"
   }
+  console.warn(`name not found for ${appMode}`)
+  return 'N/A'
 }
 
 function worspaceModeToName(workspaceMode: WorkspaceMode): string {
@@ -75,7 +80,11 @@ function worspaceModeToName(workspaceMode: WorkspaceMode): string {
       return "CONTENT"
     case WorkspaceMode.settings:
       return "SETTINGS"
+    case WorkspaceMode.toolbox:
+      return "TOOLS"
   }
+  console.warn(`no name found for workspace mode ${workspaceMode}`)
+  return 'N/A'
 }
 
 
@@ -101,6 +110,10 @@ function getWorkspaceTabLayout(workspaceMode: WorkspaceMode): TabLayout {
       ]
     case WorkspaceMode.settings:
       return []
+    case WorkspaceMode.toolbox:
+      return [
+        WorkScreen.tool_font_replacer
+      ]
   }
 }
 
@@ -116,10 +129,17 @@ export default function App() {
   };
 
   const handleWorkspaceModeSelect = (e) => {
-    const selected: WorkspaceMode = e.target.value
+    let selected: WorkspaceMode = e.target.value
+
+    // when outside of menu is clicked, value is undefined -- so as the selected will be.
+    if (!selected) {
+      selected = workspaceMode
+    } else {
+      setWorkspaceMode(selected)
+    }
+
     console.log('newly selected workspace mode is:', selected)
     setAnchorEl(null);
-    setWorkspaceMode(selected)
 
     // when workspace mode is updated, by default the first index 0 tab will be selected without select event. 
     // explicitly triggering the event.
@@ -179,6 +199,8 @@ export default function App() {
               return <TabPanel key={i} value={tabIndex} index={i}><ToolboxScreen /></TabPanel >
             case WorkScreen.g11n:
               return <TabPanel key={i} value={tabIndex} index={i}><GlobalizationScreen /></TabPanel >
+            case WorkScreen.tool_font_replacer:
+              return <TabPanel key={i} value={tabIndex} index={i}><FontReplacerScreen /></TabPanel >
           }
         })
       }
@@ -207,6 +229,7 @@ export default function App() {
           <MenuItem onClick={handleWorkspaceModeSelect} value={WorkspaceMode.code}>CODE</MenuItem>
           <MenuItem onClick={handleWorkspaceModeSelect} value={WorkspaceMode.design}>DESIGN</MenuItem>
           <MenuItem onClick={handleWorkspaceModeSelect} value={WorkspaceMode.content}>CONTENT</MenuItem>
+          <MenuItem onClick={handleWorkspaceModeSelect} value={WorkspaceMode.toolbox}>TOOLS</MenuItem>
         </Menu>
       </div>
       {screenLayout}
