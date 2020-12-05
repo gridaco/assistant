@@ -129,17 +129,18 @@ export default function App() {
   };
 
   const handleWorkspaceModeSelect = (e) => {
+    setAnchorEl(null);
+
+    console.log('workspace mode menu clicked e:', (e.target.value as WorkspaceMode))
     let selected: WorkspaceMode = e.target.value
+    console.log('newly selected workspace mode is:', selected)
 
     // when outside of menu is clicked, value is undefined -- so as the selected will be.
-    if (!selected) {
+    if (selected === undefined) {
       selected = workspaceMode
-    } else {
-      setWorkspaceMode(selected)
     }
 
-    console.log('newly selected workspace mode is:', selected)
-    setAnchorEl(null);
+    setWorkspaceMode(selected)
 
     // when workspace mode is updated, by default the first index 0 tab will be selected without select event. 
     // explicitly triggering the event.

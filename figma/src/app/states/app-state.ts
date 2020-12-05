@@ -4,8 +4,8 @@ export enum WorkspaceMode {
     code,
     design,
     content,
-    settings,
     toolbox,
+    settings,
 }
 
 export enum WorkScreen {
