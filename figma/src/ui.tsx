@@ -121,7 +121,7 @@ export default function App() {
           <Tab label={appModeToName(AppMode.code)} {...a11yProps(AppMode.code)} />
           <Tab label={appModeToName(AppMode.icon)} {...a11yProps(AppMode.icon)} />
           <Tab label={appModeToName(AppMode.lint)} {...a11yProps(AppMode.lint)} />
-          {/* <Tab label={appModeToName(AppMode.dev)} {...a11yProps(AppMode.dev)} /> */}
+          <Tab label={appModeToName(AppMode.dev)} {...a11yProps(AppMode.dev)} />
           <Tab label={appModeToName(AppMode.g11n)} {...a11yProps(AppMode.g11n)} />
         </Tabs>
         <TabPanel value={mode} type={AppMode.code}>
@@ -133,9 +133,9 @@ export default function App() {
         <TabPanel value={mode} type={AppMode.lint}>
           <LintScreen />
         </TabPanel>
-        {/* <TabPanel value={mode} type={AppMode.dev}>
+        <TabPanel value={mode} type={AppMode.dev}>
           <DevTools />
-        </TabPanel> */}
+        </TabPanel>
         <TabPanel value={mode} type={AppMode.g11n}>
           <GlobalizationScreen />
         </TabPanel>
