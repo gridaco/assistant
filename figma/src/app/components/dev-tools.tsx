@@ -1,6 +1,5 @@
 import * as React from "react";
 import { IconsLoader } from "./icons-loader";
-import Button from "@material-ui/core/Button";
 
 
 
@@ -31,11 +30,12 @@ export class DevTools extends React.Component {
     }
     render() {
         return <div>
-            <Button onClick={this.akav}>AKAV this project for test</Button>
+            <p>dev tools</p>
+            <button onClick={this.hideAllExceptText}>hide all except text</button>
+            <button onClick={this.hideAllOnlyText}>hide only text</button>
+            <button onClick={this.onClickRandomize}>randomize</button>
+            <button onClick={this.onClickOpenConsole}>open in console</button>
+            <div><IconsLoader /></div>
         </div>
-    }
-
-    akav() {
-
     }
 }
