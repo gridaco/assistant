@@ -1,9 +1,9 @@
+import Button from "@material-ui/core/Button"
 import * as React from "react";
-import { IconsLoader } from "./icons-loader";
 
 
 
-export class DevTools extends React.Component {
+export class ToolboxScreen extends React.Component {
     constructor(props) {
         super(props);
     }
@@ -31,11 +31,11 @@ export class DevTools extends React.Component {
     render() {
         return <div>
             <p>dev tools</p>
-            <button onClick={this.hideAllExceptText}>hide all except text</button>
-            <button onClick={this.hideAllOnlyText}>hide only text</button>
-            <button onClick={this.onClickRandomize}>randomize</button>
-            <button onClick={this.onClickOpenConsole}>open in console</button>
-            <div><IconsLoader /></div>
+            <Button variant="outlined">font replacer</Button>
+            <Button onClick={this.hideAllExceptText}>hide all except text</Button>
+            <Button onClick={this.hideAllOnlyText}>hide only text</Button>
+            <Button onClick={this.onClickRandomize}>randomize</Button>
+            <Button onClick={this.onClickOpenConsole}>open in console</Button>
         </div>
     }
 }

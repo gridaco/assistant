@@ -1,7 +1,7 @@
 import { convertIntoReflectNode } from "@bridged.xyz/design-sdk/lib/nodes/conversion";
 import { buildApp } from "./flutter";
 import { retrieveFlutterColors } from "./flutter/utils/fetch-colors";
-import { hideAllExcept, hideAllOnly } from "./dev-tools/hide-all";
+import { hideAllExcept, hideAllOnly } from "./tool-box/manipulate/hide-all/hide-all";
 import { runLints } from "./lint/lint";
 import { EK_COMPUTE_STARTED, EK_COPIED, EK_CREATE_ICON, EK_FOCUS_REQUEST, EK_GENERATED_CODE_PLAIN, EK_IMAGE_ASSET_REPOSITORY_MAP, EK_LINT_FEEDBACK, EK_PREVIEW_SOURCE, EK_SET_APP_MODE, EK_VANILLA_TRANSPORT } from "./app/constants/ek.constant";
 import { handleNotify } from "@bridged.xyz/design-sdk/lib/figma";
@@ -9,7 +9,7 @@ import { makeApp } from "./flutter/make/app.make";
 import { ImageRepositories } from "./assets-repository";
 import { insertMaterialIcon } from "./assets-repository/icons-generator";
 import { makeVanilla } from "./vanilla";
-import { AppMode } from "./ui";
+import { ReflectFrameNode } from "@bridged.xyz/design-sdk/lib/nodes";
 
 
 let parentNodeId: string;
@@ -103,7 +103,7 @@ async function run() {
 
     // region make vanilla
     if (appMode == 3) {
-        const globalizatoinScreen = makeVanilla(convertedSelection)
+        const globalizatoinScreen = makeVanilla(convertedSelection as ReflectFrameNode)
         const vanillaTransportableImageRepository = await globalizatoinScreen.repository.makeTransportable()
         figma.ui.postMessage({
             type: EK_IMAGE_ASSET_REPOSITORY_MAP,

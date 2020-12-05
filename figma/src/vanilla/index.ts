@@ -1,5 +1,5 @@
 import { StorableLayerType, TransportLayer, VanillaScreenTransport } from "@bridged.xyz/client-sdk/lib";
-import { ReflectSceneNode, ReflectTextNode } from "@bridged.xyz/design-sdk/lib/nodes";
+import { ReflectFrameNode, ReflectSceneNode, ReflectSceneNodeType, ReflectTextNode } from "@bridged.xyz/design-sdk/lib/nodes";
 import { TextManifest, ImageManifest } from '@reflect.bridged.xyz/core/lib'
 import { rgbaTo8Hex } from "@reflect.bridged.xyz/uiutils/lib";
 import { ImageRepository } from "../assets-repository";
@@ -10,7 +10,7 @@ const vanillaImageRepo = new ImageRepository('vanilla-image-repository')
  * makes vanilla output, which contains only text data, and all others as image.
  * @param node 
  */
-export function makeVanilla(node: ReflectSceneNode): VanillaScreenTransport {
+export function makeVanilla(node: ReflectFrameNode): VanillaScreenTransport {
 
     const vanillaElements: Array<TransportLayer> = []
     // 1. loop through all children, if only text, make text manifest.
@@ -37,9 +37,9 @@ export function makeVanilla(node: ReflectSceneNode): VanillaScreenTransport {
     }
 }
 
+type Anchor = { x: number, y: number }
 
-
-function fetchElements(node: ReflectSceneNode, anchor: { x: number, y: number }): Array<TransportLayer> {
+function fetchElements(node: ReflectSceneNode, anchor: Anchor): Array<TransportLayer> {
     // console.log(`fetching elements from ${node.toString()}`)
     if (node instanceof ReflectTextNode) {
         // todo -> make text manifest
@@ -68,6 +68,7 @@ function fetchElements(node: ReflectSceneNode, anchor: { x: number, y: number })
         ]
     }
     const elements: Array<TransportLayer> = []
+
     const containstext = containsText(node)
     if (containstext) {
         node.children.forEach(element => {
@@ -78,6 +79,7 @@ function fetchElements(node: ReflectSceneNode, anchor: { x: number, y: number })
         /**
          * TODO
          * if the container is FrameNode, the frame itself should be translated as rect. so it can have same property and work as background
+         * frame to rect property
          */
 
         const image = vanillaImageRepo.addImage({
@@ -102,9 +104,50 @@ function fetchElements(node: ReflectSceneNode, anchor: { x: number, y: number })
         }
         elements.push(other)
     }
+
+    // make bg as separate layer
+    if (node.origin === ReflectSceneNodeType.frame) {
+        const bg = frameToRectBgTransport(node as ReflectFrameNode, anchor)
+        elements.push(bg)
+    }
+    //
+
+
     return elements
 }
 
+
+function frameToRectBgTransport(f: ReflectFrameNode, a: Anchor): TransportLayer {
+    // TODO -> index should be +1 of the most highest
+    const calculatedIndex = 1000
+    const calculatedName = `(bg-converted) ${f.name}`
+
+    console.log('frameToRectBgTransport', f.name, f)
+
+    return {
+        index: calculatedIndex,
+        nodeId: f.id,
+        name: calculatedName,
+        x: relativePositionToAnchor(a.x, f.absoluteX),
+        y: relativePositionToAnchor(a.y, f.absoluteY),
+        type: StorableLayerType.rect,
+        width: f.width,
+        height: f.height,
+        data: {
+            shadow: f.primaryShadow,
+            fill: f.primaryColor,
+            opacity: f.opacity
+        }
+    }
+}
+
+
+/**
+ * the givven anchor i.e. 300 is actually 0 for relative position.
+ * the givven absolute position 700 is actually 400 to relative as the givven anchor
+ * @param anchor 
+ * @param absolute 
+ */
 function relativePositionToAnchor(anchor: number, absolute: number) {
     return absolute - anchor
 }
