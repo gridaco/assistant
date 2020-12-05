@@ -3,13 +3,14 @@ import { buildApp } from "./flutter";
 import { retrieveFlutterColors } from "./flutter/utils/fetch-colors";
 import { hideAllExcept, hideAllOnly } from "./tool-box/manipulate/hide-all/hide-all";
 import { runLints } from "./lint/lint";
-import { EK_COMPUTE_STARTED, EK_COPIED, EK_CREATE_ICON, EK_FOCUS_REQUEST, EK_GENERATED_CODE_PLAIN, EK_IMAGE_ASSET_REPOSITORY_MAP, EK_LINT_FEEDBACK, EK_PREVIEW_SOURCE, EK_SET_APP_MODE, EK_VANILLA_TRANSPORT } from "./app/constants/ek.constant";
-import { handleNotify } from "@bridged.xyz/design-sdk/lib/figma";
+import { EK_COMPUTE_STARTED, EK_COPIED, EK_CREATE_ICON, EK_FOCUS_REQUEST, EK_GENERATED_CODE_PLAIN, EK_IMAGE_ASSET_REPOSITORY_MAP, EK_LINT_FEEDBACK, EK_PREVIEW_SOURCE, EK_REPLACE_FONT, EK_SET_APP_MODE, EK_VANILLA_TRANSPORT } from "./app/constants/ek.constant";
+import { handleNotify, notify } from "@bridged.xyz/design-sdk/lib/figma";
 import { makeApp } from "./flutter/make/app.make";
 import { ImageRepositories } from "./assets-repository";
 import { insertMaterialIcon } from "./assets-repository/icons-generator";
 import { makeVanilla } from "./vanilla";
 import { ReflectFrameNode } from "@bridged.xyz/design-sdk/lib/nodes";
+import { replaceAllTextFontInFrame } from "./tool-box/manipulate/font-replacer";
 
 
 let parentNodeId: string;
@@ -185,7 +186,7 @@ figma.on("selectionchange", () => {
 
 // efficient? No. Works? Yes.
 // todo pass data instead of relying in types
-figma.ui.onmessage = (msg) => {
+figma.ui.onmessage = async (msg) => {
     console.log('event received', msg)
     handleNotify(msg)
 
@@ -205,6 +206,16 @@ figma.ui.onmessage = (msg) => {
         const svgData = msg.data.svg
         const inserted = insertMaterialIcon(icon_key, svgData)
         figma.viewport.scrollAndZoomIntoView([inserted])
+    }
+
+    else if (msg.type == EK_REPLACE_FONT) {
+        if (rawNode.type == "FRAME") {
+            const font = "Roboto"
+            await replaceAllTextFontInFrame(rawNode, font)
+            figma.notify(`successfuly changed font to ${font}`)
+        } else {
+            figma.notify('cannot replace font of non-frame node')
+        }
     }
 
     else if (msg.type == "randomize-selection") {
