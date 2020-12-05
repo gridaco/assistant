@@ -32,6 +32,16 @@ export function rgbTo8hex(color: RGB, alpha: number): string {
     return hex;
 }
 
+export const white: RGBA = { r: 1, g: 1, b: 1, a: 1 }
+export function rgbaTo8Hex(color: RGBA, fallback: RGBA = white): string {
+    try {
+        return rgbTo8hex(color, color.a);
+    } catch (e) {
+        console.log('error while converting rgba to 8hex. returning fallback.')
+        return rgbTo8hex(fallback, fallback.a)
+    }
+}
+
 
 
 // from https://dev.to/alvaromontoro/building-your-own-color-contrast-checker-4j7o

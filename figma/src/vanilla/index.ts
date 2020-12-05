@@ -1,6 +1,7 @@
-import { TransportLayer, VanilaElement, VanillaScreenTransport } from "@bridged.xyz/client-sdk/lib";
-import { ReflectSceneNode, ReflectSceneNodeType, ReflectTextNode } from "@bridged.xyz/design-sdk/lib/nodes";
+import { StorableLayerType, TransportLayer, VanillaScreenTransport } from "@bridged.xyz/client-sdk/lib";
+import { ReflectSceneNode, ReflectTextNode } from "@bridged.xyz/design-sdk/lib/nodes";
 import { TextManifest, ImageManifest } from '@reflect.bridged.xyz/core/lib'
+import { rgbaTo8Hex } from "@reflect.bridged.xyz/uiutils/lib";
 import { ImageRepository } from "../assets-repository";
 
 
@@ -11,7 +12,7 @@ const vanillaImageRepo = new ImageRepository('vanilla-image-repository')
  */
 export function makeVanilla(node: ReflectSceneNode): VanillaScreenTransport {
 
-    const vanillaElements: Array<VanilaElement> = []
+    const vanillaElements: Array<TransportLayer> = []
     // 1. loop through all children, if only text, make text manifest.
     // 2. if not a text, go deeper, 
     node.children.forEach(c => {
@@ -31,29 +32,29 @@ export function makeVanilla(node: ReflectSceneNode): VanillaScreenTransport {
         width: node.width,
         height: node.height,
         elements: vanillaElements,
+        backgroundColor: rgbaTo8Hex(node.primaryColor),
         repository: vanillaImageRepo
     }
 }
 
 
 
-function fetchElements(node: ReflectSceneNode, anchor: { x: number, y: number }): Array<VanilaElement> {
+function fetchElements(node: ReflectSceneNode, anchor: { x: number, y: number }): Array<TransportLayer> {
     // console.log(`fetching elements from ${node.toString()}`)
     if (node instanceof ReflectTextNode) {
         // todo -> make text manifest
         const textStyle = node.textStyle;
         textStyle.color = node.primaryColor
         return [{
-            id: node.id,
+            nodeId: node.id,
             index: node.hierachyIndex,
             x: relativePositionToAnchor(anchor.x, node.absoluteX),
             y: relativePositionToAnchor(anchor.y, node.absoluteY),
-            type: 'text',
-            name: "TODO", // TODO
-            path: "TODO", // TODO
+            type: StorableLayerType.text,
+            name: node.name,
             width: node.width,
             height: node.height,
-            data: {
+            data: <TextManifest>{
                 text: node.characters,
                 textAlign: node.textAlignHorizontal,
                 textAlignVertical: node.textAlignVertical,
@@ -66,7 +67,7 @@ function fetchElements(node: ReflectSceneNode, anchor: { x: number, y: number })
 
         ]
     }
-    const elements: Array<VanilaElement> = []
+    const elements: Array<TransportLayer> = []
     const containstext = containsText(node)
     if (containstext) {
         node.children.forEach(element => {
@@ -74,23 +75,26 @@ function fetchElements(node: ReflectSceneNode, anchor: { x: number, y: number })
         });
     } else {
 
+        /**
+         * TODO
+         * if the container is FrameNode, the frame itself should be translated as rect. so it can have same property and work as background
+         */
 
         const image = vanillaImageRepo.addImage({
             key: node.id,
             hash: undefined
         })
 
-        const other: TransportLayer<ImageManifest> = {
-            id: node.id,
+        const other: TransportLayer = {
+            nodeId: node.id,
             index: node.hierachyIndex,
             x: relativePositionToAnchor(anchor.x, node.absoluteX),
             y: relativePositionToAnchor(anchor.y, node.absoluteY),
-            type: 'other',
+            type: StorableLayerType.vanilla,
             width: node.width,
             height: node.height,
             name: node.name,
-            path: node.name,
-            data: {
+            data: <ImageManifest>{
                 src: image.url,
                 width: node.width,
                 height: node.height,
