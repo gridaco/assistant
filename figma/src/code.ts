@@ -10,6 +10,7 @@ import { ImageRepositories } from "./assets-repository";
 import { insertMaterialIcon } from "./assets-repository/icons-generator";
 import { makeVanilla } from "./vanilla";
 import { AppMode } from "./ui";
+import { ReflectFrameNode, ReflectSceneNodeType } from "@bridged.xyz/design-sdk/lib/nodes";
 
 
 let parentNodeId: string;
@@ -103,7 +104,7 @@ async function run() {
 
     // region make vanilla
     if (appMode == 3) {
-        const globalizatoinScreen = makeVanilla(convertedSelection)
+        const globalizatoinScreen = makeVanilla(convertedSelection as ReflectFrameNode)
         const vanillaTransportableImageRepository = await globalizatoinScreen.repository.makeTransportable()
         figma.ui.postMessage({
             type: EK_IMAGE_ASSET_REPOSITORY_MAP,
