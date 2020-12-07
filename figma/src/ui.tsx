@@ -16,6 +16,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import { WorkScreen, WorkspaceMode } from './app/states/app-state';
 import { FontReplacerScreen } from './app/screens/tool-box/font-replacer';
+import { ButtonMakerScreen } from './app/screens/design/button-maker-screen';
 
 
 interface TabPanelProps {
@@ -65,6 +66,8 @@ function workScreenToName(appMode: WorkScreen): string {
       return "globalization"
     case WorkScreen.tool_font_replacer:
       return "font replacer"
+    case WorkScreen.desing_button_maker:
+      return "button maker"
   }
   console.warn(`name not found for ${appMode}`)
   return 'N/A'
@@ -102,6 +105,7 @@ function getWorkspaceTabLayout(workspaceMode: WorkspaceMode): TabLayout {
       return [
         WorkScreen.icon,
         WorkScreen.lint,
+        WorkScreen.desing_button_maker,
       ]
     case WorkspaceMode.content:
       return [
@@ -202,6 +206,8 @@ export default function App() {
               return <TabPanel key={i} value={tabIndex} index={i}><GlobalizationScreen /></TabPanel >
             case WorkScreen.tool_font_replacer:
               return <TabPanel key={i} value={tabIndex} index={i}><FontReplacerScreen /></TabPanel >
+            case WorkScreen.desing_button_maker:
+              return <TabPanel key={i} value={tabIndex} index={i}><ButtonMakerScreen /></TabPanel>
           }
         })
       }
