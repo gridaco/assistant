@@ -3,7 +3,7 @@ import { ReflectRectangleNode, ReflectEllipseNode, ReflectFrameNode, mixed } fro
 import { interpretRadius } from "../interpreter/radius.interpret";
 
 export function makeBorderRadius(node: ReflectRectangleNode | ReflectEllipseNode | ReflectFrameNode): BorderRadiusGeometry {
-    if (node.type === "ELLIPSE")
+    if (node instanceof ReflectEllipseNode)
         return undefined;
     if (
         (node.cornerRadius === undefined) ||
