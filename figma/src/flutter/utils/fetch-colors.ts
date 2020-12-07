@@ -1,7 +1,7 @@
 import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
 import { retrieveFill } from "@bridged.xyz/design-sdk/lib/utils";
-import { rgbTo6hex, calculateContrastRatio } from "@reflect.bridged.xyz/uiutils/lib";
-
+import { calculateContrastRatio } from "@reflect.bridged.xyz/uiutils/lib";
+import { converters } from "@reflect.bridged.xyz/core/lib"
 export function retrieveFlutterColors(sceneNode: Array<ReflectSceneNode>): Array<contrastedColor> {
   const selectedChildren = deepFlatten(sceneNode);
 
@@ -62,7 +62,7 @@ function convertColor(fills: ReadonlyArray<Paint>): contrastedColor | null {
     };
 
     return {
-      hex: rgbTo6hex(fill.color),
+      hex: converters.color.rgbTo6hex(fill.color),
       contrastBlack: calculateContrastRatio(fill.color, black),
       contrastWhite: calculateContrastRatio(fill.color, white),
     };

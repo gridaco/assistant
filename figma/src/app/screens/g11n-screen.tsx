@@ -1,4 +1,4 @@
-import { SceneStoreService, StorableLayerType, StorableSceneType, VanillaScreenTransport } from "@bridged.xyz/client-sdk/lib";
+import { SceneStoreService, StorableLayerType, StorableSceneType, VanillaSceneTransport } from "@bridged.xyz/client-sdk/lib";
 import { upload } from "@bridged.xyz/client-sdk/lib/hosting";
 import Button from "@material-ui/core/Button";
 import LinearProgress from "@material-ui/core/LinearProgress";
@@ -10,7 +10,7 @@ import { EK_COMPUTE_STARTED, EK_IMAGE_ASSET_REPOSITORY_MAP, EK_VANILLA_TRANSPORT
 
 interface State {
     loading: boolean
-    vanilla: VanillaScreenTransport
+    vanilla: VanillaSceneTransport
 }
 
 export class GlobalizationScreen extends React.Component<any, State> {
@@ -43,7 +43,7 @@ export class GlobalizationScreen extends React.Component<any, State> {
                 this.setState(() => {
                     return {
                         loading: false,
-                        vanilla: msg.data as VanillaScreenTransport
+                        vanilla: msg.data as VanillaSceneTransport
                     }
                 })
                 console.log('vanilla transport receiced from view', msg.data)
@@ -60,18 +60,11 @@ export class GlobalizationScreen extends React.Component<any, State> {
         const hosted = await ImageHostingRepository.hostImages()
         console.log(hosted)
 
-        const scene = this.state.vanilla
+        const scene = this.state.vanilla.scene
+        const transport = this.state.vanilla
 
-        // todo - replaced should be a interface, not a json string.
-        const replaced = JSON.stringify(scene, (key, value) => {
-            if (hosted[value]) {
-                return hosted[value]
-            } else {
-                return value
-            }
-        }, 2)
 
-        scene.elements.forEach(element => {
+        scene.layers.forEach(element => {
             if (element.type == StorableLayerType.vanilla) {
                 // the key source is set as template. we need to replace this with uploaded asset.
                 const sourceKey = (element.data as ImageManifest).src;
@@ -82,11 +75,14 @@ export class GlobalizationScreen extends React.Component<any, State> {
 
         const service = new SceneStoreService("", "")
         const serviceuploaded = await service.registerNewScene({
-            nodeId: scene.id,
+            nodeId: scene.nodeId,
             width: scene.width,
             height: scene.height,
-            projectId: scene.project,
-            layers: scene.elements,
+            name: scene.name,
+            tags: scene.tags,
+            description: scene.description,
+            projectId: 'temp',
+            layers: scene.layers,
             // todo
             cachedPreview: "",
             sceneType: StorableSceneType.screen,
