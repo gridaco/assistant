@@ -3,6 +3,7 @@ import { ReflectFrameNode, ReflectSceneNode, ReflectSceneNodeType, ReflectTextNo
 import { TextManifest, ImageManifest } from '@reflect.bridged.xyz/core/lib'
 import { converters } from "@reflect.bridged.xyz/core/lib";
 import { ImageRepository } from "../assets-repository";
+import { makeCGRect } from "./make";
 
 
 const vanillaImageRepo = new ImageRepository('vanilla-image-repository')
@@ -18,11 +19,8 @@ export function makeVanilla(node: ReflectFrameNode): VanillaSceneTransport {
     const anchor = { x: node.absoluteX, y: node.absoluteY }
     node.children.forEach(c => {
         const elements = fetchElements(c, anchor)
-        // console.log('elements', elements)
         vanillaElements.push(...elements)
     })
-
-    // console.log('vanilla', vanillaElements)
 
     // const bg = frameToRectBgTransport(node, anchor)
     // vanillaElements.push(bg)
@@ -83,13 +81,6 @@ function fetchElements(node: ReflectSceneNode, anchor: Anchor): Array<TransportL
             elements.push(...fetchElements(element, anchor))
         });
     } else {
-
-        /**
-         * TODO
-         * if the container is FrameNode, the frame itself should be translated as rect. so it can have same property and work as background
-         * frame to rect property
-         */
-
         const image = vanillaImageRepo.addImage({
             key: node.id,
             hash: undefined
@@ -113,6 +104,10 @@ function fetchElements(node: ReflectSceneNode, anchor: Anchor): Array<TransportL
         elements.push(other)
     }
 
+    /**
+    * if the container is FrameNode, the frame itself should be translated as rect. so it can have same property and work as background
+    * frame to rect property
+    */
     // make bg as separate layer
     if (node.type === ReflectSceneNodeType.frame) {
         const bg = frameToRectBgTransport(node as ReflectFrameNode, anchor)
@@ -127,9 +122,8 @@ function fetchElements(node: ReflectSceneNode, anchor: Anchor): Array<TransportL
 
 function frameToRectBgTransport(f: ReflectFrameNode, a: Anchor): TransportLayer {
     // TODO -> index should be +1 of the most highest
-    const calculatedIndex = f.hierachyIndex + 1000
+    const calculatedIndex = 0 - f.hierachyIndex
     const calculatedName = `(bg-converted) ${f.name}`
-
     console.log('frameToRectBgTransport', f.name, f)
 
     return {
@@ -141,13 +135,7 @@ function frameToRectBgTransport(f: ReflectFrameNode, a: Anchor): TransportLayer 
         type: StorableLayerType.rect,
         width: f.width,
         height: f.height,
-        data: {
-            width: f.width,
-            height: f.height,
-            shadow: f.primaryShadow,
-            fill: f.primaryColor,
-            opacity: f.opacity
-        }
+        data: makeCGRect(f)
     }
 }
 
