@@ -6,7 +6,7 @@ import {
   ReflectSceneNode,
   mixed
 } from "@bridged.xyz/design-sdk/lib/nodes/types";
-import { rgbTo8hex } from "@reflect.bridged.xyz/uiutils/lib"
+import { converters } from "@reflect.bridged.xyz/core/lib"
 import { BorderRadiusGeometry, ShapeBorder, Colors, Color, Container, Widget } from "@bridged.xyz/flutter-builder/lib";
 import { makeColor } from "../make/color.make";
 import { makeShape as makeShape } from "../make/shape.make";
@@ -86,7 +86,7 @@ function flutterElevationAndShadowColor(node: ReflectSceneNode): [string, string
     );
 
     if (dropShadow.length > 0 && dropShadow[0].type === "DROP_SHADOW") {
-      shadowColor = `color: Color(0x${rgbTo8hex(
+      shadowColor = `color: Color(0x${converters.color.rgbTo8hex(
         dropShadow[0].color,
         dropShadow[0].color.a
       )}), `;
