@@ -95,7 +95,11 @@ export class GlobalizationScreen extends React.Component<any, State> {
         console.log('serviceuploaded', serviceuploaded)
 
         const sceneId = serviceuploaded.data.id
-        open(`http://localhost:3000/globalization/?scene=${sceneId}`)
+
+        // remote
+        open(`https://console.bridged.xyz/globalization/?scene=${sceneId}`)
+        // local
+        // open(`http://localhost:3000/globalization/?scene=${sceneId}`)
     }
 
 
