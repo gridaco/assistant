@@ -40,7 +40,7 @@ export function makeChip(manifest : DetectedChipManifest){
     return new Chip(
         {
             // onSelected : onSelected,
-            onDeleted : onDeleted,
+            onDeleted : trailingWidget ? onDeleted : undefined,
             label : content,
             labelStyle : new TextStyle({color :textColor}),
             backgroundColor : color,
