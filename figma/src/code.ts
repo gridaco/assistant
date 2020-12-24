@@ -11,6 +11,7 @@ import { insertMaterialIcon } from "./assets-repository/icons-generator";
 import { makeVanilla } from "./vanilla";
 import { ReflectFrameNode } from "@bridged.xyz/design-sdk/lib/nodes";
 import { replaceAllTextFontInFrame } from "./tool-box/manipulate/font-replacer";
+import { drawButtons } from "./reflect-render";
 
 
 let parentNodeId: string;
@@ -184,7 +185,6 @@ figma.on("selectionchange", () => {
     run();
 });
 
-// efficient? No. Works? Yes.
 // todo pass data instead of relying in types
 figma.ui.onmessage = async (msg) => {
     console.log('event received', msg)
@@ -232,6 +232,10 @@ figma.ui.onmessage = async (msg) => {
 
     else if (msg.type == EK_COPIED) {
         figma.notify("copied to clipboard", { timeout: 1 })
+    }
+
+    else if (msg.type == 'reflect-ui-generation/button-base') {
+        drawButtons()
     }
 };
 
