@@ -1,6 +1,6 @@
 import { retrieveFill } from "@bridged.xyz/design-sdk/lib/utils";
 import { Color, Colors } from "@bridged.xyz/flutter-builder/lib";
-import { rgbTo8hex } from "@reflect.bridged.xyz/uiutils/lib";
+import { converters } from "@reflect.bridged.xyz/core/lib";
 
 /**
  * Retrieve the SOLID color for Flutter when existent, otherwise ""
@@ -30,7 +30,7 @@ export function makeColorFromRGBO(color: RGB, opacity: number): Color {
             return Colors.white
         }
 
-        return Color.fromHex(rgbTo8hex(color, opacity));
+        return Color.fromHex(converters.color.rgbTo8hex(color, opacity));
     } catch (e) {
         console.error(`error while converting color to rgba color:${color}, opacity:${opacity}`, e)
         return

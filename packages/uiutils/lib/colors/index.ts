@@ -1,47 +1,15 @@
-
-
-export interface RGB {
+interface RGB {
     r: number
     g: number
     b: number
 }
 
-export interface RGBA {
+interface RGBA {
     r: number
     g: number
     b: number
     a: number
 }
-
-export function rgbTo6hex(color: RGB | RGBA): string {
-    const hex = ((color.r * 255) | (1 << 8)).toString(16).slice(1) +
-        ((color.g * 255) | (1 << 8)).toString(16).slice(1) +
-        ((color.b * 255) | (1 << 8)).toString(16).slice(1);
-
-    return hex;
-}
-
-export function rgbTo8hex(color: RGB, alpha: number): string {
-    // when color is RGBA, alpha is set automatically
-    // when color is RGB, alpha need to be set manually (default: 1.0)
-    const hex = ((alpha * 255) | (1 << 8)).toString(16).slice(1) +
-        ((color.r * 255) | (1 << 8)).toString(16).slice(1) +
-        ((color.g * 255) | (1 << 8)).toString(16).slice(1) +
-        ((color.b * 255) | (1 << 8)).toString(16).slice(1);
-
-    return hex;
-}
-
-export const white: RGBA = { r: 1, g: 1, b: 1, a: 1 }
-export function rgbaTo8Hex(color: RGBA, fallback: RGBA = white): string {
-    try {
-        return rgbTo8hex(color, color.a);
-    } catch (e) {
-        console.log('error while converting rgba to 8hex. returning fallback.')
-        return rgbTo8hex(fallback, fallback.a)
-    }
-}
-
 
 
 // from https://dev.to/alvaromontoro/building-your-own-color-contrast-checker-4j7o

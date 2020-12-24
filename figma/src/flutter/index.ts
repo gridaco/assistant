@@ -22,6 +22,8 @@ import { notEmpty } from "@bridged.xyz/design-sdk/lib/utils";
 import { makeRowColumn } from "./make/column-row.make";
 import { makeStack } from "./make/stack.make";
 import { Axis as ReflectAxis } from "@reflect.bridged.xyz/core/lib";
+import { detectIfChip } from "@reflect.bridged.xyz/detection/lib/chip.detection";
+import { makeChip } from "./make/chip.make";
 
 
 let parentId = "";
@@ -105,8 +107,22 @@ function flutterWidgetGenerator(sceneNode: ReadonlyArray<ReflectSceneNode> | Ref
 
 
   function handleNode(node: ReflectSceneNode): Widget {
+
     setCurrentNode(node)
     console.log(`starting handling node ${node.toString()} type of ${node.type}`)
+    
+
+    console.log('Chip Test', node.name)
+    const chipDetectionResult = detectIfChip(node)
+    if(chipDetectionResult.result){
+      console.log('this node is detected as Chip', node.name)
+
+      console.log('ChipResultData ',chipDetectionResult.data)
+      return makeChip(chipDetectionResult.data)
+    }else{
+      console.log(node.name);
+      console.log(chipDetectionResult.reason);
+    }
 
     const buttonDetectionResult = detectIfButton(node)
     if (buttonDetectionResult.result) {
