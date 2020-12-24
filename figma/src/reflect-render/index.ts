@@ -4,106 +4,187 @@ import { colorToRGBA, convertReflectColorToUniversal } from "@reflect.bridged.xy
 export async function drawButtons() {
     const marginBetweenGeneratedElements = 50
     let xPos = 0
+    let yPos = 0
+    let i = 0
     const randomizeTextSize = (): number => { return getRandomInt(12, 24) }
-    await figma.loadFontAsync({ family: "Roboto", style: "Regular" })
+
+    for (let c: number = 0; c < 100; c++) {
+        yPos += 200;
+        xPos = 0;
+
+        for (let r: number = 0; r < 100; r++) {
+            i++;
+
+            const fontName = generateRandomFont()
+            await figma.loadFontAsync(fontName)
+            const buttonFrame = figma.createFrame()
+
+            buttonFrame.name = `relfect-buttons/with-text-${i}`
+
+            const colorScheme = generateRandomButonColorSceme()
 
 
-    for (let i: number = 0; i < 50; i++) {
-        const buttonFrame = figma.createFrame()
-        const colorScheme = generateRandomButonColorSceme()
+
+            const text = figma.createText()
+            const textSize = randomizeTextSize()
+
+            text.fontName = fontName
+            text.characters = generateRandomButtonTextContent()
+
+            // randomize font size
+            text.fontSize = textSize
+
+            const textColor = colorToRGBA(colorScheme.text, ColorFormat.rgbaF)
+            text.fills = [
+                {
+                    type: 'SOLID',
+                    color: {
+                        r: textColor.r,
+                        g: textColor.g,
+                        b: textColor.b
+                    },
+                }
+            ]
 
 
-        const text = figma.createText()
-        const textSize = randomizeTextSize()
 
-        text.characters = generateRandomButtonTextContent()
+            const textWidth = text.width
+            const textHegith = text.height
+            const minDefaultPadding = 4
+            const minRelativePadding = minDefaultPadding * 2 + textHegith / 2
+            const minHeight = textHegith + minRelativePadding
+            const maxHeight = 56
+            const minWidth = textWidth + minRelativePadding
+            const maxWidth = 375
+            const width = getRandomInt(minWidth, maxWidth)
+            const height = getRandomInt(minHeight, maxHeight)
 
-        // randomize font size
-        text.fontSize = textSize
+            // resize the frame
+            buttonFrame.resize(width, height)
 
-        const textColor = colorToRGBA(colorScheme.text, ColorFormat.rgbaF)
-        text.fills = [
-            {
-                type: 'SOLID',
-                color: {
-                    r: textColor.r,
-                    g: textColor.g,
-                    b: textColor.b
-                },
+            // remove all fills
+            buttonFrame.fills = []
+
+            // disable clip content
+            buttonFrame.clipsContent = false
+
+            // align with others
+            buttonFrame.x = xPos
+            buttonFrame.y = yPos
+            xPos += width + marginBetweenGeneratedElements
+
+            const base = figma.createRectangle()
+            base.resize(width, height)
+
+            const minWH = Math.min(width, height)
+            const borderRadius = generateRandomBorderRadius(minWH)
+            base.cornerRadius = borderRadius
+
+            const fillIsGradient = chanceBy(0.2)
+
+            if (fillIsGradient) {
+
+                text.fills = [
+                    {
+                        type: 'SOLID',
+                        color: {
+                            r: 1,
+                            g: 1,
+                            b: 1,
+                        }
+                    }
+                ]
+
+                // gradient fill
+                const gradient = generateRandomGradient()
+                const startColor = colorToRGBA(gradient.colors[0], ColorFormat.rgbaF)
+                console.log('startColor', gradient.colors[0], startColor)
+                const endColor = colorToRGBA(gradient.colors[1], ColorFormat.rgbaF)
+                base.fills = [
+                    {
+                        type: 'GRADIENT_LINEAR',
+                        gradientTransform: [
+                            [1, 1, 0],
+                            [1, 1, 1],
+                        ],
+                        gradientStops: [{
+                            color: {
+                                r: startColor.r,
+                                g: startColor.g,
+                                b: startColor.b,
+                                a: startColor.a
+                            },
+                            position: 0,
+
+                        },
+                        {
+                            color: {
+                                r: endColor.r,
+                                g: endColor.g,
+                                b: endColor.b,
+                                a: endColor.a
+                            },
+                            position: 1,
+                        },
+                        ],
+                    },
+                ]
+
+            } else {
+
+                // solid fill
+                const baseColor = colorToRGBA(colorScheme.base, ColorFormat.rgbaF)
+                base.fills = [
+                    {
+                        type: 'SOLID',
+                        color: {
+                            r: baseColor.r,
+                            g: baseColor.g,
+                            b: baseColor.b
+                        },
+                        opacity: 1
+                    }
+                ]
             }
-        ]
 
 
 
-        const textWidth = text.width
-        const textHegith = text.height
-        const minDefaultPadding = 4
-        const minRelativePadding = minDefaultPadding * 2 + textHegith / 2
-        const minHeight = textHegith + minRelativePadding
-        const maxHeight = 56
-        const minWidth = textWidth + minRelativePadding
-        const maxWidth = 375
-        const width = getRandomInt(minWidth, maxWidth)
-        const height = getRandomInt(minHeight, maxHeight)
 
-        // resize the frame
-        buttonFrame.resize(width, height)
+            base.effects = [
+                // shadow
+                generateRandomShadow()
+            ]
 
-        // remove all fills
-        buttonFrame.fills = []
+            generateRandomBorder(colorScheme.border)
+            base.strokes = [
 
-        // disable clip content
-        buttonFrame.clipsContent = false
-
-        // align with others
-        buttonFrame.x = xPos
-        xPos += width + marginBetweenGeneratedElements
-
-        const base = figma.createRectangle()
-        base.resize(width, height)
-
-        const minWH = Math.min(width, height)
-        const borderRadius = generateRandomBorderRadius(minWH)
-        base.cornerRadius = borderRadius
-
-        const baseColor = colorToRGBA(colorScheme.base, ColorFormat.rgbaF)
-        base.fills = [
-            {
-                type: 'SOLID',
-                color: {
-                    r: baseColor.r,
-                    g: baseColor.g,
-                    b: baseColor.b
-                },
-                opacity: 1
-            }
-        ]
-
-        base.effects = [
-            // shadow
-            generateRandomShadow()
-        ]
-
-        generateRandomBorder(colorScheme.border)
-        base.strokes = [
-
-        ]
+            ]
 
 
-        const textWidthAfterContentFilled = text.width
-        const textHeightAfterContentFilled = text.height
-        // center horizontally
-        text.x = (width / 2) - (textWidthAfterContentFilled / 2)
-        // center vertically
-        text.y = (height / 2) - (textHeightAfterContentFilled / 2)
+            const textWidthAfterContentFilled = text.width
+            const textHeightAfterContentFilled = text.height
+            // center horizontally
+            text.x = (width / 2) - (textWidthAfterContentFilled / 2)
+            // center vertically
+            text.y = (height / 2) - (textHeightAfterContentFilled / 2)
 
 
-        // base to downer
-        buttonFrame.insertChild(0, base)
-        // text to upper
-        buttonFrame.insertChild(1, text)
+            // base to downer
+            buttonFrame.insertChild(0, base)
+            // text to upper
+            buttonFrame.insertChild(1, text)
+        }
     }
 }
+
+function generateRandomFont(): FontName {
+    const styles = ["Regular", "Medium", "Bold"]
+    return {
+        family: "Roboto",
+        style: styles[Math.floor(Math.random() * styles.length)]
+    }
+}
+
 
 function generateRandomBorder(color: Color | undefined): Paint | undefined {
     if (!color) {
@@ -129,7 +210,7 @@ function generateRandomBorder(color: Color | undefined): Paint | undefined {
 }
 
 function chanceBy(chance: number = 0.5): boolean {
-    return Math.random() >= chance
+    return Math.random() <= chance
 }
 
 
@@ -284,6 +365,296 @@ function generateRandomButonColorSceme(): ButtonColorScheme {
     ]
 
     return schemes[Math.floor(Math.random() * schemes.length)]
+}
+
+
+interface LiearGradient {
+    colors: Color[]
+}
+
+function generateRandomGradient(): LiearGradient {
+    const gradients: LiearGradient[] = [
+        {
+            colors: [
+                '#FFC7F0',
+                '#D4D8FF'
+            ]
+        },
+        {
+            colors: [
+                '#C84E89',
+                '#F05F7A'
+            ]
+        },
+        {
+            colors: [
+                '#01F5A1',
+                '#01DAF5'
+            ]
+        },
+        {
+            colors: [
+                '#D5EC68',
+                '#53E7DE'
+            ]
+        },
+        {
+            colors: [
+                '#ABDCFF',
+                '#0597FF'
+            ]
+        },
+        //
+        {
+            colors: [
+                '#FEB692',
+                '#EB5556'
+            ]
+        },
+        {
+            colors: [
+                '#CD9FFC',
+                '#7568F1'
+            ]
+        },
+        {
+            colors: [
+                '#FFF3B6',
+                '#F7436D'
+            ]
+        },
+        {
+            colors: [
+                '#81FBB8',
+                '#29C870'
+            ]
+        },
+        {
+            colors: [
+                '#E2B0FF',
+                '#A045D4'
+            ]
+        },
+        //
+        {
+            colors: [
+                '#FDCE32',
+                '#F65755'
+            ]
+        },
+        {
+            colors: [
+                '#F761A2',
+                '#8D1CAB'
+            ]
+        },
+        {
+            colors: [
+                '#44CBFF',
+                '#9709CD'
+            ]
+        },
+        {
+            colors: [
+                '#5FFCE9',
+                '#736FFE'
+            ]
+        },
+        {
+            colors: [
+                '#E2B0FF',
+                '#A045D4'
+            ]
+        },
+        //
+        {
+            colors: [
+                '#F97795',
+                '#633BA2'
+            ]
+        },
+        {
+            colors: [
+                '#FDCF32',
+                '#F65855'
+            ]
+        },
+        {
+            colors: [
+                '#F761A2',
+                '#8E1CAB'
+            ]
+        },
+        {
+            colors: [
+                '#44CBFF',
+                '#9709CD'
+            ]
+        },
+        {
+            colors: [
+                '#FAD7A1',
+                '#EA6E72'
+            ]
+        },
+        //
+        {
+            colors: [
+                '#FF96F9',
+                '#C42CAD'
+            ]
+        },
+        {
+            colors: [
+                '#EECE14',
+                '#B312FE'
+            ]
+        },
+        {
+            colors: [
+                '#79F0A5',
+                '#0F5DAD'
+            ]
+        },
+        {
+            colors: [
+                '#FDD719',
+                '#E90D06'
+            ]
+        },
+        {
+            colors: [
+                '#FFF3B1',
+                '#CB27FF'
+            ]
+        },
+        //
+        {
+            colors: [
+                '#FFF720',
+                '#3DD601'
+            ]
+        },
+        {
+            colors: [
+                '#65FCF0',
+                '#1E71A4'
+            ]
+        },
+        {
+            colors: [
+                '#6A72FF',
+                '#010EFF'
+            ]
+        },
+        {
+            colors: [
+                '#FE7AF4',
+                '#533264'
+            ]
+        },
+        {
+            colors: [
+                '#F0FF02',
+                '#59D0FB'
+            ]
+        },
+        //
+        {
+            colors: [
+                '#FFE784',
+                '#FB752C'
+            ]
+        },
+        {
+            colors: [
+                '#FEA6B8',
+                '#212CD2'
+            ]
+        },
+        {
+            colors: [
+                '#FFA985',
+                '#B43260'
+            ]
+        },
+        {
+            colors: [
+                '#72ECF2',
+                '#5254E6'
+            ]
+        },
+        {
+            colors: [
+                '#FF9D6D',
+                '#BC4F76'
+            ]
+        },
+        //
+        {
+            colors: [
+                '#69FF98',
+                '#01E5FF'
+            ]
+        },
+        {
+            colors: [
+                '#3D2769',
+                '#BC78EC'
+            ]
+        },
+        {
+            colors: [
+                '#70F570',
+                '#4AC729'
+            ]
+        },
+        {
+            colors: [
+                '#3C8DE8',
+                '#01EAFF'
+            ]
+        },
+        {
+            colors: [
+                '#FAB2FF',
+                '#1A05E6'
+            ]
+        },
+        //
+        {
+            colors: [
+                '#FFA9A8',
+                '#FDFF02'
+            ]
+        },
+        {
+            colors: [
+                '#82FEEF',
+                '#F068B5'
+            ]
+        },
+        {
+            colors: [
+                '#EC4F83',
+                '#B208BE'
+            ]
+        },
+        {
+            colors: [
+                '#6CC1FF',
+                '#4F61BC'
+            ]
+        },
+        {
+            colors: [
+                '#91FDC0',
+                '#012862'
+            ]
+        },
+    ]
+
+    return gradients[Math.floor(Math.random() * gradients.length)];
 }
 
 
