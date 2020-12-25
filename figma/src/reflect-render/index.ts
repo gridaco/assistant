@@ -1,6 +1,5 @@
 import { Color, ColorFormat } from "@reflect.bridged.xyz/core/lib/color"
-import { colorToRGBA, convertReflectColorToUniversal } from "@reflect.bridged.xyz/core/lib/converters/color.convert"
-
+import { reflectColorToFigmaColor, reflectColorToFigmaRGB, reflectColorToFigmaRGBA } from "@bridged.xyz/design-sdk/lib/figma/converters/color.convert"
 export async function drawButtons() {
     const marginBetweenGeneratedElements = 50
     let xPos = 0
@@ -34,18 +33,14 @@ export async function drawButtons() {
             // randomize font size
             text.fontSize = textSize
 
-            const textColor = colorToRGBA(colorScheme.text, ColorFormat.rgbaF)
+            const textColor = reflectColorToFigmaColor(colorScheme.text)
+
             text.fills = [
                 {
                     type: 'SOLID',
-                    color: {
-                        r: textColor.r,
-                        g: textColor.g,
-                        b: textColor.b
-                    },
+                    color: textColor
                 }
             ]
-
 
 
             const textWidth = text.width
@@ -83,7 +78,6 @@ export async function drawButtons() {
             const fillIsGradient = chanceBy(0.2)
 
             if (fillIsGradient) {
-
                 text.fills = [
                     {
                         type: 'SOLID',
@@ -97,9 +91,8 @@ export async function drawButtons() {
 
                 // gradient fill
                 const gradient = generateRandomGradient()
-                const startColor = colorToRGBA(gradient.colors[0], ColorFormat.rgbaF)
-                console.log('startColor', gradient.colors[0], startColor)
-                const endColor = colorToRGBA(gradient.colors[1], ColorFormat.rgbaF)
+                const startColor = gradient.colors[0]
+                const endColor = gradient.colors[1]
                 base.fills = [
                     {
                         type: 'GRADIENT_LINEAR',
@@ -108,46 +101,26 @@ export async function drawButtons() {
                             [1, 1, 1],
                         ],
                         gradientStops: [{
-                            color: {
-                                r: startColor.r,
-                                g: startColor.g,
-                                b: startColor.b,
-                                a: startColor.a
-                            },
+                            color: reflectColorToFigmaRGBA(startColor),
                             position: 0,
-
                         },
                         {
-                            color: {
-                                r: endColor.r,
-                                g: endColor.g,
-                                b: endColor.b,
-                                a: endColor.a
-                            },
+                            color: reflectColorToFigmaRGBA(endColor),
                             position: 1,
                         },
                         ],
                     },
                 ]
-
             } else {
-
                 // solid fill
-                const baseColor = colorToRGBA(colorScheme.base, ColorFormat.rgbaF)
                 base.fills = [
                     {
                         type: 'SOLID',
-                        color: {
-                            r: baseColor.r,
-                            g: baseColor.g,
-                            b: baseColor.b
-                        },
+                        color: reflectColorToFigmaRGB(colorScheme.base),
                         opacity: 1
                     }
                 ]
             }
-
-
 
 
             base.effects = [
@@ -155,11 +128,10 @@ export async function drawButtons() {
                 generateRandomShadow()
             ]
 
-            generateRandomBorder(colorScheme.border)
+            const border = generateRandomBorder(colorScheme.border)
             base.strokes = [
-
+                border
             ]
-
 
             const textWidthAfterContentFilled = text.width
             const textHeightAfterContentFilled = text.height
@@ -167,6 +139,8 @@ export async function drawButtons() {
             text.x = (width / 2) - (textWidthAfterContentFilled / 2)
             // center vertically
             text.y = (height / 2) - (textHeightAfterContentFilled / 2)
+
+            // TODO - add constraints
 
 
             // base to downer
@@ -197,14 +171,9 @@ function generateRandomBorder(color: Color | undefined): Paint | undefined {
         }
     }
 
-    const convertedColor = colorToRGBA(color, ColorFormat.rgbaF)
     return {
         type: 'SOLID',
-        color: {
-            r: convertedColor.r,
-            g: convertedColor.g,
-            b: convertedColor.b,
-        },
+        color: reflectColorToFigmaRGB(color),
         visible: chanceBy(0.5)
     }
 }
