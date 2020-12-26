@@ -14,6 +14,7 @@ export async function drawButtons(seq: number, col: number = 50, row: number = 5
     // focus to created page
     figma.currentPage = newPageForRenderer
 
+    await prewarmFonts()
     // horizontal margin between two generated buttons.
     const marginBetweenGeneratedElements = 50
     let xPos = 0
@@ -29,7 +30,7 @@ export async function drawButtons(seq: number, col: number = 50, row: number = 5
             i++;
 
             const fontName = generateRandomFont()
-            await figma.loadFontAsync(fontName)
+
             const buttonFrame = figma.createFrame()
 
             buttonFrame.name = `relfect-buttons/with-text-${i}`
@@ -123,6 +124,21 @@ export async function drawButtons(seq: number, col: number = 50, row: number = 5
     }
 }
 
+
+async function prewarmFonts() {
+    await figma.loadFontAsync({
+        family: "Roboto",
+        style: "Bold"
+    })
+    await figma.loadFontAsync({
+        family: "Roboto",
+        style: "Medium"
+    })
+    await figma.loadFontAsync({
+        family: "Roboto",
+        style: "Regular"
+    })
+}
 
 
 function generateRandomIcon() {
