@@ -7,7 +7,7 @@ import { EK_COMPUTE_STARTED, EK_COPIED, EK_CREATE_ICON, EK_FOCUS_REQUEST, EK_GEN
 import { handleNotify, notify } from "@bridged.xyz/design-sdk/lib/figma";
 import { makeApp } from "./flutter/make/app.make";
 import { ImageRepositories } from "./assets-repository";
-import { insertMaterialIcon } from "./assets-repository/icons-generator";
+import { renderSvgIcon } from "./reflect-render/icons.render";
 import { makeVanilla } from "./vanilla";
 import { ReflectFrameNode } from "@bridged.xyz/design-sdk/lib/nodes";
 import { replaceAllTextFontInFrame } from "./tool-box/manipulate/font-replacer";
@@ -204,7 +204,7 @@ figma.ui.onmessage = async (msg) => {
     else if (msg.type == EK_CREATE_ICON) {
         const icon_key = msg.data.key
         const svgData = msg.data.svg
-        const inserted = insertMaterialIcon(icon_key, svgData)
+        const inserted = renderSvgIcon(icon_key, svgData)
         figma.viewport.scrollAndZoomIntoView([inserted])
     }
 
@@ -235,7 +235,9 @@ figma.ui.onmessage = async (msg) => {
     }
 
     else if (msg.type == 'reflect-ui-generation/button-base') {
-        drawButtons()
+        for (let i = 0; i < 40; i++) {
+            drawButtons(i)
+        }
     }
 };
 

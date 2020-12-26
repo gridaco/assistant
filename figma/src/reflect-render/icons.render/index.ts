@@ -1,4 +1,9 @@
-export function insertMaterialIcon(name: string, data: string): FrameNode {
+/**
+ * renders materila icon to figma canvas via icon name and icon svg data
+ * @param name 
+ * @param data a svg data string
+ */
+export function renderSvgIcon(name: string, data: string): FrameNode {
     console.log(`inserting icon with name ${name} and data ${data}`)
 
     const currentViewportLocation = figma.viewport.center
