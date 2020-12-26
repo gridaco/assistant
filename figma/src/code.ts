@@ -235,11 +235,16 @@ figma.ui.onmessage = async (msg) => {
     }
 
     else if (msg.type == 'reflect-ui-generation/button-base') {
-        for (let i = 0; i < 40; i++) {
-            drawButtons(i)
-        }
+        draw100000Buttons()
     }
 };
+
+
+async function draw100000Buttons(){
+    for (let i = 0; i < 40; i++) {
+        await drawButtons(i)
+    }
+}
 
 function hideAllExceptFromCurrentSelection(except: NodeType) {
     if (rawNode.type != "FRAME") {

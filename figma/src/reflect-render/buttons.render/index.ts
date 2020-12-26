@@ -10,7 +10,7 @@ import { renderCgRect } from "../cgrect.render"
 
 export async function drawButtons(seq: number, col: number = 50, row: number = 50,) {
     const newPageForRenderer = figma.createPage()
-    newPageForRenderer.name = `buttons (generated) ${Date.now()}`
+    newPageForRenderer.name = `buttons (generated) ${seq}`
     // focus to created page
     figma.currentPage = newPageForRenderer
 
