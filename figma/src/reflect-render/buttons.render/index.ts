@@ -140,6 +140,11 @@ async function prewarmFonts() {
     })
 }
 
+const CONFIG_JSON_S3 = "https://reflect-icons.s3-us-west-1.amazonaws.com/material/config.json"
+async function prewarmIcons() {
+
+}
+
 
 function generateRandomIcon() {
 
