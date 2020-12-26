@@ -1,5 +1,13 @@
 import { Color, ColorFormat } from "@reflect.bridged.xyz/core/lib/color"
 import { reflectColorToFigmaColor, reflectColorToFigmaRGB, reflectColorToFigmaRGBA } from "@bridged.xyz/design-sdk/lib/figma/converters/color.convert"
+import { ButtonColorScheme } from "@reflect.bridged.xyz/core/lib/theme/color-schemes"
+import { BUTTON_COLOR_SCHEMES_SET } from "@reflect.bridged.xyz/ui-generator/lib/seeds/color-schemes/button.color-scheme.seed"
+import { BUTTON_TEXTS_SET_EN } from "@reflect.bridged.xyz/ui-generator/lib/seeds"
+import { BUTTON_BASE_GRADIENTS_SET } from "@reflect.bridged.xyz/ui-generator/lib/seeds/gradients/button-base.gradients.seed"
+import { renderText } from "../text.render"
+import { renderCgRect } from "../cgrect.render"
+
+
 export async function drawButtons(seq: number, col: number = 50, row: number = 50,) {
     const newPageForRenderer = figma.createPage()
     newPageForRenderer.name = `buttons (generated) ${Date.now()}`
@@ -158,9 +166,7 @@ function chanceBy(chance: number = 0.5): boolean {
 }
 
 
-import { BUTTON_TEXTS_SET_EN } from "@reflect.bridged.xyz/ui-generator/lib/seeds"
-import { renderText } from "../text.render"
-import { renderCgRect } from "../cgrect.render"
+
 function generateRandomButtonTextContent(): string {
     // replace this set with ui-dataset. https://github.com/bridgedxyz/ui-dataset
     const item = BUTTON_TEXTS_SET_EN[Math.floor(Math.random() * BUTTON_TEXTS_SET_EN.length)];
@@ -205,15 +211,6 @@ function generateRandomShadow(): Effect {
 }
 
 
-/**
- * reflect button color scheme manifest
- */
-// todo - move this to reflect, when fully constructed.
-interface ButtonColorScheme {
-    base: Color
-    text: Color,
-    border?: Color
-}
 
 /**
  * generates random button color scheme. the set of colors containing background, and foreground color values.
@@ -221,76 +218,8 @@ interface ButtonColorScheme {
  */
 function generateRandomButonColorSceme(): ButtonColorScheme {
     // const colors = ['#A58EFF', '#FF8E8E', '#7435C3',]
-    const schemes: Array<ButtonColorScheme> = [
-        {
-            base: '#151818',
-            text: '#FFFFFF'
-        },
-        {
-            base: '#5B7FFF',
-            text: '#FFFFFF'
-        },
-        {
-            base: '#FF835B',
-            text: '#FFFFFF'
-        },
-        {
-            base: '#E93843',
-            text: '#FFFFFF'
-        },
-        {
-            base: '#FFE175',
-            text: '#000000'
-        },
-        //
 
-        {
-            base: '#4DD091',
-            text: '#FFFFFF'
-        },
-        {
-            base: '#4AB868',
-            text: '#FFFFFF'
-        },
-        {
-            base: '#FFFFFF',
-            text: '#4F60FF',
-            border: '#4F60FF'
-        },
-        {
-            base: '#F15223',
-            text: '#FFFFFF',
-        },
-        {
-            base: '#06C1FF',
-            text: '#FFFFFF'
-        },
-
-        //
-        {
-            base: '#8A24FF',
-            text: '#FFFFFF'
-        },
-        {
-            base: '#5041AB',
-            text: '#FFFFFF'
-        },
-        {
-            base: '#4A5CB8',
-            text: '#FFFFFF'
-        },
-        {
-            base: '#FFFFFF',
-            text: '#E15869',
-            border: '#E15869'
-        },
-        {
-            base: '#71C297',
-            text: '#FFFFFF'
-        },
-    ]
-
-    return schemes[Math.floor(Math.random() * schemes.length)]
+    return BUTTON_COLOR_SCHEMES_SET[Math.floor(Math.random() * BUTTON_COLOR_SCHEMES_SET.length)]
 }
 
 
@@ -299,288 +228,9 @@ interface LiearGradient {
 }
 
 function generateRandomGradient(): LiearGradient {
-    const gradients: LiearGradient[] = [
-        {
-            colors: [
-                '#FFC7F0',
-                '#D4D8FF'
-            ]
-        },
-        {
-            colors: [
-                '#C84E89',
-                '#F05F7A'
-            ]
-        },
-        {
-            colors: [
-                '#01F5A1',
-                '#01DAF5'
-            ]
-        },
-        {
-            colors: [
-                '#D5EC68',
-                '#53E7DE'
-            ]
-        },
-        {
-            colors: [
-                '#ABDCFF',
-                '#0597FF'
-            ]
-        },
-        //
-        {
-            colors: [
-                '#FEB692',
-                '#EB5556'
-            ]
-        },
-        {
-            colors: [
-                '#CD9FFC',
-                '#7568F1'
-            ]
-        },
-        {
-            colors: [
-                '#FFF3B6',
-                '#F7436D'
-            ]
-        },
-        {
-            colors: [
-                '#81FBB8',
-                '#29C870'
-            ]
-        },
-        {
-            colors: [
-                '#E2B0FF',
-                '#A045D4'
-            ]
-        },
-        //
-        {
-            colors: [
-                '#FDCE32',
-                '#F65755'
-            ]
-        },
-        {
-            colors: [
-                '#F761A2',
-                '#8D1CAB'
-            ]
-        },
-        {
-            colors: [
-                '#44CBFF',
-                '#9709CD'
-            ]
-        },
-        {
-            colors: [
-                '#5FFCE9',
-                '#736FFE'
-            ]
-        },
-        {
-            colors: [
-                '#E2B0FF',
-                '#A045D4'
-            ]
-        },
-        //
-        {
-            colors: [
-                '#F97795',
-                '#633BA2'
-            ]
-        },
-        {
-            colors: [
-                '#FDCF32',
-                '#F65855'
-            ]
-        },
-        {
-            colors: [
-                '#F761A2',
-                '#8E1CAB'
-            ]
-        },
-        {
-            colors: [
-                '#44CBFF',
-                '#9709CD'
-            ]
-        },
-        {
-            colors: [
-                '#FAD7A1',
-                '#EA6E72'
-            ]
-        },
-        //
-        {
-            colors: [
-                '#FF96F9',
-                '#C42CAD'
-            ]
-        },
-        {
-            colors: [
-                '#EECE14',
-                '#B312FE'
-            ]
-        },
-        {
-            colors: [
-                '#79F0A5',
-                '#0F5DAD'
-            ]
-        },
-        {
-            colors: [
-                '#FDD719',
-                '#E90D06'
-            ]
-        },
-        {
-            colors: [
-                '#FFF3B1',
-                '#CB27FF'
-            ]
-        },
-        //
-        {
-            colors: [
-                '#FFF720',
-                '#3DD601'
-            ]
-        },
-        {
-            colors: [
-                '#65FCF0',
-                '#1E71A4'
-            ]
-        },
-        {
-            colors: [
-                '#6A72FF',
-                '#010EFF'
-            ]
-        },
-        {
-            colors: [
-                '#FE7AF4',
-                '#533264'
-            ]
-        },
-        {
-            colors: [
-                '#F0FF02',
-                '#59D0FB'
-            ]
-        },
-        //
-        {
-            colors: [
-                '#FFE784',
-                '#FB752C'
-            ]
-        },
-        {
-            colors: [
-                '#FEA6B8',
-                '#212CD2'
-            ]
-        },
-        {
-            colors: [
-                '#FFA985',
-                '#B43260'
-            ]
-        },
-        {
-            colors: [
-                '#72ECF2',
-                '#5254E6'
-            ]
-        },
-        {
-            colors: [
-                '#FF9D6D',
-                '#BC4F76'
-            ]
-        },
-        //
-        {
-            colors: [
-                '#69FF98',
-                '#01E5FF'
-            ]
-        },
-        {
-            colors: [
-                '#3D2769',
-                '#BC78EC'
-            ]
-        },
-        {
-            colors: [
-                '#70F570',
-                '#4AC729'
-            ]
-        },
-        {
-            colors: [
-                '#3C8DE8',
-                '#01EAFF'
-            ]
-        },
-        {
-            colors: [
-                '#FAB2FF',
-                '#1A05E6'
-            ]
-        },
-        //
-        {
-            colors: [
-                '#FFA9A8',
-                '#FDFF02'
-            ]
-        },
-        {
-            colors: [
-                '#82FEEF',
-                '#F068B5'
-            ]
-        },
-        {
-            colors: [
-                '#EC4F83',
-                '#B208BE'
-            ]
-        },
-        {
-            colors: [
-                '#6CC1FF',
-                '#4F61BC'
-            ]
-        },
-        {
-            colors: [
-                '#91FDC0',
-                '#012862'
-            ]
-        },
-    ]
 
-    return gradients[Math.floor(Math.random() * gradients.length)];
+
+    return BUTTON_BASE_GRADIENTS_SET[Math.floor(Math.random() * BUTTON_BASE_GRADIENTS_SET.length)];
 }
 
 
