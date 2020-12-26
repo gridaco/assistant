@@ -4,9 +4,10 @@ import { ButtonColorScheme } from "@reflect.bridged.xyz/core/lib/theme/color-sch
 import { BUTTON_COLOR_SCHEMES_SET } from "@reflect.bridged.xyz/ui-generator/lib/seeds/color-schemes/button.color-scheme.seed"
 import { BUTTON_TEXTS_SET_EN } from "@reflect.bridged.xyz/ui-generator/lib/seeds"
 import { BUTTON_BASE_GRADIENTS_SET } from "@reflect.bridged.xyz/ui-generator/lib/seeds/gradients/button-base.gradients.seed"
+import { MATERIAL_ICONS_SVG_DATA_SET } from "@reflect.bridged.xyz/ui-generator/lib/seeds/icons/material-icons.svg.seed"
 import { renderText } from "../text.render"
 import { renderCgRect } from "../cgrect.render"
-
+import { renderSvgIcon } from "../icons.render"
 
 export async function drawButtons(seq: number, col: number = 50, row: number = 50,) {
     const newPageForRenderer = figma.createPage()
@@ -29,6 +30,9 @@ export async function drawButtons(seq: number, col: number = 50, row: number = 5
         for (let r: number = 0; r < 50; r++) {
             i++;
 
+            const fillIsGradient = chanceBy(0.2)
+            const hasIcon = chanceBy(0.2)
+
             const fontName = generateRandomFont()
 
             const buttonFrame = figma.createFrame()
@@ -36,15 +40,26 @@ export async function drawButtons(seq: number, col: number = 50, row: number = 5
             buttonFrame.name = `relfect-buttons/with-text-${i}`
 
             const colorScheme = generateRandomButonColorSceme()
-
+            const textColor: Color = fillIsGradient ? '#FFFFFF' : colorScheme.text
             const textContent = generateRandomButtonTextContent()
             const text = renderText({
                 name: "slot:text",
                 text: textContent,
                 fontName: fontName,
                 fontSize: randomizeTextSize(),
-                color: colorScheme.text
+                color: textColor
             })
+
+
+
+            let icon: FrameNode
+            if (hasIcon) {
+                icon = generateRandomIcon(textColor)
+                icon.x = 0
+                icon.y = 0
+
+                // icon to upper
+            }
 
 
             const textWidth = text.width
@@ -57,6 +72,25 @@ export async function drawButtons(seq: number, col: number = 50, row: number = 5
             const maxWidth = 375
             const width = getRandomInt(minWidth, maxWidth)
             const height = getRandomInt(minHeight, maxHeight)
+
+
+
+
+            // position text
+            const textWidthAfterContentFilled = text.width
+            const textHeightAfterContentFilled = text.height
+            // center horizontally
+            text.x = (width / 2) - (textWidthAfterContentFilled / 2)
+            // center vertically
+            text.y = (height / 2) - (textHeightAfterContentFilled / 2)
+
+
+            if (icon) {
+                icon.x = (width / 2) - (textWidthAfterContentFilled / 2) - 20
+                icon.y = (height / 2) - (textHeightAfterContentFilled / 2)
+            }
+
+
 
             // resize the frame
             buttonFrame.resize(width, height)
@@ -73,10 +107,6 @@ export async function drawButtons(seq: number, col: number = 50, row: number = 5
             xPos += width + marginBetweenGeneratedElements
 
 
-
-            const fillIsGradient = chanceBy(0.2)
-
-
             const minWH = Math.min(width, height)
             const borderRadius = generateRandomBorderRadius(minWH)
             const border = generateRandomBorder(colorScheme.border)
@@ -89,37 +119,20 @@ export async function drawButtons(seq: number, col: number = 50, row: number = 5
                 color: colorScheme.base,
                 gradient: fillIsGradient ? generateRandomGradient() : undefined
             })
+            // base to downer
+            buttonFrame.insertChild(0, base)
 
 
+            // text to upper
+            buttonFrame.insertChild(1, text)
 
-            if (fillIsGradient) {
-                // if gradient base, text to color white.
-                text.fills = [
-                    {
-                        type: 'SOLID',
-                        color: {
-                            r: 1,
-                            g: 1,
-                            b: 1,
-                        }
-                    }
-                ]
+            if (icon) {
+                buttonFrame.insertChild(2, icon)
             }
-
-            const textWidthAfterContentFilled = text.width
-            const textHeightAfterContentFilled = text.height
-            // center horizontally
-            text.x = (width / 2) - (textWidthAfterContentFilled / 2)
-            // center vertically
-            text.y = (height / 2) - (textHeightAfterContentFilled / 2)
 
             // TODO - add constraints
 
 
-            // base to downer
-            buttonFrame.insertChild(0, base)
-            // text to upper
-            buttonFrame.insertChild(1, text)
         }
     }
 }
@@ -146,8 +159,12 @@ async function prewarmIcons() {
 }
 
 
-function generateRandomIcon() {
-
+function generateRandomIcon(color: Color): FrameNode {
+    const keys = Object.keys(MATERIAL_ICONS_SVG_DATA_SET)
+    const randomKey = keys[Math.floor(Math.random() * keys.length)]
+    const svgData = MATERIAL_ICONS_SVG_DATA_SET[randomKey]
+    const iconFrame = renderSvgIcon(randomKey, svgData, color)
+    return iconFrame
 }
 
 
