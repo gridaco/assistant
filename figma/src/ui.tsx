@@ -17,6 +17,7 @@ import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import { WorkScreen, WorkspaceMode } from './app/states/app-state';
 import { FontReplacerScreen } from './app/screens/tool-box/font-replacer';
 import { ButtonMakerScreen } from './app/screens/design/button-maker-screen';
+import { PluginConsumer } from './app/utils/plugin-provider';
 
 
 interface TabPanelProps {
@@ -223,7 +224,7 @@ export default function App() {
   const screenLayout = makeTabLayout(tabLayout)
 
   return (
-    <div>
+    <PluginConsumer>
       <div>
         <Button endIcon={<KeyboardArrowDown />} aria-controls="workspace-mode" aria-haspopup="true" onClick={handleOpenWorkspaceModeChangeClick}>{worspaceModeToName(workspaceMode)}</Button>
         <Menu
@@ -240,7 +241,7 @@ export default function App() {
         </Menu>
       </div>
       {screenLayout}
-    </div>
+    </PluginConsumer>
   )
 }
 
