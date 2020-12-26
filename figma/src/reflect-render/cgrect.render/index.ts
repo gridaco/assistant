@@ -8,7 +8,7 @@ interface FigmaRenderRectManifest {
     width: number,
     height: number,
     borderRadius: number,
-    color: Color,
+    color?: Color,
     gradient?: {
         colors: Color[]
     },
@@ -21,13 +21,18 @@ export function renderCgRect(rectManifest: FigmaRenderRectManifest): RectangleNo
     rect.resize(rectManifest.width, rectManifest.height)
     rect.cornerRadius = rectManifest.borderRadius
 
-    rect.fills = [
-        {
-            type: 'SOLID',
-            color: reflectColorToFigmaRGB(rectManifest.color),
-            opacity: 1
-        }
-    ]
+    if(rectManifest.color){
+        rect.fills = [
+            {
+                type: 'SOLID',
+                color: reflectColorToFigmaRGB(rectManifest.color),
+                opacity: 1
+            }
+        ]
+    }else{
+        rect.fills = []
+    }
+    
 
     if (rectManifest.gradient) {
         const gradient = rectManifest.gradient
