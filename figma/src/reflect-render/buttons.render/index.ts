@@ -52,14 +52,6 @@ export async function drawButtons(seq: number, col: number = 50, row: number = 5
 
 
 
-            let icon: FrameNode
-            if (hasIcon) {
-                icon = generateRandomIcon(textColor)
-                icon.x = 0
-                icon.y = 0
-
-                // icon to upper
-            }
 
 
             const textWidth = text.width
@@ -79,21 +71,33 @@ export async function drawButtons(seq: number, col: number = 50, row: number = 5
             // position text
             const textWidthAfterContentFilled = text.width
             const textHeightAfterContentFilled = text.height
+
+
+
+            let icon: FrameNode
+            let iconWidthAfterContentFilled = 0
+            const iconMarginToText = 8
+            if (hasIcon) {
+                icon = generateRandomIcon(textColor)
+
+                // make it same size as text
+                icon.rescale(textHegith / icon.height)
+                iconWidthAfterContentFilled = icon.width
+                icon.x = (width / 2) - (textWidthAfterContentFilled / 2) - (iconWidthAfterContentFilled / 2) - iconMarginToText
+                icon.y = (height / 2) - (icon.height / 2)
+            }
+
+
             // center horizontally
-            text.x = (width / 2) - (textWidthAfterContentFilled / 2)
+            text.x = (width / 2) - (textWidthAfterContentFilled / 2) + (iconWidthAfterContentFilled / 2)
             // center vertically
             text.y = (height / 2) - (textHeightAfterContentFilled / 2)
 
 
-            if (icon) {
-                icon.x = (width / 2) - (textWidthAfterContentFilled / 2) - 20
-                icon.y = (height / 2) - (textHeightAfterContentFilled / 2)
-            }
-
-
 
             // resize the frame
-            buttonFrame.resize(width, height)
+            const finalWidth = width + (!iconWidthAfterContentFilled ? iconWidthAfterContentFilled + iconMarginToText : 0)
+            buttonFrame.resize(finalWidth, height)
 
             // remove all fills
             buttonFrame.fills = []
