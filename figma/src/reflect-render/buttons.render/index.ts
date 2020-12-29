@@ -157,12 +157,6 @@ async function prewarmFonts() {
     })
 }
 
-const CONFIG_JSON_S3 = "https://reflect-icons.s3-us-west-1.amazonaws.com/material/config.json"
-async function prewarmIcons() {
-
-}
-
-
 function generateRandomIcon(color: Color): FrameNode {
     const keys = Object.keys(MATERIAL_ICONS_SVG_DATA_SET)
     const randomKey = keys[Math.floor(Math.random() * keys.length)]
