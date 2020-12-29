@@ -15,6 +15,7 @@ export enum WorkScreen {
     g11n,
     dev,
     slot,
+    desing_button_maker,
     tool_font_replacer
 }
 

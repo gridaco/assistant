@@ -4,13 +4,14 @@ import { retrieveFlutterColors } from "./flutter/utils/fetch-colors";
 import { hideAllExcept, hideAllOnly } from "./tool-box/manipulate/hide-all/hide-all";
 import { runLints } from "./lint/lint";
 import { EK_COMPUTE_STARTED, EK_COPIED, EK_CREATE_ICON, EK_FOCUS_REQUEST, EK_GENERATED_CODE_PLAIN, EK_IMAGE_ASSET_REPOSITORY_MAP, EK_LINT_FEEDBACK, EK_PREVIEW_SOURCE, EK_REPLACE_FONT, EK_SET_APP_MODE, EK_VANILLA_TRANSPORT } from "./app/constants/ek.constant";
-import { handleNotify, notify } from "@bridged.xyz/design-sdk/lib/figma";
+import { handleNotify } from "@bridged.xyz/design-sdk/lib/figma";
 import { makeApp } from "./flutter/make/app.make";
 import { ImageRepositories } from "./assets-repository";
-import { insertMaterialIcon } from "./assets-repository/icons-generator";
+import { renderSvgIcon } from "./reflect-render/icons.render";
 import { makeVanilla } from "./vanilla";
 import { ReflectFrameNode } from "@bridged.xyz/design-sdk/lib/nodes";
 import { replaceAllTextFontInFrame } from "./tool-box/manipulate/font-replacer";
+import { drawButtons } from "./reflect-render";
 
 
 let parentNodeId: string;
@@ -184,7 +185,6 @@ figma.on("selectionchange", () => {
     run();
 });
 
-// efficient? No. Works? Yes.
 // todo pass data instead of relying in types
 figma.ui.onmessage = async (msg) => {
     console.log('event received', msg)
@@ -204,7 +204,11 @@ figma.ui.onmessage = async (msg) => {
     else if (msg.type == EK_CREATE_ICON) {
         const icon_key = msg.data.key
         const svgData = msg.data.svg
-        const inserted = insertMaterialIcon(icon_key, svgData)
+        const currentViewportLocation = figma.viewport.center
+        const inserted = renderSvgIcon(icon_key, svgData, '#000000', {
+            x: currentViewportLocation.x,
+            y: currentViewportLocation.y
+        })
         figma.viewport.scrollAndZoomIntoView([inserted])
     }
 
@@ -233,7 +237,18 @@ figma.ui.onmessage = async (msg) => {
     else if (msg.type == EK_COPIED) {
         figma.notify("copied to clipboard", { timeout: 1 })
     }
+
+    else if (msg.type == 'reflect-ui-generation/button-base') {
+        draw100000Buttons()
+    }
 };
+
+
+async function draw100000Buttons() {
+    for (let i = 0; i < 1; i++) {
+        await drawButtons(i)
+    }
+}
 
 function hideAllExceptFromCurrentSelection(except: NodeType) {
     if (rawNode.type != "FRAME") {

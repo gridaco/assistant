@@ -50,6 +50,13 @@ yarn sketch
 *soon as the subpackages are released as stable, we will remove git submodule dependency for ease of use. until then, this will be the primary repository and all the edits and PRs will be caused by this project.*
 
 
+
+> sometimes, when pulling this repo from remote, if new submodule package is added, you'll need to run below command to pull with updated submodules (we recommand you to know what this command actually does in a nut shell.)
+``` shell
+git submodule update --init --recursive
+```
+
+
 ### Pre-requisites
 
 - [Node.js](https://nodejs.org/)
