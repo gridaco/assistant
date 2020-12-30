@@ -1,7 +1,6 @@
 import { Typography, CircularProgress, Fade } from "@material-ui/core";
 import * as React from "react";
 import "./preview.css";
-import { setInterval } from "timers";
 
 interface Props {
   data: Uint8Array;
@@ -11,14 +10,12 @@ interface Props {
 
 interface State {
   url: string;
-  isLoading: boolean;
 }
 export class Preview extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
       url: null,
-      isLoading: false,
     };
   }
 
@@ -32,13 +29,9 @@ export class Preview extends React.Component<Props, State> {
     }
   }
 
-  loadingBox = () => {
-    const t = setInterval(() => <div>jhihi</div>, 1000);
-
-    return t;
-  };
-
   render() {
+    const unselectedLogo = require("./assets/preview-unselected.svg") as string;
+
     let render = this.url ? (
       <img
         className="render"
@@ -49,24 +42,18 @@ export class Preview extends React.Component<Props, State> {
       />
     ) : (
       <div className="render">
-        <Typography variant="h4" className="rendering-notify">
-          select anything
-        </Typography>
+        <div className="inner-render">
+          <img src={unselectedLogo} alt="unSelected-logo" />
+          <Typography className="rendering-notify">
+            Nothing is selected
+          </Typography>
+        </div>
       </div>
-    );
-    let t = this.url ? (
-      <div className="preview-loading">
-        <CircularProgress />
-      </div>
-    ) : (
-      ""
     );
 
     return (
       <div className="preview">
         <Typography variant="caption">{this.props.type}</Typography>
-
-        <div className="preview-loading">{this.loadingBox}</div>
         {render}
       </div>
     );

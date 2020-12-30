@@ -67,46 +67,41 @@ export default class Highlight extends React.Component<Props, State> {
 
   render() {
     return (
-      <code>
-        <div>
-          <div style={{ height: "24px" }} />
-          <Button
-            variant="outlined"
-            size="medium"
-            className="sticky-actions"
-            onClick={this.onCopyClicked}
+      <>
+        <code>
+          <PrismHighlight
+            {...defaultProps}
+            Prism={Prism}
+            code={this.props.code}
+            language={this.props.language}
           >
+            {({ className, style, tokens, getLineProps, getTokenProps }) => (
+              <pre className={className} style={style}>
+                {tokens.map((line, i) => (
+                  <div {...getLineProps({ line, key: i })}>
+                    {line.map((token, key) => (
+                      <span {...getTokenProps({ token, key })} />
+                    ))}
+                  </div>
+                ))}
+              </pre>
+            )}
+          </PrismHighlight>
+        </code>
+
+        <div className="code-info-wrapper">
+          <Button className="btn-copy-code" onClick={this.onCopyClicked}>
             copy code
           </Button>
           <Button
-            variant="outlined"
-            size="medium"
-            className="sticky-actions"
+            className="btn-quick-look"
             disabled={this.state.isLaunchingConsole}
             onClick={this.onQuickLookClicked}
           >
             {this.state.isLaunchingConsole ? "launching.." : "quick look"}
           </Button>
         </div>
-        <PrismHighlight
-          {...defaultProps}
-          Prism={Prism}
-          code={this.props.code}
-          language={this.props.language}
-        >
-          {({ className, style, tokens, getLineProps, getTokenProps }) => (
-            <pre className={className} style={style}>
-              {tokens.map((line, i) => (
-                <div {...getLineProps({ line, key: i })}>
-                  {line.map((token, key) => (
-                    <span {...getTokenProps({ token, key })} />
-                  ))}
-                </div>
-              ))}
-            </pre>
-          )}
-        </PrismHighlight>
-      </code>
+      </>
     );
   }
 }

@@ -3,17 +3,37 @@ code {
   height: auto;
 }
 
-
 pre {
-  margin-left: -16px;
-  margin-right: -16px;
+  margin: 0 -8px;
   padding: 8px;
   overflow: scroll;
+  width: 100%;
+  height: 408px;
 }
 
-.sticky-actions {
-  position: sticky;
-  right: 4px;
-  margin-right: 16px;
-  top: 4px;
+.code-info-wrapper {
+  margin: 0 -8px;
+  padding: 10px 10px 0 10px;
+}
+
+.code-info-wrapper button {
+  border: 1px solid #151617;
+  padding: 10px 15px;
+}
+
+.btn-copy-code {
+  width: calc(50% - 5px);
+  /* for unused .MuiButton-root margin: 0  */
+  margin-right: 5px !important;
+  font-weight: bold;
+}
+
+.btn-quick-look {
+  width: calc(50% - 5px);
+  /* for unused .MuiButton-root margin: 0  */
+  margin-left: 5px !important;
+  background-color: #151617 !important;
+  color: #fff !important;
+  font-weight: bold;
+
 }

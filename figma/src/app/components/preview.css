@@ -1,7 +1,8 @@
 .preview {
-  margin: -16px;
+  margin: 0 -8px;
   padding: 12px;
-  background: #D9D9D9;
+  background: #F1F1F1;
+  height: 200px;
 }
 
 .preview-loading {
@@ -10,10 +11,22 @@
 }
 
 .render {
+  /* .render height equal .preview height */
+  width: 100%;
+  height: 200px;
   text-align: center;
   object-fit: contain;
+  display: table;
+}
+
+.inner-render {
+  margin: 0 auto;
+  display: table-cell;
+  vertical-align: middle;
 }
 
 .rendering-notify {
-  margin: '1rem'
+  color: #ADAEB2;
+  font-size: 18px;
+
 }
