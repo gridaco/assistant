@@ -12,7 +12,15 @@ import {
   EK_PREVIEW_SOURCE,
 } from "../constants/ek.constant";
 
-const DEFAULT_EMPTY_CODE_SNIPPET = "//\n//\n//\n// there is no selected node\n//\n//\n//"
+const DEFAULT_EMPTY_CODE_SNIPPET =
+  `//
+//
+//
+// there is no selected design.
+// select your screen or component on figma
+//
+//
+//`
 
 interface State {
   app: string;
