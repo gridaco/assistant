@@ -12,7 +12,7 @@ const vanillaImageRepo = new ImageRepository('vanilla-image-repository')
  * @param node 
  */
 export function makeVanilla(node: ReflectFrameNode): VanillaSceneTransport {
-
+    console.log(`start making vanilla from node ${node.toString()}`)
     const vanillaElements: Array<TransportLayer> = []
     // 1. loop through all children, if only text, make text manifest.
     // 2. if not a text, go deeper, 
@@ -21,6 +21,11 @@ export function makeVanilla(node: ReflectFrameNode): VanillaSceneTransport {
         const elements = fetchElements(c, anchor)
         vanillaElements.push(...elements)
     })
+
+    const bg = frameToRectBgTransport(node, anchor, {
+        overrideIndex: -999
+    })
+    vanillaElements.push(bg)
 
     // const bg = frameToRectBgTransport(node, anchor)
     // vanillaElements.push(bg)
@@ -120,14 +125,20 @@ function fetchElements(node: ReflectSceneNode, anchor: Anchor): Array<TransportL
 }
 
 
-function frameToRectBgTransport(f: ReflectFrameNode, a: Anchor): TransportLayer {
+function frameToRectBgTransport(f: ReflectFrameNode, a: Anchor, options?: {
+    overrideIndex?: number
+}): TransportLayer {
     // TODO -> index should be +1 of the most highest
-    const calculatedIndex = 0 - f.hierachyIndex
+    let calculatedIndex = 0 - f.hierachyIndex
     const calculatedName = `(bg-converted) ${f.name}`
     console.log('frameToRectBgTransport', f.name, f)
 
+    if (options?.overrideIndex) {
+        calculatedIndex = options.overrideIndex
+    }
+
     return {
-        index: calculatedIndex,
+        index: calculatedIndex || 0,
         nodeId: f.id,
         name: calculatedName,
         x: relativePositionToAnchor(a.x, f.absoluteX),
