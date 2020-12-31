@@ -12,6 +12,16 @@ import {
   EK_PREVIEW_SOURCE,
 } from "../constants/ek.constant";
 
+const DEFAULT_EMPTY_CODE_SNIPPET =
+  `//
+//
+//
+// there is no selected design.
+// select your screen or component on figma
+//
+//
+//`
+
 interface State {
   app: string;
   code: string;
@@ -25,7 +35,7 @@ export class CodeScreen extends React.Component<any, State> {
     super(props);
     this.state = {
       name: "not selected",
-      code: "",
+      code: DEFAULT_EMPTY_CODE_SNIPPET,
       previewImage: null,
       widget: null,
       app: null,
