@@ -125,7 +125,7 @@ function getWorkspaceTabLayout(workspaceMode: WorkspaceMode): TabLayout {
     }
   };
 
-  // this only
+  // this only returns release capable screens on production mode, if not -> reutns all.
   const filtered = layouts().filter((e) => {
     const release = process.env.NODE_ENV == "production";
     if (release) {
