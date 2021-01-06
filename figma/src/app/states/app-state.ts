@@ -9,14 +9,20 @@ export enum WorkspaceMode {
 }
 
 export enum WorkScreen {
-    code,
-    icon,
-    lint,
-    g11n,
-    dev,
-    slot,
-    desing_button_maker,
-    tool_font_replacer
+    code = 'code',
+    icon = 'icon',
+    lint = 'lint',
+    g11n = 'g11n',
+    dev = 'dev',
+    slot = 'slot',
+    desing_button_maker = 'desing_button_maker',
+    tool_font_replacer = 'tool_font_replacer'
+}
+
+export type ReleaseChannel = 'release' | 'beta' | 'alpha'
+export interface ReleaseVisibilityPreference{
+    screen: WorkScreen
+    allowedChannel: ReleaseChannel
 }
 
 

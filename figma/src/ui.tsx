@@ -14,7 +14,11 @@ import Button from "@material-ui/core/Button";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
-import { WorkScreen, WorkspaceMode } from "./app/states/app-state";
+import {
+  ReleaseChannel,
+  WorkScreen,
+  WorkspaceMode,
+} from "./app/states/app-state";
 import { FontReplacerScreen } from "./app/screens/tool-box/font-replacer";
 import { ButtonMakerScreen } from "./app/screens/design/button-maker-screen";
 import { PluginConsumer } from "./app/utils/plugin-provider";
@@ -88,21 +92,52 @@ function worspaceModeToName(workspaceMode: WorkspaceMode): string {
   return "N/A";
 }
 
+const SCREEN_VISIBILITY_PREFERENCE: Map<WorkScreen, ReleaseChannel> = new Map([
+  [WorkScreen.code, "release"],
+  [WorkScreen.icon, "release"],
+  [WorkScreen.lint, "release"],
+  [WorkScreen.g11n, "beta"],
+  [WorkScreen.dev, "beta"],
+  [WorkScreen.slot, "alpha"],
+  [WorkScreen.desing_button_maker, "alpha"],
+  [WorkScreen.tool_font_replacer, "release"],
+]);
+
 type TabLayout = ReadonlyArray<WorkScreen>;
 
 function getWorkspaceTabLayout(workspaceMode: WorkspaceMode): TabLayout {
-  switch (workspaceMode) {
-    case WorkspaceMode.code:
-      return [WorkScreen.code, WorkScreen.lint, WorkScreen.slot];
-    case WorkspaceMode.design:
-      return [WorkScreen.icon, WorkScreen.lint, WorkScreen.desing_button_maker];
-    case WorkspaceMode.content:
-      return [WorkScreen.g11n, WorkScreen.lint];
-    case WorkspaceMode.settings:
-      return [];
-    case WorkspaceMode.toolbox:
-      return [WorkScreen.tool_font_replacer];
-  }
+  const layouts = (): TabLayout => {
+    switch (workspaceMode) {
+      case WorkspaceMode.code:
+        return [WorkScreen.code, WorkScreen.lint, WorkScreen.slot];
+      case WorkspaceMode.design:
+        return [
+          WorkScreen.icon,
+          WorkScreen.lint,
+          WorkScreen.desing_button_maker,
+        ];
+      case WorkspaceMode.content:
+        return [WorkScreen.g11n, WorkScreen.lint];
+      case WorkspaceMode.settings:
+        return [];
+      case WorkspaceMode.toolbox:
+        return [WorkScreen.tool_font_replacer];
+    }
+  };
+
+  // this only
+  const filtered = layouts().filter((e) => {
+    const release = process.env.NODE_ENV == "production";
+    if (release) {
+      if (SCREEN_VISIBILITY_PREFERENCE.get(e) === "release") {
+        return true;
+      } else {
+        return false;
+      }
+    }
+    return true;
+  });
+  return filtered;
 }
 
 export default function App() {
