@@ -112,16 +112,10 @@ function flutterWidgetGenerator(sceneNode: ReadonlyArray<ReflectSceneNode> | Ref
     console.log(`starting handling node ${node.toString()} type of ${node.type}`)
     
 
-    console.log('Chip Test', node.name)
     const chipDetectionResult = detectIfChip(node)
     if(chipDetectionResult.result){
       console.log('this node is detected as Chip', node.name)
-
-      console.log('ChipResultData ',chipDetectionResult.data)
       return makeChip(chipDetectionResult.data)
-    }else{
-      console.log(node.name);
-      console.log(chipDetectionResult.reason);
     }
 
     const buttonDetectionResult = detectIfButton(node)

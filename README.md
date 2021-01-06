@@ -1,18 +1,16 @@
 ---
 framework: figma, flutter, react
 platform: Android, iOS, Web, macOS, Linux, Windows
-title: bridged figma plugin
+title: bridged assistant plugin
 ---
 
   <meta name="description" content="figma to flutter code exporter, lint your design. generate human level quality code from figma">
   <meta name="title" content="bridged assistant">
 
-
 ![bridged assistant](./branding/assistant-cover-v0.1.1.png)
 
-
-
 # Bridged Assistant plugin (figma to flutter)
+
 - ✅ Human readable code generation.
 - ✅ code generation built with CoLI, developed especially for assistant usage, ensuring the best code generation quality.
 - ✅ Slots support (Component with parameters)
@@ -24,14 +22,13 @@ title: bridged figma plugin
 
 > install figma plugin via below link. note that the published plugin is allways behind few new features behind this repository. for trying out the latest and mindblowing features, please build from your local environment directly.
 
-
 install via figma plugin [link here](https://www.figma.com/community/plugin/896445082033423994)
-
 
 > Cloning and running the project.
 > we use yarn workspace for maintaining this project as monorepository.
 > Some additional steps are required to run this project properly.
-``` shell
+
+```shell
 # [REQUIRED] we use git submodules for `packages/`. you have to explicitly execute this command instead default clone.
 git clone --recurse-submodules https://github.com/bridgedxyz/assistant.git
 
@@ -47,36 +44,28 @@ yarn figma
 yarn sketch
 ```
 
-*soon as the subpackages are released as stable, we will remove git submodule dependency for ease of use. until then, this will be the primary repository and all the edits and PRs will be caused by this project.*
-
-
+_soon as the subpackages are released as stable, we will remove git submodule dependency for ease of use. until then, this will be the primary repository and all the edits and PRs will be caused by this project._
 
 > sometimes, when pulling this repo from remote, if new submodule package is added, you'll need to run below command to pull with updated submodules (we recommand you to know what this command actually does in a nut shell.)
-``` shell
+
+```shell
 git submodule update --init --recursive
 ```
-
 
 ### Pre-requisites
 
 - [Node.js](https://nodejs.org/)
 - [Figma desktop app](https://figma.com/downloads/)
 
-
-
 ## Flutter code builder
-
-
 
 ![](doc/gifs/quicklook-demo-v002.gif)
 
-
-
 flutter widget builder is done by [figma/flutter](/flutter) and the core builder is powered by [bridged's dynamic](https://github.com/bridgedxyz/dynamic)
+
 - [figma/flutter](/figma/src/flutter)
 - [bridgedxyz/flutter-js](https://github.com/bridgedxyz/flutter-builder)
 - [bridgedxyz/dynamic](https://github.com/bridgedxyz/dynamic)
-
 
 - ✅ `Theme.of` Textstyle support
 - ✅ `Colors.` Color support
@@ -85,11 +74,14 @@ flutter widget builder is done by [figma/flutter](/flutter) and the core builder
 - ✅ formatted dart code
 - ✅ Best code quality (I Assure,) in this planet
 
+## Console & Cloud integrations
+
+> Watch the demo on our [website](https://bridged.xyz)
 
 ## UI Element Detection
+
 > rule based button / input / icon detection with [@reflect.bridged.xyz/detection](./packages/detection)
 > Higher quality ML based detection available at [Bridged's context engine](https://github.com/bridgedxyz/context)
-
 
 ### Debugging
 
@@ -97,22 +89,15 @@ Use `console.log` statements to inspect values in your code.
 
 To open the developer console in the Figma desktop app, go to `Plugins` → `Development` → `Open Console`.
 
-
-
 ### Change Log
 
 visit [CHANGELOG.md](./CHANGELOG.md)
 
-
-
-
 ## Development guide
-
 
 ### Building the plugin
 
 See [plugin README](/plugin/README.md)
-
 
 ### Docs
 
@@ -124,19 +109,18 @@ See [plugin README](/plugin/README.md)
 See this project's contributing guideline [here](./CONTRIBUTING.md).
 And general bridged project contribution and collaboration guideline [here](https://github.com/bridgedxyz/contributing-and-license).
 
-
 ## LEGAL
+
 > read [LICENSE](./LICENSE).
 
-***to shortly brief,***
+**_to shortly brief,_**
+
 - any form of modifing this software, including clone, fork, merge is allowed with no restrictions.
 - making profit "by using" this software is allowed with no restrictions.
 - making profit "by re-distributing" is not allowed. recap, you cannot publish this plugin as an alternative to this original plugin.
--- why is that? we are taking "minimum" profit from this software, we will prevent from other enterprise from copycatting this software.
+  -- why is that? we are taking "minimum" profit from this software, we will prevent from other enterprise from copycatting this software.
 - the code and packages distributed via this repository is free to use without any restrictions.
 - code, design is free to use and modify. (just don't make any profits by re-distributing this plugin.)
-
-
 
 ### DISCLAIMER
 
