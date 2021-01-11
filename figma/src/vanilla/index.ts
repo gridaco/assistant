@@ -2,7 +2,7 @@ import { StorableLayerType, StorableSceneType, TransportLayer, VanillaSceneTrans
 import { ReflectFrameNode, ReflectSceneNode, ReflectSceneNodeType, ReflectTextNode } from "@bridged.xyz/design-sdk/lib/nodes";
 import { TextManifest, ImageManifest } from '@reflect.bridged.xyz/core/lib'
 import { converters } from "@reflect.bridged.xyz/core/lib";
-import { ImageRepository } from "ui/lib/assets-repository";
+import { ImageRepository } from "core/lib/assets-repository";
 import { makeCGRect } from "./make";
 
 

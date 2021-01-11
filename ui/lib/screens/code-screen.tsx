@@ -1,8 +1,7 @@
 import { Widget } from "@bridged.xyz/flutter-builder/lib";
-import Button from "@material-ui/core/Button";
 import * as React from "react";
-import { TransportableImageRepository } from "../assets-repository";
-import { ImageHostingRepository } from "../assets-repository/hosting";
+import { TransportableImageRepository } from "core/lib/assets-repository";
+import { ImageHostingRepository } from "core/lib/assets-repository/hosting";
 import { format } from "../utils/dart-format";
 import Highlight from "../components/highlight";
 import { Preview } from "../components/preview";
