@@ -6,7 +6,7 @@ import {
   ReflectGroupNode
 } from "@bridged.xyz/design-sdk/lib/nodes/types";
 import { makeEdgeInsets } from "../make";
-import { nearestValue } from "../../utils/convert";
+import { nearestValue } from "core/lib/utils/convert";
 import { Container, Widget, EdgeInsetsGeometry, Padding, Alignment, AlignmentGeometry, Color, BoxDecoration, LinearGradient, Gradient, BoxShape, ImageProvider, DecorationImage, BoxFit, double, Size } from "@bridged.xyz/flutter-builder/lib"
 import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib/pixels";
 import { makeBoxDecoration } from "../make/box-decoration.make";

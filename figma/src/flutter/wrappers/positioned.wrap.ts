@@ -1,7 +1,7 @@
 import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
 import { Align, Alignment, Positioned, Widget } from "@bridged.xyz/flutter-builder/lib";
-import { coordinates } from "../../figma-utils/coordinates";
-import { commonPosition } from "../../figma-utils/common-position";
+import { coordinates } from "@bridged.xyz/design-sdk/lib/utils/coordinates";
+import { commonPosition } from "@bridged.xyz/design-sdk/lib/utils/common-position";
 import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib/pixels";
 import { makeSaflyAsSingle } from "../utils/make-as-safe-single";
 export function wrapWithPositioned(node: ReflectSceneNode,

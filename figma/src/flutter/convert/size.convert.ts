@@ -1,4 +1,4 @@
-import { nodeWidthHeight } from "../../figma-utils/node-width-height";
+import { nodeWidthHeight } from "@bridged.xyz/design-sdk/lib/utils/node-width-height";
 import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes/types";
 import { double, Double, Size } from "@bridged.xyz/flutter-builder/lib";
 import { roundNumber } from "@reflect.bridged.xyz/uiutils/lib";

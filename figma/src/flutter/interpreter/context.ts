@@ -1,4 +1,4 @@
-import { ConstraintNode } from "../../figma-utils/types"
+import { ConstraintNode } from "@bridged.xyz/design-sdk/lib/utils/types"
 
 function constraints(node: ConstraintNode) {
     // node.constraints.horizontal.

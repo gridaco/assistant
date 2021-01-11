@@ -2,7 +2,7 @@ import { convertIntoReflectNode } from "@bridged.xyz/design-sdk/lib/nodes/conver
 import { buildApp } from "./flutter";
 import { retrieveFlutterColors } from "./flutter/utils/fetch-colors";
 import { hideAllExcept, hideAllOnly } from "./tool-box/manipulate/hide-all/hide-all";
-import { runLints } from "./lint/lint";
+import { runLints } from "core/lib/lint/lint";
 import { EK_COMPUTE_STARTED, EK_COPIED, EK_CREATE_ICON, EK_FOCUS_REQUEST, EK_GENERATED_CODE_PLAIN, EK_IMAGE_ASSET_REPOSITORY_MAP, EK_LINT_FEEDBACK, EK_PREVIEW_SOURCE, EK_REPLACE_FONT, EK_SET_APP_MODE, EK_VANILLA_TRANSPORT } from "ui/lib/constants/ek.constant";
 import { handleNotify } from "@bridged.xyz/design-sdk/lib/figma";
 import { makeApp } from "./flutter/make/app.make";
