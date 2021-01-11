@@ -16,6 +16,8 @@
     "@bridged.xyz/design-sdk": "0.1.0",
     "@bridged.xyz/flutter-builder": "^1.23.0-7.0.pre.40",
     "@bridged.xyz/web-builder": "0.0.1",
+    "core": "^0.0.1",
+    "ui": "^0.0.1",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.11.2",
     "@reflect.bridged.xyz/core": "0.0.1",

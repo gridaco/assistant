@@ -5,9 +5,12 @@
 	"license": "https://github.com/bridgedxyz/contributing-and-license",
 	"description": "Bridged assistant mono repository. for figma, sketch, zeplin.",
 	"workspaces": [
+		"core",
+		"ui",
 		"packages/*",
 		"figma",
-		"sketch"
+		"sketch",
+		"xd"
 	],
 	"repository": "https://github.com/bridgedxyz/assistant",
 	"author": "bridged.xyz softmarshmallow <woojoo@softmarshmallow.com>",
