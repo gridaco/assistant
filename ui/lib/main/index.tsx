@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ToolboxScreen } from "../screens/tool-box";
-import firebase from "../../firebase/firebase-init";
+import firebase from "../firebase/firebase-init";
 import "../app.css";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";

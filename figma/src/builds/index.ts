@@ -1,4 +1,4 @@
-import { ImageRepository } from "../assets-repository"
+import { ImageRepository } from "ui/lib/assets-repository"
 
 export abstract class BuildProcess {
     readonly id: string

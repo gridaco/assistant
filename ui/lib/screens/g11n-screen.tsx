@@ -4,13 +4,12 @@ import {
   StorableSceneType,
   VanillaSceneTransport,
 } from "@bridged.xyz/client-sdk/lib";
-import { upload } from "@bridged.xyz/client-sdk/lib/hosting";
 import Button from "@material-ui/core/Button";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { ImageManifest } from "@reflect.bridged.xyz/core/lib";
 import React from "react";
-import { TransportableImageRepository } from "../../assets-repository";
-import { ImageHostingRepository } from "../../assets-repository/hosting";
+import { TransportableImageRepository } from "../assets-repository";
+import { ImageHostingRepository } from "../assets-repository/hosting";
 import {
   EK_COMPUTE_STARTED,
   EK_IMAGE_ASSET_REPOSITORY_MAP,
