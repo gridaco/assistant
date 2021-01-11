@@ -11,12 +11,20 @@ title: bridged assistant plugin
 
 # Bridged Assistant plugin (figma to flutter)
 
+> Any design to high quality code, with live preview.
+
+![bridged figma to code demo with live preview](docs/gifs/assistant-demo-2021.0.1.gif)
+
 - ✅ Human readable code generation.
 - ✅ code generation built with CoLI, developed especially for assistant usage, ensuring the best code generation quality.
 - ✅ Slots support (Component with parameters)
 - ✅ Modularized code generation / readability. All production level code, code beign generated as Functions, Varables, Ect..
 - ✅ Design Linting - Visaully makes sence, Structure made sence.
 - ✅ Cloud Resource Copy. Copy your resource in 1 second. (No need to download images and move under `res/`)
+- ✅ Live preview via [console](https://console.bridged.xyz) - compiles output source remotely makes design to living application within seconds
+- ✅ Context detection - bridged assistant understands the design, than converts it into a hight quality code. we don't generate rect and text code for a button. We generate button code for a button.
+
+
 
 ## Usage
 
@@ -59,14 +67,11 @@ git submodule update --init --recursive
 
 ## Flutter code builder
 
-![](doc/gifs/quicklook-demo-v002.gif)
-
 flutter widget builder is done by [figma/flutter](/flutter) and the core builder is powered by [bridged's dynamic](https://github.com/bridgedxyz/dynamic)
 
 - [figma/flutter](/figma/src/flutter)
 - [bridgedxyz/flutter-js](https://github.com/bridgedxyz/flutter-builder)
 - [bridgedxyz/dynamic](https://github.com/bridgedxyz/dynamic)
-
 - ✅ `Theme.of` Textstyle support
 - ✅ `Colors.` Color support
 - ✅ Slots support (not static content)
@@ -74,14 +79,24 @@ flutter widget builder is done by [figma/flutter](/flutter) and the core builder
 - ✅ formatted dart code
 - ✅ Best code quality (I Assure,) in this planet
 
+
+
 ## Console & Cloud integrations
 
 > Watch the demo on our [website](https://bridged.xyz)
+
+Bridged consle integrated with assistant enables you to manage your design's content in one place. even if text, image is updated, you don't need to update your code. our cloud service got your back.
+
+Learn more at [console repository](https://github.com/bridgedxyz/console.bridged.xyz)
+
+
 
 ## UI Element Detection
 
 > rule based button / input / icon detection with [@reflect.bridged.xyz/detection](./packages/detection)
 > Higher quality ML based detection available at [Bridged's context engine](https://github.com/bridgedxyz/context)
+
+
 
 ### Debugging
 
@@ -89,9 +104,13 @@ Use `console.log` statements to inspect values in your code.
 
 To open the developer console in the Figma desktop app, go to `Plugins` → `Development` → `Open Console`.
 
+
+
 ### Change Log
 
 visit [CHANGELOG.md](./CHANGELOG.md)
+
+
 
 ## Development guide
 
@@ -104,10 +123,14 @@ See [plugin README](/plugin/README.md)
 - [Create Figma Plugin docs](https://github.com/yuanqing/create-figma-plugin#docs)
 - [Figma plugin API docs](https://figma.com/plugin-docs/api/)
 
-## Contributing
 
-See this project's contributing guideline [here](./CONTRIBUTING.md).
+
+## Contributing & Project Structure
+
+See this project's contributing guideline and technical overview [here](./CONTRIBUTING.md).
 And general bridged project contribution and collaboration guideline [here](https://github.com/bridgedxyz/contributing-and-license).
+
+
 
 ## LEGAL
 
@@ -121,6 +144,8 @@ And general bridged project contribution and collaboration guideline [here](http
   -- why is that? we are taking "minimum" profit from this software, we will prevent from other enterprise from copycatting this software.
 - the code and packages distributed via this repository is free to use without any restrictions.
 - code, design is free to use and modify. (just don't make any profits by re-distributing this plugin.)
+
+
 
 ### DISCLAIMER
 

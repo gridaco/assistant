@@ -1,6 +1,5 @@
 ## [general contribution guideline](https://github.com/bridgedxyz/contributing-and-license)
 
-
 ## access design (readonly)
 
 **The plugin desing**
@@ -12,8 +11,22 @@ The design of the plugin user interface. Here, you can find what to develop.
 
 Sample design is used for evaluating code generation quality check. Both good and bad examples are provided. [Link here](https://www.figma.com/file/iypAHagtcSp3Osfo2a7EDz/?node-id=164%3A2621).
 
-
-
 ## Writing ui codes (react).
 
 if using material-ui, read the following [guidelines](https://material-ui.com/guides/minimizing-bundle-size/).
+
+## Project Structure
+
+- core - core logic container converting reflect node to various target platform code
+- ui - shared ui library for displaying plugin.
+- figma - figma patform specific codes
+- sketch - sketch patform specific codes
+- zeplin - zeplin platform specific codes
+- xd - xd platform specific codes
+- packages - list of packages used by this project as submodules
+- - lint
+- - coli
+- - flutter builder
+- - design sdk
+- - ui utils
+- - and more!
