@@ -18,7 +18,7 @@
 	"scripts": {
 		"figma": "yarn workspace figma run webpack:watch",
 		"sketch": "yarn workspace sketch run render",
-		"webdev": "yarn workspace webdev run start"
+		"webdev": "yarn workspace webdev run dev"
 	},
 	  "collective": {
 	  "type": "opencollective",
