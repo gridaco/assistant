@@ -8,6 +8,7 @@
     ],
     "allowJs": true,
     "skipLibCheck": true,
+    "baseUrl": "src",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
@@ -24,6 +25,7 @@
     "node_modules"
   ],
   "include": [
-    "src"
+    "src",
+    "../ui/lib"
   ]
 }
