@@ -8,13 +8,18 @@
     "start": "next start"
   },
   "dependencies": {
-    "next": "^10.0.0",
+    "@bridged.xyz/client-sdk": "^0.0.1-14",
+    "next": "^10.0.5",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "typescript": "^4.0.3",
+    "typescript": "^4.0.5",
     "ui": "^0.0.1"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/plugin-proposal-decorators": "^7.12.12",
+    "@svgr/webpack": "^5.5.0",
+    "@zeit/next-css": "^1.0.1",
     "next-transpile-modules": "^6.0.0"
   }
 }

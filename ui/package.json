@@ -1,5 +1,16 @@
 {
     "name": "ui",
     "version": "0.0.1",
-    "main": "./lib/index.ts"
+    "main": "./lib/index.ts",
+    "private": false,
+    "license": "https://github.com/bridgedxyz/contributing-and-license",
+    "author": "bridged.xyz by softmarshmallow <woojoo@softmarshmallow.com>",
+    "scripts": {},
+    "dependencies": {
+        "@bridged.xyz/client-sdk": "^0.0.1-14",
+        "@bridged.xyz/design-sdk": "^0.1.0",
+        "@reflect.bridged.xyz/core": "^0.0.1",
+        "@reflect.bridged.xyz/linter": "^0.0.1",
+        "@bridged.xyz/flutter-builder": "^1.23.0-7.0.pre.40"
+    }
 }
