@@ -1,6 +1,5 @@
 {
   "name": "sketch",
-	"license": "https://github.com/bridgedxyz/contributing-and-license",
   "version": "0.1.0",
   "engines": {
     "sketch": ">=3.0"
@@ -8,23 +7,29 @@
   "skpm": {
     "name": "assistant",
     "manifest": "src/manifest.json",
-    "main": "assistant.sketchplugin"
+    "main": "assistant.sketchplugin",
+    "assets": [
+      "assets/**/*"
+    ],
+    "sketch-assets-file": "sketch-assets/icons.sketch"
   },
   "scripts": {
     "build": "skpm-build",
     "watch": "skpm-build --watch",
-    "render": "skpm-build --watch --run",
-    "render:once": "skpm-build --run",
+    "start": "skpm-build --watch",
     "postinstall": "npm run build && skpm-link"
   },
   "devDependencies": {
-    "@skpm/builder": "^0.7.4"
+    "@skpm/builder": "^0.7.4",
+    "@skpm/extract-loader": "^2.0.2",
+    "css-loader": "^3.2.0",
+    "html-loader": "^0.5.5"
   },
+  "resources": [
+    "resources/**/*.js"
+  ],
   "dependencies": {
-    "prop-types": "^15.5.8",
-    "react": "^16.3.2",
-    "react-sketchapp": "^3.0.0",
-    "react-test-renderer": "^16.3.2"
+    "sketch-module-web-view": "^3.1.4"
   },
   "author": "softmarshmallow <woojoo@softmarshmallow.com>"
 }

@@ -1,6 +1,5 @@
-# build artifacts
-assistant.sketchplugin/Contents/Sketch
-assistant.sketchplugin/Contents/Resources/_webpack_resources
+# build artefacts
+assistant.sketchplugin
 
 # npm
 node_modules
@@ -12,3 +11,6 @@ npm-debug.log
 
 # WebStorm
 .idea
+
+# sketch
+# sketch-assets

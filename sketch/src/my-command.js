@@ -1,65 +1,47 @@
-import sketch from 'sketch';
-import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import { render, Artboard, Text, View } from 'react-sketchapp';
+import BrowserWindow from 'sketch-module-web-view'
+import { getWebview } from 'sketch-module-web-view/remote'
+import UI from 'sketch/ui'
 
-const Swatch = ({ name, hex }) => (
-  <View
-    name={`Swatch ${name}`}
-    style={{
-      height: 96,
-      width: 96,
-      margin: 4,
-      backgroundColor: hex,
-      padding: 8,
-    }}
-  >
-    <Text name="Swatch Name" style={{ color: '#FFF', fontWeight: 'bold' }}>
-      {name}
-    </Text>
-    <Text name="Swatch Hex" style={{ color: '#FFF' }}>
-      {hex}
-    </Text>
-  </View>
-);
+const webviewIdentifier = 'assistant.webview'
 
-const Color = {
-  hex: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-};
+export default function () {
+  const options = {
+    identifier: webviewIdentifier,
+    width: 240,
+    height: 180,
+    show: false
+  }
 
-Swatch.propTypes = Color;
+  const browserWindow = new BrowserWindow(options)
 
-const Document = ({ colors }) => (
-  <Artboard
-    name="Swatches"
-    style={{
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      width: (96 + 8) * 4,
-    }}
-  >
-    {Object.keys(colors).map(color => (
-      <Swatch name={color} hex={colors[color]} key={color} />
-    ))}
-  </Artboard>
-);
+  // only show the window when the page has loaded to avoid a white flash
+  browserWindow.once('ready-to-show', () => {
+    browserWindow.show()
+  })
 
-Document.propTypes = {
-  colors: PropTypes.objectOf(PropTypes.string).isRequired,
-};
+  const webContents = browserWindow.webContents
 
-export default () => {
-  const colorList = {
-    Haus: '#F3F4F4',
-    Night: '#333',
-    Sur: '#96DBE4',
-    'Sur Dark': '#24828F',
-    Peach: '#EFADA0',
-    'Peach Dark': '#E37059',
-    Pear: '#93DAAB',
-    'Pear Dark': '#2E854B',
-  };
+  // print a message when the page loads
+  webContents.on('did-finish-load', () => {
+    UI.message('UI loaded!')
+  })
 
-  render(<Document colors={colorList} />, sketch.getSelectedDocument().selectedPage);
-};
+  // add a handler for a call from web content's javascript
+  webContents.on('nativeLog', s => {
+    UI.message(s)
+    webContents
+      .executeJavaScript(`setRandomNumber(${Math.random()})`)
+      .catch(console.error)
+  })
+
+  browserWindow.loadURL(require('../resources/webview.html'))
+}
+
+// When the plugin is shutdown by Sketch (for example when the user disable the plugin)
+// we need to close the webview if it's open
+export function onShutdown() {
+  const existingWebview = getWebview(webviewIdentifier)
+  if (existingWebview) {
+    existingWebview.close()
+  }
+}

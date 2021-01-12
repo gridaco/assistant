@@ -1,8 +1,16 @@
 # assistant
 
+## Installation
+
+- [Download](../../releases/latest/download/assistant.sketchplugin.zip) the latest release of the plugin
+- Un-zip
+- Double-click on assistant.sketchplugin
+
+## Development Guide
+
 _This plugin was created using `skpm`. For a detailed explanation on how things work, checkout the [skpm Readme](https://github.com/skpm/skpm/blob/master/README.md)._
 
-## Usage
+### Usage
 
 Install the dependencies
 
@@ -22,15 +30,9 @@ To watch for changes:
 npm run watch
 ```
 
-Additionally, if you wish to run the plugin every time it is built:
+### Custom Configuration
 
-```bash
-npm run render
-```
-
-## Custom Configuration
-
-### Babel
+#### Babel
 
 To customize Babel, you have two options:
 
@@ -38,7 +40,7 @@ To customize Babel, you have two options:
 
 - If you'd like to modify or add to the existing Babel config, you must use a `webpack.skpm.config.js` file. Visit the [Webpack](#webpack) section for more info.
 
-### Webpack
+#### Webpack
 
 To customize webpack create `webpack.skpm.config.js` file which exports function that will change webpack's config.
 
@@ -48,14 +50,29 @@ To customize webpack create `webpack.skpm.config.js` file which exports function
  * Supports asynchronous changes when promise is returned.
  *
  * @param {object} config - original webpack config.
- * @param {boolean} isPluginCommand - wether the config is for a plugin command or a resource
+ * @param {object} entry - entry property from webpack config
+ * @param {boolean} entry.isPluginCommand - whether the config is for a plugin command or a resource
  **/
-module.exports = function(config, isPluginCommand) {
+module.exports = function(config, entry) {
   /** you can change config here **/
 };
 ```
 
-## Debugging
+To use the polyfills or the mocks for certain Node.js globals and modules use the `node` property.
+
+Visit [the official documention](https://webpack.js.org/configuration/node/) for available options.
+
+```js
+if(entry.isPluginCommand ){
+  config.node = {
+    setImmediate: false
+  }
+} else {
+  config.node = false;
+}
+```
+
+### Debugging
 
 To view the output of your `console.log`, you have a few different options:
 
@@ -70,3 +87,24 @@ skpm log
 ```
 
 The `-f` option causes `skpm log` to not stop when the end of logs is reached, but rather to wait for additional data to be appended to the input
+
+### Publishing your plugin
+
+```bash
+skpm publish <bump>
+```
+
+(where `bump` can be `patch`, `minor` or `major`)
+
+`skpm publish` will create a new release on your GitHub repository and create an appcast file in order for Sketch users to be notified of the update.
+
+You will need to specify a `repository` in the `package.json`:
+
+```diff
+...
++ "repository" : {
++   "type": "git",
++   "url": "git+https://github.com/ORG/NAME.git"
++  }
+...
+```

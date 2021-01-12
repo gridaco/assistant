@@ -4,15 +4,20 @@
   "commands": [
     {
       "name": "my-command",
-      "identifier": "my-command-identifier",
-      "script": "./my-command.js"
+      "identifier": "assistant.my-command-identifier",
+      "script": "./my-command.js",
+      "handlers": {
+        "run": "onRun",
+        "actions": {
+          "Shutdown": "onShutdown"
+        }
+      }
     }
   ],
   "menu": {
-    "title": "bridged",
+    "title": "assistant",
     "items": [
-      "my-command-identifier"
-    ],
-    "isRoot": true
+      "assistant.my-command-identifier"
+    ]
   }
 }
