@@ -10,13 +10,15 @@
 		"packages/*",
 		"figma",
 		"sketch",
+		"webdev",
 		"xd"
 	],
 	"repository": "https://github.com/bridgedxyz/assistant",
 	"author": "bridged.xyz softmarshmallow <woojoo@softmarshmallow.com>",
 	"scripts": {
 		"figma": "yarn workspace figma run webpack:watch",
-		"sketch": "yarn workspace sketch run render"
+		"sketch": "yarn workspace sketch run render",
+		"webdev": "yarn workspace webdev run start"
 	},
 	  "collective": {
 	  "type": "opencollective",

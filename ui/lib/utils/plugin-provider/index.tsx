@@ -9,7 +9,7 @@ export function PluginConsumer(props: {
 
     window.addEventListener('message', (ev: MessageEvent) => {
         const message = ev.data.pluginMessage
-        if (message.type == PLC_REMOTE_API_REQ) {
+        if (message && message.type == PLC_REMOTE_API_REQ) {
             // call remote request
             const requestManifest = message.data as NetworkRequest
             Axios.request({
