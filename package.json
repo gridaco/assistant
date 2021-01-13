@@ -11,7 +11,6 @@
 		"figma",
 		"sketch",
 		"webdev",
-		"webdev-cra",
 		"xd"
 	],
 	"repository": "https://github.com/bridgedxyz/assistant",
@@ -19,7 +18,7 @@
 	"scripts": {
 		"figma": "yarn workspace figma run webpack:watch",
 		"sketch": "yarn workspace sketch run render",
-		"webdev": "yarn workspace webdev run dev"
+		"webdev": "yarn workspace webdev run start"
 	},
 	  "collective": {
 	  "type": "opencollective",
