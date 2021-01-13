@@ -12,6 +12,7 @@
     ],
     "module": "esnext",
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "moduleResolution": "node",
     "noEmit": true,
     "noFallthroughCasesInSwitch": true,
