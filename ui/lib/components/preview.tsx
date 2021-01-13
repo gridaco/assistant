@@ -19,7 +19,7 @@ export class Preview extends React.Component<Props, State> {
     };
   }
 
-  componentDidMount() {}
+  componentDidMount() { }
 
   get url(): string {
     if (this.props.data) {
@@ -41,15 +41,15 @@ export class Preview extends React.Component<Props, State> {
         height="200px"
       />
     ) : (
-      <div className="render">
-        <div className="inner-render">
-          <img src={unselectedLogo} alt="unSelected-logo" />
-          <Typography className="rendering-notify">
-            Nothing is selected
+        <div className="render">
+          <div className="inner-render">
+            <img src={unselectedLogo} alt="unSelected-logo" />
+            <Typography className="rendering-notify">
+              Nothing is selected
           </Typography>
+          </div>
         </div>
-      </div>
-    );
+      );
 
     return (
       <div className="preview">
