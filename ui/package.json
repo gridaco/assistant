@@ -7,10 +7,12 @@
     "author": "bridged.xyz by softmarshmallow <woojoo@softmarshmallow.com>",
     "scripts": {},
     "dependencies": {
+        "react": "^17.0.1",
+        "react-dom": "^17.0.1",
         "@bridged.xyz/client-sdk": "^0.0.1-14",
         "@bridged.xyz/design-sdk": "^0.1.0",
         "@reflect.bridged.xyz/core": "^0.0.1",
-        "@reflect.bridged.xyz/linter": "^0.0.1",
+        "@reflect.bridged.xyz/linter": "^0.0.3",
         "@bridged.xyz/flutter-builder": "^1.23.0-7.0.pre.40",
         "@material-ui/core": "^4.11.0",
         "@material-ui/icons": "^4.11.2",
@@ -19,5 +21,9 @@
         "recoil": "^0.0.13",
         "refractor": "^3.1.0",
         "copy-to-clipboard": "^3.3.1"
+    },
+    "devDependencies": {
+        "@types/react": "^16.9.53",
+        "@types/react-dom": "^16.9.8"
     }
 }

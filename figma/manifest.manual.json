@@ -1,7 +1,0 @@
-{
-    "api": "1.0.0",
-    "id": "896445082033423994",
-    "main": "dist/code.js",
-    "name": "Bridged",
-    "ui": "dist/ui.js"
-}

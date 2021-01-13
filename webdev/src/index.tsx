@@ -2,7 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 import App from "ui/lib/main"
+import { initializeTargetPlatform, TargetPlatform } from "ui/lib/platform"
 
+
+initializeTargetPlatform(TargetPlatform.webdev)
 ReactDOM.render(
   <App />,
   document.getElementById('root')
