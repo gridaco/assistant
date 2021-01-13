@@ -5,6 +5,7 @@
     "outDir": "dist",
     "jsx": "react",
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "allowSyntheticDefaultImports": true,
     "removeComments": true,
     "noImplicitAny": false,

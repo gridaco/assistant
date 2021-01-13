@@ -47,24 +47,28 @@ export class CodeScreen extends React.Component<any, State> {
 
   onMessage = (ev: MessageEvent) => {
     const msg = ev.data.pluginMessage;
-    switch (msg.type) {
-      case EK_GENERATED_CODE_PLAIN:
-        const app = format(msg.data.app);
-        const code = format(msg.data.code);
-        const widget = msg.data.widget;
-        this.setState((state, props) => {
-          return { code: code, widget: widget, app: app };
-        });
-        break;
-      case EK_PREVIEW_SOURCE:
-        this.setState((state, props) => {
-          return { previewImage: msg.data.source, name: msg.data.name };
-        });
-        break;
-      case EK_IMAGE_ASSET_REPOSITORY_MAP:
-        const imageRepo = msg.data as TransportableImageRepository;
-        ImageHostingRepository.setRepository(imageRepo);
-        break;
+    if (msg) {
+      switch (msg.type) {
+        case EK_GENERATED_CODE_PLAIN:
+          const app = format(msg.data.app);
+          const code = format(msg.data.code);
+          const widget = msg.data.widget;
+          this.setState((state, props) => {
+            return { code: code, widget: widget, app: app };
+          });
+          break;
+        case EK_PREVIEW_SOURCE:
+          this.setState((state, props) => {
+            return { previewImage: msg.data.source, name: msg.data.name };
+          });
+          break;
+        case EK_IMAGE_ASSET_REPOSITORY_MAP:
+          const imageRepo = msg.data as TransportableImageRepository;
+          ImageHostingRepository.setRepository(imageRepo);
+          break;
+      }
+    } else {
+      // ignore
     }
   };
 

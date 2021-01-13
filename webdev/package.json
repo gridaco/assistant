@@ -1,28 +1,48 @@
 {
-  "name": "webdev",
-  "version": "0.0.1",
-  "private": false,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start"
-  },
+  "name": "webdev-cra",
+  "version": "0.1.0",
+  "private": true,
   "dependencies": {
-    "@bridged.xyz/client-sdk": "^0.0.1-14",
-    "next": "^10.0.5",
-    "react": "17.0.1",
-    "react-dom": "17.0.1",
-    "typescript": "^4.0.5",
-    "ui": "^0.0.1"
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.9.53",
+    "@types/react-dom": "^16.9.8",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-scripts": "4.0.1",
+    "typescript": "^4.0.3",
+    "ui": "^0.0.1",
+    "web-vitals": "^0.2.4"
+  },
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-class-properties": "^7.12.1",
-    "@babel/plugin-proposal-decorators": "^7.12.12",
-    "@babel/plugin-transform-typescript": "^7.12.1",
-    "@svgr/webpack": "^5.5.0",
-    "@zeit/next-css": "^1.0.1",
-    "babel-plugin-parameter-decorator": "^1.0.16",
-    "babel-plugin-transform-typescript-metadata": "^0.3.1",
-    "next-transpile-modules": "^6.0.0"
+    "react-app-rewired": "^2.1.8",
+    "tsconfig-paths-webpack-plugin": "^3.3.0"
   }
 }
