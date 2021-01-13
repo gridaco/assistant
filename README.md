@@ -1,7 +1,7 @@
 ---
 framework: figma, flutter, react
 platform: Android, iOS, Web, macOS, Linux, Windows
-title: bridged assistant plugin
+title: bridged assistant for figma, sketch, xd
 ---
 
   <meta name="description" content="figma to flutter code exporter, lint your design. generate human level quality code from figma">
@@ -50,6 +50,9 @@ yarn figma
 
 # [OPTIONAL 2]run sketch plugin in dev mode
 yarn sketch
+
+# [OPTIONAL 3 & Contributors only] run plugin ui in webdev mode
+yarn webdev
 ```
 
 _soon as the subpackages are released as stable, we will remove git submodule dependency for ease of use. until then, this will be the primary repository and all the edits and PRs will be caused by this project._
@@ -98,17 +101,18 @@ Learn more at [console repository](https://github.com/bridgedxyz/console.bridged
 
 
 
-### Debugging
+## Design Assistant
 
-Use `console.log` statements to inspect values in your code.
+> We provide various tools for you for creating stauning designs, and making you 10 times faster to create a working prototype.
 
-To open the developer console in the Figma desktop app, go to `Plugins` → `Development` → `Open Console`.
+**Features**
 
-
-
-### Change Log
-
-visit [CHANGELOG.md](./CHANGELOG.md)
+- icons loader (Design Tab ➡️ Icons)
+  - 5,000 + material design icons
+  - ant design icons (comming soon)
+- fonts replacer
+- buttons generator
+- and more
 
 
 
@@ -116,7 +120,33 @@ visit [CHANGELOG.md](./CHANGELOG.md)
 
 ### Building the plugin
 
-See [plugin README](/plugin/README.md)
+- figma: See [plugin README](/figma/README.md)
+- sketch: `sketch platform will be available soon`
+
+### Running as Webdev
+> webdev is a mode that you can run assistant as a standalone appliaction for ui development purpose of its' you can't acccess or call api to design tools.
+
+Learn more at [./webdev](./webdev)
+``` sh
+yarn
+
+# on root
+yarn webdev
+
+# or..
+cd webdev
+yarn start
+```
+
+
+
+### Debugging
+
+Use `console.log` statements to inspect values in your code.
+
+To open the developer console in the Figma desktop app, go to `Plugins` → `Development` → `Open Console`.
+
+
 
 ### Docs
 
@@ -127,8 +157,29 @@ See [plugin README](/plugin/README.md)
 
 ## Contributing & Project Structure
 
+**general**
 See this project's contributing guideline and technical overview [here](./CONTRIBUTING.md).
 And general bridged project contribution and collaboration guideline [here](https://github.com/bridgedxyz/contributing-and-license).
+
+
+**supported platforms and frameworks**
+- ✅ [figma](./figma)
+- ✅ [flutter](./core)
+- ✅ [bridged web](https://github.com/bridgedxyz/console.bridged.xyz)
+- [sketch](./sketch) -- coming soon
+- react -- coming soon & under [development](https://github.com/bridgedxyz/web-builder)
+- vue -- coming soon & under [development](https://github.com/bridgedxyz/web-builder)
+- css / sass -- coming soon & under [development](https://github.com/bridgedxyz/web-builder)
+- [xd](./xd) -- coming soon
+- [zeplin](./zeplin) -- coming soon
+
+
+
+## Changelog
+
+we release new updates in a by-monthluy cycle. Watch this repository on github or signup for our news letters on [bridged.xyz](https://bridged.xyz)
+
+All update logs available at [CHANGELOG.md](./CHANGELOG.md)
 
 
 

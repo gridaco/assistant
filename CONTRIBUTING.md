@@ -15,6 +15,10 @@ Sample design is used for evaluating code generation quality check. Both good an
 
 if using material-ui, read the following [guidelines](https://material-ui.com/guides/minimizing-bundle-size/).
 
+
+You can also run / inspect / develop the [ui](./ui) on the browser environment without design tools openned. Instructions available at [webdev](./webdev)
+
+
 ## Project Structure
 
 - core - core logic container converting reflect node to various target platform code
