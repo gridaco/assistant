@@ -16,11 +16,12 @@ export enum WorkScreen {
     dev = 'dev',
     slot = 'slot',
     desing_button_maker = 'desing_button_maker',
-    tool_font_replacer = 'tool_font_replacer'
+    tool_font_replacer = 'tool_font_replacer',
+    tool_meta_editor = 'tool_meta_editor'
 }
 
 export type ReleaseChannel = 'release' | 'beta' | 'alpha'
-export interface ReleaseVisibilityPreference{
+export interface ReleaseVisibilityPreference {
     screen: WorkScreen
     allowedChannel: ReleaseChannel
 }
