@@ -22,7 +22,7 @@ You can also run / inspect / develop the [ui](./ui) on the browser environment w
 ## Project Structure
 
 - core - core logic container converting reflect node to various target platform code
-- ui - shared ui library for displaying plugin.
+- app - shared ui  / app library for displaying plugin.
 - figma - figma patform specific codes
 - sketch - sketch patform specific codes
 - zeplin - zeplin platform specific codes
