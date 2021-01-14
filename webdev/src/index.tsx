@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
-import App from "ui/lib/main"
-import { initializeTargetPlatform, TargetPlatform } from "ui/lib/platform"
+import App from "app/lib/main"
+import { initializeTargetPlatform, TargetPlatform } from "app/lib/platform"
 
 
 initializeTargetPlatform(TargetPlatform.webdev)

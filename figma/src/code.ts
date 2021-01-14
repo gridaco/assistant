@@ -18,7 +18,7 @@ import {
   EK_REPLACE_FONT,
   EK_SET_APP_MODE,
   EK_VANILLA_TRANSPORT,
-} from "ui/lib/constants/ek.constant";
+} from "app/lib/constants/ek.constant";
 import { handleNotify } from "@bridged.xyz/design-sdk/lib/figma";
 import { makeApp } from "core/lib/flutter/make/app.make";
 import { ImageRepositories } from "core/lib/assets-repository";
@@ -65,7 +65,7 @@ async function run() {
       (figma.currentPage.selection[0] as any).constraints,
       (figma.currentPage.selection[0] as any).layoutAlign
     );
-  } catch (e) {}
+  } catch (e) { }
 
   // ignore when nothing was selected
   if (figma.currentPage.selection.length === 0) {

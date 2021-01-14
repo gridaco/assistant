@@ -1,5 +1,5 @@
 {
-    "name": "ui",
+    "name": "app",
     "version": "0.0.1",
     "main": "./lib/index.ts",
     "private": false,
