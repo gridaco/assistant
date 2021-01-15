@@ -28,10 +28,8 @@ import { ReflectFrameNode } from "@bridged.xyz/design-sdk/lib/nodes";
 import { replaceAllTextFontInFrame } from "./tool-box/manipulate/font-replacer";
 import { drawButtons } from "./reflect-render";
 
-let parentNodeId: string;
-let layerName = false;
 let appMode: number = 0;
-export let rawNode: SceneNode;
+export let selection: SceneNode;
 export let targetNodeId: string;
 
 async function showUI() {
@@ -55,10 +53,24 @@ function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function run() {
-  console.clear();
-  console.warn("log cleared. optimized for new build");
-  console.log("selection", figma.currentPage.selection);
+async function runon(node: SceneNode) {
+
+  // check [ignoreStackParent] description
+  selection = node
+  targetNodeId = selection.id;
+
+
+  // region
+  // notify ui that the computing process has been started.
+  // use this for when displaying loading indicator etc.. for general purpose.
+  figma.ui.postMessage({
+    type: EK_COMPUTE_STARTED,
+    data: {
+      mode: appMode,
+    },
+  });
+  // endregion
+
   try {
     console.log(
       "constraints",
@@ -67,31 +79,9 @@ async function run() {
     );
   } catch (e) { }
 
-  // ignore when nothing was selected
-  if (figma.currentPage.selection.length === 0) {
-    figma.ui.postMessage({
-      type: "empty",
-    });
-    return;
-  }
-
-  // force to single selection
-  // return false or raise error if more than one node is selected.
-  if (figma.currentPage.selection.length >= 2) {
-    figma.notify("only single selection is supported", {
-      timeout: 1.5,
-    });
-    return false;
-  }
-
-  // check [ignoreStackParent] description
-  rawNode = figma.currentPage.selection[0];
-  parentNodeId = rawNode.parent?.id ?? "";
-  targetNodeId = rawNode.id;
-
   // FIXME
-  const safeParent = rawNode.parent as any;
-  const convertedSelection = convertIntoReflectNode(rawNode, safeParent);
+  const safeParent = selection.parent as any;
+  const convertedSelection = convertIntoReflectNode(selection, safeParent);
 
   // if converted node returned nothing
   if (!convertedSelection) {
@@ -155,7 +145,7 @@ async function run() {
   }
 
   // send preview image
-  rawNode
+  selection
     .exportAsync({
       format: "PNG",
       contentsOnly: true,
@@ -169,7 +159,7 @@ async function run() {
         type: EK_PREVIEW_SOURCE,
         data: {
           source: d,
-          name: rawNode.name,
+          name: selection.name,
         },
       });
     });
@@ -181,17 +171,39 @@ async function run() {
 }
 
 figma.on("selectionchange", () => {
-  // region
-  // notify ui that the computing process has been started.
-  // use this for when displaying loading indicator etc.. for general purpose.
-  figma.ui.postMessage({
-    type: EK_COMPUTE_STARTED,
-    data: {
-      mode: appMode,
-    },
-  });
-  // endregion
-  run();
+  console.clear();
+  console.warn("log cleared. optimized for new build");
+  console.log("selection", figma.currentPage.selection);
+
+  const selectionCount = figma.currentPage.selection.length
+
+  // ignore when nothing was selected
+  if (selectionCount === 0) {
+    figma.ui.postMessage({
+      type: "empty",
+    });
+    return;
+  }
+
+  // force to single selection
+  // return false or raise error if more than one node is selected.
+  if (selectionCount >= 2) {
+    figma.notify("only single selection is supported", {
+      timeout: 1.5,
+    });
+    return false;
+  }
+
+  if (selectionCount === 1) {
+    const target = figma.currentPage.selection[0];
+    figma.ui.postMessage({
+      type: "selectionchange",
+      data: target,
+    });
+
+    runon(target);
+    return
+  }
 });
 
 // todo pass data instead of relying in types
@@ -216,9 +228,9 @@ figma.ui.onmessage = async (msg) => {
     });
     figma.viewport.scrollAndZoomIntoView([inserted]);
   } else if (msg.type == EK_REPLACE_FONT) {
-    if (rawNode.type == "FRAME") {
+    if (selection.type == "FRAME") {
       const font = "Roboto";
-      await replaceAllTextFontInFrame(rawNode, font);
+      await replaceAllTextFontInFrame(selection, font);
       figma.notify(`successfuly changed font to ${font}`);
     } else {
       figma.notify("cannot replace font of non-frame node");
@@ -243,18 +255,18 @@ async function draw100000Buttons() {
 }
 
 function hideAllExceptFromCurrentSelection(except: NodeType) {
-  if (rawNode.type != "FRAME") {
+  if (selection.type != "FRAME") {
     figma.notify("hide-all tools can be used only for framenode");
   } else {
-    hideAllExcept(rawNode, except);
+    hideAllExcept(selection, except);
   }
 }
 
 function hideAllOnlyFromCurrentSelection(only: NodeType) {
-  if (rawNode.type != "FRAME") {
+  if (selection.type != "FRAME") {
     figma.notify("hide-all tools can be used only for framenode");
   } else {
-    hideAllOnly(rawNode, only);
+    hideAllOnly(selection, only);
   }
 }
 

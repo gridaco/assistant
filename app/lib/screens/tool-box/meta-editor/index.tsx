@@ -5,6 +5,7 @@ import Button from "@material-ui/core/Button"
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from "@material-ui/core/Switch"
+import { MetaDataRepository, MetaDataRepositoryFactory } from "../../../repositories/metadata";
 interface MetaDataFieldDef {
     name: string
     type: MetaDataFieldType
@@ -58,11 +59,27 @@ const DefaultComponentMetaDataSchema: ReadonlyArray<MetaDataFieldDef> = [
 
 export function MetaEditorScreen() {
 
+    const [selectednode, setselectednode] = useState<string>(undefined)
+
+    window.addEventListener('message', (ev) => {
+        const message = ev.data.pluginMessage
+        if (message?.type == 'selectionchange') {
+            const node = message.data
+            console.log('node', node)
+            setselectednode(node.id)
+        }
+    })
+
+
     const [editable, seteditable] = useState<boolean>(false)
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         seteditable(event.target.checked)
     };
+
+    if (!selectednode) {
+        return <EmptyState />
+    }
 
     return <>
         <FormControlLabel
@@ -76,35 +93,58 @@ export function MetaEditorScreen() {
             }
             label="editable"
         />
-        <MetaDataDisplayForm editable={editable} />
+        <MetaDataDisplayForm editable={editable} type="component" id={selectednode} />
     </>
 }
 
-function MetaDataDisplayForm(props: {
-    editable: boolean
-}) {
+function EmptyState() {
+    return <p>
+        no layer / component / instance is selected.
+    </p>
+}
 
-    const data = DefaultComponentMetaDataSchema
+
+function MetaDataDisplayForm(props: {
+    editable: boolean,
+    id: string,
+    type: "component" | "instance" | "layer"
+}) {
+    let repo: MetaDataRepository
+    let data;
+    if (props.type == "component") {
+        repo = MetaDataRepositoryFactory.component(props.id)
+        data = repo.fetch()
+    } else {
+        throw 'neither than type:component is not supported yet.'
+    }
+
+    const handleSaveClick = () => {
+        repo.update(data)
+        console.log('value updated', data)
+    }
+
+
+    const schema = DefaultComponentMetaDataSchema
     if (props.editable) {
         return <>
             {
-                data.map(e => {
+                schema.map(e => {
                     return <div key={e.name} style={{
                         padding: 16
                     }}>
                         <MetaDataEditableField type={e.type} initial={undefined} name={e.name} onUpdate={(s: string) => {
-                            console.log('value updated on', e.name, s)
+                            data[e.name] = s
                         }} />
                     </div>
                 })
             }
-            <Button variant='outlined'>Save</Button>
+            <Button variant='outlined' onClick={handleSaveClick}>Save</Button>
         </>
     }
 
     return <>
         {
-            data.map((e) => {
+            schema.map((e) => {
                 return <div key={e.name} style={{
                     padding: 16
                 }}>
@@ -121,8 +161,7 @@ function MetaDataDisplayField(props: {
     type: MetaDataFieldType
 }) {
 
-    function drawValue() {
-
+    function drawValueDisplay() {
         switch (props.type) {
             case "text":
                 return <Typography>
@@ -136,8 +175,7 @@ function MetaDataDisplayField(props: {
         }
     }
 
-    const valueDisplay = drawValue()
-
+    const valueDisplay = drawValueDisplay()
 
     return <>
         <Typography>
