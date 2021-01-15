@@ -1,12 +1,16 @@
-import React from "react"
+import React, { useState } from "react"
 import Typography from "@material-ui/core/Typography"
 import TextField from "@material-ui/core/TextField"
 import Button from "@material-ui/core/Button"
-
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from "@material-ui/core/Switch"
 interface MetaDataFieldDef {
     name: string
-    type: "text" | "url"
+    type: MetaDataFieldType
 }
+
+type MetaDataFieldType = "text" | "url"
 
 
 /**
@@ -54,28 +58,101 @@ const DefaultComponentMetaDataSchema: ReadonlyArray<MetaDataFieldDef> = [
 
 export function MetaEditorScreen() {
 
+    const [editable, seteditable] = useState<boolean>(false)
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        seteditable(event.target.checked)
+    };
+
+    return <>
+        <FormControlLabel
+            control={
+                <Switch
+                    checked={editable}
+                    onChange={handleChange}
+                    name="editable"
+                    color="primary"
+                />
+            }
+            label="editable"
+        />
+        <MetaDataDisplayForm editable={editable} />
+    </>
+}
+
+function MetaDataDisplayForm(props: {
+    editable: boolean
+}) {
+
+    const data = DefaultComponentMetaDataSchema
+    if (props.editable) {
+        return <>
+            {
+                data.map(e => {
+                    return <div key={e.name} style={{
+                        padding: 16
+                    }}>
+                        <MetaDataEditableField type={e.type} initial={undefined} name={e.name} onUpdate={(s: string) => {
+                            console.log('value updated on', e.name, s)
+                        }} />
+                    </div>
+                })
+            }
+            <Button variant='outlined'>Save</Button>
+        </>
+    }
+
     return <>
         {
-            DefaultComponentMetaDataSchema.map(e => {
+            data.map((e) => {
                 return <div key={e.name} style={{
                     padding: 16
                 }}>
-                    <MetaDataEditableField initial={undefined} name={e.name} onUpdate={(s: string) => {
-                        console.log('value updated on', e.name, s)
-                    }} />
+                    <MetaDataDisplayField type={e.type} value={undefined} name={e.name} />
                 </div>
             })
         }
-        <Button variant='outlined'>Save</Button>
+    </>
+}
+
+function MetaDataDisplayField(props: {
+    name: string
+    value: string
+    type: MetaDataFieldType
+}) {
+
+    function drawValue() {
+
+        switch (props.type) {
+            case "text":
+                return <Typography>
+                    {props.value}
+                </Typography>
+
+            case "url":
+                return <Button onClick={() => open(props.value)}>
+                    {props.value}
+                </Button>
+        }
+    }
+
+    const valueDisplay = drawValue()
+
+
+    return <>
+        <Typography>
+            {props.name}
+        </Typography>
+        {valueDisplay}
     </>
 }
 
 function MetaDataEditableField(props: {
     initial: string
     name: string
+    type: MetaDataFieldType
     onUpdate: (string) => void
 }) {
-
     const handleOnChange = (e: any) => {
         const newvalue = e.target.value as string
         props.onUpdate(newvalue)
