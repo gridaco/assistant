@@ -17,9 +17,6 @@
 [submodule "packages/reflect-core"]
 	path = packages/reflect-core
 	url = https://github.com/bridgedxyz/reflect-core-ts.git
-[submodule "packages/coli"]
-	path = packages/coli
-	url = https://github.com/bridgedxyz/CoLI.git
 [submodule "packages/web-builder"]
 	path = packages/web-builder
 	url = https://github.com/bridgedxyz/web-builder.git
