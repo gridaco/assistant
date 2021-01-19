@@ -17,7 +17,7 @@
     "@bridged.xyz/flutter-builder": "^1.23.0-7.0.pre.40",
     "@bridged.xyz/web-builder": "0.0.1",
     "core": "^0.0.1",
-    "ui": "^0.0.1",
+    "app": "^0.0.1",
     "@reflect.bridged.xyz/core": "0.0.1",
     "@reflect.bridged.xyz/detection": "0.1.0",
     "@reflect.bridged.xyz/linter": "0.0.3",

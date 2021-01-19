@@ -21,6 +21,8 @@ import {
 import { FontReplacerScreen } from "../screens/tool-box/font-replacer";
 import { ButtonMakerScreen } from "../screens/design/button-maker-screen";
 import { PluginConsumer } from "../utils/plugin-provider";
+import { MetaEditorScreen } from "../screens/tool-box/meta-editor";
+import BatchMetaEditor from "../screens/tool-box/batch-meta-editor";
 
 
 
@@ -69,6 +71,10 @@ function workScreenToName(appMode: WorkScreen): string {
             return "globalization";
         case WorkScreen.tool_font_replacer:
             return "font replacer";
+        case WorkScreen.tool_meta_editor:
+            return "meta datas"
+        case WorkScreen.tool_batch_meta_editor:
+            return "batch meta data"
         case WorkScreen.desing_button_maker:
             return "button maker";
     }
@@ -122,7 +128,11 @@ function getWorkspaceTabLayout(workspaceMode: WorkspaceMode): TabLayout {
             case WorkspaceMode.settings:
                 return [];
             case WorkspaceMode.toolbox:
-                return [WorkScreen.tool_font_replacer];
+                return [
+                    WorkScreen.tool_font_replacer,
+                    WorkScreen.tool_meta_editor,
+                    WorkScreen.tool_batch_meta_editor
+                ];
         }
     };
 
@@ -264,6 +274,18 @@ export default function App() {
                             return (
                                 <TabPanel key={i} value={tabIndex} index={i}>
                                     <FontReplacerScreen />
+                                </TabPanel>
+                            );
+                        case WorkScreen.tool_meta_editor:
+                            return (
+                                <TabPanel key={i} value={tabIndex} index={i}>
+                                    <MetaEditorScreen />
+                                </TabPanel>
+                            );
+                        case WorkScreen.tool_batch_meta_editor:
+                            return (
+                                <TabPanel key={i} value={tabIndex} index={i}>
+                                    <BatchMetaEditor />
                                 </TabPanel>
                             );
                         case WorkScreen.desing_button_maker:

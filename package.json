@@ -6,7 +6,7 @@
 	"description": "Bridged assistant mono repository. for figma, sketch, zeplin.",
 	"workspaces": [
 		"core",
-		"ui",
+		"app",
 		"packages/*",
 		"figma",
 		"sketch",

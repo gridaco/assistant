@@ -7,6 +7,8 @@ import {
 } from "./tool-box/manipulate/hide-all/hide-all";
 import { runLints } from "core/lib/lint/lint";
 import {
+  EK_BATCH_META_UPDATE,
+  EK_REQUEST_FETCH_ROOT_META,
   EK_COMPUTE_STARTED,
   EK_COPIED,
   EK_CREATE_ICON,
@@ -18,7 +20,7 @@ import {
   EK_REPLACE_FONT,
   EK_SET_APP_MODE,
   EK_VANILLA_TRANSPORT,
-} from "ui/lib/constants/ek.constant";
+} from "app/lib/constants/ek.constant";
 import { handleNotify } from "@bridged.xyz/design-sdk/lib/figma";
 import { makeApp } from "core/lib/flutter/make/app.make";
 import { ImageRepositories } from "core/lib/assets-repository";
@@ -27,11 +29,15 @@ import { makeVanilla } from "core/lib/vanilla";
 import { ReflectFrameNode } from "@bridged.xyz/design-sdk/lib/nodes";
 import { replaceAllTextFontInFrame } from "./tool-box/manipulate/font-replacer";
 import { drawButtons } from "./reflect-render";
+import { on, once } from "@bridged.xyz/design-sdk/lib/events";
+import {
+  BatchMetaFetchQuery,
+  BatchMetaOperationQuery,
+} from "app/lib/screens/tool-box/batch-meta-editor";
+import { NS_FILE_ROOT_METADATA } from "app/lib/constants";
 
-let parentNodeId: string;
-let layerName = false;
 let appMode: number = 0;
-export let rawNode: SceneNode;
+export let selection: SceneNode;
 export let targetNodeId: string;
 
 async function showUI() {
@@ -55,10 +61,22 @@ function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function run() {
-  console.clear();
-  console.warn("log cleared. optimized for new build");
-  console.log("selection", figma.currentPage.selection);
+async function runon(node: SceneNode) {
+  // check [ignoreStackParent] description
+  selection = node;
+  targetNodeId = selection.id;
+
+  // region
+  // notify ui that the computing process has been started.
+  // use this for when displaying loading indicator etc.. for general purpose.
+  figma.ui.postMessage({
+    type: EK_COMPUTE_STARTED,
+    data: {
+      mode: appMode,
+    },
+  });
+  // endregion
+
   try {
     console.log(
       "constraints",
@@ -67,31 +85,9 @@ async function run() {
     );
   } catch (e) {}
 
-  // ignore when nothing was selected
-  if (figma.currentPage.selection.length === 0) {
-    figma.ui.postMessage({
-      type: "empty",
-    });
-    return;
-  }
-
-  // force to single selection
-  // return false or raise error if more than one node is selected.
-  if (figma.currentPage.selection.length >= 2) {
-    figma.notify("only single selection is supported", {
-      timeout: 1.5,
-    });
-    return false;
-  }
-
-  // check [ignoreStackParent] description
-  rawNode = figma.currentPage.selection[0];
-  parentNodeId = rawNode.parent?.id ?? "";
-  targetNodeId = rawNode.id;
-
   // FIXME
-  const safeParent = rawNode.parent as any;
-  const convertedSelection = convertIntoReflectNode(rawNode, safeParent);
+  const safeParent = selection.parent as any;
+  const convertedSelection = convertIntoReflectNode(selection, safeParent);
 
   // if converted node returned nothing
   if (!convertedSelection) {
@@ -155,7 +151,7 @@ async function run() {
   }
 
   // send preview image
-  rawNode
+  selection
     .exportAsync({
       format: "PNG",
       contentsOnly: true,
@@ -169,7 +165,7 @@ async function run() {
         type: EK_PREVIEW_SOURCE,
         data: {
           source: d,
-          name: rawNode.name,
+          name: selection.name,
         },
       });
     });
@@ -181,17 +177,39 @@ async function run() {
 }
 
 figma.on("selectionchange", () => {
-  // region
-  // notify ui that the computing process has been started.
-  // use this for when displaying loading indicator etc.. for general purpose.
-  figma.ui.postMessage({
-    type: EK_COMPUTE_STARTED,
-    data: {
-      mode: appMode,
-    },
-  });
-  // endregion
-  run();
+  console.clear();
+  console.warn("log cleared. optimized for new build");
+  console.log("selection", figma.currentPage.selection);
+
+  const selectionCount = figma.currentPage.selection.length;
+
+  // ignore when nothing was selected
+  if (selectionCount === 0) {
+    figma.ui.postMessage({
+      type: "empty",
+    });
+    return;
+  }
+
+  // force to single selection
+  // return false or raise error if more than one node is selected.
+  if (selectionCount >= 2) {
+    figma.notify("only single selection is supported", {
+      timeout: 1.5,
+    });
+    return false;
+  }
+
+  if (selectionCount === 1) {
+    const target = figma.currentPage.selection[0];
+    figma.ui.postMessage({
+      type: "selectionchange",
+      data: target,
+    });
+
+    runon(target);
+    return;
+  }
 });
 
 // todo pass data instead of relying in types
@@ -199,14 +217,17 @@ figma.ui.onmessage = async (msg) => {
   console.log("event received", msg);
   handleNotify(msg);
 
-  if (msg.type == EK_SET_APP_MODE) {
+  const type = msg.type;
+  const data = msg.data;
+
+  if (type == EK_SET_APP_MODE) {
     appMode = msg.data;
     console.log(`app mode set event recieved, now setting as ${appMode}`);
-  } else if (msg.type == EK_FOCUS_REQUEST) {
+  } else if (type == EK_FOCUS_REQUEST) {
     const target = figma.getNodeById(msg.data.id) as SceneNode;
     figma.currentPage.selection = [target];
     figma.viewport.scrollAndZoomIntoView([target]);
-  } else if (msg.type == EK_CREATE_ICON) {
+  } else if (type == EK_CREATE_ICON) {
     const icon_key = msg.data.key;
     const svgData = msg.data.svg;
     const currentViewportLocation = figma.viewport.center;
@@ -215,24 +236,39 @@ figma.ui.onmessage = async (msg) => {
       y: currentViewportLocation.y,
     });
     figma.viewport.scrollAndZoomIntoView([inserted]);
-  } else if (msg.type == EK_REPLACE_FONT) {
-    if (rawNode.type == "FRAME") {
+  } else if (type == EK_REPLACE_FONT) {
+    if (selection.type == "FRAME") {
       const font = "Roboto";
-      await replaceAllTextFontInFrame(rawNode, font);
+      await replaceAllTextFontInFrame(selection, font);
       figma.notify(`successfuly changed font to ${font}`);
     } else {
       figma.notify("cannot replace font of non-frame node");
     }
-  } else if (msg.type == "randomize-selection") {
+  } else if (type == "randomize-selection") {
     randimizeText();
-  } else if (msg.type == "hide-all-except") {
+  } else if (type == "hide-all-except") {
     hideAllExceptFromCurrentSelection(msg.data.except);
-  } else if (msg.type == "hide-all-only") {
+  } else if (type == "hide-all-only") {
     hideAllOnlyFromCurrentSelection(msg.data.only);
-  } else if (msg.type == EK_COPIED) {
+  } else if (type == EK_COPIED) {
     figma.notify("copied to clipboard", { timeout: 1 });
-  } else if (msg.type == "reflect-ui-generation/button-base") {
+  } else if (type == "reflect-ui-generation/button-base") {
     draw100000Buttons();
+  } else if (type == EK_BATCH_META_UPDATE) {
+    const d = data as BatchMetaOperationQuery;
+    figma.root.setSharedPluginData(NS_FILE_ROOT_METADATA, d.key, d.value);
+    figma.notify("metadata updated", { timeout: 1 });
+  } else if (type == EK_REQUEST_FETCH_ROOT_META) {
+    const d = data as BatchMetaFetchQuery;
+    const fetched = figma.root.getSharedPluginData(
+      NS_FILE_ROOT_METADATA,
+      d.key
+    );
+    console.log(`fetched root metadata for key ${d.key} is.`, fetched);
+    figma.ui.postMessage({
+      type: "__response__",
+      data: fetched,
+    });
   }
 };
 
@@ -243,18 +279,18 @@ async function draw100000Buttons() {
 }
 
 function hideAllExceptFromCurrentSelection(except: NodeType) {
-  if (rawNode.type != "FRAME") {
+  if (selection.type != "FRAME") {
     figma.notify("hide-all tools can be used only for framenode");
   } else {
-    hideAllExcept(rawNode, except);
+    hideAllExcept(selection, except);
   }
 }
 
 function hideAllOnlyFromCurrentSelection(only: NodeType) {
-  if (rawNode.type != "FRAME") {
+  if (selection.type != "FRAME") {
     figma.notify("hide-all tools can be used only for framenode");
   } else {
-    hideAllOnly(rawNode, only);
+    hideAllOnly(selection, only);
   }
 }
 

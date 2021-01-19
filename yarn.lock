@@ -4164,11 +4164,6 @@ cocoascript-class@^0.1.2:
   resolved "https://registry.yarnpkg.com/cocoascript-class/-/cocoascript-class-0.1.2.tgz#dab25f20389946d9986c1812b88ac3783eec42d3"
   integrity sha1-2rJfIDiZRtmYbBgSuIrDeD7sQtM=
 
-coli@0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/coli/-/coli-0.0.1.tgz#039d81bb8a45fc53ac51a640e4e8e9f3db6d3acf"
-  integrity sha512-0H1UGi0qix1aRTbAT/jP/ZtqrErb0gIWzSR5UXCnbBwL6YXkzXhiJ9M/gFhKLqjBuedCPk/wk1ev0ws5HPPYNg==
-
 collect-v8-coverage@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/collect-v8-coverage/-/collect-v8-coverage-1.0.1.tgz#cc2c8e94fc18bbdffe64d6534570c8a673b27f59"
@@ -4824,6 +4819,13 @@ csstype@^3.0.2:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.0.4.tgz#b156d7be03b84ff425c9a0a4b1e5f4da9c5ca888"
   integrity sha512-xc8DUsCLmjvCfoD7LTGE0ou2MIWLx0K9RCZwSHMOdynqRsP4MtUcLeqh1HcQ2dInwDTqn+3CE0/FZh1et+p4jA==
+
+customize-cra@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/customize-cra/-/customize-cra-1.0.0.tgz#73286563631aa08127ad4d30a2e3c89cf4e93c8d"
+  integrity sha512-DbtaLuy59224U+xCiukkxSq8clq++MOtJ1Et7LED1fLszWe88EoblEYFBJ895sB1mC6B4uu3xPT/IjClELhMbA==
+  dependencies:
+    lodash.flow "^3.5.0"
 
 cyclist@^1.0.1:
   version "1.0.1"
@@ -8481,6 +8483,11 @@ lodash.camelcase@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz#b28aa6288a2b9fc651035c7711f65ab6190331a6"
   integrity sha1-soqmKIorn8ZRA1x3EfZathkDMaY=
+
+lodash.flow@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.flow/-/lodash.flow-3.5.0.tgz#87bf40292b8cf83e4e8ce1a3ae4209e20071675a"
+  integrity sha1-h79AKSuM+D5OjOGjrkIJ4gBxZ1o=
 
 lodash.memoize@4.x, lodash.memoize@^4.1.2:
   version "4.1.2"

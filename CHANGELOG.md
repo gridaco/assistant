@@ -11,6 +11,10 @@
 - [packages/detection] List detection - determines if selected node is a list of specific component, or complex layout.
 - [interpreter/column] column crossAxisAlignment fixed with explicit order providence. Now supports start, end, center and stretch.
 
+> implemented, and next-releasing features
+
+- [toolbox/meta-editor] Meta data editor of root (file)'s metadata single property editor available for developer experience. (you can manually set files property to mock or give context to assistant which this design system holds as a data. e.g. - uses-designsystem=material-design)
+
 ### Will be added
 
 - [Builder] Core builder logic re-design

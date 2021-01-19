@@ -10,11 +10,11 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.53",
     "@types/react-dom": "^16.9.8",
+    "app": "^0.0.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.1",
     "typescript": "^4.0.3",
-    "ui": "^0.0.1",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
@@ -42,6 +42,8 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-transform-typescript": "^7.12.1",
+    "customize-cra": "^1.0.0",
     "react-app-rewired": "^2.1.8",
     "tsconfig-paths-webpack-plugin": "^3.3.0"
   }
