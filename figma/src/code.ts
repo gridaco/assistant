@@ -7,6 +7,7 @@ import {
 } from "./tool-box/manipulate/hide-all/hide-all";
 import { runLints } from "core/lib/lint/lint";
 import {
+  EK_BATCH_META_UPDATE,
   EK_COMPUTE_STARTED,
   EK_COPIED,
   EK_CREATE_ICON,
@@ -27,6 +28,9 @@ import { makeVanilla } from "core/lib/vanilla";
 import { ReflectFrameNode } from "@bridged.xyz/design-sdk/lib/nodes";
 import { replaceAllTextFontInFrame } from "./tool-box/manipulate/font-replacer";
 import { drawButtons } from "./reflect-render";
+import { on, once } from "@bridged.xyz/design-sdk/lib/events";
+import { BatchMetaOperationQuery } from "app/lib/screens/tool-box/batch-meta-editor";
+import { NS_FILE_ROOT_METADATA } from "app/lib/constants";
 
 let appMode: number = 0;
 export let selection: SceneNode;
@@ -211,14 +215,17 @@ figma.ui.onmessage = async (msg) => {
   console.log("event received", msg);
   handleNotify(msg);
 
-  if (msg.type == EK_SET_APP_MODE) {
+  const type = msg.type
+  const data = msg.data
+
+  if (type == EK_SET_APP_MODE) {
     appMode = msg.data;
     console.log(`app mode set event recieved, now setting as ${appMode}`);
-  } else if (msg.type == EK_FOCUS_REQUEST) {
+  } else if (type == EK_FOCUS_REQUEST) {
     const target = figma.getNodeById(msg.data.id) as SceneNode;
     figma.currentPage.selection = [target];
     figma.viewport.scrollAndZoomIntoView([target]);
-  } else if (msg.type == EK_CREATE_ICON) {
+  } else if (type == EK_CREATE_ICON) {
     const icon_key = msg.data.key;
     const svgData = msg.data.svg;
     const currentViewportLocation = figma.viewport.center;
@@ -227,7 +234,7 @@ figma.ui.onmessage = async (msg) => {
       y: currentViewportLocation.y,
     });
     figma.viewport.scrollAndZoomIntoView([inserted]);
-  } else if (msg.type == EK_REPLACE_FONT) {
+  } else if (type == EK_REPLACE_FONT) {
     if (selection.type == "FRAME") {
       const font = "Roboto";
       await replaceAllTextFontInFrame(selection, font);
@@ -235,16 +242,20 @@ figma.ui.onmessage = async (msg) => {
     } else {
       figma.notify("cannot replace font of non-frame node");
     }
-  } else if (msg.type == "randomize-selection") {
+  } else if (type == "randomize-selection") {
     randimizeText();
-  } else if (msg.type == "hide-all-except") {
+  } else if (type == "hide-all-except") {
     hideAllExceptFromCurrentSelection(msg.data.except);
-  } else if (msg.type == "hide-all-only") {
+  } else if (type == "hide-all-only") {
     hideAllOnlyFromCurrentSelection(msg.data.only);
-  } else if (msg.type == EK_COPIED) {
+  } else if (type == EK_COPIED) {
     figma.notify("copied to clipboard", { timeout: 1 });
-  } else if (msg.type == "reflect-ui-generation/button-base") {
+  } else if (type == "reflect-ui-generation/button-base") {
     draw100000Buttons();
+  } else if (type == EK_BATCH_META_UPDATE) {
+    const d = data as BatchMetaOperationQuery
+    figma.root.setSharedPluginData(NS_FILE_ROOT_METADATA, d.key, d.value)
+    figma.notify("metadata updated", { timeout: 1 });
   }
 };
 

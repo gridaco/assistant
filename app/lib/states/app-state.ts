@@ -17,7 +17,8 @@ export enum WorkScreen {
     slot = 'slot',
     desing_button_maker = 'desing_button_maker',
     tool_font_replacer = 'tool_font_replacer',
-    tool_meta_editor = 'tool_meta_editor'
+    tool_meta_editor = 'tool_meta_editor',
+    tool_batch_meta_editor = 'tool_batch_meta_editor'
 }
 
 export type ReleaseChannel = 'release' | 'beta' | 'alpha'
