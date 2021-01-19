@@ -8,6 +8,7 @@ import {
 import { runLints } from "core/lib/lint/lint";
 import {
   EK_BATCH_META_UPDATE,
+  EK_REQUEST_FETCH_ROOT_META,
   EK_COMPUTE_STARTED,
   EK_COPIED,
   EK_CREATE_ICON,
@@ -29,7 +30,10 @@ import { ReflectFrameNode } from "@bridged.xyz/design-sdk/lib/nodes";
 import { replaceAllTextFontInFrame } from "./tool-box/manipulate/font-replacer";
 import { drawButtons } from "./reflect-render";
 import { on, once } from "@bridged.xyz/design-sdk/lib/events";
-import { BatchMetaOperationQuery } from "app/lib/screens/tool-box/batch-meta-editor";
+import {
+  BatchMetaFetchQuery,
+  BatchMetaOperationQuery,
+} from "app/lib/screens/tool-box/batch-meta-editor";
 import { NS_FILE_ROOT_METADATA } from "app/lib/constants";
 
 let appMode: number = 0;
@@ -58,11 +62,9 @@ function delay(ms: number) {
 }
 
 async function runon(node: SceneNode) {
-
   // check [ignoreStackParent] description
-  selection = node
+  selection = node;
   targetNodeId = selection.id;
-
 
   // region
   // notify ui that the computing process has been started.
@@ -81,7 +83,7 @@ async function runon(node: SceneNode) {
       (figma.currentPage.selection[0] as any).constraints,
       (figma.currentPage.selection[0] as any).layoutAlign
     );
-  } catch (e) { }
+  } catch (e) {}
 
   // FIXME
   const safeParent = selection.parent as any;
@@ -179,7 +181,7 @@ figma.on("selectionchange", () => {
   console.warn("log cleared. optimized for new build");
   console.log("selection", figma.currentPage.selection);
 
-  const selectionCount = figma.currentPage.selection.length
+  const selectionCount = figma.currentPage.selection.length;
 
   // ignore when nothing was selected
   if (selectionCount === 0) {
@@ -206,7 +208,7 @@ figma.on("selectionchange", () => {
     });
 
     runon(target);
-    return
+    return;
   }
 });
 
@@ -215,8 +217,8 @@ figma.ui.onmessage = async (msg) => {
   console.log("event received", msg);
   handleNotify(msg);
 
-  const type = msg.type
-  const data = msg.data
+  const type = msg.type;
+  const data = msg.data;
 
   if (type == EK_SET_APP_MODE) {
     appMode = msg.data;
@@ -253,9 +255,20 @@ figma.ui.onmessage = async (msg) => {
   } else if (type == "reflect-ui-generation/button-base") {
     draw100000Buttons();
   } else if (type == EK_BATCH_META_UPDATE) {
-    const d = data as BatchMetaOperationQuery
-    figma.root.setSharedPluginData(NS_FILE_ROOT_METADATA, d.key, d.value)
+    const d = data as BatchMetaOperationQuery;
+    figma.root.setSharedPluginData(NS_FILE_ROOT_METADATA, d.key, d.value);
     figma.notify("metadata updated", { timeout: 1 });
+  } else if (type == EK_REQUEST_FETCH_ROOT_META) {
+    const d = data as BatchMetaFetchQuery;
+    const fetched = figma.root.getSharedPluginData(
+      NS_FILE_ROOT_METADATA,
+      d.key
+    );
+    console.log(`fetched root metadata for key ${d.key} is.`, fetched);
+    figma.ui.postMessage({
+      type: "__response__",
+      data: fetched,
+    });
   }
 };
 
