@@ -9,6 +9,9 @@ xd plugin react [example](https://github.com/AdobeXD/plugin-samples/tree/master/
 [get UXP developer tools](https://www.adobe.io/photoshop/uxp/devtool/)
 
 
+[XD plugin api docs](https://adobexdplatform.com/plugin-docs/reference/xd-index.html)
+
+
 # Development
 
 ## Getting started
