@@ -1,5 +1,22 @@
 {
     "name": "xd",
+    "author": "bridged.xyz authors",
+    "repository": "https://github.com/bridgedxyz/assistant",
+    "license": "BRGD",
     "version": "0.0.1",
-    "main": "main"
+    "main": "main",
+    "scripts": {
+        "build": "webpack",
+        "deploy": "node scripts/deploy"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "archiver": "^3.1.1",
+        "css-loader": "^5.0.1",
+        "ncp": "^2.0.0",
+        "style-loader": "^2.0.0",
+        "url-loader": "^4.1.1",
+        "webpack": "^4.38.0",
+        "webpack-cli": "^4.4.0"
+    }
 }
