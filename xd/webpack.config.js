@@ -9,11 +9,11 @@ try {
 } catch (e) { }
 
 module.exports = {
-  entry: "./src/ui.tsx",
+  entry: "./src/ui/main.tsx",
   mode: isProd ? "production" : "development",
   watch: isWatch,
   output: {
-    path: __dirname + "/build",
+    path: __dirname + "/dist",
     filename: 'main.js',
     libraryTarget: "commonjs2"
   },
@@ -35,8 +35,8 @@ module.exports = {
     "os",
     "scenegraph",
     "application",
-	"clipboard",
-	"assets",
+	  "clipboard",
+	  "assets",
     "uxp",
     function (context, request, callback) {
       if (/lib/.test(request)) {
