@@ -1,0 +1,46 @@
+{
+    "id":"f72154ff",
+    "name": "Bridged",
+    "version": "2020.0.1",
+    "icons": [
+		{
+			"width": 24,
+			"height": 24,
+			"path": "images/icon@1x.png"
+		},
+		{
+			"width": 48,
+			"height": 48,
+			"path": "images/icon@2x.png"
+		}
+	],
+	"host": {
+		"app": "XD",
+		"minVersion": "25.0"
+    },
+    "uiEntryPoints": [
+		{
+			"type": "panel",
+			"label": "UI Panel",
+			"panelId": "flutterPanel"
+		},
+		{
+			"type": "menu",
+			"label": "Export All Widgets",
+			"commandId": "exportAll",
+			"shortcut": {
+				"mac": "Cmd+Shift+F",
+				"win": "Ctrl+Shift+F"
+			}
+		},
+		{
+			"type": "menu",
+			"label": "Export Selected Widget",
+			"commandId": "exportSelected",
+			"shortcut": {
+				"mac": "Cmd+Shift+Alt+1",
+				"win": "Ctrl+Shift+Alt+1"
+			}
+		}
+	]
+}
