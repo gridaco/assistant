@@ -1,0 +1,34 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "lib": [
+      "es2017",
+      "es7",
+      "es6",
+      "dom"
+    ],
+    "jsx": "react",
+    "esModuleInterop": true,
+    "outDir": "dist",
+    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "noUnusedLocals": false,
+    "typeRoots": [
+      "./node_modules/@types",
+      "../node_modules/@types",
+      // remove this when design-sdk fully supports xd.
+      // this is required at this point.
+      "../node_modules/@figma",
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "build",
+    "example",
+    "tests"
+  ]
+}
