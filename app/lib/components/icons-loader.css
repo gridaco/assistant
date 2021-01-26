@@ -15,7 +15,10 @@
 }
 
 .search-bar {
+    width: 100%;
     border-top: 1px solid #DADADC;
+    border-right: 1px solid #DADADC;
+    border-left: 1px solid #DADADC;
     height: 55px;
     display: flex;
     align-items: center;
