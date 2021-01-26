@@ -9,7 +9,10 @@ import { EK_CREATE_ICON } from "../constants/ek.constant";
 import TextField from "@material-ui/core/TextField";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { Box, withStyles } from "@material-ui/core";
+import { Search } from "@material-ui/icons";
 const CONFIG_JSON_S3 = "https://reflect-icons.s3-us-west-1.amazonaws.com/material/config.json"
+import "./icons-loader.css";
 
 
 // cached icons configs
@@ -58,7 +61,20 @@ function IconSearch(props: {
     onChange: (value: string) => void
 }) {
     return (
-        <TextField id="standard-basic" label="search with icon name" onChange={(e) => props.onChange(e.target.value)} />
+        <div className="search-container">
+            <div className="search-bar">
+                <Search />
+                <input placeholder="Search with icon name" onChange={(e) => props.onChange(e.target.value)} />
+            </div>
+            <div className="search-container-checker">
+                <div className="type-checker">
+
+                </div>
+                <div className="size-checker">
+
+                </div>
+            </div>
+        </div>
     )
 }
 
@@ -95,12 +111,12 @@ function IconList(props: {
     const { icons } = props
 
     return <>
-        <GridList cellHeight={160} cols={5}>
+        <GridList cellHeight="auto" cols={5}>
             {
                 icons.map((i) => {
                     const key = i[0]
                     const config = i[1]
-                    return <GridListTile key={key}>
+                    return <GridListTile className="grid-item" key={key}>
                         <IconItem key={key} name={key} config={config} />
                     </GridListTile>
                 })
@@ -108,6 +124,16 @@ function IconList(props: {
         </GridList>
     </>
 }
+
+const LightTooltip = withStyles((theme) => ({
+    tooltip: {
+        backgroundColor: '#151617',
+        color: '#fff',
+        boxShadow: theme.shadows[1],
+        fontSize: 11,
+        marginBottom: 500
+    },
+}))(Tooltip);
 
 function IconItem(props: {
     name: string,
@@ -135,9 +161,21 @@ function IconItem(props: {
         })
     }
 
-    return <div>
-        <Tooltip title={`${name} (${config.variant})`}>
-            <IconButton aria-label="delete" onClick={onClick} disabled={downloading}>
+    return <React.Fragment>
+        <LightTooltip
+            title={`${name} (${config.variant})`}
+            placement="top"
+            PopperProps={{
+                popperOptions: {
+                    modifiers: {
+                        offset: {
+                            offset: '-1px, -20px',
+                        },
+                    },
+                },
+            }}
+        >
+            <button className="icon-button" onClick={onClick} disabled={downloading}>
                 {
                     downloading ?
                         <CircularProgress size={24} /> :
@@ -145,8 +183,7 @@ function IconItem(props: {
                             <image xlinkHref={makeIconUrl(name, config)} width="24" height="24" />
                         </svg>
                 }
-            </IconButton>
-        </Tooltip>
-
-    </div>
+            </button>
+        </LightTooltip>
+    </React.Fragment>
 }
