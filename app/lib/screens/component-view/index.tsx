@@ -7,7 +7,7 @@ export default function ComponentViewScreen() {
   const [previewImage, setPreviewImage] = useState(undefined);
   return (
     <>
-      <Preview data={previewImage} name={(this.state as any).name}></Preview>
+      <Preview data={previewImage} name={"replace me"}></Preview>
       <p>component view placeholder</p>
       <Button>storybook</Button>
       <Button>docs</Button>
