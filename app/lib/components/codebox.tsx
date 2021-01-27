@@ -25,9 +25,9 @@ interface State {
 
 interface Props {
   language: Language | any;
-  app: string;
-  widget: Widget;
   code: string;
+  app?: string;
+  widget?: Widget;
 }
 
 export default class CodeBox extends React.Component<Props, State> {
@@ -93,13 +93,15 @@ export default class CodeBox extends React.Component<Props, State> {
           <Button className="btn-copy-code" onClick={this.onCopyClicked}>
             copy code
           </Button>
-          <Button
-            className="btn-quick-look"
-            disabled={this.state.isLaunchingConsole}
-            onClick={this.onQuickLookClicked}
-          >
-            {this.state.isLaunchingConsole ? "launching.." : "quick look"}
-          </Button>
+          {this.props.app && (
+            <Button
+              className="btn-quick-look"
+              disabled={this.state.isLaunchingConsole}
+              onClick={this.onQuickLookClicked}
+            >
+              {this.state.isLaunchingConsole ? "launching.." : "quick look"}
+            </Button>
+          )}
         </div>
       </>
     );
