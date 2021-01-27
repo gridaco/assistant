@@ -3,7 +3,7 @@ import * as React from "react";
 import { TransportableImageRepository } from "core/lib/assets-repository";
 import { ImageHostingRepository } from "core/lib/assets-repository/hosting";
 import { format } from "../utils/dart-format";
-import Highlight from "../components/highlight";
+import CodeBox from "../components/codebox";
 import { Preview } from "../components/preview";
 import {
   EK_GENERATED_CODE_PLAIN,
@@ -11,15 +11,14 @@ import {
   EK_PREVIEW_SOURCE,
 } from "../constants/ek.constant";
 
-const DEFAULT_EMPTY_CODE_SNIPPET =
-  `//
+const DEFAULT_EMPTY_CODE_SNIPPET = `//
 //
 //
 // there is no selected design.
 // select your screen or component on figma
 //
 //
-//`
+//`;
 
 interface State {
   app: string;
@@ -91,12 +90,12 @@ export class CodeScreen extends React.Component<any, State> {
           data={(this.state as any).previewImage}
           name={(this.state as any).name}
         ></Preview>
-        <Highlight
+        <CodeBox
           language="dart"
           app={this.state.app}
           code={this.state.code}
           widget={this.state.widget}
-        ></Highlight>
+        ></CodeBox>
         {/* <Button onClick={this.onClickReportIssue}>report issue</Button>
         <Button onClick={this.onClickVisitWebsite}>visit website</Button> */}
       </div>

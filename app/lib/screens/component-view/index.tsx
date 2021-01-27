@@ -1,5 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
+import { Preview } from "../../components/preview";
+import Button from "@material-ui/core/Button";
 
 export default function ComponentViewScreen() {
-  return <p>component view placeholder</p>;
+  // TODO load image data from iframe message
+  const [previewImage, setPreviewImage] = useState(undefined);
+  return (
+    <>
+      <Preview data={previewImage} name={(this.state as any).name}></Preview>
+      <p>component view placeholder</p>
+      <Button>storybook</Button>
+      <Button>docs</Button>
+      <p>example here (todo)</p>
+    </>
+  );
 }

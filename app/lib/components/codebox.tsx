@@ -30,7 +30,7 @@ interface Props {
   code: string;
 }
 
-export default class Highlight extends React.Component<Props, State> {
+export default class CodeBox extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
