@@ -17,6 +17,7 @@ let CONFIGS: Map<string, IconConfig>
 export function IconsLoader() {
     const [configs, setConfigs] = useState<Map<string, IconConfig>>(undefined);
     const [queryTerm, setQueryTerm] = useState<string>(undefined);
+    const [iconLoadLimit, setIconLoadLimit] = useState(100);
     const [iconProperty, setIconProperty] = useState<IconConfig>({
         default_size: "size",
         variant: "variant",
@@ -36,10 +37,13 @@ export function IconsLoader() {
         }
     }, []);
 
+    useEffect(() => {
+        setIconLoadLimit(100)
+    }, [iconProperty, queryTerm])
+
 
     let list;
     if (configs) {
-        const MAX_PER_LOAD = 100
         const validQueryTerm = queryTerm !== undefined && queryTerm.length >= 1
         // const searchOnlyDefaults: boolean = !validQueryTerm 
         const defaultIcons = filterIcons(configs, {
@@ -57,10 +61,26 @@ export function IconsLoader() {
             return acc
         }, [])
 
-        list = <IconList icons={defaultIcons.sort().slice(0, MAX_PER_LOAD)} />
+        list = <IconList icons={defaultIcons.sort().slice(0, iconLoadLimit)} />
     } else {
         list = <LinearProgress />
     }
+
+    const handleScroll = () => {
+        const scrollHeight = document.documentElement.scrollHeight;
+        const scrollTop = document.documentElement.scrollTop;
+        const clientHeight = document.documentElement.clientHeight;
+        if (scrollTop + clientHeight >= scrollHeight - 200) {
+            setIconLoadLimit(iconLoadLimit + 100)
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    });
 
     return (
         <>
@@ -172,7 +192,7 @@ function filterIcons(configs: Map<string, IconConfig>, options: {
 }
 
 function IconList(props: {
-    icons: [string, IconConfig][]
+    icons: [string, IconConfig][],
 }) {
     const { icons } = props
 

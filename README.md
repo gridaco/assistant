@@ -107,9 +107,13 @@ Learn more at [console repository](https://github.com/bridgedxyz/console.bridged
 
 **Features**
 
-- icons loader (Design Tab ➡️ Icons)
+- **icons loader** (Design Tab ➡️ Icons)
+
+  ![bridged figma to load icons](docs/gifs/assistant-icons-loader-2021.0.1f.gif)
+
   - 5,000 + material design icons
   - ant design icons (comming soon)
+  
 - fonts replacer
 - buttons generator
 - and more
