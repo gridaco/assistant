@@ -20,11 +20,13 @@ import {
   EK_REPLACE_FONT,
   EK_SET_APP_MODE,
   EK_VANILLA_TRANSPORT,
+  EK_DRAG_AND_DROPPED,
+  EK_ICON_DRAG_AND_DROPPED,
 } from "app/lib/constants/ek.constant";
 import { handleNotify } from "@bridged.xyz/design-sdk/lib/figma";
 import { makeApp } from "core/lib/flutter/make/app.make";
 import { ImageRepositories } from "core/lib/assets-repository";
-import { renderSvgIcon } from "./reflect-render/icons.render";
+import { IconPlacement, renderSvgIcon } from "./reflect-render/icons.render";
 import { makeVanilla } from "core/lib/vanilla";
 import { ReflectFrameNode } from "@bridged.xyz/design-sdk/lib/nodes";
 import { replaceAllTextFontInFrame } from "./tool-box/manipulate/font-replacer";
@@ -35,6 +37,8 @@ import {
   BatchMetaOperationQuery,
 } from "app/lib/screens/tool-box/batch-meta-editor";
 import { NS_FILE_ROOT_METADATA } from "app/lib/constants";
+import { IconConfig } from "@reflect.bridged.xyz/core/lib/icon/icon.config";
+import { config } from "process";
 
 let appMode: number = 0;
 export let selection: SceneNode;
@@ -228,14 +232,7 @@ figma.ui.onmessage = async (msg) => {
     figma.currentPage.selection = [target];
     figma.viewport.scrollAndZoomIntoView([target]);
   } else if (type == EK_CREATE_ICON) {
-    const icon_key = msg.data.key;
-    const svgData = msg.data.svg;
-    const currentViewportLocation = figma.viewport.center;
-    const inserted = renderSvgIcon(icon_key, svgData, "#000000", {
-      x: currentViewportLocation.x,
-      y: currentViewportLocation.y,
-    });
-    figma.viewport.scrollAndZoomIntoView([inserted]);
+    createIcon(data);
   } else if (type == EK_REPLACE_FONT) {
     if (selection.type == "FRAME") {
       const font = "Roboto";
@@ -269,8 +266,78 @@ figma.ui.onmessage = async (msg) => {
       type: "__response__",
       data: fetched,
     });
+  } else if (EK_DRAG_AND_DROPPED) {
+    handleDragDrop(data);
   }
 };
+
+function createIcon(
+  data: { key: string; svg: string; config: IconConfig },
+  placement: IconPlacement = "center",
+  zoom: boolean = true
+) {
+  console.log("creating icon with data", data);
+  const icon_key = data.key;
+  const svgData = data.svg;
+  const inserted = renderSvgIcon(
+    icon_key,
+    svgData,
+    "#000000",
+    placement,
+    data.config
+  );
+  if (zoom) {
+    figma.viewport.scrollAndZoomIntoView([inserted]);
+  }
+}
+
+function handleDragDrop(data) {
+  console.log("handling drop event", data);
+  const {
+    dropPosition,
+    windowSize,
+    offset,
+    itemSize,
+    eventKey,
+    customData,
+  } = data;
+
+  // Getting the position and size of the visible area of the canvas.
+  const bounds = figma.viewport.bounds;
+
+  // Getting the zoom level
+  const zoom = figma.viewport.zoom;
+
+  // There are two states of the Figma interface: With or without the UI (toolbar + left and right panes)
+  // The calculations would be slightly different, depending on whether the UI is shown.
+  // So to determine if the UI is shown, we'll be comparing the bounds to the window's width.
+  // Math.round is used here because sometimes bounds.width * zoom may return a floating point number very close but not exactly the window width.
+  const hasUI = Math.round(bounds.width * zoom) !== windowSize.width;
+
+  // Since the left pane is resizable, we need to get its width by subtracting the right pane and the canvas width from the window width.
+  const leftPaneWidth = windowSize.width - bounds.width * zoom - 240;
+
+  // Getting the position of the cursor relative to the top-left corner of the canvas.
+  const xFromCanvas = hasUI
+    ? dropPosition.clientX - leftPaneWidth
+    : dropPosition.clientX;
+  const yFromCanvas = hasUI ? dropPosition.clientY - 40 : dropPosition.clientY;
+
+  // The canvas position of the drop point can be calculated using the following:
+  const x = bounds.x + xFromCanvas / zoom - offset.x;
+  const y = bounds.y + yFromCanvas / zoom - offset.y;
+
+  if (eventKey == EK_ICON_DRAG_AND_DROPPED) {
+    createIcon(
+      customData,
+      {
+        x: x,
+        y: y,
+      },
+      false
+    );
+  }
+}
 
 async function draw100000Buttons() {
   for (let i = 0; i < 1; i++) {
