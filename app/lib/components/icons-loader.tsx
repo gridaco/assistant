@@ -18,8 +18,8 @@ export function IconsLoader() {
     const [configs, setConfigs] = useState<Map<string, IconConfig>>(undefined);
     const [queryTerm, setQueryTerm] = useState<string>(undefined);
     const [iconProperty, setIconProperty] = useState<IconConfig>({
-        default_size: "all",
-        variant: "all",
+        default_size: "size",
+        variant: "variant",
         host: "material"
     })
 
@@ -45,11 +45,11 @@ export function IconsLoader() {
         const defaultIcons = filterIcons(configs, {
             includes: validQueryTerm ? queryTerm : undefined
         }).reduce((acc: any[], cur: any) => {
-            if (iconProperty.default_size === "all" && iconProperty.variant === "all") {
+            if (iconProperty.default_size === "size" && iconProperty.variant === "variant") {
                 acc.push(cur)
-            } else if (iconProperty.default_size === "all" && cur[1].variant === iconProperty.variant) {
+            } else if (iconProperty.default_size === "size" && cur[1].variant === iconProperty.variant) {
                 acc.push(cur)
-            } else if (iconProperty.variant === "all" && cur[1].default_size === iconProperty.default_size) {
+            } else if (iconProperty.variant === "variant" && cur[1].default_size === iconProperty.default_size) {
                 acc.push(cur)
             } else if (cur[1].default_size === iconProperty.default_size && cur[1].variant === iconProperty.variant) {
                 acc.push(cur)
@@ -75,12 +75,12 @@ function IconSearch(props: {
     onSelectIconProperty: (value: any) => void;
 }) {
     const iconPropertyList = {
-        default_size: ["All", "16", "20", "24", "28", "32"],
-        variant: ["All", "Outlined", "Twotone", "Default", "Sharp"]
+        default_size: ["Size", "16", "20", "24", "28", "32"],
+        variant: ["Variant", "Outlined", "Twotone", "Default", "Sharp"]
     }
     const [iconProperty, setIconProperty] = useState({
-        default_size: "All",
-        variant: "All",
+        default_size: "Size",
+        variant: "Variant",
     })
 
     const BootstrapInput = withStyles((theme) => ({
@@ -141,7 +141,7 @@ function IconSearch(props: {
                         onChange={e => onSelectValue("size", e.target.value)}
                         input={<BootstrapInput />}
                     >
-                        {iconPropertyList.default_size.map(i => <MenuItem value={i}>{i === "All" ? "All" : i + " x " + i}</MenuItem>)}
+                        {iconPropertyList.default_size.map(i => <MenuItem value={i}>{i === "Size" ? "Size" : i + " x " + i}</MenuItem>)}
                     </Select>
                 </div>
             </div>
