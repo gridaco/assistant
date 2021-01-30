@@ -33,6 +33,7 @@
 - [ui/icons] icon variant, size filter added
 - [ui/icons] ant-design-icons added as a default source
 - [ui/icons] infinite scrolling of icons
+- [ui/icons] Icons Drag & Drop Loading - Now you can import icons from assistant via Drag & Drop.
 
 ## [2021.0.1] - 2021-1-6
 
