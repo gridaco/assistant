@@ -2,16 +2,14 @@ import React, { useEffect, useState } from "react"
 import { loadSvg, makeIconUrl } from "@bridged.xyz/client-sdk/lib"
 import { IconConfig } from "@reflect.bridged.xyz/core"
 import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import { EK_CREATE_ICON } from "../constants/ek.constant";
-import TextField from "@material-ui/core/TextField";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { Box, withStyles, Select, MenuItem, NativeSelect, InputBase } from "@material-ui/core";
-import { Search, ExpandMore, Done } from "@material-ui/icons";
-const CONFIG_JSON_S3 = "https://reflect-icons.s3-us-west-1.amazonaws.com/material/config.json"
+import { withStyles, Select, MenuItem, InputBase } from "@material-ui/core";
+import { Search } from "@material-ui/icons";
+const CONFIG_JSON_S3 = "https://reflect-icons.s3-us-west-1.amazonaws.com/all.json"
 import "./icons-loader.css";
 
 // cached icons configs
@@ -20,8 +18,8 @@ export function IconsLoader() {
     const [configs, setConfigs] = useState<Map<string, IconConfig>>(undefined);
     const [queryTerm, setQueryTerm] = useState<string>(undefined);
     const [iconProperty, setIconProperty] = useState<IconConfig>({
-        default_size: "24",
-        variant: "default",
+        default_size: "all",
+        variant: "all",
         host: "material"
     })
 
@@ -81,8 +79,8 @@ function IconSearch(props: {
         variant: ["All", "Outlined", "Twotone", "Default", "Sharp"]
     }
     const [iconProperty, setIconProperty] = useState({
-        default_size: "24",
-        variant: "Default",
+        default_size: "All",
+        variant: "All",
     })
 
     const BootstrapInput = withStyles((theme) => ({
@@ -193,16 +191,6 @@ function IconList(props: {
     </>
 }
 
-// const LightTooltip = withStyles((theme) => ({
-// tooltip: {
-//     backgroundColor: '#151617',
-//     color: '#fff',
-//     boxShadow: theme.shadows[1],
-//     fontSize: 11,
-//     marginBottom: 500
-// },
-// }))(Tooltip);
-
 function IconItem(props: {
     name: string,
     config: IconConfig
@@ -231,7 +219,7 @@ function IconItem(props: {
 
     return <React.Fragment>
         <Tooltip
-            title={`${name} (${config.variant})`}
+            title={`${name} (${config.variant}) (${config.host})`}
             placement="top"
             PopperProps={{
                 popperOptions: {
