@@ -20,89 +20,93 @@ import { Draggable } from "../utils/draggable";
 // cached icons configs
 let CONFIGS: Map<string, IconConfig>;
 export function IconsLoader() {
-  const [configs, setConfigs] = useState<Map<string, IconConfig>>(undefined);
-  const [queryTerm, setQueryTerm] = useState<string>(undefined);
-  const [iconProperty, setIconProperty] = useState<IconConfig>({
-    default_size: "all",
-    variant: "all",
-    host: "material",
-  });
-
-  useEffect(() => {
-    if (CONFIGS) {
-      setConfigs(CONFIGS);
-    } else {
-      fetch(CONFIG_JSON_S3)
-        .then((response) => response.json())
-        .then((json) => {
-          CONFIGS = json;
-          setConfigs(json);
-        });
-    }
-  }, []);
-
-  let list;
-  if (configs) {
-    const MAX_PER_LOAD = 100;
-    const validQueryTerm = queryTerm !== undefined && queryTerm.length >= 1;
-    // const searchOnlyDefaults: boolean = !validQueryTerm
-    const defaultIcons = filterIcons(configs, {
-      includes: validQueryTerm ? queryTerm : undefined,
+    const [configs, setConfigs] = useState<Map<string, IconConfig>>(undefined);
+    const [queryTerm, setQueryTerm] = useState<string>(undefined);
+    const [iconLoadLimit, setIconLoadLimit] = useState(100);
+    const [iconProperty, setIconProperty] = useState<IconConfig>({
+        default_size: "size",
+        variant: "variant",
+        host: "material"
     })
-      .reduce((acc: any[], cur: any) => {
-        if (
-          iconProperty.default_size === "all" &&
-          iconProperty.variant === "all"
-        ) {
-          acc.push(cur);
-        } else if (
-          iconProperty.default_size === "all" &&
-          cur[1].variant === iconProperty.variant
-        ) {
-          acc.push(cur);
-        } else if (
-          iconProperty.variant === "all" &&
-          cur[1].default_size === iconProperty.default_size
-        ) {
-          acc.push(cur);
-        } else if (
-          cur[1].default_size === iconProperty.default_size &&
-          cur[1].variant === iconProperty.variant
-        ) {
-          acc.push(cur);
+
+    useEffect(() => {
+        if (CONFIGS) {
+            setConfigs(CONFIGS)
+        } else {
+            fetch(CONFIG_JSON_S3)
+                .then((response) => response.json())
+                .then((json) => {
+                    CONFIGS = json
+                    setConfigs(json)
+                })
         }
-        return acc;
-      }, [])
-      .slice(0, MAX_PER_LOAD);
+    }, []);
 
-    list = <IconList icons={defaultIcons} />;
-  } else {
-    list = <LinearProgress />;
-  }
+    useEffect(() => {
+        setIconLoadLimit(100)
+    }, [iconProperty, queryTerm])
 
-  return (
-    <>
-      <IconSearch
-        onChange={setQueryTerm}
-        onSelectIconProperty={setIconProperty}
-      />
-      {list}
-    </>
-  );
+
+    let list;
+    if (configs) {
+        const validQueryTerm = queryTerm !== undefined && queryTerm.length >= 1
+        // const searchOnlyDefaults: boolean = !validQueryTerm 
+        const defaultIcons = filterIcons(configs, {
+            includes: validQueryTerm ? queryTerm : undefined
+        }).reduce((acc: any[], cur: any) => {
+            if (iconProperty.default_size === "size" && iconProperty.variant === "variant") {
+                acc.push(cur)
+            } else if (iconProperty.default_size === "size" && cur[1].variant === iconProperty.variant) {
+                acc.push(cur)
+            } else if (iconProperty.variant === "variant" && cur[1].default_size === iconProperty.default_size) {
+                acc.push(cur)
+            } else if (cur[1].default_size === iconProperty.default_size && cur[1].variant === iconProperty.variant) {
+                acc.push(cur)
+            }
+            return acc
+        }, [])
+
+        list = <IconList icons={defaultIcons.sort().slice(0, iconLoadLimit)} />
+    } else {
+        list = <LinearProgress />;
+     }
+
+    const handleScroll = () => {
+        const scrollHeight = document.documentElement.scrollHeight;
+        const scrollTop = document.documentElement.scrollTop;
+        const clientHeight = document.documentElement.clientHeight;
+        if (scrollTop + clientHeight >= scrollHeight - 200) {
+            setIconLoadLimit(iconLoadLimit + 100)
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener("scroll", handleScroll);
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    });
+
+    return (
+        <>
+            <IconSearch onChange={setQueryTerm} onSelectIconProperty={setIconProperty} />
+            {list}
+        </>
+    )
 }
 
 function IconSearch(props: {
   onChange: (value: string) => void;
   onSelectIconProperty: (value: any) => void;
 }) {
-  const iconPropertyList = {
-    default_size: ["All", "16", "20", "24", "28", "32"],
-    variant: ["All", "Outlined", "Twotone", "Default", "Sharp"],
-  };
-  const [iconProperty, setIconProperty] = useState({
-    default_size: "All",
-    variant: "All",
-  });
+    const iconPropertyList = {
+        default_size: ["Size", "16", "20", "24", "28", "32"],
+        variant: ["Variant", "Outlined", "Twotone", "Default", "Sharp"]
+    }
+    const [iconProperty, setIconProperty] = useState({
+        default_size: "Size",
+        variant: "Variant",
+    })
 
   const BootstrapInput = withStyles((theme) => ({
     root: {
@@ -137,46 +141,38 @@ function IconSearch(props: {
     }
   };
 
-  return (
-    <div className="search-container">
-      <div className="search-bar">
-        <Search />
-        <input
-          placeholder="Search with icon name"
-          onChange={(e) => props.onChange(e.target.value)}
-        />
-      </div>
-      <div className="search-container-checker">
-        <div className="type-checker">
-          <Select
-            style={{ width: "100%" }}
-            value={iconProperty.variant}
-            onChange={(e) => onSelectValue("variant", e.target.value)}
-            input={<BootstrapInput />}
-          >
-            {iconPropertyList.variant.map((i) => (
-              <MenuItem value={i}>{i}</MenuItem>
-            ))}
-          </Select>
-        </div>
-        <div className="size-checker">
-          <Select
-            style={{ width: "100%" }}
-            id="demo-customized-select-native"
-            value={iconProperty.default_size}
-            onChange={(e) => onSelectValue("size", e.target.value)}
-            input={<BootstrapInput />}
-          >
-            {iconPropertyList.default_size.map((i) => (
-              <MenuItem value={i}>
-                {i === "All" ? "All" : i + " x " + i}
-              </MenuItem>
-            ))}
-          </Select>
-        </div>
-      </div>
-    </div>
-  );
+    return (
+        <div className="search-container">
+            <div className="search-bar">
+                <Search />
+                <input placeholder="Search with icon name" onChange={(e) => props.onChange(e.target.value)} />
+            </div>
+            <div className="search-container-checker">
+                <div className="type-checker" >
+                    <Select
+                        style={{ width: "100%" }}
+                        value={iconProperty.variant}
+                        onChange={e => onSelectValue("variant", e.target.value)}
+                        input={<BootstrapInput />}
+                    >
+                        {iconPropertyList.variant.map(i => <MenuItem value={i}>{i}</MenuItem>)}
+                    </Select>
+                </div>
+                <div className="size-checker" >
+                    <Select
+                        style={{ width: "100%" }}
+                        id="demo-customized-select-native"
+                        value={iconProperty.default_size}
+                        onChange={e => onSelectValue("size", e.target.value)}
+                        input={<BootstrapInput />}
+                    >
+                        {iconPropertyList.default_size.map(i => <MenuItem value={i}>{i === "Size" ? "Size" : i + " x " + i}</MenuItem>)}
+                    </Select>
+                </div>
+            </div>
+
+        </div >
+    )
 }
 
 function filterIcons(
@@ -204,22 +200,24 @@ function filterIcons(
   return defaultIcons;
 }
 
-function IconList(props: { icons: [string, IconConfig][] }) {
-  const { icons } = props;
 
-  return (
-    <>
-      <GridList cellHeight="auto" cols={5}>
-        {icons.map((i) => {
-          const key = i[0];
-          const config = i[1];
-          return (
-            <GridListTile className="grid-item" key={key}>
-              <IconItem key={key} name={key} config={config} />
-            </GridListTile>
-          );
-        })}
-      </GridList>
+function IconList(props: {
+    icons: [string, IconConfig][],
+}) {
+    const { icons } = props
+
+    return <>
+        <GridList cellHeight="auto" cols={5}>
+            {
+                icons.map((i) => {
+                    const key = i[0]
+                    const config = i[1]
+                    return <GridListTile className="grid-item" key={key}>
+                        <IconItem key={key} name={key} config={config} />
+                    </GridListTile>
+                })
+            }
+        </GridList>
     </>
   );
 }
