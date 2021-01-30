@@ -9,17 +9,21 @@ import { EK_CREATE_ICON } from "../constants/ek.constant";
 import TextField from "@material-ui/core/TextField";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { Box, withStyles } from "@material-ui/core";
-import { Search } from "@material-ui/icons";
+import { Box, withStyles, Select, MenuItem, NativeSelect, InputBase } from "@material-ui/core";
+import { Search, ExpandMore, Done } from "@material-ui/icons";
 const CONFIG_JSON_S3 = "https://reflect-icons.s3-us-west-1.amazonaws.com/material/config.json"
 import "./icons-loader.css";
-
 
 // cached icons configs
 let CONFIGS: Map<string, IconConfig>
 export function IconsLoader() {
     const [configs, setConfigs] = useState<Map<string, IconConfig>>(undefined);
     const [queryTerm, setQueryTerm] = useState<string>(undefined);
+    const [iconProperty, setIconProperty] = useState<IconConfig>({
+        default_size: "24",
+        variant: "default",
+        host: "material"
+    })
 
     useEffect(() => {
         if (CONFIGS) {
@@ -38,12 +42,23 @@ export function IconsLoader() {
     let list;
     if (configs) {
         const MAX_PER_LOAD = 100
-        const validQueryTerm = queryTerm !== undefined && queryTerm.length >= 2
-        const searchOnlyDefaults: boolean = !validQueryTerm
+        const validQueryTerm = queryTerm !== undefined && queryTerm.length >= 1
+        // const searchOnlyDefaults: boolean = !validQueryTerm 
         const defaultIcons = filterIcons(configs, {
-            onlyDefault: searchOnlyDefaults,
             includes: validQueryTerm ? queryTerm : undefined
-        }).slice(0, MAX_PER_LOAD)
+        }).reduce((acc: any[], cur: any) => {
+            if (iconProperty.default_size === "all" && iconProperty.variant === "all") {
+                acc.push(cur)
+            } else if (iconProperty.default_size === "all" && cur[1].variant === iconProperty.variant) {
+                acc.push(cur)
+            } else if (iconProperty.variant === "all" && cur[1].default_size === iconProperty.default_size) {
+                acc.push(cur)
+            } else if (cur[1].default_size === iconProperty.default_size && cur[1].variant === iconProperty.variant) {
+                acc.push(cur)
+            }
+            return acc
+        }, []).slice(0, MAX_PER_LOAD)
+
         list = <IconList icons={defaultIcons} />
     } else {
         list = <LinearProgress />
@@ -51,7 +66,7 @@ export function IconsLoader() {
 
     return (
         <>
-            <IconSearch onChange={setQueryTerm} />
+            <IconSearch onChange={setQueryTerm} onSelectIconProperty={setIconProperty} />
             {list}
         </>
     )
@@ -59,7 +74,50 @@ export function IconsLoader() {
 
 function IconSearch(props: {
     onChange: (value: string) => void
+    onSelectIconProperty: (value: any) => void;
 }) {
+    const iconPropertyList = {
+        default_size: ["All", "16", "20", "24", "28", "32"],
+        variant: ["All", "Outlined", "Twotone", "Default", "Sharp"]
+    }
+    const [iconProperty, setIconProperty] = useState({
+        default_size: "24",
+        variant: "Default",
+    })
+
+    const BootstrapInput = withStyles((theme) => ({
+        root: {
+            'label + &': {
+                marginTop: theme.spacing(3),
+            },
+        },
+        input: {
+            fontSize: 16,
+        },
+    }))(InputBase);
+
+    const onSelectValue = (type: string, value: any) => {
+        if (type === "size") {
+            props.onSelectIconProperty(d => ({
+                ...d,
+                default_size: value.toLocaleLowerCase()
+            }))
+            setIconProperty(d => ({
+                ...d,
+                default_size: value
+            }))
+        } else if (type === "variant") {
+            props.onSelectIconProperty(d => ({
+                ...d,
+                variant: value.toLocaleLowerCase()
+            }))
+            setIconProperty(d => ({
+                ...d,
+                variant: value
+            }))
+        }
+    }
+
     return (
         <div className="search-container">
             <div className="search-bar">
@@ -67,29 +125,39 @@ function IconSearch(props: {
                 <input placeholder="Search with icon name" onChange={(e) => props.onChange(e.target.value)} />
             </div>
             <div className="search-container-checker">
-                <div className="type-checker">
-
+                <div className="type-checker" >
+                    <Select
+                        style={{ width: "100%" }}
+                        value={iconProperty.variant}
+                        onChange={e => onSelectValue("variant", e.target.value)}
+                        input={<BootstrapInput />}
+                    >
+                        {iconPropertyList.variant.map(i => <MenuItem value={i}>{i}</MenuItem>)}
+                    </Select>
                 </div>
-                <div className="size-checker">
-
+                <div className="size-checker" >
+                    <Select
+                        style={{ width: "100%" }}
+                        id="demo-customized-select-native"
+                        value={iconProperty.default_size}
+                        onChange={e => onSelectValue("size", e.target.value)}
+                        input={<BootstrapInput />}
+                    >
+                        {iconPropertyList.default_size.map(i => <MenuItem value={i}>{i === "All" ? "All" : i + " x " + i}</MenuItem>)}
+                    </Select>
                 </div>
             </div>
-        </div>
+
+        </div >
     )
 }
 
 function filterIcons(configs: Map<string, IconConfig>, options: {
-    onlyDefault: boolean,
     includes?: string
 }): [string, IconConfig][] {
     const keys = Object.keys(configs)
     const defaultIcons = keys.map<[string, IconConfig]>((k) => {
         const item = configs[k] as IconConfig
-        if (options.onlyDefault) {
-            if (item.variant != 'default') {
-                return undefined
-            }
-        }
 
         if (options.includes) {
             if (k.includes(options.includes)) {
@@ -125,15 +193,15 @@ function IconList(props: {
     </>
 }
 
-const LightTooltip = withStyles((theme) => ({
-    tooltip: {
-        backgroundColor: '#151617',
-        color: '#fff',
-        boxShadow: theme.shadows[1],
-        fontSize: 11,
-        marginBottom: 500
-    },
-}))(Tooltip);
+// const LightTooltip = withStyles((theme) => ({
+// tooltip: {
+//     backgroundColor: '#151617',
+//     color: '#fff',
+//     boxShadow: theme.shadows[1],
+//     fontSize: 11,
+//     marginBottom: 500
+// },
+// }))(Tooltip);
 
 function IconItem(props: {
     name: string,
@@ -162,7 +230,7 @@ function IconItem(props: {
     }
 
     return <React.Fragment>
-        <LightTooltip
+        <Tooltip
             title={`${name} (${config.variant})`}
             placement="top"
             PopperProps={{
@@ -184,6 +252,6 @@ function IconItem(props: {
                         </svg>
                 }
             </button>
-        </LightTooltip>
+        </Tooltip>
     </React.Fragment>
 }

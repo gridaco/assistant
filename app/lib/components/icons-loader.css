@@ -5,19 +5,40 @@
     display: flex;
 }
 
+* {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+
 .type-checker {
     flex: 2;
     border-right: 1px solid #DADADC;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 0px 16px;
+}
+
+.search-container {
+    margin-top: 5px;
+    position: relative;
 }
 
 .size-checker {
     flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: 0px 16px;
 }
 
 .search-bar {
     width: 100%;
     border-top: 1px solid #DADADC;
     border-right: 1px solid #DADADC;
+    font-size: 14px;
     border-left: 1px solid #DADADC;
     height: 55px;
     display: flex;
