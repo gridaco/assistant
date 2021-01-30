@@ -55,9 +55,9 @@ export function IconsLoader() {
                 acc.push(cur)
             }
             return acc
-        }, []).slice(0, MAX_PER_LOAD)
+        }, [])
 
-        list = <IconList icons={defaultIcons} />
+        list = <IconList icons={defaultIcons.sort().slice(0, MAX_PER_LOAD)} />
     } else {
         list = <LinearProgress />
     }
