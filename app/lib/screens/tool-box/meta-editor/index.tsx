@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -119,16 +119,26 @@ function MetaDataDisplayForm(props: {
   type: "component" | "instance" | "layer";
 }) {
   let repo: MetaDataRepository;
-  let data;
-  if (props.type == "component") {
-    repo = MetaDataRepositoryFactory.component(props.id);
-    data = repo.fetch();
-  } else {
-    throw "neither than type:component is not supported yet.";
-  }
+  repo = MetaDataRepositoryFactory.component(props.id);
+
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    if (props.type == "component") {
+      // fetch the data
+      repo.fetch().then((d) => {
+        if (d) {
+          setData(d);
+        }
+      });
+    } else {
+      throw "neither than type:component is not supported yet.";
+    }
+  }, []);
 
   const handleSaveClick = () => {
     repo.update(data);
+    setData(data);
     console.log("value updated", data);
   };
 
@@ -146,7 +156,7 @@ function MetaDataDisplayForm(props: {
             >
               <MetaDataEditableField
                 type={e.type}
-                initial={undefined}
+                initial={data[e.name]}
                 name={e.name}
                 onUpdate={(s: string) => {
                   data[e.name] = s;
@@ -174,7 +184,7 @@ function MetaDataDisplayForm(props: {
           >
             <MetaDataDisplayField
               type={e.type}
-              value={undefined}
+              value={data[e.name]}
               name={e.name}
             />
           </div>

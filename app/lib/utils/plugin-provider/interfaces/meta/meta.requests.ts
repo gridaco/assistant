@@ -19,3 +19,10 @@ export interface NodeMetaFetchRequest {
   namespace: string;
   key: string;
 }
+
+export interface NodeMetaUpdateRequest<T = any> {
+  id: string;
+  namespace: string;
+  key: string;
+  value: T;
+}

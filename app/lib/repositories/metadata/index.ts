@@ -37,17 +37,16 @@ export abstract class MetaDataRepository<T = any> {
     }
   }
 
-  update(data: T) {
+  async update(data: T) {
     switch (TARGET_PLATFORM) {
       //  TODO -- figma api call does not work here.
       case TargetPlatform.figma:
-        figma
-          .getNodeById(this.id)
-          .setSharedPluginData(
-            ASSISTANT_PLUGIN_NAMESPACE,
-            this.key,
-            JSON.stringify(data)
-          );
+        return await PluginSdk.updateMetadata({
+          id: this.id,
+          namespace: ASSISTANT_PLUGIN_NAMESPACE,
+          key: this.key,
+          value: data,
+        });
         return data;
       case TargetPlatform.webdev:
         console.log("data updated (mocked)");

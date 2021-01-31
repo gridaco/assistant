@@ -9,13 +9,14 @@ import {
   PLUGIN_SDK_NS_NOTIFY_API,
   PLUGIN_SDK_NS_REMOTE_API,
   PLUGIN_SDK_NS_RESPONSE_ALL,
-  PLUGIN_SDK_NS_SYNC,
+  PUGIN_SDK_EK_REQUEST_UPDATE_NODE_META,
   TransportPluginEvent,
 } from "../events";
 import {
   BatchMetaFetchRequest,
   BatchMetaUpdateRequest,
   NodeMetaFetchRequest,
+  NodeMetaUpdateRequest,
 } from "../interfaces/meta/meta.requests";
 import { NotifyRequest } from "../interfaces/notify/notify.requests";
 
@@ -113,8 +114,24 @@ function handleMetaEvent(props: HanderProps) {
       const json = JSON.parse(data);
       return response(props.id, json);
     } catch (_) {
+      if (data.length == 0) {
+        // the data is not in a json format
+        return response(props.id, undefined);
+      }
       return response(props.id, undefined, _);
     }
+  } else if (props.key == PUGIN_SDK_EK_REQUEST_UPDATE_NODE_META) {
+    const request: NodeMetaUpdateRequest = props.data;
+    figma
+      .getNodeById(request.id)
+      .setSharedPluginData(
+        request.namespace,
+        request.key,
+        typeof request.value == "object"
+          ? JSON.stringify(request.value)
+          : request.value
+      );
+    return response(props.id, true);
   }
 }
 function handleRemoteApiEvent(props: HanderProps) {}

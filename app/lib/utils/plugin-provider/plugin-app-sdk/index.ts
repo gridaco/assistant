@@ -5,17 +5,22 @@ import {
   PLUGIN_SDK_EK_SIMPLE_NOTIFY,
   PLUGIN_SDK_NS_META_API,
   PLUGIN_SDK_NS_NOTIFY_API,
+  PUGIN_SDK_EK_REQUEST_UPDATE_NODE_META,
   TransportPluginEvent,
 } from "../events";
 import {
   BatchMetaFetchRequest,
   NodeMetaFetchRequest,
+  NodeMetaUpdateRequest,
 } from "../interfaces/meta/meta.requests";
 import { NotifyRequest } from "../interfaces/notify/notify.requests";
 import { nanoid } from "nanoid";
 
 export class PluginSdk {
   static window: Window;
+  static initializeWindow(window: Window) {
+    this.window = window;
+  }
 
   // region general canvas api
   static get selectedNodes(): string {
@@ -29,10 +34,6 @@ export class PluginSdk {
 
   // enderegion general canvas api
 
-  static initializeWindow(window: Window) {
-    this.window = window;
-  }
-
   // region network api
   static get(params: any) {
     throw "not implmtd";
@@ -45,12 +46,13 @@ export class PluginSdk {
   // endregion networ api
 
   // region metadata
-  static setMetadata(
-    nodeId: string,
-    namespace: string | undefined = undefined,
-    key: string,
-    value: string
-  ) {}
+  static updateMetadata(request: NodeMetaUpdateRequest) {
+    return this.request({
+      namespace: PLUGIN_SDK_NS_META_API,
+      key: PUGIN_SDK_EK_REQUEST_UPDATE_NODE_META,
+      data: request,
+    });
+  }
 
   static async fetchMetadata(request: NodeMetaFetchRequest): Promise<any> {
     return this.request({

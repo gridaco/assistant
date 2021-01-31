@@ -16,6 +16,8 @@ export const PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META =
   "assistant/tools/batch-meta-editor/fetch";
 export const PLUGIN_SDK_EK_REQUEST_FETCH_NODE_META =
   "assistant/tools/node-meta-editor/fetch";
+export const PUGIN_SDK_EK_REQUEST_UPDATE_NODE_META =
+  "assistant/tools/node-meta-editor/update";
 // endregion meta
 
 // region notify
