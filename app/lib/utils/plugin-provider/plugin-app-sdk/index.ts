@@ -1,12 +1,16 @@
 import {
   BasePluginEvent,
+  PLUGIN_SDK_EK_REQUEST_FETCH_NODE_META,
   PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META,
   PLUGIN_SDK_EK_SIMPLE_NOTIFY,
   PLUGIN_SDK_NS_META_API,
   PLUGIN_SDK_NS_NOTIFY_API,
   TransportPluginEvent,
 } from "../events";
-import { BatchMetaFetchRequest } from "../interfaces/meta/meta.requests";
+import {
+  BatchMetaFetchRequest,
+  NodeMetaFetchRequest,
+} from "../interfaces/meta/meta.requests";
 import { NotifyRequest } from "../interfaces/notify/notify.requests";
 import { nanoid } from "nanoid";
 
@@ -35,17 +39,19 @@ export class PluginSdk {
     value: string
   ) {}
 
-  static fetchMetadata(
-    nodeId: string,
-    namespace: string | undefined = undefined,
-    key: string
-  ) {}
+  static async fetchMetadata(request: NodeMetaFetchRequest): Promise<any> {
+    return this.request({
+      namespace: PLUGIN_SDK_NS_META_API,
+      key: PLUGIN_SDK_EK_REQUEST_FETCH_NODE_META,
+      data: request,
+    });
+  }
 
-  static fetchRootMetadata(key: string) {
+  static fetchRootMetadata(key: string): Promise<any> {
     const data: BatchMetaFetchRequest = {
       key: key,
     };
-    this.request({
+    return this.request({
       namespace: PLUGIN_SDK_NS_META_API,
       key: PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META,
       data: data,
@@ -80,12 +86,13 @@ export class PluginSdk {
     );
   }
 
-  static request(event: BasePluginEvent) {
+  static promises: Map<string, { resolve; reject }> = new Map();
+
+  static request<T = any>(event: BasePluginEvent): Promise<T> {
     // make id
     const requestId = this.makeRequetsId();
 
     // register to event / response que
-    // TODO
 
     this.postMessage({
       type: "request",
@@ -93,9 +100,42 @@ export class PluginSdk {
       ...event,
       id: requestId,
     });
+
+    return new Promise<T>((resolve, reject) => {
+      this.registerToEventQue(requestId, resolve, reject);
+    });
   }
 
   private static makeRequetsId(): string {
     return nanoid();
+  }
+
+  private static registerToEventQue(requestId: string, resolve, reject) {
+    this.promises.set(requestId, {
+      resolve: resolve,
+      reject: reject,
+    });
+  }
+
+  private static removeFromEventQue(requestId: string) {
+    this.promises.delete(requestId);
+  }
+
+  static handle(event: TransportPluginEvent) {
+    if (event.type == "response") {
+      this.handleResponse(event);
+    }
+  }
+
+  private static handleResponse(event: TransportPluginEvent) {
+    const promise = this.promises.get(event.id);
+    if (event.error) {
+      promise.reject(event.error);
+    } else {
+      promise.resolve(event.data);
+    }
+
+    // remove resolved promise from que
+    this.removeFromEventQue(event.id);
   }
 }

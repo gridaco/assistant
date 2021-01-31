@@ -10,3 +10,12 @@ export interface BatchMetaUpdateRequest<T = any> {
 export interface BatchMetaFetchRequest {
   key: string;
 }
+
+export interface NodeMetaFetchRequest {
+  /**
+   * the id of node
+   */
+  id: string;
+  namespace: string;
+  key: string;
+}

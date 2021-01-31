@@ -4,6 +4,7 @@ import {
   TARGET_PLATFORM,
   TargetPlatform,
 } from "@bridged.xyz/design-sdk/lib/platform";
+import { PluginSdk } from "../../utils/plugin-provider/plugin-app-sdk";
 
 export class MetaDataRepositoryFactory {
   static layer(layer: string) {
@@ -22,13 +23,15 @@ export abstract class MetaDataRepository<T = any> {
 
   abstract key: string;
 
-  fetch(): T {
+  async fetch(): Promise<T> {
     switch (TARGET_PLATFORM) {
       case TargetPlatform.figma:
-        const data = figma
-          .getNodeById(this.id)
-          .getSharedPluginData(ASSISTANT_PLUGIN_NAMESPACE, this.key);
-        return JSON.parse(data);
+        return await PluginSdk.fetchMetadata({
+          id: this.id,
+          namespace: ASSISTANT_PLUGIN_NAMESPACE,
+          key: this.key,
+        });
+
       case TargetPlatform.webdev:
         return MetaDataMockDataProvider.componentData() as any;
     }

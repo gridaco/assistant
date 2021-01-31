@@ -1,7 +1,8 @@
 export const PLUGIN_SDK_NAMESPACE_BASE_TOKEN = "bridged";
+export const PLUGIN_SDK_NS_RESPONSE_ALL = "bridged/response/*";
 export const PLC_REMOTE_API_REQ = "pugin-consumer/remote-api/request";
 export const PLC_REMOTE_API_RES = "pugin-consumer/remote-api/response";
-export const PUGIN_SDK_NS_REMOTE_API = `${PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/remote-api`;
+export const PLUGIN_SDK_NS_REMOTE_API = `${PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/remote-api`;
 
 // region meta
 export const PLUGIN_SDK_NS_META_API = `${PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/meta`;
@@ -9,6 +10,8 @@ export const PLUGIN_SDK_EK_BATCH_META_UPDATE =
   "assistant/tools/batch-meta-editor/update";
 export const PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META =
   "assistant/tools/batch-meta-editor/fetch";
+export const PLUGIN_SDK_EK_REQUEST_FETCH_NODE_META =
+  "assistant/tools/node-meta-editor/fetch";
 // endregion meta
 
 // region notify
@@ -31,5 +34,6 @@ export interface BasePluginEvent<T = any> {
 export interface TransportPluginEvent extends BasePluginEvent {
   origin: "app" | "server";
   type: "response" | "request";
+  error?: Error;
   id: string;
 }

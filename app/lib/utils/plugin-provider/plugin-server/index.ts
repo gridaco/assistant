@@ -1,16 +1,20 @@
 import { NS_FILE_ROOT_METADATA } from "../../../constants/ns.constant";
 import {
   PLUGIN_SDK_EK_BATCH_META_UPDATE,
+  PLUGIN_SDK_EK_REQUEST_FETCH_NODE_META,
   PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META,
   PLUGIN_SDK_EK_SIMPLE_NOTIFY,
   PLUGIN_SDK_NAMESPACE_BASE_TOKEN,
   PLUGIN_SDK_NS_META_API,
   PLUGIN_SDK_NS_NOTIFY_API,
+  PLUGIN_SDK_NS_REMOTE_API,
+  PLUGIN_SDK_NS_RESPONSE_ALL,
   TransportPluginEvent,
 } from "../events";
 import {
   BatchMetaFetchRequest,
   BatchMetaUpdateRequest,
+  NodeMetaFetchRequest,
 } from "../interfaces/meta/meta.requests";
 import { NotifyRequest } from "../interfaces/notify/notify.requests";
 
@@ -28,10 +32,10 @@ export class PluginSdkServer {
     );
 
     // validate the givven event
-    if (
-      !event.namespace ||
-      !event.namespace.includes(PLUGIN_SDK_NAMESPACE_BASE_TOKEN)
-    ) {
+    if (!event.namespace) {
+      return;
+    }
+    if (!event.namespace.includes(PLUGIN_SDK_NAMESPACE_BASE_TOKEN)) {
       console.warn(
         `the event is passed to PluginSdkServer, but the namespace or structure does not meet the standard interface. the givven event was - `,
         event
@@ -47,22 +51,27 @@ export class PluginSdkServer {
     // meta
     if (event.namespace == PLUGIN_SDK_NS_META_API) {
       handleMetaEvent(handerProps);
+      return true;
     }
 
     // remote api call
-    if (event.namespace == PLUGIN_SDK_NS_META_API) {
+    else if (event.namespace == PLUGIN_SDK_NS_REMOTE_API) {
       handleRemoteApiEvent(handerProps);
+      return true;
     }
 
     // notify
-    if (event.namespace == PLUGIN_SDK_NS_NOTIFY_API) {
+    else if (event.namespace == PLUGIN_SDK_NS_NOTIFY_API) {
       handleNotify(handerProps);
+      return true;
     }
 
     return true;
   }
 
-  static resolveRequest(requestId: string, data: any = undefined) {}
+  static resolveRequest(requestId: string, data: any = undefined) {
+    // TODO - send response event
+  }
 }
 
 function handleMetaEvent(props: HanderProps) {
@@ -77,10 +86,18 @@ function handleMetaEvent(props: HanderProps) {
       d.key
     );
     console.log(`fetched root metadata for key ${d.key} is.`, fetched);
-    figma.ui.postMessage({
-      type: "__response__",
-      data: fetched,
-    });
+    response(props.id, fetched);
+  } else if (props.key == PLUGIN_SDK_EK_REQUEST_FETCH_NODE_META) {
+    const request: NodeMetaFetchRequest = props.data;
+    const data = figma
+      .getNodeById(request.id)
+      .getSharedPluginData(request.namespace, request.key);
+    try {
+      const json = JSON.parse(data);
+      return response(props.id, json);
+    } catch (_) {
+      return response(props.id, undefined, _);
+    }
   }
 }
 function handleRemoteApiEvent(props: HanderProps) {}
@@ -91,4 +108,21 @@ export function handleNotify(props: HanderProps<NotifyRequest>) {
       timeout: props.data.duration ?? 1,
     });
   }
+  response(props.id, true);
+}
+
+function response<T = any>(
+  requestId: string,
+  data: T,
+  error: Error | undefined = undefined
+): boolean {
+  figma.ui.postMessage(<TransportPluginEvent>{
+    id: requestId,
+    namespace: PLUGIN_SDK_NS_RESPONSE_ALL,
+    type: "response",
+    error: error,
+    data: data,
+  });
+
+  return true;
 }
