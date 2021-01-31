@@ -102,7 +102,15 @@ export function MetaEditorScreen() {
 }
 
 function EmptyState() {
-  return <p>no layer / component / instance is selected.</p>;
+  return (
+    <p>
+      no layer / component / instance is selected.
+      <br />
+      When selecting instance, it won't add data to the master component. you
+      have to manullly select master component in order to add meta to the
+      master component. (this also works for a variant)
+    </p>
+  );
 }
 
 function MetaDataDisplayForm(props: {
