@@ -161,7 +161,7 @@ function IconSearch(props: {
         <Search />
         <input
           placeholder="Search with icon name"
-          onChange={(e) => props.onChange(e.target.value)}
+          onChange={(e) => props.onChange(e.target.value.toLocaleLowerCase())}
         />
       </div>
       <div className="search-container-checker">

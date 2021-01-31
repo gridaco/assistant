@@ -31,16 +31,14 @@ import { makeVanilla } from "core/lib/vanilla";
 import { ReflectFrameNode } from "@bridged.xyz/design-sdk/lib/nodes";
 import { replaceAllTextFontInFrame } from "./tool-box/manipulate/font-replacer";
 import { drawButtons } from "./reflect-render";
-import { on, once } from "@bridged.xyz/design-sdk/lib/events";
 import {
   BatchMetaFetchQuery,
   BatchMetaOperationQuery,
 } from "app/lib/screens/tool-box/batch-meta-editor";
 import { NS_FILE_ROOT_METADATA } from "app/lib/constants";
 import { IconConfig } from "@reflect.bridged.xyz/core/lib/icon/icon.config";
-import { config } from "process";
 
-let appMode: number = 0;
+let appMode: string = "code";
 export let selection: SceneNode;
 export let targetNodeId: string;
 
@@ -102,7 +100,7 @@ async function runon(node: SceneNode) {
   }
 
   //#region  run linter
-  if (appMode == 2) {
+  if (appMode == "lint") {
     const feedbacks = runLints(convertedSelection);
     console.warn(feedbacks);
     figma.ui.postMessage({
@@ -113,7 +111,7 @@ async function runon(node: SceneNode) {
   //#endregion
 
   // region make vanilla
-  if (appMode == 3) {
+  if (appMode == "g11n") {
     const globalizatoinScreen = makeVanilla(
       convertedSelection as ReflectFrameNode
     );
@@ -129,7 +127,7 @@ async function runon(node: SceneNode) {
   }
   // endregion
 
-  if (appMode == 0) {
+  if (appMode == "code") {
     const buildResult = buildApp(convertedSelection);
 
     // host images
