@@ -209,7 +209,7 @@ figma.on("selectionchange", () => {
 
 // todo pass data instead of relying in types
 figma.ui.onmessage = async (msg) => {
-  console.log("event received", msg);
+  console.log("[event] figma plugin data received", msg);
 
   const generalHandlingResult = PluginSdkServer.handle(msg);
   // if event is handled by general event handler, no additional handling is required.

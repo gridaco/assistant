@@ -59,15 +59,16 @@ const DefaultComponentMetaDataSchema: ReadonlyArray<MetaDataFieldDef> = [
 
 export function MetaEditorScreen() {
   const [selectednode, setselectednode] = useState<string>(undefined);
-
-  window.addEventListener("message", (ev) => {
-    const message = ev.data.pluginMessage;
-    if (message?.type == "selectionchange") {
-      const node = message.data;
-      console.log("node", node);
-      setselectednode(node.id);
-    }
-  });
+  useEffect(() => {
+    window.addEventListener("message", (ev) => {
+      const message = ev.data.pluginMessage;
+      if (message?.type == "selectionchange") {
+        const node = message.data;
+        console.log("node", node);
+        setselectednode(node.id);
+      }
+    });
+  }, []);
 
   const [editable, seteditable] = useState<boolean>(false);
 
@@ -80,7 +81,7 @@ export function MetaEditorScreen() {
   }
 
   return (
-    <>
+    <div key={selectednode}>
       <FormControlLabel
         control={
           <Switch
@@ -97,7 +98,7 @@ export function MetaEditorScreen() {
         type="component"
         id={selectednode}
       />
-    </>
+    </div>
   );
 }
 
@@ -202,7 +203,7 @@ function MetaDataDisplayField(props: {
   function drawValueDisplay() {
     switch (props.type) {
       case "text":
-        return <Typography>{props.value}</Typography>;
+        return <Typography variant="caption">{props.value}</Typography>;
 
       case "url":
         return <Button onClick={() => open(props.value)}>{props.value}</Button>;

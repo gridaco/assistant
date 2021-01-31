@@ -150,6 +150,8 @@ function response<T = any>(
   data: T,
   error: Error | undefined = undefined
 ): boolean {
+  console.info(`responding to request ${requestId} with data ${data} and error ${error}`)
+
   figma.ui.postMessage(<TransportPluginEvent>{
     id: requestId,
     namespace: PLUGIN_SDK_NS_RESPONSE_ALL,

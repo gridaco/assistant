@@ -105,24 +105,24 @@ export class PluginSdk {
 
   static request<T = any>(event: BasePluginEvent): Promise<T> {
     // make id
-    const requestId = this.makeRequetsId();
-
-    // register to event / response que
-
-    this.postMessage({
-      type: "request",
-      origin: "app",
-      ...event,
-      id: requestId,
-    });
+    const requestId = this.makeRequetsId(event.key);
 
     return new Promise<T>((resolve, reject) => {
+      // register to event / response que
       this.registerToEventQue(requestId, resolve, reject);
+
+      // post message after registration is complete.
+      this.postMessage({
+        type: "request",
+        origin: "app",
+        ...event,
+        id: requestId,
+      });
     });
   }
 
-  private static makeRequetsId(): string {
-    return nanoid();
+  private static makeRequetsId(key: string): string {
+    return `${key}-${nanoid()}`;
   }
 
   private static registerToEventQue(requestId: string, resolve, reject) {
@@ -144,6 +144,10 @@ export class PluginSdk {
 
   private static handleResponse(event: TransportPluginEvent) {
     const promise = this.promises.get(event.id);
+    if (!promise){
+      throw `no promise found to handle from event que with id ${event.id} current promises are.. ${[...this.promises.keys()]}`;
+    }
+
     if (event.error) {
       promise.reject(event.error);
     } else {
