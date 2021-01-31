@@ -16,7 +16,7 @@ import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
 import { ReleaseChannel, WorkScreen, WorkspaceMode } from "../states/app-state";
 import { FontReplacerScreen } from "../screens/tool-box/font-replacer";
 import { ButtonMakerScreen } from "../screens/design/button-maker-screen";
-import { PluginConsumer } from "../utils/plugin-provider";
+import { PluginApp } from "../utils/plugin-provider/pugin-app";
 import { MetaEditorScreen } from "../screens/tool-box/meta-editor";
 import BatchMetaEditor from "../screens/tool-box/batch-meta-editor";
 import ComponentViewScreen from "../screens/component-view";
@@ -322,7 +322,7 @@ export default function App() {
   const screenLayout = makeTabLayout(tabLayout);
 
   return (
-    <PluginConsumer>
+    <PluginApp>
       <div>
         <Button
           endIcon={<KeyboardArrowDown />}
@@ -367,6 +367,6 @@ export default function App() {
         </Menu>
       </div>
       {screenLayout}
-    </PluginConsumer>
+    </PluginApp>
   );
 }

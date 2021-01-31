@@ -5,9 +5,9 @@ import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
 import {
-  EK_BATCH_META_UPDATE,
-  EK_REQUEST_FETCH_ROOT_META,
-} from "../../../constants";
+  PLUGIN_SDK_EK_BATCH_META_UPDATE,
+  PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META,
+} from "../../../utils/plugin-provider/events";
 import Divider from "@material-ui/core/Divider";
 
 export enum BatchMetaOperationTargetType {
@@ -60,7 +60,7 @@ export default function BatchMetaEditor() {
     parent.postMessage(
       {
         pluginMessage: {
-          type: EK_BATCH_META_UPDATE,
+          type: PLUGIN_SDK_EK_BATCH_META_UPDATE,
           data: data,
         },
       },
@@ -136,7 +136,7 @@ function FetchMetaDataViaKey() {
     parent.postMessage(
       {
         pluginMessage: {
-          type: EK_REQUEST_FETCH_ROOT_META,
+          type: PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META,
           data: data,
         },
       },
