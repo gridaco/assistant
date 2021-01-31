@@ -16,6 +16,19 @@ import { nanoid } from "nanoid";
 
 export class PluginSdk {
   static window: Window;
+
+  // region general canvas api
+  static get selectedNodes(): string {
+    return "";
+  }
+
+  static get selectedNode(): string {
+    // TODO
+    return "";
+  }
+
+  // enderegion general canvas api
+
   static initializeWindow(window: Window) {
     this.window = window;
   }

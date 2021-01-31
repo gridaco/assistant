@@ -4,6 +4,10 @@ export const PLC_REMOTE_API_REQ = "pugin-consumer/remote-api/request";
 export const PLC_REMOTE_API_RES = "pugin-consumer/remote-api/response";
 export const PLUGIN_SDK_NS_REMOTE_API = `${PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/remote-api`;
 
+// region sync
+export const PLUGIN_SDK_NS_SYNC = `${PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/sync`;
+// endregion sync
+
 // region meta
 export const PLUGIN_SDK_NS_META_API = `${PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/meta`;
 export const PLUGIN_SDK_EK_BATCH_META_UPDATE =

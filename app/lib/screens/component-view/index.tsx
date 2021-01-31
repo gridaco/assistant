@@ -8,6 +8,7 @@ import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText/DialogContentText";
 import TextField from "@material-ui/core/TextField/TextField";
 import DialogActions from "@material-ui/core/DialogActions/DialogActions";
+import { PluginSdk } from "../../utils/plugin-provider/plugin-app-sdk";
 
 export default function ComponentViewScreen() {
   // 1. get selected layer
@@ -18,6 +19,8 @@ export default function ComponentViewScreen() {
   // TODO load image data from iframe message
   const [previewImage, setPreviewImage] = useState(undefined);
 
+  // load test code
+  // PluginSdk.fetchMetadata()
   const testCode = `
 import { Progress } from 'antd';
 

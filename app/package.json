@@ -21,8 +21,7 @@
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
         "recoil": "^0.0.13",
-        "refractor": "^3.1.0",
-        "rxjs": "^6.6.3"
+        "refractor": "^3.1.0"
     },
     "devDependencies": {
         "@types/react": "^16.9.53",

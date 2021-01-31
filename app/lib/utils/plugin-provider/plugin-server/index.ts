@@ -9,6 +9,7 @@ import {
   PLUGIN_SDK_NS_NOTIFY_API,
   PLUGIN_SDK_NS_REMOTE_API,
   PLUGIN_SDK_NS_RESPONSE_ALL,
+  PLUGIN_SDK_NS_SYNC,
   TransportPluginEvent,
 } from "../events";
 import {
@@ -24,7 +25,27 @@ interface HanderProps<T = any> {
   data: T;
 }
 
+figma.on("selectionchange", () => {
+  PluginSdkServer.onSelectionChange();
+});
+
 export class PluginSdkServer {
+  static onSelectionChange() {
+    const selection = figma.currentPage.selection;
+    if (selection.length == 0) {
+      // sync({
+      //   namespace: PLUGIN_SDK_NS_SYNC,
+      //   key:
+      // });
+      // deselect
+    } else if (selection.length == 1) {
+      // select single
+      // sync();
+    } else if (selection.length >= 2) {
+      // selections
+      // sync();
+    }
+  }
   static handle(event: TransportPluginEvent): boolean {
     console.info(
       `start handling event from PluginSdkServer with event - `,
@@ -67,10 +88,6 @@ export class PluginSdkServer {
     }
 
     return true;
-  }
-
-  static resolveRequest(requestId: string, data: any = undefined) {
-    // TODO - send response event
   }
 }
 
@@ -126,3 +143,9 @@ function response<T = any>(
 
   return true;
 }
+
+/**
+ * this is for syncing data with PluginApp's general data such as currently selected node.
+ * @param withEvent
+ */
+function sync(withEvent: TransportPluginEvent) {}
