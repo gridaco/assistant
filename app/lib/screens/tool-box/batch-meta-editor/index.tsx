@@ -4,39 +4,14 @@ import Button from "@material-ui/core/Button";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
-import {
-  EK_BATCH_META_UPDATE,
-  EK_REQUEST_FETCH_ROOT_META,
-} from "../../../constants";
+import { PLUGIN_SDK_EK_BATCH_META_UPDATE } from "../../../utils/plugin-provider/events";
 import Divider from "@material-ui/core/Divider";
-
-export enum BatchMetaOperationTargetType {
-  root = "document.root",
-  all = "nodes.all",
-  components = "nodes.components",
-  // not supported yet.
-  // uncomment this and implement each cases when first, batch component meta editing PR is merged.
-  // origin author - @softmarshmallow
-  // ---------
-  // custom = 'custom',
-  // instances = 'nodes.instances',
-  // variants = 'nodes.variants'
-  // ---------
-}
-const SupportedBatchMetaOperationTargetTypes = [
-  BatchMetaOperationTargetType.root,
-];
-
-export interface BatchMetaOperationQuery<T = any> {
-  targetType: BatchMetaOperationTargetType;
-  custom: T;
-  key: string;
-  value: string;
-}
-
-export interface BatchMetaFetchQuery {
-  key: string;
-}
+import { PluginSdk } from "../../../utils/plugin-provider/plugin-app-sdk";
+import {
+  BatchMetaOperationTargetType,
+  SupportedBatchMetaOperationTargetTypes,
+} from "../../../utils/plugin-provider/interfaces/meta/meta.types";
+import { BatchMetaUpdateRequest } from "../../../utils/plugin-provider/interfaces/meta/meta.requests";
 
 export default function BatchMetaEditor() {
   const [targetType, setTargetType] = useState<BatchMetaOperationTargetType>(
@@ -50,7 +25,7 @@ export default function BatchMetaEditor() {
   };
 
   const handleUpdateClick = () => {
-    const data: BatchMetaOperationQuery = {
+    const data: BatchMetaUpdateRequest = {
       targetType: targetType,
       custom: {},
       key: propertyName,
@@ -60,7 +35,7 @@ export default function BatchMetaEditor() {
     parent.postMessage(
       {
         pluginMessage: {
-          type: EK_BATCH_META_UPDATE,
+          type: PLUGIN_SDK_EK_BATCH_META_UPDATE,
           data: data,
         },
       },
@@ -130,19 +105,8 @@ function FetchMetaDataViaKey() {
   const [response, setResponse] = useState<any>(undefined);
   const [key, setKey] = useState("");
   const handleOnSearchClick = () => {
-    const data: BatchMetaFetchQuery = {
-      key: key,
-    };
-    parent.postMessage(
-      {
-        pluginMessage: {
-          type: EK_REQUEST_FETCH_ROOT_META,
-          data: data,
-        },
-      },
-      "*"
-    );
-    console.log(`searching with data ${data}.`);
+    console.log(`searching with ey ${key}.`);
+    PluginSdk.fetchRootMetadata(key);
   };
   return (
     <div>

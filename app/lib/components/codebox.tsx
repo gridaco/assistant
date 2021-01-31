@@ -11,11 +11,10 @@ import "./highlight.css";
 // https://github.com/FormidableLabs/prism-react-renderer/issues/22#issuecomment-553042928
 import Prism from "prism-react-renderer/prism";
 import dartLang from "refractor/lang/dart";
-import { EK_COPIED } from "../constants/ek.constant";
 import { quickLook } from "../quicklook";
 import { Widget } from "@bridged.xyz/flutter-builder/lib";
-import { notify } from "@bridged.xyz/design-sdk/lib/figma";
 import Button from "@material-ui/core/Button";
+import { PluginSdk } from "../utils/plugin-provider/plugin-app-sdk";
 dartLang(Prism);
 // endregion
 
@@ -40,7 +39,7 @@ export default class CodeBox extends React.Component<Props, State> {
 
   onCopyClicked = (e) => {
     copy(this.props.code);
-    parent.postMessage({ pluginMessage: { type: EK_COPIED } }, "*");
+    PluginSdk.notifyCopied();
   };
 
   onQuickLookClicked = (e) => {
@@ -56,12 +55,12 @@ export default class CodeBox extends React.Component<Props, State> {
     quickLook("quicklook", this.props.app)
       .then((r) => {
         setLoadingState(false);
-        notify(parent, "quick look ready !");
+        PluginSdk.notify("quick look ready !");
       })
       .catch((e) => {
         console.error(e);
         setLoadingState(false);
-        notify(parent, "compile failed. view console for details.", 2);
+        PluginSdk.notify("compile failed. view console for details.", 2);
       });
   };
 

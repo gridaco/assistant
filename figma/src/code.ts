@@ -1,16 +1,15 @@
+import { PluginSdkServer } from "app/lib/utils/plugin-provider/plugin-server";
 import { convertIntoReflectNode } from "@bridged.xyz/design-sdk/lib/nodes/conversion";
 import { buildApp } from "core/lib/flutter";
 import { retrieveFlutterColors } from "core/lib/flutter/utils/fetch-colors";
 import {
   hideAllExcept,
   hideAllOnly,
-} from "./tool-box/manipulate/hide-all/hide-all";
+  randimizeText,
+} from "./tool-box/manipulate";
 import { runLints } from "core/lib/lint/lint";
 import {
-  EK_BATCH_META_UPDATE,
-  EK_REQUEST_FETCH_ROOT_META,
   EK_COMPUTE_STARTED,
-  EK_COPIED,
   EK_CREATE_ICON,
   EK_FOCUS_REQUEST,
   EK_GENERATED_CODE_PLAIN,
@@ -23,7 +22,6 @@ import {
   EK_DRAG_AND_DROPPED,
   EK_ICON_DRAG_AND_DROPPED,
 } from "app/lib/constants/ek.constant";
-import { handleNotify } from "@bridged.xyz/design-sdk/lib/figma";
 import { makeApp } from "core/lib/flutter/make/app.make";
 import { ImageRepositories } from "core/lib/assets-repository";
 import { IconPlacement, renderSvgIcon } from "./reflect-render/icons.render";
@@ -31,11 +29,6 @@ import { makeVanilla } from "core/lib/vanilla";
 import { ReflectFrameNode } from "@bridged.xyz/design-sdk/lib/nodes";
 import { replaceAllTextFontInFrame } from "./tool-box/manipulate/font-replacer";
 import { drawButtons } from "./reflect-render";
-import {
-  BatchMetaFetchQuery,
-  BatchMetaOperationQuery,
-} from "app/lib/screens/tool-box/batch-meta-editor";
-import { NS_FILE_ROOT_METADATA } from "app/lib/constants";
 import { IconConfig } from "@reflect.bridged.xyz/core/lib/icon/icon.config";
 
 let appMode: string = "code";
@@ -217,7 +210,12 @@ figma.on("selectionchange", () => {
 // todo pass data instead of relying in types
 figma.ui.onmessage = async (msg) => {
   console.log("event received", msg);
-  handleNotify(msg);
+
+  const generalHandlingResult = PluginSdkServer.handle(msg);
+  // if event is handled by general event handler, no additional handling is required.
+  if (generalHandlingResult) {
+    return;
+  }
 
   const type = msg.type;
   const data = msg.data;
@@ -245,25 +243,8 @@ figma.ui.onmessage = async (msg) => {
     hideAllExceptFromCurrentSelection(msg.data.except);
   } else if (type == "hide-all-only") {
     hideAllOnlyFromCurrentSelection(msg.data.only);
-  } else if (type == EK_COPIED) {
-    figma.notify("copied to clipboard", { timeout: 1 });
   } else if (type == "reflect-ui-generation/button-base") {
     draw100000Buttons();
-  } else if (type == EK_BATCH_META_UPDATE) {
-    const d = data as BatchMetaOperationQuery;
-    figma.root.setSharedPluginData(NS_FILE_ROOT_METADATA, d.key, d.value);
-    figma.notify("metadata updated", { timeout: 1 });
-  } else if (type == EK_REQUEST_FETCH_ROOT_META) {
-    const d = data as BatchMetaFetchQuery;
-    const fetched = figma.root.getSharedPluginData(
-      NS_FILE_ROOT_METADATA,
-      d.key
-    );
-    console.log(`fetched root metadata for key ${d.key} is.`, fetched);
-    figma.ui.postMessage({
-      type: "__response__",
-      data: fetched,
-    });
   } else if (EK_DRAG_AND_DROPPED) {
     handleDragDrop(data);
   }
@@ -356,27 +337,5 @@ function hideAllOnlyFromCurrentSelection(only: NodeType) {
     figma.notify("hide-all tools can be used only for framenode");
   } else {
     hideAllOnly(selection, only);
-  }
-}
-
-// content randomizer, work on progress..
-async function randimizeText() {
-  if (figma.currentPage.selection.length >= 2) {
-    figma.notify("only single node randomize is supported");
-    return;
-  }
-
-  const primarySelection = figma.currentPage.selection[0];
-  if (primarySelection.type == "TEXT") {
-    const text = primarySelection as TextNode;
-    await figma.loadFontAsync(text.fontName as FontName);
-    text.characters =
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ultrices scelerisque leo nec consectetur. Sed porta metus molestie sollicitudin gravida. Nulla vitae metus sapien.";
-  }
-  if (
-    primarySelection.type == "RECTANGLE" ||
-    primarySelection.type == "ELLIPSE"
-  ) {
-    const box = primarySelection as RectangleNode;
   }
 }
