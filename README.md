@@ -24,8 +24,6 @@ title: bridged assistant for figma, sketch, xd
 - ✅ Live preview via [console](https://console.bridged.xyz) - compiles output source remotely makes design to living application within seconds
 - ✅ Context detection - bridged assistant understands the design, than converts it into a hight quality code. we don't generate rect and text code for a button. We generate button code for a button.
 
-
-
 ## Usage
 
 > install figma plugin via below link. note that the published plugin is allways behind few new features behind this repository. for trying out the latest and mindblowing features, please build from your local environment directly.
@@ -82,8 +80,6 @@ flutter widget builder is done by [figma/flutter](/flutter) and the core builder
 - ✅ formatted dart code
 - ✅ Best code quality (I Assure,) in this planet
 
-
-
 ## Console & Cloud integrations
 
 > Watch the demo on our [website](https://bridged.xyz)
@@ -92,14 +88,10 @@ Bridged consle integrated with assistant enables you to manage your design's con
 
 Learn more at [console repository](https://github.com/bridgedxyz/console.bridged.xyz)
 
-
-
 ## UI Element Detection
 
 > rule based button / input / icon detection with [@reflect.bridged.xyz/detection](./packages/detection)
 > Higher quality ML based detection available at [Bridged's context engine](https://github.com/bridgedxyz/context)
-
-
 
 ## Design Assistant
 
@@ -113,13 +105,11 @@ Learn more at [console repository](https://github.com/bridgedxyz/console.bridged
 
   - 5,000 + [material design icons](https://github.com/bridgedxyz/reflect-icons)
   - 800 + [ant design icons](https://github.com/bridgedxyz/reflect-icons)
--
-  
+  - Read our blog about Icons Loader feature on [medium](https://medium.com/bridgedxyz/bridged-assistant-update-2021-0-1f1-meet-powerful-bridged-design-assistants-icon-loader-552b452396a4)
+
 - fonts replacer
 - buttons generator
 - and more
-
-
 
 ## Development guide
 
@@ -129,10 +119,12 @@ Learn more at [console repository](https://github.com/bridgedxyz/console.bridged
 - sketch: `sketch platform will be available soon`
 
 ### Running as Webdev
+
 > webdev is a mode that you can run assistant as a standalone appliaction for ui development purpose of its' you can't acccess or call api to design tools.
 
 Learn more at [./webdev](./webdev)
-``` sh
+
+```sh
 yarn
 
 # on root
@@ -143,22 +135,16 @@ cd webdev
 yarn start
 ```
 
-
-
 ### Debugging
 
 Use `console.log` statements to inspect values in your code.
 
 To open the developer console in the Figma desktop app, go to `Plugins` → `Development` → `Open Console`.
 
-
-
 ### Docs
 
 - [Create Figma Plugin docs](https://github.com/yuanqing/create-figma-plugin#docs)
 - [Figma plugin API docs](https://figma.com/plugin-docs/api/)
-
-
 
 ## Contributing & Project Structure
 
@@ -166,8 +152,8 @@ To open the developer console in the Figma desktop app, go to `Plugins` → `Dev
 See this project's contributing guideline and technical overview [here](./CONTRIBUTING.md).
 And general bridged project contribution and collaboration guideline [here](https://github.com/bridgedxyz/contributing-and-license).
 
-
 **supported platforms and frameworks**
+
 - ✅ [figma](./figma)
 - ✅ [flutter](./core)
 - ✅ [bridged web](https://github.com/bridgedxyz/console.bridged.xyz)
@@ -178,15 +164,11 @@ And general bridged project contribution and collaboration guideline [here](http
 - [xd](./xd) -- coming soon
 - [zeplin](./zeplin) -- coming soon
 
-
-
 ## Changelog
 
 we release new updates in a by-monthluy cycle. Watch this repository on github or signup for our news letters on [bridged.xyz](https://bridged.xyz)
 
 All update logs available at [CHANGELOG.md](./CHANGELOG.md)
-
-
 
 ## LEGAL
 
@@ -200,8 +182,6 @@ All update logs available at [CHANGELOG.md](./CHANGELOG.md)
   -- why is that? we are taking "minimum" profit from this software, we will prevent from other enterprise from copycatting this software.
 - the code and packages distributed via this repository is free to use without any restrictions.
 - code, design is free to use and modify. (just don't make any profits by re-distributing this plugin.)
-
-
 
 ### DISCLAIMER
 
