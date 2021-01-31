@@ -23,8 +23,13 @@ export interface BasePluginEvent<T = any> {
    * app stands for ui.ts
    * server stands for code.ts
    */
-  origin: "app" | "server";
   namespace: string;
   key: string;
   data: T;
+}
+
+export interface TransportPluginEvent extends BasePluginEvent {
+  origin: "app" | "server";
+  type: "response" | "request";
+  id: string;
 }

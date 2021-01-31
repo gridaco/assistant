@@ -1,25 +1,31 @@
 import { NS_FILE_ROOT_METADATA } from "../../../constants/ns.constant";
 import {
-  BatchMetaFetchQuery,
-  BatchMetaOperationQuery,
-} from "../../../screens/tool-box/batch-meta-editor";
-import {
-  BasePluginEvent,
   PLUGIN_SDK_EK_BATCH_META_UPDATE,
   PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META,
   PLUGIN_SDK_EK_SIMPLE_NOTIFY,
   PLUGIN_SDK_NAMESPACE_BASE_TOKEN,
   PLUGIN_SDK_NS_META_API,
   PLUGIN_SDK_NS_NOTIFY_API,
+  TransportPluginEvent,
 } from "../events";
+import {
+  BatchMetaFetchRequest,
+  BatchMetaUpdateRequest,
+} from "../interfaces/meta/meta.requests";
 import { NotifyRequest } from "../interfaces/notify/notify.requests";
 
+interface HanderProps<T = any> {
+  id: string;
+  key: string;
+  data: T;
+}
+
 export class PluginSdkServer {
-  static handle(event: BasePluginEvent): boolean {
-    // console.info(
-    //   `start handling event from PluginSdkServer with event - `,
-    //   event
-    // );
+  static handle(event: TransportPluginEvent): boolean {
+    console.info(
+      `start handling event from PluginSdkServer with event - `,
+      event
+    );
 
     // validate the givven event
     if (
@@ -33,32 +39,39 @@ export class PluginSdkServer {
       return false;
     }
 
+    const handerProps: HanderProps = {
+      id: event.id,
+      key: event.key,
+      data: event.data,
+    };
     // meta
     if (event.namespace == PLUGIN_SDK_NS_META_API) {
-      handleMetaEvent(event.key, event.data);
+      handleMetaEvent(handerProps);
     }
 
     // remote api call
     if (event.namespace == PLUGIN_SDK_NS_META_API) {
-      handleRemoteApiEvent(event.key, event.data);
+      handleRemoteApiEvent(handerProps);
     }
 
     // notify
     if (event.namespace == PLUGIN_SDK_NS_NOTIFY_API) {
-      handleNotify(event.key, event.data);
+      handleNotify(handerProps);
     }
 
     return true;
   }
+
+  static resolveRequest(requestId: string, data: any = undefined) {}
 }
 
-function handleMetaEvent(key: string, data: any) {
-  if (key == PLUGIN_SDK_EK_BATCH_META_UPDATE) {
-    const d = data as BatchMetaOperationQuery;
+function handleMetaEvent(props: HanderProps) {
+  if (props.key == PLUGIN_SDK_EK_BATCH_META_UPDATE) {
+    const d = props.data as BatchMetaUpdateRequest;
     figma.root.setSharedPluginData(NS_FILE_ROOT_METADATA, d.key, d.value);
     figma.notify("metadata updated", { timeout: 1 });
-  } else if (key == PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META) {
-    const d = data as BatchMetaFetchQuery;
+  } else if (props.key == PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META) {
+    const d = props.data as BatchMetaFetchRequest;
     const fetched = figma.root.getSharedPluginData(
       NS_FILE_ROOT_METADATA,
       d.key
@@ -70,12 +83,12 @@ function handleMetaEvent(key: string, data: any) {
     });
   }
 }
-function handleRemoteApiEvent(key: string, data: any) {}
+function handleRemoteApiEvent(props: HanderProps) {}
 
-export function handleNotify(key: string, data: NotifyRequest) {
-  if (key == PLUGIN_SDK_EK_SIMPLE_NOTIFY) {
-    figma.notify(data.message, {
-      timeout: data.duration ?? 1,
+export function handleNotify(props: HanderProps<NotifyRequest>) {
+  if (props.key == PLUGIN_SDK_EK_SIMPLE_NOTIFY) {
+    figma.notify(props.data.message, {
+      timeout: props.data.duration ?? 1,
     });
   }
 }
