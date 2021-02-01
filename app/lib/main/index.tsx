@@ -20,6 +20,7 @@ import { PluginApp } from "../utils/plugin-provider/pugin-app";
 import { MetaEditorScreen } from "../screens/tool-box/meta-editor";
 import BatchMetaEditor from "../screens/tool-box/batch-meta-editor";
 import ComponentViewScreen from "../screens/component-view";
+import { Switch, Route, Link, BrowserRouter, Redirect } from "react-router-dom";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -155,6 +156,16 @@ function getWorkspaceTabLayout(workspaceMode: WorkspaceMode): TabLayout {
 }
 
 export default function App() {
+  // region init firebase
+  try {
+    firebase.analytics();
+  } catch (e) {
+    console.warn(
+      "firebase is disabled. it seems you are contributing to this project!, no worries, other functionalyties will work fine."
+    );
+  }
+  // endregion init firebase
+
   const [workspaceMode, setWorkspaceMode] = React.useState<WorkspaceMode>(
     WorkspaceMode.code
   );
@@ -202,24 +213,14 @@ export default function App() {
     );
   };
 
-  const handleTabChange = (event, index: number) => {
-    const screen = tabLayout[index];
-    updateFocusedScreen(screen);
-    setTabIndex(index);
-  };
+  function makeTabLayout(workspaceMode: WorkspaceMode) {
+    const tabLayout = getWorkspaceTabLayout(workspaceMode);
+    const handleTabChange = (event, index: number) => {
+      const screen = tabLayout[index];
+      updateFocusedScreen(screen);
+      setTabIndex(index);
+    };
 
-  // region init firebase
-  try {
-    firebase.analytics();
-  } catch (e) {
-    console.warn(
-      "firebase is disabled. it seems you are contributing to this project!, no worries, other functionalyties will work fine."
-    );
-  }
-  // endregion init firebase
-
-  const tabLayout = getWorkspaceTabLayout(workspaceMode);
-  function makeTabLayout(tabLayout: TabLayout) {
     const tabs = (
       <Tabs
         value={tabIndex}
@@ -319,10 +320,8 @@ export default function App() {
     );
   }
 
-  const screenLayout = makeTabLayout(tabLayout);
-
-  return (
-    <PluginApp>
+  function makeWorkspaceModeSelect() {
+    return (
       <div>
         <Button
           endIcon={<KeyboardArrowDown />}
@@ -366,7 +365,18 @@ export default function App() {
           </MenuItem>
         </Menu>
       </div>
-      {screenLayout}
+    );
+  }
+
+  const screenLayout = makeTabLayout(workspaceMode);
+  const workspaceModeSelectLayout = makeWorkspaceModeSelect();
+
+  return (
+    <PluginApp>
+      <BrowserRouter>
+        {workspaceModeSelectLayout}
+        {screenLayout}
+      </BrowserRouter>
     </PluginApp>
   );
 }

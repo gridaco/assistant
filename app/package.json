@@ -20,6 +20,8 @@
         "prism-react-renderer": "^1.1.1",
         "react": "^17.0.1",
         "react-dom": "^17.0.1",
+        "react-router": "^5.2.0",
+        "react-router-dom": "^5.2.0",
         "recoil": "^0.0.13",
         "refractor": "^3.1.0"
     },

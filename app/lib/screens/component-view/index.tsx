@@ -9,12 +9,14 @@ import DialogContentText from "@material-ui/core/DialogContentText/DialogContent
 import TextField from "@material-ui/core/TextField/TextField";
 import DialogActions from "@material-ui/core/DialogActions/DialogActions";
 import { PluginSdk } from "../../utils/plugin-provider/plugin-app-sdk";
-import { Typography } from "@material-ui/core";
+import { Divider, IconButton, Typography } from "@material-ui/core";
 import { ASSISTANT_PLUGIN_NAMESPACE } from "../../constants";
+import { Edit, Settings } from "@material-ui/icons";
+import { CodeboxEditDialog } from "../../components/codebox-edit-dialog";
 
 interface VisualComponentManifest {
   name: string;
-  descripton: string;
+  description: string;
   storybook: string;
   docsUrl: string;
   gitUrl: string;
@@ -53,76 +55,107 @@ export default function ComponentViewScreen() {
   // TODO load image data from iframe message
   const [previewImage, setPreviewImage] = useState(undefined);
 
-  // load test code
-  // PluginSdk.fetchMetadata()
-  const testCode = `
-import { Progress } from 'antd';
-
-ReactDOM.render(
-  <>
-    <Progress type="circle" percent={75} />
-    <Progress type="circle" percent={70} status="exception" />
-    <Progress type="circle" percent={100} />
-  </>,
-  mountNode,
-);
-`;
-
-  const [dopened, setdOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setdOpen(true);
-  };
-
-  const handleClose = () => {
-    setdOpen(false);
-  };
-
   return (
     <>
       <Preview data={previewImage} name={"replace me"}></Preview>
       <p>component view placeholder</p>
-      {/* <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Open form dialog
-      </Button> */}
-      <Typography>name: {data?.name ?? "Not registered"}</Typography>
-      <Typography>
-        description: {data?.descripton ?? "No description"}
-      </Typography>
-      <EditableComponentMetaFieldSingleValueInputDialog
-        label="storybook url"
-        title="Set Data"
-        description="set url for storybook for this component"
-        open={dopened}
-        handleClose={handleClose}
+      <EditableComponentMetaFieldSingleValueDisplay
+        name={"name"}
+        value={data?.name ?? "Not registered"}
+        handleSave={() => {}}
       />
-      <Button
-        disabled={data?.storybook == undefined}
-        onClick={() => {
-          open(`http://localhost:6006/?path=/${data?.storybook ?? ""}`);
+      <EditableComponentMetaFieldSingleValueDisplay
+        name={"description"}
+        value={data?.description ?? "Not registered"}
+        handleSave={() => {}}
+      />
+      <EditableComponentMetaFieldSingleValueDisplay
+        name={"storybook"}
+        button
+        value={data?.storybook}
+        handleSave={() => {}}
+      />
+
+      <EditableComponentMetaFieldSingleValueDisplay
+        name={"documentation"}
+        button
+        value={data?.docsUrl}
+        handleSave={() => {}}
+      />
+
+      <ComponentCodebox
+        code={data?.codeSnippet}
+        onCodeChange={(c) => {
+          setData({
+            ...data,
+            codeSnippet: c,
+          });
+
+          PluginSdk.updateMetadata({
+            id: selectednode,
+            namespace: ASSISTANT_PLUGIN_NAMESPACE,
+            key: "component-meta-data",
+            value: data,
+          });
         }}
-      >
-        storybook
-      </Button>
-      <Button
-        disabled={data?.docsUrl == undefined}
-        onClick={() => {
-          data?.docsUrl && open(data.docsUrl);
-        }}
-      >
-        docs
-      </Button>
-      <CodeBox
-        language="tsx"
-        code={data?.codeSnippet ?? "//no code snippet provided"}
       />
     </>
   );
 }
 
+function EditableComponentMetaFieldSingleValueDisplay(props: {
+  name: string;
+  value: string;
+  button?: boolean;
+  handleSave: (value: string) => void;
+}) {
+  const [dopen, setdOpen] = useState(false);
+  return (
+    <div>
+      <div>
+        <Typography variant="subtitle1" display="inline">
+          {props.name}
+        </Typography>
+        <IconButton
+          onClick={() => {
+            setdOpen(true);
+          }}
+        >
+          <Edit />
+        </IconButton>
+      </div>
+      {props.button ? (
+        <Button
+          disabled={props.value == undefined}
+          onClick={() => {
+            props.value && open(props.value);
+          }}
+        >
+          open
+        </Button>
+      ) : (
+        <Typography variant="body2">
+          {props.value ?? `No ${props.name}`}
+        </Typography>
+      )}
+
+      <Divider style={{ marginTop: 12 }} />
+
+      <EditableComponentMetaFieldSingleValueInputDialog
+        title={`Update "${props.name}"`}
+        label={`New "${props.name}"`}
+        open={dopen}
+        handleClose={() => {
+          setdOpen(false);
+        }}
+      />
+    </div>
+  );
+}
+
 function EditableComponentMetaFieldSingleValueInputDialog(props: {
   title: string;
-  description: string;
+  description?: string;
   label: string;
   open: boolean;
   handleClose: () => void;
@@ -130,13 +163,16 @@ function EditableComponentMetaFieldSingleValueInputDialog(props: {
   return (
     <>
       <Dialog
+        fullWidth
         open={props.open}
         onClose={props.handleClose}
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">{props.title}</DialogTitle>
         <DialogContent>
-          <DialogContentText>{props.description}</DialogContentText>
+          {props.description && (
+            <DialogContentText>{props.description}</DialogContentText>
+          )}
           <TextField
             autoFocus
             margin="dense"
@@ -155,5 +191,46 @@ function EditableComponentMetaFieldSingleValueInputDialog(props: {
         </DialogActions>
       </Dialog>
     </>
+  );
+}
+
+function ComponentCodebox(props: {
+  onCodeChange: (code: string) => void;
+  code: string;
+}) {
+  const [dopened, setdOpen] = React.useState(false);
+  const [code, setCode] = React.useState(props.code);
+
+  const handleClose = () => {
+    setdOpen(false);
+  };
+
+  const handleEditCodeClick = () => {
+    setdOpen(true);
+  };
+  return (
+    <div>
+      <CodeboxEditDialog
+        initialValue={code}
+        handleSave={(c) => {
+          setCode(c);
+          props.onCodeChange(c);
+        }}
+        label="code"
+        title="override code"
+        description="override the component code"
+        open={dopened}
+        handleClose={handleClose}
+      />
+      <CodeBox
+        codeActions={[
+          <IconButton onClick={handleEditCodeClick}>
+            <Settings />
+          </IconButton>,
+        ]}
+        language="tsx"
+        code={code ?? "//no code snippet provided"}
+      />
+    </div>
   );
 }

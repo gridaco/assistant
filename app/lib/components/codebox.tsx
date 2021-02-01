@@ -15,6 +15,8 @@ import { quickLook } from "../quicklook";
 import { Widget } from "@bridged.xyz/flutter-builder/lib";
 import Button from "@material-ui/core/Button";
 import { PluginSdk } from "../utils/plugin-provider/plugin-app-sdk";
+import { IconButton } from "@material-ui/core";
+import { Add } from "@material-ui/icons";
 dartLang(Prism);
 // endregion
 
@@ -27,6 +29,7 @@ interface Props {
   code: string;
   app?: string;
   widget?: Widget;
+  codeActions?: Array<JSX.Element>;
 }
 
 export default class CodeBox extends React.Component<Props, State> {
@@ -68,6 +71,10 @@ export default class CodeBox extends React.Component<Props, State> {
     return (
       <>
         <code>
+          {this.props.codeActions &&
+            this.props.codeActions.map((e) => {
+              return e;
+            })}
           <PrismHighlight
             {...defaultProps}
             Prism={Prism}

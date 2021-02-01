@@ -1,4 +1,3 @@
-import { EK_ICON_DRAG_AND_DROPPED } from "../../../constants";
 import { NS_FILE_ROOT_METADATA } from "../../../constants/ns.constant";
 import {
   PLUGIN_SDK_EK_BATCH_META_UPDATE,
