@@ -24,17 +24,13 @@ interface State {
   app: string;
   code: string;
   widget: Widget;
-  previewImage: string;
-  name: string;
 }
 
 export class CodeScreen extends React.Component<any, State> {
   constructor(props) {
     super(props);
     this.state = {
-      name: "not selected",
       code: DEFAULT_EMPTY_CODE_SNIPPET,
-      previewImage: null,
       widget: null,
       app: null,
     };
@@ -54,11 +50,6 @@ export class CodeScreen extends React.Component<any, State> {
           const widget = msg.data.widget;
           this.setState((state, props) => {
             return { code: code, widget: widget, app: app };
-          });
-          break;
-        case EK_PREVIEW_SOURCE:
-          this.setState((state, props) => {
-            return { previewImage: msg.data.source, name: msg.data.name };
           });
           break;
         case EK_IMAGE_ASSET_REPOSITORY_MAP:
@@ -86,10 +77,7 @@ export class CodeScreen extends React.Component<any, State> {
   render() {
     return (
       <div>
-        <Preview
-          data={(this.state as any).previewImage}
-          name={(this.state as any).name}
-        ></Preview>
+        <Preview auto />
         <CodeBox
           language="dart"
           app={this.state.app}

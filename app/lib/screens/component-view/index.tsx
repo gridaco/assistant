@@ -42,6 +42,7 @@ export default function ComponentViewScreen() {
           namespace: ASSISTANT_PLUGIN_NAMESPACE,
           key: "component-meta-data",
         }).then((d) => {
+          console.log(`component-meta-data is`, d);
           setData(d);
         });
       }
@@ -55,51 +56,65 @@ export default function ComponentViewScreen() {
   // TODO load image data from iframe message
   const [previewImage, setPreviewImage] = useState(undefined);
 
+  function updateData(key: string, value: string) {
+    const newData = {
+      ...data,
+      [key]: value,
+    };
+    setData(newData);
+
+    PluginSdk.updateMetadata({
+      id: selectednode,
+      namespace: ASSISTANT_PLUGIN_NAMESPACE,
+      key: "component-meta-data",
+      value: newData,
+    });
+  }
+
   return (
-    <>
-      <Preview data={previewImage} name={"replace me"}></Preview>
-      <p>component view placeholder</p>
-      <EditableComponentMetaFieldSingleValueDisplay
-        name={"name"}
-        value={data?.name ?? "Not registered"}
-        handleSave={() => {}}
-      />
-      <EditableComponentMetaFieldSingleValueDisplay
-        name={"description"}
-        value={data?.description ?? "Not registered"}
-        handleSave={() => {}}
-      />
-      <EditableComponentMetaFieldSingleValueDisplay
-        name={"storybook"}
-        button
-        value={data?.storybook}
-        handleSave={() => {}}
-      />
+    <div>
+      <Preview auto />
+      <form key={JSON.stringify(data)}>
+        <p>component view placeholder</p>
+        <EditableComponentMetaFieldSingleValueDisplay
+          name={"name"}
+          value={data?.name}
+          handleSave={(c) => {
+            updateData("name", c);
+          }}
+        />
+        <EditableComponentMetaFieldSingleValueDisplay
+          name={"description"}
+          value={data?.description}
+          handleSave={(c) => {
+            updateData("description", c);
+          }}
+        />
+        <EditableComponentMetaFieldSingleValueDisplay
+          name={"storybook"}
+          button
+          value={data?.storybook}
+          handleSave={(c) => {
+            updateData("storybook", c);
+          }}
+        />
+        <EditableComponentMetaFieldSingleValueDisplay
+          name={"documentation"}
+          button
+          value={data?.docsUrl}
+          handleSave={(c) => {
+            updateData("docsUrl", c);
+          }}
+        />
 
-      <EditableComponentMetaFieldSingleValueDisplay
-        name={"documentation"}
-        button
-        value={data?.docsUrl}
-        handleSave={() => {}}
-      />
-
-      <ComponentCodebox
-        code={data?.codeSnippet}
-        onCodeChange={(c) => {
-          setData({
-            ...data,
-            codeSnippet: c,
-          });
-
-          PluginSdk.updateMetadata({
-            id: selectednode,
-            namespace: ASSISTANT_PLUGIN_NAMESPACE,
-            key: "component-meta-data",
-            value: data,
-          });
-        }}
-      />
-    </>
+        <ComponentCodebox
+          code={data?.codeSnippet}
+          onCodeChange={(c) => {
+            updateData("codeSnippet", c);
+          }}
+        />
+      </form>
+    </div>
   );
 }
 
@@ -110,6 +125,7 @@ function EditableComponentMetaFieldSingleValueDisplay(props: {
   handleSave: (value: string) => void;
 }) {
   const [dopen, setdOpen] = useState(false);
+  const [value, setValue] = useState(props.value);
   return (
     <div>
       <div>
@@ -126,17 +142,15 @@ function EditableComponentMetaFieldSingleValueDisplay(props: {
       </div>
       {props.button ? (
         <Button
-          disabled={props.value == undefined}
+          disabled={value == undefined}
           onClick={() => {
-            props.value && open(props.value);
+            value && open(value);
           }}
         >
           open
         </Button>
       ) : (
-        <Typography variant="body2">
-          {props.value ?? `No ${props.name}`}
-        </Typography>
+        <Typography variant="body2">{value ?? `No ${props.name}`}</Typography>
       )}
 
       <Divider style={{ marginTop: 12 }} />
@@ -145,6 +159,11 @@ function EditableComponentMetaFieldSingleValueDisplay(props: {
         title={`Update "${props.name}"`}
         label={`New "${props.name}"`}
         open={dopen}
+        initialValue={value}
+        handleSave={(c) => {
+          setValue(c);
+          props.handleSave(c);
+        }}
         handleClose={() => {
           setdOpen(false);
         }}
@@ -158,8 +177,11 @@ function EditableComponentMetaFieldSingleValueInputDialog(props: {
   description?: string;
   label: string;
   open: boolean;
+  initialValue: string;
+  handleSave: (value: string) => void;
   handleClose: () => void;
 }) {
+  let content;
   return (
     <>
       <Dialog
@@ -175,17 +197,27 @@ function EditableComponentMetaFieldSingleValueInputDialog(props: {
           )}
           <TextField
             autoFocus
+            defaultValue={props.initialValue}
             margin="dense"
             id="name"
             label={props.label}
             fullWidth
+            onChange={(e) => {
+              content = e.target.value;
+            }}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={props.handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={props.handleClose} color="primary">
+          <Button
+            onClick={() => {
+              props.handleSave(content);
+              props.handleClose();
+            }}
+            color="primary"
+          >
             Save
           </Button>
         </DialogActions>
