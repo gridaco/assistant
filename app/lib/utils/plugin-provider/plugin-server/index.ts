@@ -12,6 +12,7 @@ import {
   PLUGIN_SDK_NS_NOTIFY_API,
   PLUGIN_SDK_NS_REMOTE_API,
   PLUGIN_SDK_NS_RESPONSE_ALL,
+  PUGIN_SDK_EK_REQUEST_UPDATE_MAIN_COMPONENT_META,
   PUGIN_SDK_EK_REQUEST_UPDATE_NODE_META,
   TransportPluginEvent,
 } from "../events";
@@ -148,45 +149,28 @@ function handleMetaEvent(props: HanderProps) {
     const data = figma
       .getNodeById(request.id)
       .getSharedPluginData(request.namespace, request.key);
-    try {
-      const json = JSON.parse(data);
-      return response(props.id, json);
-    } catch (_) {
-      if (data.length == 0) {
-        // the data is not in a json format
-        return response(props.id, undefined);
-      }
-      return response(props.id, undefined, _);
-    }
+    const normData = normalizeMetadata(data);
+    return response(props.id, normData);
   } else if (
     props.key == PLUGIN_SDK_EK_REQUEST_FETCH_NODE_MAIN_COMPONENT_META
   ) {
     const request: NodeMetaFetchRequest = props.data;
-    if (!request.id) {
-      throw `node id is required in order to perform meta fetch`;
-    }
     const node = figma.getNodeById(request.id);
-    let targetNode: SceneNode;
-    if (node.type == "INSTANCE") {
-      targetNode = node.mainComponent;
-    } else if (node.type == "COMPONENT") {
-      targetNode = node;
-    } else if (node.type == "COMPONENT_SET") {
-      targetNode = node;
-    } else {
-      throw `node ${node.id} of type ${node.type} is not supported for component meta manipulation.`;
-    }
+    let targetNode: SceneNode = getMaincomponentLike(node?.id);
     const data = targetNode.getSharedPluginData(request.namespace, request.key);
-    try {
-      const json = JSON.parse(data);
-      return response(props.id, json);
-    } catch (_) {
-      if (data.length == 0) {
-        // the data is not in a json format
-        return response(props.id, undefined);
-      }
-      return response(props.id, undefined, _);
-    }
+    const normData = normalizeMetadata(data);
+    return response(props.id, normData);
+  } else if (props.key == PUGIN_SDK_EK_REQUEST_UPDATE_MAIN_COMPONENT_META) {
+    const request: NodeMetaUpdateRequest = props.data;
+    const node = figma.getNodeById(request.id);
+    let targetNode: SceneNode = getMaincomponentLike(node?.id);
+    targetNode.setSharedPluginData(
+      request.namespace,
+      request.key,
+      normalizeSavingMetadata(request.value)
+    );
+    return response(props.id, true);
+    //
   } else if (props.key == PUGIN_SDK_EK_REQUEST_UPDATE_NODE_META) {
     const request: NodeMetaUpdateRequest = props.data;
     figma
@@ -194,13 +178,47 @@ function handleMetaEvent(props: HanderProps) {
       .setSharedPluginData(
         request.namespace,
         request.key,
-        typeof request.value == "object"
-          ? JSON.stringify(request.value)
-          : request.value
+        normalizeSavingMetadata(request.value)
       );
     return response(props.id, true);
   }
 }
+
+function normalizeSavingMetadata(data: string | object) {
+  return typeof data == "object" ? JSON.stringify(data) : data;
+}
+
+function normalizeMetadata(data: string): object | string {
+  if (data == undefined || data.length == 0) {
+    return undefined;
+  }
+
+  try {
+    const json = JSON.parse(data);
+    return json;
+  } catch (_) {
+    return data;
+  }
+}
+
+function getMaincomponentLike(nodeID: string): SceneNode {
+  if (!nodeID) {
+    throw `node id is required in order to perform meta fetch`;
+  }
+  const node = figma.getNodeById(nodeID);
+  let targetNode: SceneNode;
+  if (node.type == "INSTANCE") {
+    targetNode = node.mainComponent;
+  } else if (node.type == "COMPONENT") {
+    targetNode = node;
+  } else if (node.type == "COMPONENT_SET") {
+    targetNode = node;
+  } else {
+    throw `node ${node.id} of type ${node.type} is not supported for component meta manipulation.`;
+  }
+  return targetNode;
+}
+
 function handleRemoteApiEvent(props: HanderProps) {}
 
 export function handleNotify(props: HanderProps<NotifyRequest>) {

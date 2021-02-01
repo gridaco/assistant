@@ -63,7 +63,7 @@ export default function ComponentViewScreen() {
     };
     setData(newData);
 
-    PluginSdk.updateMetadata({
+    PluginSdk.updateMainComponentMetadata({
       id: selectednode,
       namespace: ASSISTANT_PLUGIN_NAMESPACE,
       key: "component-meta-data",

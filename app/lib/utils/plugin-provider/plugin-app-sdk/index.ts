@@ -8,6 +8,7 @@ import {
   PLUGIN_SDK_NS_DRAG_AND_DROP,
   PLUGIN_SDK_NS_META_API,
   PLUGIN_SDK_NS_NOTIFY_API,
+  PUGIN_SDK_EK_REQUEST_UPDATE_MAIN_COMPONENT_META,
   PUGIN_SDK_EK_REQUEST_UPDATE_NODE_META,
   TransportPluginEvent,
 } from "../events";
@@ -70,6 +71,14 @@ export class PluginSdk {
     return this.request({
       namespace: PLUGIN_SDK_NS_META_API,
       key: PLUGIN_SDK_EK_REQUEST_FETCH_NODE_MAIN_COMPONENT_META,
+      data: request,
+    });
+  }
+
+  static async updateMainComponentMetadata(request: NodeMetaUpdateRequest) {
+    return this.request({
+      namespace: PLUGIN_SDK_NS_META_API,
+      key: PUGIN_SDK_EK_REQUEST_UPDATE_MAIN_COMPONENT_META,
       data: request,
     });
   }

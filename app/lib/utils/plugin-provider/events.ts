@@ -20,6 +20,8 @@ export const PLUGIN_SDK_EK_REQUEST_FETCH_NODE_MAIN_COMPONENT_META =
   "assistant/tools/node-meta-editor/fetch/main-component";
 export const PUGIN_SDK_EK_REQUEST_UPDATE_NODE_META =
   "assistant/tools/node-meta-editor/update";
+export const PUGIN_SDK_EK_REQUEST_UPDATE_MAIN_COMPONENT_META =
+  "assistant/tools/node-meta-editor/update/main-component";
 // endregion meta
 
 // region notify
@@ -29,10 +31,9 @@ export const PLUGIN_SDK_EK_NOTIFY_COPIED = "notify-copied";
 
 // endregion notify
 
-
 // region canvas
 export const PLUGIN_SDK_NS_DRAG_AND_DROP = `${PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/drag-and-drop`;
-export const PLUGIN_SDK_EK_DRAG_AND_DROPPED = `dropped on canvas`
+export const PLUGIN_SDK_EK_DRAG_AND_DROPPED = `dropped on canvas`;
 // endregion canvas
 
 export interface BasePluginEvent<T = any> {
