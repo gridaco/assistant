@@ -1,10 +1,14 @@
+import { EK_ICON_DRAG_AND_DROPPED } from "../../../constants";
 import { NS_FILE_ROOT_METADATA } from "../../../constants/ns.constant";
 import {
   PLUGIN_SDK_EK_BATCH_META_UPDATE,
+  PLUGIN_SDK_EK_DRAG_AND_DROPPED,
+  PLUGIN_SDK_EK_REQUEST_FETCH_NODE_MAIN_COMPONENT_META,
   PLUGIN_SDK_EK_REQUEST_FETCH_NODE_META,
   PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META,
   PLUGIN_SDK_EK_SIMPLE_NOTIFY,
   PLUGIN_SDK_NAMESPACE_BASE_TOKEN,
+  PLUGIN_SDK_NS_DRAG_AND_DROP,
   PLUGIN_SDK_NS_META_API,
   PLUGIN_SDK_NS_NOTIFY_API,
   PLUGIN_SDK_NS_REMOTE_API,
@@ -12,6 +16,10 @@ import {
   PUGIN_SDK_EK_REQUEST_UPDATE_NODE_META,
   TransportPluginEvent,
 } from "../events";
+import {
+  DragAndDropHandlerCallback,
+  DragAndDropOnCanvasRequest,
+} from "../interfaces/dragdrop/dragdrop.requests";
 import {
   BatchMetaFetchRequest,
   BatchMetaUpdateRequest,
@@ -47,6 +55,27 @@ export class PluginSdkServer {
       // sync();
     }
   }
+
+  private static dragAndDropHandlers = new Map<
+    string,
+    DragAndDropHandlerCallback
+  >();
+
+  static registerDragAndDropHandler(
+    key: string,
+    handler: DragAndDropHandlerCallback
+  ) {
+    this.dragAndDropHandlers.set(key, handler);
+  }
+
+  static handleDragAndDropEvent(key: string, data: any, position: { x; y }) {
+    if (!PluginSdkServer.dragAndDropHandlers.has(key)) {
+      throw `no handler found for event ${key} on drag and drop handler`;
+    }
+
+    PluginSdkServer.dragAndDropHandlers.get(key)(data, position);
+  }
+
   static handle(event: TransportPluginEvent): boolean {
     console.info(
       `start handling event from PluginSdkServer with event - `,
@@ -88,6 +117,13 @@ export class PluginSdkServer {
       return true;
     }
 
+    // drag & drop
+    else if (PLUGIN_SDK_NS_DRAG_AND_DROP) {
+      if (PLUGIN_SDK_EK_DRAG_AND_DROPPED) {
+        handleDragDropped(handerProps);
+      }
+    }
+
     return true;
   }
 }
@@ -107,9 +143,41 @@ function handleMetaEvent(props: HanderProps) {
     response(props.id, fetched);
   } else if (props.key == PLUGIN_SDK_EK_REQUEST_FETCH_NODE_META) {
     const request: NodeMetaFetchRequest = props.data;
+    if (!request.id) {
+      throw `node id is required in order to perform meta fetch`;
+    }
     const data = figma
       .getNodeById(request.id)
       .getSharedPluginData(request.namespace, request.key);
+    try {
+      const json = JSON.parse(data);
+      return response(props.id, json);
+    } catch (_) {
+      if (data.length == 0) {
+        // the data is not in a json format
+        return response(props.id, undefined);
+      }
+      return response(props.id, undefined, _);
+    }
+  } else if (
+    props.key == PLUGIN_SDK_EK_REQUEST_FETCH_NODE_MAIN_COMPONENT_META
+  ) {
+    const request: NodeMetaFetchRequest = props.data;
+    if (!request.id) {
+      throw `node id is required in order to perform meta fetch`;
+    }
+    const node = figma.getNodeById(request.id);
+    let targetNode: SceneNode;
+    if (node.type == "INSTANCE") {
+      targetNode = node.mainComponent;
+    } else if (node.type == "COMPONENT") {
+      targetNode = node;
+    } else if (node.type == "COMPONENT_SET") {
+      targetNode = node;
+    } else {
+      throw `node ${node.id} of type ${node.type} is not supported for component meta manipulation.`;
+    }
+    const data = targetNode.getSharedPluginData(request.namespace, request.key);
     try {
       const json = JSON.parse(data);
       return response(props.id, json);
@@ -150,7 +218,9 @@ function response<T = any>(
   data: T,
   error: Error | undefined = undefined
 ): boolean {
-  console.info(`responding to request ${requestId} with data ${data} and error ${error}`)
+  console.info(
+    `responding to request ${requestId} with data ${data} and error ${error}`
+  );
 
   figma.ui.postMessage(<TransportPluginEvent>{
     id: requestId,
@@ -168,3 +238,42 @@ function response<T = any>(
  * @param withEvent
  */
 function sync(withEvent: TransportPluginEvent) {}
+
+function handleDragDropped(props: HanderProps<DragAndDropOnCanvasRequest>) {
+  console.log("handling drop event", props.data);
+  const {
+    dropPosition,
+    windowSize,
+    offset,
+    itemSize,
+    eventKey,
+    customData,
+  } = props.data;
+
+  // Getting the position and size of the visible area of the canvas.
+  const bounds = figma.viewport.bounds;
+
+  // Getting the zoom level
+  const zoom = figma.viewport.zoom;
+
+  // There are two states of the Figma interface: With or without the UI (toolbar + left and right panes)
+  // The calculations would be slightly different, depending on whether the UI is shown.
+  // So to determine if the UI is shown, we'll be comparing the bounds to the window's width.
+  // Math.round is used here because sometimes bounds.width * zoom may return a floating point number very close but not exactly the window width.
+  const hasUI = Math.round(bounds.width * zoom) !== windowSize.width;
+
+  // Since the left pane is resizable, we need to get its width by subtracting the right pane and the canvas width from the window width.
+  const leftPaneWidth = windowSize.width - bounds.width * zoom - 240;
+
+  // Getting the position of the cursor relative to the top-left corner of the canvas.
+  const xFromCanvas = hasUI
+    ? dropPosition.clientX - leftPaneWidth
+    : dropPosition.clientX;
+  const yFromCanvas = hasUI ? dropPosition.clientY - 40 : dropPosition.clientY;
+
+  // The canvas position of the drop point can be calculated using the following:
+  const x = bounds.x + xFromCanvas / zoom - offset.x;
+  const y = bounds.y + yFromCanvas / zoom - offset.y;
+
+  PluginSdkServer.handleDragAndDropEvent(eventKey, customData, { x: x, y: y });
+}

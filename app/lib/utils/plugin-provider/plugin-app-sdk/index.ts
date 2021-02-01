@@ -1,8 +1,11 @@
 import {
   BasePluginEvent,
+  PLUGIN_SDK_EK_DRAG_AND_DROPPED,
+  PLUGIN_SDK_EK_REQUEST_FETCH_NODE_MAIN_COMPONENT_META,
   PLUGIN_SDK_EK_REQUEST_FETCH_NODE_META,
   PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META,
   PLUGIN_SDK_EK_SIMPLE_NOTIFY,
+  PLUGIN_SDK_NS_DRAG_AND_DROP,
   PLUGIN_SDK_NS_META_API,
   PLUGIN_SDK_NS_NOTIFY_API,
   PUGIN_SDK_EK_REQUEST_UPDATE_NODE_META,
@@ -15,6 +18,7 @@ import {
 } from "../interfaces/meta/meta.requests";
 import { NotifyRequest } from "../interfaces/notify/notify.requests";
 import { nanoid } from "nanoid";
+import { DragAndDropOnCanvasRequest } from "../interfaces/dragdrop/dragdrop.requests";
 
 export class PluginSdk {
   static window: Window;
@@ -62,6 +66,14 @@ export class PluginSdk {
     });
   }
 
+  static async fetchMainComponentMetadata(request: NodeMetaFetchRequest) {
+    return this.request({
+      namespace: PLUGIN_SDK_NS_META_API,
+      key: PLUGIN_SDK_EK_REQUEST_FETCH_NODE_MAIN_COMPONENT_META,
+      data: request,
+    });
+  }
+
   static fetchRootMetadata(key: string): Promise<any> {
     const data: BatchMetaFetchRequest = {
       key: key,
@@ -91,6 +103,16 @@ export class PluginSdk {
     this.notify("Copied to clipboard", 1);
   }
   // endregion user feedbacks
+
+  // region canvas
+  static async dropOnCanvas(data: DragAndDropOnCanvasRequest) {
+    return await this.request({
+      namespace: PLUGIN_SDK_NS_DRAG_AND_DROP,
+      key: PLUGIN_SDK_EK_DRAG_AND_DROPPED,
+      data: data,
+    });
+  }
+  // endregion canvas
 
   static postMessage(event: TransportPluginEvent) {
     PluginSdk.window.postMessage(
@@ -144,8 +166,10 @@ export class PluginSdk {
 
   private static handleResponse(event: TransportPluginEvent) {
     const promise = this.promises.get(event.id);
-    if (!promise){
-      throw `no promise found to handle from event que with id ${event.id} current promises are.. ${[...this.promises.keys()]}`;
+    if (!promise) {
+      throw `no promise found to handle from event que with id ${
+        event.id
+      } current promises are.. ${[...this.promises.keys()]}`;
     }
 
     if (event.error) {

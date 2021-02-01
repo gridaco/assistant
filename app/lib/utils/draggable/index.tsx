@@ -1,5 +1,6 @@
 import React from "react";
-import { EK_DRAG_AND_DROPPED } from "../../constants/ek.constant";
+import { DragAndDropOnCanvasRequest } from "../plugin-provider/interfaces/dragdrop/dragdrop.requests";
+import { PluginSdk } from "../plugin-provider/plugin-app-sdk";
 
 export function Draggable(props: {
   customData?: object;
@@ -61,7 +62,7 @@ export function Draggable(props: {
     }
 
     function emit(customData: any) {
-      const message = {
+      const message: DragAndDropOnCanvasRequest = {
         dropPosition,
         windowSize,
         offset,
@@ -69,15 +70,8 @@ export function Draggable(props: {
         eventKey: props.eventKey,
         customData: customData,
       };
-      window.parent.postMessage(
-        {
-          pluginMessage: {
-            type: EK_DRAG_AND_DROPPED,
-            data: message,
-          },
-        },
-        "*"
-      );
+
+      PluginSdk.dropOnCanvas(message);
     }
   };
 
