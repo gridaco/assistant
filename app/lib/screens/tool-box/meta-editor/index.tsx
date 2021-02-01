@@ -1,18 +1,19 @@
-import React, { useState } from "react"
-import Typography from "@material-ui/core/Typography"
-import TextField from "@material-ui/core/TextField"
-import Button from "@material-ui/core/Button"
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from "@material-ui/core/Switch"
-import { MetaDataRepository, MetaDataRepositoryFactory } from "../../../repositories/metadata";
+import React, { useEffect, useState } from "react";
+import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch from "@material-ui/core/Switch";
+import {
+  MetaDataRepository,
+  MetaDataRepositoryFactory,
+} from "../../../repositories/metadata";
 interface MetaDataFieldDef {
-    name: string
-    type: MetaDataFieldType
+  name: string;
+  type: MetaDataFieldType;
 }
 
-type MetaDataFieldType = "text" | "url"
-
+type MetaDataFieldType = "text" | "url";
 
 /**
  * this is a data structure of the meta data to be linked with a common component in existing design system.
@@ -34,172 +35,210 @@ type MetaDataFieldType = "text" | "url"
 // gitUrl?: string,
 // name?: string
 const DefaultComponentMetaDataSchema: ReadonlyArray<MetaDataFieldDef> = [
-    {
-        name: "name",
-        type: "text"
-    },
-    {
-        name: "storybook",
-        type: "text"
-    },
-    {
-        name: "docsUrl",
-        type: "url"
-    },
-    {
-        name: "gitUrl",
-        type: "url"
-    },
-    {
-        name: "codeSnippet",
-        type: "text"
-    }
-]
-
+  {
+    name: "name",
+    type: "text",
+  },
+  {
+    name: "storybook",
+    type: "text",
+  },
+  {
+    name: "docsUrl",
+    type: "url",
+  },
+  {
+    name: "gitUrl",
+    type: "url",
+  },
+  {
+    name: "codeSnippet",
+    type: "text",
+  },
+];
 
 export function MetaEditorScreen() {
+  const [selectednode, setselectednode] = useState<string>(undefined);
+  useEffect(() => {
+    window.addEventListener("message", (ev) => {
+      const message = ev.data.pluginMessage;
+      if (message?.type == "selectionchange") {
+        const node = message.data;
+        console.log("node", node);
+        setselectednode(node.id);
+      }
+    });
+  }, []);
 
-    const [selectednode, setselectednode] = useState<string>(undefined)
+  const [editable, seteditable] = useState<boolean>(false);
 
-    window.addEventListener('message', (ev) => {
-        const message = ev.data.pluginMessage
-        if (message?.type == 'selectionchange') {
-            const node = message.data
-            console.log('node', node)
-            setselectednode(node.id)
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    seteditable(event.target.checked);
+  };
+
+  if (!selectednode) {
+    return <EmptyState />;
+  }
+
+  return (
+    <div key={selectednode}>
+      <FormControlLabel
+        control={
+          <Switch
+            checked={editable}
+            onChange={handleChange}
+            name="editable"
+            color="primary"
+          />
         }
-    })
-
-
-    const [editable, seteditable] = useState<boolean>(false)
-
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        seteditable(event.target.checked)
-    };
-
-    if (!selectednode) {
-        return <EmptyState />
-    }
-
-    return <>
-        <FormControlLabel
-            control={
-                <Switch
-                    checked={editable}
-                    onChange={handleChange}
-                    name="editable"
-                    color="primary"
-                />
-            }
-            label="editable"
-        />
-        <MetaDataDisplayForm editable={editable} type="component" id={selectednode} />
-    </>
+        label="editable"
+      />
+      <MetaDataDisplayForm
+        editable={editable}
+        type="component"
+        id={selectednode}
+      />
+    </div>
+  );
 }
 
 function EmptyState() {
-    return <p>
-        no layer / component / instance is selected.
+  return (
+    <p>
+      no layer / component / instance is selected.
+      <br />
+      When selecting instance, it won't add data to the master component. you
+      have to manullly select master component in order to add meta to the
+      master component. (this also works for a variant)
     </p>
+  );
 }
 
-
 function MetaDataDisplayForm(props: {
-    editable: boolean,
-    id: string,
-    type: "component" | "instance" | "layer"
+  editable: boolean;
+  id: string;
+  type: "component" | "instance" | "layer";
 }) {
-    let repo: MetaDataRepository
-    let data;
+  let repo: MetaDataRepository;
+  repo = MetaDataRepositoryFactory.component(props.id);
+
+  const [data, setData] = useState({});
+
+  useEffect(() => {
     if (props.type == "component") {
-        repo = MetaDataRepositoryFactory.component(props.id)
-        data = repo.fetch()
-    } else {
-        throw 'neither than type:component is not supported yet.'
-    }
-
-    const handleSaveClick = () => {
-        repo.update(data)
-        console.log('value updated', data)
-    }
-
-
-    const schema = DefaultComponentMetaDataSchema
-    if (props.editable) {
-        return <>
-            {
-                schema.map(e => {
-                    return <div key={e.name} style={{
-                        padding: 16
-                    }}>
-                        <MetaDataEditableField type={e.type} initial={undefined} name={e.name} onUpdate={(s: string) => {
-                            data[e.name] = s
-                        }} />
-                    </div>
-                })
-            }
-            <Button variant='outlined' onClick={handleSaveClick}>Save</Button>
-        </>
-    }
-
-    return <>
-        {
-            schema.map((e) => {
-                return <div key={e.name} style={{
-                    padding: 16
-                }}>
-                    <MetaDataDisplayField type={e.type} value={undefined} name={e.name} />
-                </div>
-            })
+      // fetch the data
+      repo.fetch().then((d) => {
+        if (d) {
+          setData(d);
         }
+      });
+    } else {
+      throw "neither than type:component is not supported yet.";
+    }
+  }, []);
+
+  const handleSaveClick = () => {
+    repo.update(data);
+    setData(data);
+    console.log("value updated", data);
+  };
+
+  const schema = DefaultComponentMetaDataSchema;
+  if (props.editable) {
+    return (
+      <>
+        {schema.map((e) => {
+          return (
+            <div
+              key={e.name}
+              style={{
+                padding: 16,
+              }}
+            >
+              <MetaDataEditableField
+                type={e.type}
+                initial={data[e.name]}
+                name={e.name}
+                onUpdate={(s: string) => {
+                  data[e.name] = s;
+                }}
+              />
+            </div>
+          );
+        })}
+        <Button variant="outlined" onClick={handleSaveClick}>
+          Save
+        </Button>
+      </>
+    );
+  }
+
+  return (
+    <>
+      {schema.map((e) => {
+        return (
+          <div
+            key={e.name}
+            style={{
+              padding: 16,
+            }}
+          >
+            <MetaDataDisplayField
+              type={e.type}
+              value={data[e.name]}
+              name={e.name}
+            />
+          </div>
+        );
+      })}
     </>
+  );
 }
 
 function MetaDataDisplayField(props: {
-    name: string
-    value: string
-    type: MetaDataFieldType
+  name: string;
+  value: string;
+  type: MetaDataFieldType;
 }) {
+  function drawValueDisplay() {
+    switch (props.type) {
+      case "text":
+        return <Typography variant="caption">{props.value}</Typography>;
 
-    function drawValueDisplay() {
-        switch (props.type) {
-            case "text":
-                return <Typography>
-                    {props.value}
-                </Typography>
-
-            case "url":
-                return <Button onClick={() => open(props.value)}>
-                    {props.value}
-                </Button>
-        }
+      case "url":
+        return <Button onClick={() => open(props.value)}>{props.value}</Button>;
     }
+  }
 
-    const valueDisplay = drawValueDisplay()
+  const valueDisplay = drawValueDisplay();
 
-    return <>
-        <Typography>
-            {props.name}
-        </Typography>
-        {valueDisplay}
+  return (
+    <>
+      <Typography>{props.name}</Typography>
+      {valueDisplay}
     </>
+  );
 }
 
 function MetaDataEditableField(props: {
-    initial: string
-    name: string
-    type: MetaDataFieldType
-    onUpdate: (string) => void
+  initial: string;
+  name: string;
+  type: MetaDataFieldType;
+  onUpdate: (string) => void;
 }) {
-    const handleOnChange = (e: any) => {
-        const newvalue = e.target.value as string
-        props.onUpdate(newvalue)
-    }
+  const handleOnChange = (e: any) => {
+    const newvalue = e.target.value as string;
+    props.onUpdate(newvalue);
+  };
 
-    return <>
-        <Typography>
-            {props.name}
-        </Typography>
-        <TextField fullWidth defaultValue={props.initial} onChange={handleOnChange} />
+  return (
+    <>
+      <Typography>{props.name}</Typography>
+      <TextField
+        fullWidth
+        defaultValue={props.initial}
+        onChange={handleOnChange}
+      />
     </>
+  );
 }

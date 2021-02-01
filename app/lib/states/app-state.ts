@@ -10,6 +10,7 @@ export enum WorkspaceMode {
 
 export enum WorkScreen {
     code = 'code',
+    component = 'component',
     icon = 'icon',
     lint = 'lint',
     g11n = 'g11n',

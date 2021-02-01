@@ -11,11 +11,12 @@ import "./highlight.css";
 // https://github.com/FormidableLabs/prism-react-renderer/issues/22#issuecomment-553042928
 import Prism from "prism-react-renderer/prism";
 import dartLang from "refractor/lang/dart";
-import { EK_COPIED } from "../constants/ek.constant";
 import { quickLook } from "../quicklook";
 import { Widget } from "@bridged.xyz/flutter-builder/lib";
-import { notify } from "@bridged.xyz/design-sdk/lib/figma";
 import Button from "@material-ui/core/Button";
+import { PluginSdk } from "../utils/plugin-provider/plugin-app-sdk";
+import { IconButton } from "@material-ui/core";
+import { Add } from "@material-ui/icons";
 dartLang(Prism);
 // endregion
 
@@ -25,12 +26,13 @@ interface State {
 
 interface Props {
   language: Language | any;
-  app: string;
-  widget: Widget;
   code: string;
+  app?: string;
+  widget?: Widget;
+  codeActions?: Array<JSX.Element>;
 }
 
-export default class Highlight extends React.Component<Props, State> {
+export default class CodeBox extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -40,7 +42,7 @@ export default class Highlight extends React.Component<Props, State> {
 
   onCopyClicked = (e) => {
     copy(this.props.code);
-    parent.postMessage({ pluginMessage: { type: EK_COPIED } }, "*");
+    PluginSdk.notifyCopied();
   };
 
   onQuickLookClicked = (e) => {
@@ -56,12 +58,12 @@ export default class Highlight extends React.Component<Props, State> {
     quickLook("quicklook", this.props.app)
       .then((r) => {
         setLoadingState(false);
-        notify(parent, "quick look ready !");
+        PluginSdk.notify("quick look ready !");
       })
       .catch((e) => {
         console.error(e);
         setLoadingState(false);
-        notify(parent, "compile failed. view console for details.", 2);
+        PluginSdk.notify("compile failed. view console for details.", 2);
       });
   };
 
@@ -69,6 +71,10 @@ export default class Highlight extends React.Component<Props, State> {
     return (
       <>
         <code>
+          {this.props.codeActions &&
+            this.props.codeActions.map((e) => {
+              return e;
+            })}
           <PrismHighlight
             {...defaultProps}
             Prism={Prism}
@@ -93,13 +99,15 @@ export default class Highlight extends React.Component<Props, State> {
           <Button className="btn-copy-code" onClick={this.onCopyClicked}>
             copy code
           </Button>
-          <Button
-            className="btn-quick-look"
-            disabled={this.state.isLaunchingConsole}
-            onClick={this.onQuickLookClicked}
-          >
-            {this.state.isLaunchingConsole ? "launching.." : "quick look"}
-          </Button>
+          {this.props.app && (
+            <Button
+              className="btn-quick-look"
+              disabled={this.state.isLaunchingConsole}
+              onClick={this.onQuickLookClicked}
+            >
+              {this.state.isLaunchingConsole ? "launching.." : "quick look"}
+            </Button>
+          )}
         </div>
       </>
     );
