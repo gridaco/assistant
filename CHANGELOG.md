@@ -25,6 +25,12 @@
 - [Flutter] Poligon Node support with XImage (svg)
 - [Lint] Primal naming & grouping linting for better code export quality. this is tracked sperately on [lint](https://github.com/bridgedxyz/lint)
 
+## [2021.0.1f1.1] - 2021-2-7
+> cors issue hot fix. cors anywhere usage has been replaced with cors.bridged.cc
+
+- [fix] cors related requests back online
+
+
 ## [2021.0.1f1] - 2021-1-31
 
 > Update focused on UI improvement of icon list, Ant Icon, not just Material Icon, and search function has been changed in detail for Icon.
