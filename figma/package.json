@@ -18,7 +18,7 @@
     "@bridged.xyz/web-builder": "0.0.1",
     "core": "^0.0.1",
     "app": "^0.0.1",
-    "@reflect.bridged.xyz/core": "0.0.1",
+    "@reflect.bridged.xyz/core": "0.0.2-rc.4.local",
     "@reflect.bridged.xyz/detection": "0.1.0",
     "@reflect.bridged.xyz/linter": "0.0.3",
     "@reflect.bridged.xyz/ui-generator": "0.0.1",

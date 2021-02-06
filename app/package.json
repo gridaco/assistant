@@ -12,7 +12,7 @@
         "@bridged.xyz/flutter-builder": "^1.23.0-7.0.pre.40",
         "@material-ui/core": "^4.11.0",
         "@material-ui/icons": "^4.11.2",
-        "@reflect.bridged.xyz/core": "^0.0.1",
+        "@reflect.bridged.xyz/core": "0.0.2-rc.4.local",
         "@reflect.bridged.xyz/linter": "^0.0.3",
         "copy-to-clipboard": "^3.3.1",
         "nanoid": "^3.1.20",
