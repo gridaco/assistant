@@ -1986,6 +1986,11 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
 
+"@reflect.bridged.xyz/core@0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@reflect.bridged.xyz/core/-/core-0.0.1.tgz#52bd231b8c2ca7aeb56c89ff4e4059a17b6c4773"
+  integrity sha512-whsIRLRRLL7+DpswgD3DD23UYOn/2Wvs1zJrCELCHDDJegDHWPwEWG+GyAd13m6MzNhjpgT/qnpPkJWSkRapQg==
+
 "@reflect.bridged.xyz/linter@0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@reflect.bridged.xyz/linter/-/linter-0.0.1.tgz#c529d01f97076fd1406380fda31375e67e15b212"
