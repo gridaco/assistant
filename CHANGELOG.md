@@ -14,6 +14,7 @@
 > implemented, and next-releasing features
 
 - [toolbox/meta-editor] Meta data editor of root (file)'s metadata single property editor available for developer experience. (you can manually set files property to mock or give context to assistant which this design system holds as a data. e.g. - uses-designsystem=material-design)
+- [linter/textstyles] `MissingTextStyleWarning` : New Linter added. this lints the design warning the plain text with no textstyle specified. [PR](https://github.com/bridgedxyz/assistant/pull/80)
 
 ### Will be added
 
@@ -26,10 +27,10 @@
 - [Lint] Primal naming & grouping linting for better code export quality. this is tracked sperately on [lint](https://github.com/bridgedxyz/lint)
 
 ## [2021.0.1f1.1] - 2021-2-7
+
 > cors issue hot fix. cors anywhere usage has been replaced with cors.bridged.cc
 
 - [fix] cors related requests back online
-
 
 ## [2021.0.1f1] - 2021-1-31
 
