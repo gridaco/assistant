@@ -1,6 +1,7 @@
 import * as React from "react";
 import { ToolboxScreen } from "../screens/tool-box";
 import firebase from "../firebase/firebase-init";
+import { initialize } from "../analytics"
 import "../app.css";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -165,6 +166,15 @@ export default function App() {
     );
   }
   // endregion init firebase
+
+  // region init GA
+  try{
+    initialize()
+  }catch(e){
+    console.warn("GA disabled", e)
+  }
+  // endregion init GA
+
 
   const [workspaceMode, setWorkspaceMode] = React.useState<WorkspaceMode>(
     WorkspaceMode.code
