@@ -1,9 +1,0 @@
-{
-    "name": "core",
-    "version": "0.0.1",
-    "dependencies": {
-        "@reflect.bridged.xyz/linter": "^0.0.3",
-        "@bridged.xyz/design-sdk": "^0.1.0",
-        "@bridged.xyz/flutter-builder": "^1.23.0-7.0.pre.40"
-    }
-}

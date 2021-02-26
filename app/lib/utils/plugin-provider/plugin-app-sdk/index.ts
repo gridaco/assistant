@@ -29,11 +29,13 @@ export class PluginSdk {
 
   // region general canvas api
   static get selectedNodes(): string {
+    throw "not implemented";
     return "";
   }
 
   static get selectedNode(): string {
     // TODO
+    throw "not implemented";
     return "";
   }
 
