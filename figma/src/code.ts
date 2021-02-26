@@ -1,4 +1,4 @@
-import { PluginSdkServer } from "app/lib/utils/plugin-provider/plugin-server";
+import { PluginSdkService } from "app/lib/utils/plugin-provider/plugin-service";
 import { convertIntoReflectNode } from "@bridged.xyz/design-sdk/lib/nodes/conversion";
 import { buildApp } from "core/lib/flutter";
 import { retrieveFlutterColors } from "core/lib/flutter/utils/fetch-colors";
@@ -206,7 +206,7 @@ figma.on("selectionchange", () => {
   }
 });
 
-PluginSdkServer.registerDragAndDropHandler(
+PluginSdkService.registerDragAndDropHandler(
   EK_ICON_DRAG_AND_DROPPED,
   (data, pos): Promise<any> => {
     createIcon(
@@ -225,7 +225,7 @@ PluginSdkServer.registerDragAndDropHandler(
 figma.ui.onmessage = async (msg) => {
   console.log("[event] figma plugin data received", msg);
 
-  const generalHandlingResult = PluginSdkServer.handle(msg);
+  const generalHandlingResult = PluginSdkService.handle(msg);
   // if event is handled by general event handler, no additional handling is required.
   if (generalHandlingResult) {
     return;

@@ -3,6 +3,7 @@ export const PLUGIN_SDK_NS_RESPONSE_ALL = "bridged/response/*";
 export const PLC_REMOTE_API_REQ = "pugin-consumer/remote-api/request";
 export const PLC_REMOTE_API_RES = "pugin-consumer/remote-api/response";
 export const PLUGIN_SDK_NS_REMOTE_API = `${PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/remote-api`;
+export const PLUGIN_SDK_NS_GENERAL_STATE_DATA = `${PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/general-state-data`;
 
 // region sync
 export const PLUGIN_SDK_NS_SYNC = `${PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/sync`;
@@ -46,6 +47,9 @@ export interface BasePluginEvent<T = any> {
   data: T;
 }
 
+/**
+ * An Event object interface to pass Plugin events from / to PluginService and PluginApp
+ */
 export interface TransportPluginEvent extends BasePluginEvent {
   origin: "app" | "server";
   type: "response" | "request";
