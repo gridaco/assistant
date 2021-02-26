@@ -1,3 +1,4 @@
+import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes";
 import { atom, GetRecoilValue, selector } from "recoil";
 
 const ATOM_KEY_CURRENT_NODE_SELECTION_PRIMARY =
@@ -12,12 +13,11 @@ export const currentlySelectedPrimaryNodeId = atom({
 });
 
 // current primary selected node
-export const currentlySelectedPrimaryNode = selector({
+export const currentlySelectedPrimaryNode = selector<ReflectSceneNode>({
   get: ({ get }) => {
     const id = get(currentlySelectedPrimaryNodeId);
     // TODO fetch node data via id
     throw "not implemeted";
-    return "";
   },
   key: SELECT_KEY_CURRENT_NODE_SELECTION_PRIMARY,
 });
