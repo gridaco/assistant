@@ -35,10 +35,10 @@ interface HanderProps<T = any> {
 }
 
 figma.on("selectionchange", () => {
-  PluginSdkServer.onSelectionChange();
+  PluginSdkService.onSelectionChange();
 });
 
-export class PluginSdkServer {
+export class PluginSdkService {
   static onSelectionChange() {
     const selection = figma.currentPage.selection;
     if (selection.length == 0) {
@@ -69,11 +69,11 @@ export class PluginSdkServer {
   }
 
   static handleDragAndDropEvent(key: string, data: any, position: { x; y }) {
-    if (!PluginSdkServer.dragAndDropHandlers.has(key)) {
+    if (!PluginSdkService.dragAndDropHandlers.has(key)) {
       throw `no handler found for event ${key} on drag and drop handler`;
     }
 
-    PluginSdkServer.dragAndDropHandlers.get(key)(data, position);
+    PluginSdkService.dragAndDropHandlers.get(key)(data, position);
   }
 
   static handle(event: TransportPluginEvent): boolean {
@@ -292,5 +292,5 @@ function handleDragDropped(props: HanderProps<DragAndDropOnCanvasRequest>) {
   const x = bounds.x + xFromCanvas / zoom - offset.x;
   const y = bounds.y + yFromCanvas / zoom - offset.y;
 
-  PluginSdkServer.handleDragAndDropEvent(eventKey, customData, { x: x, y: y });
+  PluginSdkService.handleDragAndDropEvent(eventKey, customData, { x: x, y: y });
 }
