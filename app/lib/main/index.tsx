@@ -1,27 +1,35 @@
 import * as React from "react";
-import { ToolboxScreen } from "../screens/tool-box";
 import firebase from "../firebase/firebase-init";
-import { initialize } from "../analytics"
+import { initialize } from "../analytics";
 import "../app.css";
+
+// UI COMPS
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import { CodeScreen } from "../screens/code-screen";
-import { LintScreen } from "../screens/lint-screen";
-import { IconsScreen } from "../screens/icons-screen";
-import { EK_SET_APP_MODE } from "../constants/ek.constant";
-import { GlobalizationScreen } from "../screens/g11n-screen";
 import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
+
+import { EK_SET_APP_MODE } from "../constants/ek.constant";
 import { ReleaseChannel, WorkScreen, WorkspaceMode } from "../states/app-state";
+import { PluginApp } from "../utils/plugin-provider/pugin-app";
+import BatchMetaEditor from "../screens/tool-box/batch-meta-editor";
+import { Switch, Route, Link, BrowserRouter, Redirect } from "react-router-dom";
+
+// region screens import
 import { FontReplacerScreen } from "../screens/tool-box/font-replacer";
 import { ButtonMakerScreen } from "../screens/design/button-maker-screen";
-import { PluginApp } from "../utils/plugin-provider/pugin-app";
-import { MetaEditorScreen } from "../screens/tool-box/meta-editor";
-import BatchMetaEditor from "../screens/tool-box/batch-meta-editor";
 import ComponentViewScreen from "../screens/component-view";
-import { Switch, Route, Link, BrowserRouter, Redirect } from "react-router-dom";
+import LayoutViewScreen from "../screens/layout-view";
+import { LintScreen } from "../screens/lint-screen";
+import { GlobalizationScreen } from "../screens/g11n-screen";
+import { IconsScreen } from "../screens/icons-screen";
+import { CodeScreen } from "../screens/code-screen";
+import { ToolboxScreen } from "../screens/tool-box";
+import { MetaEditorScreen } from "../screens/tool-box/meta-editor";
+
+// endregion screens import
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -58,6 +66,8 @@ function workScreenToName(appMode: WorkScreen): string {
       return "code";
     case WorkScreen.component:
       return "component";
+    case WorkScreen.layout:
+      return "layout";
     case WorkScreen.dev:
       return "tools";
     case WorkScreen.icon:
@@ -101,6 +111,7 @@ function worspaceModeToName(workspaceMode: WorkspaceMode): string {
 const SCREEN_VISIBILITY_PREFERENCE: Map<WorkScreen, ReleaseChannel> = new Map([
   [WorkScreen.code, "release"],
   [WorkScreen.component, "release"],
+  [WorkScreen.layout, "beta"],
   [WorkScreen.icon, "release"],
   [WorkScreen.lint, "release"],
   [WorkScreen.g11n, "beta"],
@@ -119,15 +130,12 @@ function getWorkspaceTabLayout(workspaceMode: WorkspaceMode): TabLayout {
         return [
           WorkScreen.code,
           WorkScreen.component,
+          WorkScreen.layout,
           WorkScreen.lint,
           WorkScreen.slot,
         ];
       case WorkspaceMode.design:
-        return [
-          WorkScreen.icon,
-          WorkScreen.lint,
-          WorkScreen.desing_button_maker,
-        ];
+        return [WorkScreen.icon, WorkScreen.layout, WorkScreen.lint];
       case WorkspaceMode.content:
         return [WorkScreen.g11n, WorkScreen.lint];
       case WorkspaceMode.settings:
@@ -135,6 +143,7 @@ function getWorkspaceTabLayout(workspaceMode: WorkspaceMode): TabLayout {
       case WorkspaceMode.toolbox:
         return [
           WorkScreen.tool_font_replacer,
+          WorkScreen.desing_button_maker,
           WorkScreen.tool_meta_editor,
           WorkScreen.tool_batch_meta_editor,
         ];
@@ -168,13 +177,12 @@ export default function App() {
   // endregion init firebase
 
   // region init GA
-  try{
-    initialize()
-  }catch(e){
-    console.warn("GA disabled", e)
+  try {
+    initialize();
+  } catch (e) {
+    console.warn("GA disabled", e);
   }
   // endregion init GA
-
 
   const [workspaceMode, setWorkspaceMode] = React.useState<WorkspaceMode>(
     WorkspaceMode.code
@@ -264,6 +272,12 @@ export default function App() {
               return (
                 <TabPanel key={i} value={tabIndex} index={i}>
                   <ComponentViewScreen />
+                </TabPanel>
+              );
+            case WorkScreen.layout:
+              return (
+                <TabPanel key={i} value={tabIndex} index={i}>
+                  <LayoutViewScreen />
                 </TabPanel>
               );
             case WorkScreen.icon:
