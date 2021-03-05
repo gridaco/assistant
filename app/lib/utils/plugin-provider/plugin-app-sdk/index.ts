@@ -20,6 +20,7 @@ import {
 import { NotifyRequest } from "../interfaces/notify/notify.requests";
 import { nanoid } from "nanoid";
 import { DragAndDropOnCanvasRequest } from "../interfaces/dragdrop/dragdrop.requests";
+import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes";
 
 export class PluginSdk {
   static window: Window;
@@ -28,15 +29,26 @@ export class PluginSdk {
   }
 
   // region general canvas api
-  static get selectedNodes(): string {
+  static get selectedNodeIds(): readonly string[] {
     throw "not implemented";
-    return "";
+    return [];
   }
 
-  static get selectedNode(): string {
+  static get selectedNodes(): readonly ReflectSceneNode[] {
+    throw "not implemented";
+    return [];
+  }
+
+  static get selectedNodeId(): string {
     // TODO
     throw "not implemented";
-    return "";
+    return undefined;
+  }
+
+  static get selectedNode(): ReflectSceneNode {
+    // TODO
+    throw "not implemented";
+    return undefined;
   }
 
   // enderegion general canvas api

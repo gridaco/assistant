@@ -1,7 +1,11 @@
-import { PluginSdkServer } from "app/lib/utils/plugin-provider/plugin-server";
+import { PluginSdkService } from "app/lib/utils/plugin-provider/plugin-service";
 import { convertIntoReflectNode } from "@bridged.xyz/design-sdk/lib/nodes/conversion";
 import { buildApp } from "core/lib/flutter";
 import { retrieveFlutterColors } from "core/lib/flutter/utils/fetch-colors";
+import {
+  analyzeSelection,
+  SelectionAnalysis,
+} from "app/lib/utils/plugin-provider/pugin-app/utils";
 import {
   hideAllExcept,
   hideAllOnly,
@@ -48,8 +52,6 @@ async function showUI() {
   }
   figma.showUI(__html__, { width: width, height: height });
 }
-
-showUI();
 
 function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -169,44 +171,39 @@ async function runon(node: SceneNode) {
     data: retrieveFlutterColors([convertedSelection]),
   });
 }
-
 figma.on("selectionchange", () => {
+  // clear the console for better debugging
   console.clear();
   console.warn("log cleared. optimized for new build");
   console.log("selection", figma.currentPage.selection);
 
-  const selectionCount = figma.currentPage.selection.length;
-
-  // ignore when nothing was selected
-  if (selectionCount === 0) {
-    figma.ui.postMessage({
-      type: "empty",
-    });
-    return;
-  }
-
-  // force to single selection
-  // return false or raise error if more than one node is selected.
-  if (selectionCount >= 2) {
-    figma.notify("only single selection is supported", {
-      timeout: 1.5,
-    });
-    return false;
-  }
-
-  if (selectionCount === 1) {
-    const target = figma.currentPage.selection[0];
-    figma.ui.postMessage({
-      type: "selectionchange",
-      data: target,
-    });
-
-    runon(target);
-    return;
+  const selectionType = analyzeSelection(figma.currentPage.selection);
+  switch (selectionType) {
+    case SelectionAnalysis.empty:
+      // ignore when nothing was selected
+      figma.ui.postMessage({
+        type: "empty",
+      });
+      return;
+    case SelectionAnalysis.multi:
+      // force to single selection
+      // return false or raise error if more than one node is selected.
+      figma.notify("only single selection is supported", {
+        timeout: 1.5,
+      });
+      return false;
+    case SelectionAnalysis.single:
+      const target = figma.currentPage.selection[0];
+      figma.ui.postMessage({
+        type: "selectionchange",
+        data: target,
+      });
+      runon(target);
+      return;
   }
 });
 
-PluginSdkServer.registerDragAndDropHandler(
+PluginSdkService.registerDragAndDropHandler(
   EK_ICON_DRAG_AND_DROPPED,
   (data, pos): Promise<any> => {
     createIcon(
@@ -225,7 +222,7 @@ PluginSdkServer.registerDragAndDropHandler(
 figma.ui.onmessage = async (msg) => {
   console.log("[event] figma plugin data received", msg);
 
-  const generalHandlingResult = PluginSdkServer.handle(msg);
+  const generalHandlingResult = PluginSdkService.handle(msg);
   // if event is handled by general event handler, no additional handling is required.
   if (generalHandlingResult) {
     return;
@@ -303,3 +300,9 @@ function hideAllOnlyFromCurrentSelection(only: NodeType) {
     hideAllOnly(selection, only);
   }
 }
+
+function main() {
+  showUI();
+}
+
+main();
