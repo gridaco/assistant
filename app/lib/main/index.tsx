@@ -5,6 +5,7 @@ import "../app.css";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { CodeScreen } from "../screens/code-screen";
+import { AuthScreen } from "../screens/auth-screen";
 import { LintScreen } from "../screens/lint-screen";
 import { IconsScreen } from "../screens/icons-screen";
 import { EK_SET_APP_MODE } from "../constants/ek.constant";
@@ -67,6 +68,8 @@ function workScreenToName(appMode: WorkScreen): string {
             return "lint";
         case WorkScreen.slot:
             return "slots";
+        case WorkScreen.auth:
+            return "auth";
         case WorkScreen.g11n:
             return "globalization";
         case WorkScreen.tool_font_replacer:
@@ -126,7 +129,7 @@ function getWorkspaceTabLayout(workspaceMode: WorkspaceMode): TabLayout {
             case WorkspaceMode.content:
                 return [WorkScreen.g11n, WorkScreen.lint];
             case WorkspaceMode.settings:
-                return [];
+                return [WorkScreen.auth];
             case WorkspaceMode.toolbox:
                 return [
                     WorkScreen.tool_font_replacer,
@@ -264,6 +267,10 @@ export default function App() {
                                     <ToolboxScreen />
                                 </TabPanel>
                             );
+                        case WorkScreen.auth:
+                            return <TabPanel key={i} value={tabIndex} index={i}>
+                                <AuthScreen />
+                            </TabPanel>
                         case WorkScreen.g11n:
                             return (
                                 <TabPanel key={i} value={tabIndex} index={i}>
@@ -354,6 +361,12 @@ export default function App() {
                         value={WorkspaceMode.toolbox}
                     >
                         TOOLS
+            </MenuItem>
+                    <MenuItem
+                        onClick={handleWorkspaceModeSelect}
+                        value={WorkspaceMode.settings}
+                    >
+                        SETTINGS
             </MenuItem>
                 </Menu>
             </div>
