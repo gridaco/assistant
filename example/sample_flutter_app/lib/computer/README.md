@@ -1,1 +1,0 @@
-## logic generated code examples
