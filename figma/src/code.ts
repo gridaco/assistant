@@ -105,7 +105,7 @@ async function runon(node: SceneNode) {
   //#endregion
 
   // region make vanilla
-  if (appMode == "g11n") {
+  if (appMode == "g11n" || appMode == "exporter") {
     const globalizatoinScreen = makeVanilla(
       convertedSelection as ReflectFrameNode
     );

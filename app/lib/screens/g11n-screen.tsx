@@ -108,16 +108,6 @@ export class GlobalizationScreen extends React.Component<any, State> {
     // open(`http://localhost:3000/globalization/?scene=${sceneId}`);
   }
 
-  downloadFile(content) {
-    const blob = new Blob([content], {type: 'text/plain'})
-    const url = window.URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = `export-node.json`
-    a.click()
-    a.remove()
-    window.URL.revokeObjectURL(url);
-  }
 
   render() {
     return (
@@ -130,7 +120,6 @@ export class GlobalizationScreen extends React.Component<any, State> {
             : "nothing to load"}
         </pre>
         <Button onClick={this.startCloud}>edit on the cloud</Button>
-        <Button onClick={() => this.downloadFile(JSON.stringify(this.state.vanilla, null, 4))}>export to json file</Button>
       </div>
     );
   }

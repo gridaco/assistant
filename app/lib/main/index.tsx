@@ -28,6 +28,8 @@ import { IconsScreen } from "../screens/icons-screen";
 import { CodeScreen } from "../screens/code-screen";
 import { ToolboxScreen } from "../screens/tool-box";
 import { MetaEditorScreen } from "../screens/tool-box/meta-editor";
+import { ExporterScreen } from "../screens/tool-box/exporter";
+
 
 // endregion screens import
 
@@ -76,6 +78,8 @@ function workScreenToName(appMode: WorkScreen): string {
       return "lint";
     case WorkScreen.slot:
       return "slots";
+    case WorkScreen.exporter:
+      return "exporter"
     case WorkScreen.g11n:
       return "globalization";
     case WorkScreen.tool_font_replacer:
@@ -115,6 +119,7 @@ const SCREEN_VISIBILITY_PREFERENCE: Map<WorkScreen, ReleaseChannel> = new Map([
   [WorkScreen.icon, "release"],
   [WorkScreen.lint, "release"],
   [WorkScreen.g11n, "beta"],
+  [WorkScreen.exporter, "beta"],
   [WorkScreen.dev, "beta"],
   [WorkScreen.slot, "alpha"],
   [WorkScreen.desing_button_maker, "alpha"],
@@ -137,7 +142,7 @@ function getWorkspaceTabLayout(workspaceMode: WorkspaceMode): TabLayout {
       case WorkspaceMode.design:
         return [WorkScreen.icon, WorkScreen.layout, WorkScreen.lint];
       case WorkspaceMode.content:
-        return [WorkScreen.g11n, WorkScreen.lint];
+        return [WorkScreen.g11n, WorkScreen.lint, WorkScreen.exporter];
       case WorkspaceMode.settings:
         return [];
       case WorkspaceMode.toolbox:
@@ -304,6 +309,12 @@ export default function App() {
                   <GlobalizationScreen />
                 </TabPanel>
               );
+            case WorkScreen.exporter:
+              return (
+                <TabPanel key={i} value={tabIndex} index={i}>
+                  <ExporterScreen />
+                </TabPanel>
+              )
             case WorkScreen.tool_font_replacer:
               return (
                 <TabPanel key={i} value={tabIndex} index={i}>
