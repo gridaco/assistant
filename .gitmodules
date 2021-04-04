@@ -26,3 +26,6 @@
 [submodule "core"]
 	path = core
 	url = https://github.com/bridgedxyz/design-to-code.git
+[submodule "packages/uiutils"]
+	path = packages/uiutils
+	url = https://github.com/bridgedxyz/uiutils
