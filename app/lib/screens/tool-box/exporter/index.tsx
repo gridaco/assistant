@@ -6,7 +6,7 @@ import {
 } from "@bridged.xyz/client-sdk/lib";
 import Button from "@material-ui/core/Button";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import { ImageManifest } from "@reflect.bridged.xyz/core/lib";
+import { ImageManifest } from "@reflect-ui/core/lib";
 import React from "react";
 import { TransportableImageRepository } from "core/lib/assets-repository";
 import { ImageHostingRepository } from "core/lib/assets-repository/hosting";
