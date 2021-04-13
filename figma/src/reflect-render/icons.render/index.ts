@@ -1,10 +1,10 @@
 import { reflectColorToFigmaColor } from "@bridged.xyz/design-sdk/lib/figma/converters/color.convert";
-import { Color } from "@reflect.bridged.xyz/core/lib/color";
-import { IconConfig } from "@reflect.bridged.xyz/core/lib/icon/icon.config";
+import { Color } from "@reflect-ui/core/lib/color";
+import { IconConfig } from "@reflect-ui/core/lib/icon/icon.config";
 import {
   ICON_DEFAULT_SIZE,
   ICON_MAX_SIZE,
-} from "@reflect.bridged.xyz/core/lib/icon/icon.constants";
+} from "@reflect-ui/core/lib/icon/icon.constants";
 
 export type IconPlacement = { x: number; y: number } | "center";
 

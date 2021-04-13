@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { loadSvg, makeIconUrl } from "@bridged.xyz/client-sdk/lib";
-import { IconConfig } from "@reflect.bridged.xyz/core/lib";
+import { IconConfig } from "@reflect-ui/core/lib";
 import Tooltip from "@material-ui/core/Tooltip";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";

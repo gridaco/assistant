@@ -32,7 +32,7 @@ import { makeVanilla } from "core/lib/vanilla";
 import { ReflectFrameNode } from "@bridged.xyz/design-sdk/lib/nodes";
 import { replaceAllTextFontInFrame } from "./tool-box/manipulate/font-replacer";
 import { drawButtons } from "./reflect-render";
-import { IconConfig } from "@reflect.bridged.xyz/core/lib/icon/icon.config";
+import { IconConfig } from "@reflect-ui/core/lib/icon/icon.config";
 
 let appMode: string = "code";
 export let selection: SceneNode;
@@ -83,7 +83,10 @@ async function runon(node: SceneNode) {
 
   // FIXME
   const safeParent = selection.parent as any;
-  const convertedSelection = convertIntoReflectNode(selection, safeParent);
+  const convertedSelection = convertIntoReflectNode(
+    selection as any,
+    safeParent
+  );
 
   // if converted node returned nothing
   if (!convertedSelection) {
