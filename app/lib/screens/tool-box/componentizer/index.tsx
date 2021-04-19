@@ -1,6 +1,5 @@
 import Divider from "@material-ui/core/Divider";
 import React, { useState } from "react";
-// import { PluginSdk } from "../../../utils/plugin-provider/plugin-app-sdk";
 
 export function ComponentizerScreen() {
   const [selectionCount, setSelectionCount] = useState<number>(0);

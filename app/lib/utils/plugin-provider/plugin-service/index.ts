@@ -16,7 +16,7 @@ import {
   NodeMetaUpdateRequest,
 } from "../interfaces/meta/meta.requests";
 import { NotifyRequest } from "../interfaces/notify/notify.requests";
-import { nanoid } from "nanoid";
+import { nanoid } from "nanoid/non-secure";
 
 interface HanderProps<T = any> {
   id: string;
@@ -30,6 +30,7 @@ figma.on("selectionchange", () => {
 
 export class PluginSdkService {
   static onSelectionChange() {
+    console.log("onSelectionChange called from sep file");
     const selection = figma.currentPage.selection;
 
     function syncSelectionData() {

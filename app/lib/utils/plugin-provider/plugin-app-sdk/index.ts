@@ -10,7 +10,7 @@ import {
   NodeMetaUpdateRequest,
 } from "../interfaces/meta/meta.requests";
 import { NotifyRequest } from "../interfaces/notify/notify.requests";
-import { nanoid } from "nanoid";
+import { nanoid } from "nanoid/non-secure";
 import { DragAndDropOnCanvasRequest } from "../interfaces/dragdrop/dragdrop.requests";
 import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes";
 
