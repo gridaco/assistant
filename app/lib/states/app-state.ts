@@ -1,28 +1,5 @@
 import { atom } from "recoil";
-
-export enum WorkspaceMode {
-  code,
-  design,
-  content,
-  toolbox,
-  settings,
-}
-
-export enum WorkScreen {
-  code = "code",
-  component = "component",
-  layout = "layout",
-  icon = "icon",
-  lint = "lint",
-  g11n = "g11n",
-  dev = "dev",
-  slot = "slot",
-  exporter = "exporter",
-  desing_button_maker = "desing_button_maker",
-  tool_font_replacer = "tool_font_replacer",
-  tool_meta_editor = "tool_meta_editor",
-  tool_batch_meta_editor = "tool_batch_meta_editor",
-}
+import { WorkScreen } from "../main/screens";
 
 export type ReleaseChannel = "release" | "beta" | "alpha";
 export interface ReleaseVisibilityPreference {

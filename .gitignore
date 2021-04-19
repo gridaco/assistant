@@ -4,3 +4,6 @@ dist
 .idea
 package.lock
 webdev/.eslintcache
+
+# credentials
+.env
