@@ -2,7 +2,7 @@ import { Button, Typography } from "@material-ui/core";
 import { ReflectLintFeedback } from "@reflect-ui/lint/lib/feedbacks";
 import * as React from "react";
 import { Preview } from "../components/preview";
-import { EK_FOCUS_REQUEST, EK_LINT_FEEDBACK } from "../constants/ek.constant";
+import { eventkeys } from "../constants";
 
 interface State {
   feedbacks: Array<ReflectLintFeedback>;
@@ -20,7 +20,7 @@ export class LintScreen extends React.Component<any, State> {
   componentDidMount() {
     window.addEventListener("message", (ev: MessageEvent) => {
       const msg = ev.data.pluginMessage;
-      if (msg.type == EK_LINT_FEEDBACK) {
+      if (msg.type == eventkeys.EK_LINT_FEEDBACK) {
         const feedbacks = msg.data as Array<ReflectLintFeedback>;
         this.setState((state, props) => {
           return { feedbacks: feedbacks };
@@ -36,7 +36,7 @@ export class LintScreen extends React.Component<any, State> {
     parent.postMessage(
       {
         pluginMessage: {
-          type: EK_FOCUS_REQUEST,
+          type: eventkeys.EK_FOCUS_REQUEST,
           data: {
             id: targetNodeId,
           },

@@ -10,11 +10,7 @@ import { ImageManifest } from "@reflect-ui/core/lib";
 import React from "react";
 import { TransportableImageRepository } from "core/lib/assets-repository";
 import { ImageHostingRepository } from "core/lib/assets-repository/hosting";
-import {
-  EK_COMPUTE_STARTED,
-  EK_IMAGE_ASSET_REPOSITORY_MAP,
-  EK_VANILLA_TRANSPORT,
-} from "../constants/ek.constant";
+import { eventkeys } from "../constants";
 
 interface State {
   loading: boolean;
@@ -39,14 +35,14 @@ export class GlobalizationScreen extends React.Component<any, State> {
     const msg = ev.data.pluginMessage;
 
     switch (msg.type) {
-      case EK_COMPUTE_STARTED:
+      case eventkeys.EK_COMPUTE_STARTED:
         this.setState(() => {
           return {
             loading: true,
           };
         });
 
-      case EK_VANILLA_TRANSPORT:
+      case eventkeys.EK_VANILLA_TRANSPORT:
         this.setState(() => {
           return {
             loading: false,
@@ -56,7 +52,7 @@ export class GlobalizationScreen extends React.Component<any, State> {
         console.log("vanilla transport receiced from view", msg.data);
         break;
 
-      case EK_IMAGE_ASSET_REPOSITORY_MAP:
+      case eventkeys.EK_IMAGE_ASSET_REPOSITORY_MAP:
         const imageRepo = msg.data as TransportableImageRepository;
         ImageHostingRepository.setRepository(imageRepo);
         break;

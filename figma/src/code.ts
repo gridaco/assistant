@@ -12,19 +12,7 @@ import {
   randimizeText,
 } from "./tool-box/manipulate";
 import { runLints } from "core/lib/lint/lint";
-import {
-  EK_COMPUTE_STARTED,
-  EK_CREATE_ICON,
-  EK_FOCUS_REQUEST,
-  EK_GENERATED_CODE_PLAIN,
-  EK_IMAGE_ASSET_REPOSITORY_MAP,
-  EK_LINT_FEEDBACK,
-  EK_PREVIEW_SOURCE,
-  EK_REPLACE_FONT,
-  EK_SET_APP_MODE,
-  EK_VANILLA_TRANSPORT,
-  EK_ICON_DRAG_AND_DROPPED,
-} from "app/lib/constants/ek.constant";
+import { eventkeys } from "app/lib/constants";
 import { makeApp } from "core/lib/flutter/make/app.make";
 import { ImageRepositories } from "core/lib/assets-repository";
 import { IconPlacement, renderSvgIcon } from "./reflect-render/icons.render";
@@ -66,7 +54,7 @@ async function runon(node: SceneNode) {
   // notify ui that the computing process has been started.
   // use this for when displaying loading indicator etc.. for general purpose.
   figma.ui.postMessage({
-    type: EK_COMPUTE_STARTED,
+    type: eventkeys.EK_COMPUTE_STARTED,
     data: {
       mode: appMode,
     },
@@ -101,7 +89,7 @@ async function runon(node: SceneNode) {
     const feedbacks = runLints(convertedSelection);
     console.warn(feedbacks);
     figma.ui.postMessage({
-      type: EK_LINT_FEEDBACK,
+      type: eventkeys.EK_LINT_FEEDBACK,
       data: feedbacks,
     });
   }
@@ -114,11 +102,11 @@ async function runon(node: SceneNode) {
     );
     const vanillaTransportableImageRepository = await globalizatoinScreen.repository.makeTransportable();
     figma.ui.postMessage({
-      type: EK_IMAGE_ASSET_REPOSITORY_MAP,
+      type: eventkeys.EK_IMAGE_ASSET_REPOSITORY_MAP,
       data: vanillaTransportableImageRepository,
     });
     figma.ui.postMessage({
-      type: EK_VANILLA_TRANSPORT,
+      type: eventkeys.EK_VANILLA_TRANSPORT,
       data: globalizatoinScreen,
     });
   }
@@ -130,7 +118,7 @@ async function runon(node: SceneNode) {
     // host images
     const transportableImageAssetRepository = await ImageRepositories.current.makeTransportable();
     figma.ui.postMessage({
-      type: EK_IMAGE_ASSET_REPOSITORY_MAP,
+      type: eventkeys.EK_IMAGE_ASSET_REPOSITORY_MAP,
       data: transportableImageAssetRepository,
     });
 
@@ -141,7 +129,7 @@ async function runon(node: SceneNode) {
     });
 
     figma.ui.postMessage({
-      type: EK_GENERATED_CODE_PLAIN,
+      type: eventkeys.EK_GENERATED_CODE_PLAIN,
       data: {
         code: widget.build().finalize(),
         app: app.build().finalize(),
@@ -161,7 +149,7 @@ async function runon(node: SceneNode) {
     })
     .then((d) => {
       figma.ui.postMessage({
-        type: EK_PREVIEW_SOURCE,
+        type: eventkeys.EK_PREVIEW_SOURCE,
         data: {
           source: d,
           name: selection.name,
@@ -207,7 +195,7 @@ figma.on("selectionchange", () => {
 });
 
 PluginSdkService.registerDragAndDropHandler(
-  EK_ICON_DRAG_AND_DROPPED,
+  eventkeys.EK_ICON_DRAG_AND_DROPPED,
   (data, pos): Promise<any> => {
     createIcon(
       data,
@@ -234,16 +222,16 @@ figma.ui.onmessage = async (msg) => {
   const type = msg.type;
   const data = msg.data;
 
-  if (type == EK_SET_APP_MODE) {
+  if (type == eventkeys.EK_SET_APP_MODE) {
     appMode = msg.data;
     console.log(`app mode set event recieved, now setting as ${appMode}`);
-  } else if (type == EK_FOCUS_REQUEST) {
+  } else if (type == eventkeys.EK_FOCUS_REQUEST) {
     const target = figma.getNodeById(msg.data.id) as SceneNode;
     figma.currentPage.selection = [target];
     figma.viewport.scrollAndZoomIntoView([target]);
-  } else if (type == EK_CREATE_ICON) {
+  } else if (type == eventkeys.EK_CREATE_ICON) {
     createIcon(data);
-  } else if (type == EK_REPLACE_FONT) {
+  } else if (type == eventkeys.EK_REPLACE_FONT) {
     if (selection.type == "FRAME") {
       const font = "Roboto";
       await replaceAllTextFontInFrame(selection, font);

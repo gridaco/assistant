@@ -4,7 +4,7 @@ import Button from "@material-ui/core/Button";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
-import { PLUGIN_SDK_EK_BATCH_META_UPDATE } from "../../../utils/plugin-provider/events";
+import { PLUGIN_KEYS } from "../../../utils/plugin-provider/events";
 import Divider from "@material-ui/core/Divider";
 import { PluginSdk } from "../../../utils/plugin-provider/plugin-app-sdk";
 import {
@@ -35,7 +35,7 @@ export default function BatchMetaEditor() {
     parent.postMessage(
       {
         pluginMessage: {
-          type: PLUGIN_SDK_EK_BATCH_META_UPDATE,
+          type: PLUGIN_KEYS.PLUGIN_SDK_EK_BATCH_META_UPDATE,
           data: data,
         },
       },

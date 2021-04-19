@@ -1,19 +1,8 @@
 import { NS_FILE_ROOT_METADATA } from "../../../constants/ns.constant";
 import {
-  PLUGIN_SDK_EK_BATCH_META_UPDATE,
-  PLUGIN_SDK_EK_DRAG_AND_DROPPED,
-  PLUGIN_SDK_EK_REQUEST_FETCH_NODE_MAIN_COMPONENT_META,
-  PLUGIN_SDK_EK_REQUEST_FETCH_NODE_META,
-  PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META,
-  PLUGIN_SDK_EK_SIMPLE_NOTIFY,
+  PLUGIN_KEYS,
+  PLUGIN_NS,
   PLUGIN_SDK_NAMESPACE_BASE_TOKEN,
-  PLUGIN_SDK_NS_DRAG_AND_DROP,
-  PLUGIN_SDK_NS_META_API,
-  PLUGIN_SDK_NS_NOTIFY_API,
-  PLUGIN_SDK_NS_REMOTE_API,
-  PLUGIN_SDK_NS_RESPONSE_ALL,
-  PUGIN_SDK_EK_REQUEST_UPDATE_MAIN_COMPONENT_META,
-  PUGIN_SDK_EK_REQUEST_UPDATE_NODE_META,
   TransportPluginEvent,
 } from "../events";
 import {
@@ -27,6 +16,7 @@ import {
   NodeMetaUpdateRequest,
 } from "../interfaces/meta/meta.requests";
 import { NotifyRequest } from "../interfaces/notify/notify.requests";
+import { nanoid } from "nanoid";
 
 interface HanderProps<T = any> {
   id: string;
@@ -41,18 +31,31 @@ figma.on("selectionchange", () => {
 export class PluginSdkService {
   static onSelectionChange() {
     const selection = figma.currentPage.selection;
+
+    function syncSelectionData() {
+      // FIXME
+      handleSync({
+        id: nanoid(),
+        origin: "app",
+        type: "request",
+        namespace: PLUGIN_NS.PLUGIN_SDK_NS_SYNC,
+        key: PLUGIN_KEYS.PLUGIN_SDK_EK_SYNC_USER_NODE_SELECTION_DATA,
+        data: selection,
+      });
+    }
+
     if (selection.length == 0) {
-      // sync({
-      //   namespace: PLUGIN_SDK_NS_SYNC,
-      //   key:
-      // });
       // deselect
+      syncSelectionData();
+      // TODO - raise new event : "deselect"
     } else if (selection.length == 1) {
       // select single
-      // sync();
+      syncSelectionData();
+      // TODO - raise new event : "single select"
     } else if (selection.length >= 2) {
       // selections
-      // sync();
+      syncSelectionData();
+      // TODO - raise new event : "multi select"
     }
   }
 
@@ -100,28 +103,35 @@ export class PluginSdkService {
       data: event.data,
     };
     // meta
-    if (event.namespace == PLUGIN_SDK_NS_META_API) {
+    if (event.namespace == PLUGIN_NS.PLUGIN_SDK_NS_META_API) {
       handleMetaEvent(handerProps);
       return true;
     }
 
     // remote api call
-    else if (event.namespace == PLUGIN_SDK_NS_REMOTE_API) {
+    else if (event.namespace == PLUGIN_NS.PLUGIN_SDK_NS_REMOTE_API) {
       handleRemoteApiEvent(handerProps);
       return true;
     }
 
     // notify
-    else if (event.namespace == PLUGIN_SDK_NS_NOTIFY_API) {
+    else if (event.namespace == PLUGIN_NS.PLUGIN_SDK_NS_NOTIFY_API) {
       handleNotify(handerProps);
       return true;
     }
 
     // drag & drop
-    else if (PLUGIN_SDK_NS_DRAG_AND_DROP) {
-      if (PLUGIN_SDK_EK_DRAG_AND_DROPPED) {
+    else if (event.namespace == PLUGIN_NS.PLUGIN_SDK_NS_DRAG_AND_DROP) {
+      if (PLUGIN_KEYS.PLUGIN_SDK_EK_DRAG_AND_DROPPED) {
         handleDragDropped(handerProps);
       }
+    }
+
+    // sync data
+    else if (event.namespace == PLUGIN_NS.PLUGIN_SDK_NS_SYNC) {
+      // TODO
+      throw "not implemented";
+      // handleSync();
     }
 
     return true;
@@ -129,11 +139,11 @@ export class PluginSdkService {
 }
 
 function handleMetaEvent(props: HanderProps) {
-  if (props.key == PLUGIN_SDK_EK_BATCH_META_UPDATE) {
+  if (props.key == PLUGIN_KEYS.PLUGIN_SDK_EK_BATCH_META_UPDATE) {
     const d = props.data as BatchMetaUpdateRequest;
     figma.root.setSharedPluginData(NS_FILE_ROOT_METADATA, d.key, d.value);
     figma.notify("metadata updated", { timeout: 1 });
-  } else if (props.key == PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META) {
+  } else if (props.key == PLUGIN_KEYS.PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META) {
     const d = props.data as BatchMetaFetchRequest;
     const fetched = figma.root.getSharedPluginData(
       NS_FILE_ROOT_METADATA,
@@ -141,7 +151,7 @@ function handleMetaEvent(props: HanderProps) {
     );
     console.log(`fetched root metadata for key ${d.key} is.`, fetched);
     response(props.id, fetched);
-  } else if (props.key == PLUGIN_SDK_EK_REQUEST_FETCH_NODE_META) {
+  } else if (props.key == PLUGIN_KEYS.PLUGIN_SDK_EK_REQUEST_FETCH_NODE_META) {
     const request: NodeMetaFetchRequest = props.data;
     if (!request.id) {
       throw `node id is required in order to perform meta fetch`;
@@ -152,7 +162,8 @@ function handleMetaEvent(props: HanderProps) {
     const normData = normalizeMetadata(data);
     return response(props.id, normData);
   } else if (
-    props.key == PLUGIN_SDK_EK_REQUEST_FETCH_NODE_MAIN_COMPONENT_META
+    props.key ==
+    PLUGIN_KEYS.PLUGIN_SDK_EK_REQUEST_FETCH_NODE_MAIN_COMPONENT_META
   ) {
     const request: NodeMetaFetchRequest = props.data;
     const node = figma.getNodeById(request.id);
@@ -160,7 +171,9 @@ function handleMetaEvent(props: HanderProps) {
     const data = targetNode.getSharedPluginData(request.namespace, request.key);
     const normData = normalizeMetadata(data);
     return response(props.id, normData);
-  } else if (props.key == PUGIN_SDK_EK_REQUEST_UPDATE_MAIN_COMPONENT_META) {
+  } else if (
+    props.key == PLUGIN_KEYS.PUGIN_SDK_EK_REQUEST_UPDATE_MAIN_COMPONENT_META
+  ) {
     const request: NodeMetaUpdateRequest = props.data;
     const node = figma.getNodeById(request.id);
     let targetNode: SceneNode = getMaincomponentLike(node?.id);
@@ -171,7 +184,7 @@ function handleMetaEvent(props: HanderProps) {
     );
     return response(props.id, true);
     //
-  } else if (props.key == PUGIN_SDK_EK_REQUEST_UPDATE_NODE_META) {
+  } else if (props.key == PLUGIN_KEYS.PUGIN_SDK_EK_REQUEST_UPDATE_NODE_META) {
     const request: NodeMetaUpdateRequest = props.data;
     figma
       .getNodeById(request.id)
@@ -222,7 +235,7 @@ function getMaincomponentLike(nodeID: string): SceneNode {
 function handleRemoteApiEvent(props: HanderProps) {}
 
 export function handleNotify(props: HanderProps<NotifyRequest>) {
-  if (props.key == PLUGIN_SDK_EK_SIMPLE_NOTIFY) {
+  if (props.key == PLUGIN_KEYS.PLUGIN_SDK_EK_SIMPLE_NOTIFY) {
     figma.notify(props.data.message, {
       timeout: props.data.duration ?? 1,
     });
@@ -241,7 +254,7 @@ function response<T = any>(
 
   figma.ui.postMessage(<TransportPluginEvent>{
     id: requestId,
-    namespace: PLUGIN_SDK_NS_RESPONSE_ALL,
+    namespace: PLUGIN_NS.PLUGIN_SDK_NS_RESPONSE_ALL,
     type: "response",
     error: error,
     data: data,
@@ -254,7 +267,7 @@ function response<T = any>(
  * this is for syncing data with PluginApp's general data such as currently selected node.
  * @param withEvent
  */
-function sync(withEvent: TransportPluginEvent) {}
+function handleSync(withEvent: TransportPluginEvent) {}
 
 function handleDragDropped(props: HanderProps<DragAndDropOnCanvasRequest>) {
   console.log("handling drop event", props.data);

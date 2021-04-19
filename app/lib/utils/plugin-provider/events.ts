@@ -7,6 +7,7 @@ export const PLUGIN_SDK_NS_GENERAL_STATE_DATA = `${PLUGIN_SDK_NAMESPACE_BASE_TOK
 
 // region sync
 export const PLUGIN_SDK_NS_SYNC = `${PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/sync`;
+export const PLUGIN_SDK_EK_SYNC_USER_NODE_SELECTION_DATA = `assistant/user/selection-sync`;
 // endregion sync
 
 // region meta
@@ -36,6 +37,39 @@ export const PLUGIN_SDK_EK_NOTIFY_COPIED = "notify-copied";
 export const PLUGIN_SDK_NS_DRAG_AND_DROP = `${PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/drag-and-drop`;
 export const PLUGIN_SDK_EK_DRAG_AND_DROPPED = `dropped on canvas`;
 // endregion canvas
+
+export const PLUGIN_NS = {
+  PLUGIN_SDK_NS_SYNC,
+  PLUGIN_SDK_NS_DRAG_AND_DROP,
+  PLUGIN_SDK_NS_RESPONSE_ALL,
+  PLUGIN_SDK_NS_GENERAL_STATE_DATA,
+  PLUGIN_SDK_NS_NOTIFY_API,
+  PLUGIN_SDK_NS_META_API,
+  PLUGIN_SDK_NS_REMOTE_API,
+};
+
+export const PLUGIN_KEYS = {
+  // region d&d
+  PLUGIN_SDK_EK_DRAG_AND_DROPPED,
+  // endregion d&d
+
+  // region notify
+  PLUGIN_SDK_EK_SIMPLE_NOTIFY,
+  PLUGIN_SDK_EK_NOTIFY_COPIED,
+  // endregion notify
+
+  // region meta
+  PLUGIN_SDK_EK_BATCH_META_UPDATE,
+  PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META,
+  PLUGIN_SDK_EK_REQUEST_FETCH_NODE_META,
+  PLUGIN_SDK_EK_REQUEST_FETCH_NODE_MAIN_COMPONENT_META,
+  PUGIN_SDK_EK_REQUEST_UPDATE_NODE_META,
+  PUGIN_SDK_EK_REQUEST_UPDATE_MAIN_COMPONENT_META,
+  // endregion meta
+
+  // selection
+  PLUGIN_SDK_EK_SYNC_USER_NODE_SELECTION_DATA,
+};
 
 export interface BasePluginEvent<T = any> {
   /**

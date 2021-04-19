@@ -10,8 +10,7 @@ import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
-
-import { EK_SET_APP_MODE } from "../constants/ek.constant";
+import { eventkeys } from "../constants";
 import { ReleaseChannel } from "../states/app-state";
 import { PluginApp } from "../utils/plugin-provider/pugin-app";
 import BatchMetaEditor from "../screens/tool-box/batch-meta-editor";
@@ -197,7 +196,7 @@ export default function App() {
     parent.postMessage(
       {
         pluginMessage: {
-          type: EK_SET_APP_MODE,
+          type: eventkeys.EK_SET_APP_MODE,
           data: screen,
         },
       },

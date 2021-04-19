@@ -17,7 +17,7 @@ export function ComponentizerScreen() {
       <Divider />
       {selectionCount == 0 ? (
         <p>
-          ❓ nothing is selected. (select layers to convert as individual
+          👉 nothing is selected. (select layers to convert as individual
           component)
         </p>
       ) : (

@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@material-ui/core";
-import { EK_REPLACE_FONT } from "../../../constants/ek.constant";
+import { eventkeys } from "../../../constants";
 
 export function FontReplacerScreen() {
   function onReplaceFontClick() {
@@ -9,7 +9,7 @@ export function FontReplacerScreen() {
     parent.postMessage(
       {
         pluginMessage: {
-          type: EK_REPLACE_FONT,
+          type: eventkeys.EK_REPLACE_FONT,
           data: {
             // todo add more options for user to chose font maps to be replaced
           },

@@ -5,11 +5,7 @@ import { ImageHostingRepository } from "core/lib/assets-repository/hosting";
 import { format } from "../utils/dart-format";
 import CodeBox from "../components/codebox";
 import { Preview } from "../components/preview";
-import {
-  EK_GENERATED_CODE_PLAIN,
-  EK_IMAGE_ASSET_REPOSITORY_MAP,
-  EK_PREVIEW_SOURCE,
-} from "../constants/ek.constant";
+import { eventkeys } from "../constants";
 
 const DEFAULT_EMPTY_CODE_SNIPPET = `//
 //
@@ -44,7 +40,7 @@ export class CodeScreen extends React.Component<any, State> {
     const msg = ev.data.pluginMessage;
     if (msg) {
       switch (msg.type) {
-        case EK_GENERATED_CODE_PLAIN:
+        case eventkeys.EK_GENERATED_CODE_PLAIN:
           const app = format(msg.data.app);
           const code = format(msg.data.code);
           const widget = msg.data.widget;
@@ -52,7 +48,7 @@ export class CodeScreen extends React.Component<any, State> {
             return { code: code, widget: widget, app: app };
           });
           break;
-        case EK_IMAGE_ASSET_REPOSITORY_MAP:
+        case eventkeys.EK_IMAGE_ASSET_REPOSITORY_MAP:
           const imageRepo = msg.data as TransportableImageRepository;
           ImageHostingRepository.setRepository(imageRepo);
           break;

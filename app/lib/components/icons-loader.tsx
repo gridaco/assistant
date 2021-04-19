@@ -4,10 +4,7 @@ import { IconConfig } from "@reflect-ui/core/lib";
 import Tooltip from "@material-ui/core/Tooltip";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
-import {
-  EK_CREATE_ICON,
-  EK_ICON_DRAG_AND_DROPPED,
-} from "../constants/ek.constant";
+import { eventkeys } from "../constants";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles, Select, MenuItem, InputBase } from "@material-ui/core";
@@ -269,7 +266,7 @@ function IconItem(props: { name: string; config: IconConfig }) {
       parent.postMessage(
         {
           pluginMessage: {
-            type: EK_CREATE_ICON,
+            type: eventkeys.EK_CREATE_ICON,
             data: d,
           },
         },
@@ -279,7 +276,10 @@ function IconItem(props: { name: string; config: IconConfig }) {
   };
 
   return (
-    <Draggable customDataLoader={loadData} eventKey={EK_ICON_DRAG_AND_DROPPED}>
+    <Draggable
+      customDataLoader={loadData}
+      eventKey={eventkeys.EK_ICON_DRAG_AND_DROPPED}
+    >
       <Tooltip
         title={`${name} (${config.variant}) (${config.host})`}
         placement="top"

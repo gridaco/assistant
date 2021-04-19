@@ -2,11 +2,9 @@ import React, { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import Axios from "axios";
 import {
-  PLC_REMOTE_API_REQ,
   PLC_REMOTE_API_RES,
   PLUGIN_SDK_NAMESPACE_BASE_TOKEN,
-  PLUGIN_SDK_NS_GENERAL_STATE_DATA,
-  PLUGIN_SDK_NS_REMOTE_API,
+  PLUGIN_NS,
   TransportPluginEvent,
 } from "../events";
 import { NetworkRequest } from "../interfaces/remote-api/remote-api.requests";
@@ -52,7 +50,7 @@ function registerPluginSdkHandler(message: TransportPluginEvent) {
  * registers global state handler managed by plugin. such like current selection.
  */
 function registerPluginGlobalStateHandler(message: TransportPluginEvent) {
-  if (message.namespace == PLUGIN_SDK_NS_GENERAL_STATE_DATA) {
+  if (message.namespace == PLUGIN_NS.PLUGIN_SDK_NS_GENERAL_STATE_DATA) {
     if (message.key == "general.canvas.selection-change") {
       // update selection change
       const setCrrentSelection = useSetRecoilState(
@@ -67,7 +65,7 @@ function registerPluginGlobalStateHandler(message: TransportPluginEvent) {
  * registers handler for remote http(s) call
  */
 function registerPluginRemoteCallHandler(message: TransportPluginEvent) {
-  if (message.namespace == PLUGIN_SDK_NS_REMOTE_API) {
+  if (message.namespace == PLUGIN_NS.PLUGIN_SDK_NS_REMOTE_API) {
     // call remote request
     const requestManifest = message.data as NetworkRequest;
     Axios.request({

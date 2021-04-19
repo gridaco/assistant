@@ -1,6 +1,6 @@
-import { Typography, CircularProgress, Fade } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
-import { EK_PREVIEW_SOURCE } from "../constants/ek.constant";
+import { eventkeys } from "../constants";
 import "./preview.css";
 
 interface Props {
@@ -18,7 +18,7 @@ export function Preview(props: Props) {
     if (props.auto) {
       window.addEventListener("message", (ev: MessageEvent) => {
         const msg = ev.data.pluginMessage;
-        if (msg && msg.type == EK_PREVIEW_SOURCE) {
+        if (msg && msg.type == eventkeys.EK_PREVIEW_SOURCE) {
           setName(msg.data.name);
           setData(msg.data.source);
         }
