@@ -15,14 +15,12 @@ Sample design is used for evaluating code generation quality check. Both good an
 
 if using material-ui, read the following [guidelines](https://material-ui.com/guides/minimizing-bundle-size/).
 
-
 You can also run / inspect / develop the [ui](./ui) on the browser environment without design tools openned. Instructions available at [webdev](./webdev)
-
 
 ## Project Structure
 
 - core - core logic container converting reflect node to various target platform code
-- app - shared ui  / app library for displaying plugin.
+- app - shared ui / app library for displaying plugin.
 - figma - figma patform specific codes
 - sketch - sketch patform specific codes
 - zeplin - zeplin platform specific codes
@@ -34,3 +32,7 @@ You can also run / inspect / develop the [ui](./ui) on the browser environment w
 - - design sdk
 - - ui utils
 - - and more!
+
+## Learn from mistakes
+
+- you cannot use nanoid on figma ui thread
