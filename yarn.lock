@@ -1867,6 +1867,11 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
 
+"@reflect-ui/core@0.0.2-rc.5.local":
+  version "0.0.2-rc.5.local"
+  resolved "https://registry.yarnpkg.com/@reflect-ui/core/-/core-0.0.2-rc.5.local.tgz#c1c50574166aabd5f6dde190a05ab5486465b0f6"
+  integrity sha512-NEz8WvibGyxS2a1KiDKTNt3B3T/WsXeG0kkVDh2/G9YUV9t6qx/zJcVvv0w6Gqa4zfg2fojnJwbSg1j0KF+tqA==
+
 "@rollup/plugin-node-resolve@^7.1.1":
   version "7.1.3"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-node-resolve/-/plugin-node-resolve-7.1.3.tgz#80de384edfbd7bfc9101164910f86078151a3eca"
