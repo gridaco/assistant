@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Preview } from "../../components/preview";
 import Button from "@material-ui/core/Button";
-import CodeBox from "../../components/codebox";
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
@@ -12,8 +11,7 @@ import { PluginSdk } from "../../utils/plugin-provider/plugin-app-sdk";
 import { Divider, IconButton, Typography } from "@material-ui/core";
 import { ASSISTANT_PLUGIN_NAMESPACE } from "../../constants";
 import { Edit, Settings } from "@material-ui/icons";
-import { CodeboxEditDialog } from "../../components/codebox-edit-dialog";
-import { schema } from "coli";
+import { ComponentCodebox } from "./component-codebox";
 
 interface VisualComponentManifest {
   name: string;
@@ -224,46 +222,5 @@ function EditableComponentMetaFieldSingleValueInputDialog(props: {
         </DialogActions>
       </Dialog>
     </>
-  );
-}
-
-function ComponentCodebox(props: {
-  onCodeChange: (code: string) => void;
-  code: string;
-}) {
-  const [dopened, setdOpen] = React.useState(false);
-  const [code, setCode] = React.useState(props.code);
-
-  const handleClose = () => {
-    setdOpen(false);
-  };
-
-  const handleEditCodeClick = () => {
-    setdOpen(true);
-  };
-  return (
-    <div>
-      <CodeboxEditDialog
-        initialValue={code}
-        handleSave={(c) => {
-          setCode(c);
-          props.onCodeChange(c);
-        }}
-        label="code"
-        title="override code"
-        description="override the component code"
-        open={dopened}
-        handleClose={handleClose}
-      />
-      <CodeBox
-        codeActions={[
-          <IconButton onClick={handleEditCodeClick}>
-            <Settings />
-          </IconButton>,
-        ]}
-        language="tsx"
-        code={code ?? "//no code snippet provided"}
-      />
-    </div>
   );
 }
