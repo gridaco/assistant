@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import reportWebVitals from "./reportWebVitals";
-import App from "app/lib/main";
+import { App } from "./app";
 import {
   initializeTargetPlatform,
   TargetPlatform,

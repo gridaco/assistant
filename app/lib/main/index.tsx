@@ -216,6 +216,8 @@ export default function App() {
       <Tabs
         value={tabIndex}
         onChange={handleTabChange}
+        scrollButtons="auto"
+        variant="scrollable"
         aria-label="primary tab"
       >
         {tabLayout.map((v, i) => {
