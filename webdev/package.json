@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@babel/plugin-transform-typescript": "^7.12.1",
-    "babel-loader": "^8.2.2",
+    "babel-loader": "^8.1.0",
     "customize-cra": "^1.0.0",
     "react-app-rewired": "^2.1.8",
     "tsconfig-paths-webpack-plugin": "^3.3.0"
