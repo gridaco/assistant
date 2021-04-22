@@ -8,6 +8,7 @@
 		"core",
 		"app",
 		"packages/*",
+		"packages/coli/packages/*",
 		"figma",
 		"sketch",
 		"webdev",
@@ -21,9 +22,9 @@
 		"webdev": "yarn workspace webdev run start",
 		"xd": "yarn workspace xd run build"
 	},
-	  "collective": {
-	  "type": "opencollective",
-	  "url": "https://opencollective.com/bridged",
-	  "logo": "https://opencollective.com/bridged/logo.txt"
+	"collective": {
+		"type": "opencollective",
+		"url": "https://opencollective.com/bridged",
+		"logo": "https://opencollective.com/bridged/logo.txt"
 	}
 }

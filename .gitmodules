@@ -29,3 +29,6 @@
 [submodule "packages/uiutils"]
 	path = packages/uiutils
 	url = https://github.com/bridgedxyz/uiutils
+[submodule "packages/coli"]
+	path = packages/coli
+	url = https://github.com/bridgedxyz/coli
