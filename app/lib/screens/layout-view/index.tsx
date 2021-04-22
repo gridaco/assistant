@@ -1,5 +1,5 @@
 import React from "react";
-import { PluginSdk } from "../../utils/plugin-provider/plugin-app-sdk";
+import { PluginSdk } from "@bridged.xyz/plugin-sdk-react";
 
 export default function LayoutViewScreen() {
   PluginSdk.selectedNodeId;

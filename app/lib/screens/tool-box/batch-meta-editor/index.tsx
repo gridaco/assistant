@@ -4,14 +4,14 @@ import Button from "@material-ui/core/Button";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
-import { PLUGIN_KEYS } from "../../../utils/plugin-provider/events";
+import { PLUGIN_KEYS } from "@bridged.xyz/plugin-sdk-react/events";
 import Divider from "@material-ui/core/Divider";
-import { PluginSdk } from "../../../utils/plugin-provider/plugin-app-sdk";
+import { PluginSdk } from "@bridged.xyz/plugin-sdk-react";
 import {
   BatchMetaOperationTargetType,
   SupportedBatchMetaOperationTargetTypes,
-} from "../../../utils/plugin-provider/interfaces/meta/meta.types";
-import { BatchMetaUpdateRequest } from "../../../utils/plugin-provider/interfaces/meta/meta.requests";
+} from "@bridged.xyz/plugin-sdk-react/interfaces/meta/meta.types";
+import { BatchMetaUpdateRequest } from "@bridged.xyz/plugin-sdk-react/interfaces/meta/meta.requests";
 
 export default function BatchMetaEditor() {
   const [targetType, setTargetType] = useState<BatchMetaOperationTargetType>(

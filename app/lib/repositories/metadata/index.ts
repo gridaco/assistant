@@ -1,10 +1,10 @@
-import { ASSISTANT_PLUGIN_NAMESPACE } from "../../constants";
+import { ASSISTANT_PLUGIN_NAMESPACE } from "@bridged.xyz/plugin-sdk-react/events";
 import { MetaDataMockDataProvider } from "../../mock";
 import {
   TARGET_PLATFORM,
   TargetPlatform,
 } from "@bridged.xyz/design-sdk/lib/platform";
-import { PluginSdk } from "../../utils/plugin-provider/plugin-app-sdk";
+import { PluginSdk } from "@bridged.xyz/plugin-sdk-react";
 
 export class MetaDataRepositoryFactory {
   static layer(layer: string) {

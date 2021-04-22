@@ -1,11 +1,11 @@
-import { PluginSdkService } from "app/lib/utils/plugin-provider/plugin-service";
+import { PluginSdkService } from "@bridged.xyz/plugin-sdk-react";
 import { convertIntoReflectNode } from "@bridged.xyz/design-sdk/lib/nodes/conversion";
 import { buildApp } from "core/lib/flutter";
 import { retrieveFlutterColors } from "core/lib/flutter/utils/fetch-colors";
 import {
   analyzeSelection,
   SelectionAnalysis,
-} from "app/lib/utils/plugin-provider/pugin-app/utils";
+} from "@bridged.xyz/plugin-sdk-react/pugin-app/utils";
 import {
   hideAllExcept,
   hideAllOnly,

@@ -7,18 +7,17 @@ import {
 import copy from "copy-to-clipboard";
 import "./highlight.css";
 
-// region custom dart support
+// #region custom dart support
 // https://github.com/FormidableLabs/prism-react-renderer/issues/22#issuecomment-553042928
 import Prism from "prism-react-renderer/prism";
 import dartLang from "refractor/lang/dart";
+dartLang(Prism);
+// #endregion
+
 import { quickLook } from "../quicklook";
 import { Widget } from "@bridged.xyz/flutter-builder/lib";
 import Button from "@material-ui/core/Button";
-import { PluginSdk } from "../utils/plugin-provider/plugin-app-sdk";
-import { IconButton } from "@material-ui/core";
-import { Add } from "@material-ui/icons";
-dartLang(Prism);
-// endregion
+import { PluginSdk } from "@bridged.xyz/plugin-sdk-react";
 
 interface State {
   isLaunchingConsole: boolean;

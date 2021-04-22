@@ -12,7 +12,7 @@ import Menu from "@material-ui/core/Menu";
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
 import { eventkeys } from "../constants";
 import { ReleaseChannel } from "../states/app-state";
-import { PluginApp } from "../utils/plugin-provider/pugin-app";
+import { PluginApp } from "@bridged.xyz/plugin-sdk-react";
 import BatchMetaEditor from "../screens/tool-box/batch-meta-editor";
 import { Switch, Route, Link, BrowserRouter, Redirect } from "react-router-dom";
 
@@ -216,7 +216,7 @@ export default function App() {
       <Tabs
         value={tabIndex}
         onChange={handleTabChange}
-        scrollButtons="auto"
+        scrollButtons="on"
         variant="scrollable"
         aria-label="primary tab"
       >

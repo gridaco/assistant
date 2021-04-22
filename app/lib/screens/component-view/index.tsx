@@ -8,9 +8,9 @@ import DialogContent from "@material-ui/core/DialogContent/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText/DialogContentText";
 import TextField from "@material-ui/core/TextField/TextField";
 import DialogActions from "@material-ui/core/DialogActions/DialogActions";
-import { PluginSdk } from "../../utils/plugin-provider/plugin-app-sdk";
+import { PluginSdk } from "@bridged.xyz/plugin-sdk-react";
 import { Divider, IconButton, Typography } from "@material-ui/core";
-import { ASSISTANT_PLUGIN_NAMESPACE } from "../../constants";
+import { ASSISTANT_PLUGIN_NAMESPACE } from "@bridged.xyz/plugin-sdk-react/events";
 import { Edit, Settings } from "@material-ui/icons";
 import { CodeboxEditDialog } from "../../components/codebox-edit-dialog";
 

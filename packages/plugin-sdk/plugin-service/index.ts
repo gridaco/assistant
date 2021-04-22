@@ -1,4 +1,4 @@
-import { NS_FILE_ROOT_METADATA } from "../../../constants/ns.constant";
+import { NS_FILE_ROOT_METADATA } from "@bridged.xyz/plugin-sdk-react/events";
 import {
   PLUGIN_KEYS,
   PLUGIN_NS,
@@ -17,6 +17,7 @@ import {
 } from "../interfaces/meta/meta.requests";
 import { NotifyRequest } from "../interfaces/notify/notify.requests";
 import { nanoid } from "nanoid/non-secure";
+import { figma, SceneNode } from "@bridged.xyz/design-sdk/lib/figma/types/v1";
 
 interface HanderProps<T = any> {
   id: string;
@@ -24,7 +25,7 @@ interface HanderProps<T = any> {
   data: T;
 }
 
-figma.on("selectionchange", () => {
+figma?.on("selectionchange", () => {
   PluginSdkService.onSelectionChange();
 });
 
