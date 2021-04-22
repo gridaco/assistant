@@ -6,7 +6,7 @@ export const PLUGIN_SDK_NS_REMOTE_API = `${PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/remo
 export const PLUGIN_SDK_NS_GENERAL_STATE_DATA = `${PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/general-state-data`;
 
 // region sync
-export const PLUGIN_SDK_NS_SYNC = `${PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/sync`;
+export const PLUGIN_SDK_NS_SYNC_WITH_EVENT = `${PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/sync`;
 export const PLUGIN_SDK_EK_SYNC_USER_NODE_SELECTION_DATA = `assistant/user/selection-sync`;
 // endregion sync
 
@@ -39,7 +39,7 @@ export const PLUGIN_SDK_EK_DRAG_AND_DROPPED = `dropped on canvas`;
 // endregion canvas
 
 export const PLUGIN_NS = {
-  PLUGIN_SDK_NS_SYNC,
+  PLUGIN_SDK_NS_SYNC_WITH_EVENT,
   PLUGIN_SDK_NS_DRAG_AND_DROP,
   PLUGIN_SDK_NS_RESPONSE_ALL,
   PLUGIN_SDK_NS_GENERAL_STATE_DATA,
@@ -81,12 +81,18 @@ export interface BasePluginEvent<T = any> {
   data: T;
 }
 
+export type TransportCommunicationType =
+  | "response"
+  | "request"
+  // event from host (a.k.a design tool)
+  | "event";
+
 /**
  * An Event object interface to pass Plugin events from / to PluginService and PluginApp
  */
-export interface TransportPluginEvent extends BasePluginEvent {
+export interface TransportPluginEvent<T = any> extends BasePluginEvent<T> {
   origin: "app" | "server";
-  type: "response" | "request";
+  type: TransportCommunicationType;
   error?: Error;
   id: string;
 }

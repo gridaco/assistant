@@ -11,3 +11,8 @@ The middleware ping-pong operator.
 
 - PluginApp React Component for ui.ts usage.
 - PluginServer Middleware for code.ts usage.
+
+## Currently supported platforms
+
+- Figma
+- See Bridged Assistant for example

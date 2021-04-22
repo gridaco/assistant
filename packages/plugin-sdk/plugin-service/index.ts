@@ -1,4 +1,7 @@
-import { NS_FILE_ROOT_METADATA } from "@bridged.xyz/plugin-sdk-react/events";
+import {
+  NS_FILE_ROOT_METADATA,
+  TransportCommunicationType,
+} from "@bridged.xyz/plugin-sdk-react/events";
 import {
   PLUGIN_KEYS,
   PLUGIN_NS,
@@ -18,6 +21,7 @@ import {
 import { NotifyRequest } from "../interfaces/notify/notify.requests";
 import { nanoid } from "nanoid/non-secure";
 import { figma, SceneNode } from "@bridged.xyz/design-sdk/lib/figma/types/v1";
+import { selectionHandling } from "../features";
 
 interface HanderProps<T = any> {
   id: string;
@@ -32,15 +36,14 @@ figma?.on("selectionchange", () => {
 export class PluginSdkService {
   static onSelectionChange() {
     console.log("onSelectionChange called from sep file");
-    const selection = figma.currentPage.selection;
+    const selection = figma.currentPage.selection as readonly SceneNode[];
 
     function syncSelectionData() {
-      // FIXME
-      handleSync({
+      invokeSync(<TransportPluginEvent<readonly SceneNode[]>>{
         id: nanoid(),
         origin: "app",
         type: "request",
-        namespace: PLUGIN_NS.PLUGIN_SDK_NS_SYNC,
+        namespace: PLUGIN_NS.PLUGIN_SDK_NS_SYNC_WITH_EVENT,
         key: PLUGIN_KEYS.PLUGIN_SDK_EK_SYNC_USER_NODE_SELECTION_DATA,
         data: selection,
       });
@@ -130,7 +133,7 @@ export class PluginSdkService {
     }
 
     // sync data
-    else if (event.namespace == PLUGIN_NS.PLUGIN_SDK_NS_SYNC) {
+    else if (event.namespace == PLUGIN_NS.PLUGIN_SDK_NS_SYNC_WITH_EVENT) {
       // TODO
       throw "not implemented";
       // handleSync();
@@ -245,31 +248,60 @@ export function handleNotify(props: HanderProps<NotifyRequest>) {
   response(props.id, true);
 }
 
+function communicate<T = any>(params: {
+  requestId?: string;
+  data: T;
+  key?: string;
+  type: TransportCommunicationType;
+  error?: Error | undefined;
+}): boolean {
+  const { requestId, data, type, key, error } = params;
+
+  let ns: string = undefined;
+  if (type == "response") {
+    ns = PLUGIN_NS.PLUGIN_SDK_NS_RESPONSE_ALL;
+    console.info(
+      `responding to request ${requestId} with data ${data} and error ${error}`
+    );
+  } else if (type == "event") {
+    ns = PLUGIN_NS.PLUGIN_SDK_NS_SYNC_WITH_EVENT;
+  }
+
+  figma.ui.postMessage(<TransportPluginEvent>{
+    id: requestId,
+    namespace: ns,
+    type: type,
+    error: error,
+    data: data,
+    key: key,
+  });
+
+  return true;
+}
+
 function response<T = any>(
   requestId: string,
   data: T,
   error: Error | undefined = undefined
 ): boolean {
-  console.info(
-    `responding to request ${requestId} with data ${data} and error ${error}`
-  );
-
-  figma.ui.postMessage(<TransportPluginEvent>{
-    id: requestId,
-    namespace: PLUGIN_NS.PLUGIN_SDK_NS_RESPONSE_ALL,
+  return communicate({
+    requestId,
+    data,
+    error,
     type: "response",
-    error: error,
-    data: data,
   });
-
-  return true;
 }
 
 /**
  * this is for syncing data with PluginApp's general data such as currently selected node.
  * @param withEvent
  */
-function handleSync(withEvent: TransportPluginEvent) {}
+function invokeSync(withEvent: TransportPluginEvent): boolean {
+  return communicate({
+    ...withEvent,
+    type: "event",
+  });
+}
 
 function handleDragDropped(props: HanderProps<DragAndDropOnCanvasRequest>) {
   console.log("handling drop event", props.data);

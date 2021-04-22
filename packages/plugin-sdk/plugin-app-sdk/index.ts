@@ -13,6 +13,7 @@ import { NotifyRequest } from "../interfaces/notify/notify.requests";
 import { nanoid } from "nanoid/non-secure";
 import { DragAndDropOnCanvasRequest } from "../interfaces/dragdrop/dragdrop.requests";
 import type { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes";
+import { selectionHandling } from "../features";
 
 export class PluginSdk {
   static window: Window;
@@ -21,6 +22,12 @@ export class PluginSdk {
   }
 
   // region general canvas api
+  static subscribeSelectionChange(
+    handler: selectionHandling.CanvasUserSelectionHandler
+  ) {
+    selectionHandling.registerHandler(handler);
+  }
+
   static get selectedNodeIds(): readonly string[] {
     throw "not implemented";
     return [];
@@ -174,8 +181,13 @@ export class PluginSdk {
   }
 
   static handle(event: TransportPluginEvent) {
-    if (event.type == "response") {
-      this.handleResponse(event);
+    switch (event.type) {
+      case "response": {
+        this.handleResponse(event);
+      }
+      case "event": {
+        this.handleSyncEvent(event);
+      }
     }
   }
 
@@ -195,5 +207,18 @@ export class PluginSdk {
 
     // remove resolved promise from que
     this.removeFromEventQue(event.id);
+  }
+
+  /**
+   * (note about the name) - the name is not "handleEvent" since it can cause some confusion
+   */
+  private static handleSyncEvent(event: TransportPluginEvent) {
+    const { data, namespace, key } = event;
+
+    if (namespace == PLUGIN_NS.PLUGIN_SDK_NS_SYNC_WITH_EVENT) {
+      if (key == PLUGIN_KEYS.PLUGIN_SDK_EK_SYNC_USER_NODE_SELECTION_DATA) {
+        selectionHandling.invokeSelectionUpdate(data);
+      }
+    }
   }
 }
