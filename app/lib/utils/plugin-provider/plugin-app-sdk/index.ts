@@ -20,7 +20,7 @@ import {
 import { NotifyRequest } from "../interfaces/notify/notify.requests";
 import { nanoid } from "nanoid";
 import { DragAndDropOnCanvasRequest } from "../interfaces/dragdrop/dragdrop.requests";
-import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes";
+import type { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes";
 
 export class PluginSdk {
   static window: Window;

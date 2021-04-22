@@ -38,7 +38,7 @@
     "url-loader": "^2.1.0"
   },
   "devDependencies": {
-    "@figma/plugin-typings": "^1.19.2",
+    "@figma/plugin-typings": "^1.19.3",
     "@types/fs-extra": "^9.0.1",
     "@types/node": "^14.11.8",
     "@types/pug": "^2.0.4",
