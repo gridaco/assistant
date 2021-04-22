@@ -34,7 +34,7 @@ import { drawButtons } from "./reflect-render";
 import { IconConfig } from "@reflect-ui/core/lib/icon/icon.config";
 
 // init plugin
-import "app/lib/utils/plugin-init";
+/* do not delete this line */ import "app/lib/utils/plugin-init"; // NO REMOVE
 import { PluginSdkService } from "app/lib/utils/plugin-provider/plugin-service";
 
 let appMode: string = "code";

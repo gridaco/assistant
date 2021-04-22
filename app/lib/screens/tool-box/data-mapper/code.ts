@@ -1,5 +1,9 @@
 import { Figma } from "@bridged.xyz/design-sdk/lib/figma";
 import { mapGrandchildren } from "@bridged.xyz/design-sdk/lib/utils/children";
+import {
+  buildVariantName_Figma,
+  swapVariant,
+} from "@bridged.xyz/design-sdk/lib/utils/variant";
 import { PluginSdk } from "../../../utils/plugin-provider/plugin-app-sdk";
 import { PluginSdkService } from "../../../utils/plugin-provider/plugin-service";
 import {
@@ -8,10 +12,13 @@ import {
 } from "./example-data-source";
 
 export const DATA_SOURCE_NODE_PATTERN = "@//data-source/*";
+export const TEMPLATE_NODE_PATTERN = "@//template-for-manipulation/*";
 
 PluginSdkService.onAppReqquest("custom-test", (data: any) => {
-  console.log("data", data);
   const selection = Figma.figma.currentPage.selection;
+
+  // mapVariant(selection[0] as any, undefined);
+
   selection.forEach((s) => {
     if ("children" in s) {
       mapDataToSelection(s, data); //mockData.getSingleRandom()
@@ -23,13 +30,7 @@ PluginSdkService.onAppReqquest("custom-test", (data: any) => {
   });
 });
 
-// PluginSdk.on(){
-
-// }
-
 // input
-{
-}
 
 // schema
 
@@ -137,6 +138,18 @@ function mapText(
 
 function mapComponent(instance: Figma.InstanceNode, data: any) {
   // loop
+}
+
+const dummyVariantTypes = ["ellipse", "rectangle", "triangle", "poligon"];
+
+function mapVariant(instance: Figma.InstanceNode, data: any) {
+  // demo
+  const type =
+    dummyVariantTypes[Math.floor(Math.random() * dummyVariantTypes.length)];
+
+  const name = buildVariantName_Figma(new Map([["type", type]]));
+  // const
+  swapVariant(instance, name);
 }
 
 type ImageCompatNode = Figma.RectangleNode | Figma.EllipseNode;
