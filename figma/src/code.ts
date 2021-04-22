@@ -84,6 +84,10 @@ async function runon(node: SceneNode) {
     return;
   }
 
+  if (process.env.NODE_ENV == "development") {
+    console.log("convertedSelection", convertedSelection);
+  }
+
   //#region  run linter
   if (appMode == "lint") {
     const feedbacks = runLints(convertedSelection);
@@ -162,6 +166,7 @@ async function runon(node: SceneNode) {
     data: retrieveFlutterColors([convertedSelection]),
   });
 }
+
 figma.on("selectionchange", () => {
   // clear the console for better debugging
   console.clear();
@@ -172,6 +177,7 @@ figma.on("selectionchange", () => {
   switch (selectionType) {
     case SelectionAnalysis.empty:
       // ignore when nothing was selected
+      console.log("deselection");
       figma.ui.postMessage({
         type: "empty",
       });

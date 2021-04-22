@@ -1,4 +1,4 @@
-import { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes";
+import type { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes";
 
 export function getPrimarySelectedNode(selection: readonly ReflectSceneNode[]) {
   // if (){

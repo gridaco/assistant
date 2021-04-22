@@ -1224,7 +1224,7 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@figma/plugin-typings@^1.19.2":
+"@figma/plugin-typings@^1.19.3":
   version "1.19.3"
   resolved "https://registry.yarnpkg.com/@figma/plugin-typings/-/plugin-typings-1.19.3.tgz#e5024ed0564a7fb0c2a3325652605ce3814e0adc"
   integrity sha512-Tm26pPQoltD7bYfeC/+d4RFsmdcrmAatq3lhGIfKNC80ETlZHv5scWJZIvCR0EULJNdtIaiQNskJLSqcPzHafQ==
