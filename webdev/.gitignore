@@ -23,3 +23,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# ---------------------
+# webdev is a dev mode repo so we are including .env explicitly only for this repo
+# ---------------------
+!.env

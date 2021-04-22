@@ -7,6 +7,7 @@ import {
   PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META,
   PLUGIN_SDK_EK_SIMPLE_NOTIFY,
   PLUGIN_SDK_NAMESPACE_BASE_TOKEN,
+  PLUGIN_SDK_NS_APP_REQUEST_CUSTOM_ALL,
   PLUGIN_SDK_NS_DRAG_AND_DROP,
   PLUGIN_SDK_NS_META_API,
   PLUGIN_SDK_NS_NOTIFY_API,
@@ -27,18 +28,21 @@ import {
   NodeMetaUpdateRequest,
 } from "../interfaces/meta/meta.requests";
 import { NotifyRequest } from "../interfaces/notify/notify.requests";
-
+import { figma, SceneNode } from "@bridged.xyz/design-sdk/lib/figma/types/v1";
 interface HanderProps<T = any> {
   id: string;
   key: string;
   data: T;
 }
 
-figma.on("selectionchange", () => {
+figma?.on("selectionchange", () => {
   PluginSdkService.onSelectionChange();
 });
 
 export class PluginSdkService {
+  private static _appRequestHandlers: Map<string, (data) => void> = new Map();
+
+  // Todo - rename as invokeOnSelectionChange for no confusion
   static onSelectionChange() {
     const selection = figma.currentPage.selection;
     if (selection.length == 0) {
@@ -118,14 +122,42 @@ export class PluginSdkService {
     }
 
     // drag & drop
-    else if (PLUGIN_SDK_NS_DRAG_AND_DROP) {
+    else if (event.namespace == PLUGIN_SDK_NS_DRAG_AND_DROP) {
       if (PLUGIN_SDK_EK_DRAG_AND_DROPPED) {
         handleDragDropped(handerProps);
       }
+    } else if (event.namespace == PLUGIN_SDK_NS_APP_REQUEST_CUSTOM_ALL) {
+      this.invokeAppRequestHandler(event.key, event.data);
     }
 
     return true;
   }
+
+  ////#region custom app request handling
+  /**
+   * this is a callback register method for code side thread.
+   * when custom event or request raised from app side (via PluginSdk).
+   * this listens to that event and transports to callback so custom handler can be registered easily.
+   * this shall be called once on warmup, do not use this on runtime via logic gate since it has no unregister method. (intended this way)
+   * @param key - a event key (namespace is not required)
+   * @param callback
+   */
+  static onAppReqquest<T>(key: string, callback: (data: T) => void) {
+    console.log(`registering custom app event handler for key: ${key}.`);
+    this._appRequestHandlers.set(key, callback);
+  }
+
+  private static invokeAppRequestHandler(key: string, data: any) {
+    const handler = this._appRequestHandlers.get(key);
+    if (handler) {
+      handler(data);
+    } else {
+      console.warn(
+        `custom app request with key ${key} was raised, but no handler was found. please add handler for ${key} with "PluginSdkService.onAppReqquest(${key}, callback)" or remove unused event`
+      );
+    }
+  }
+  ////#endregion custom app request handling
 }
 
 function handleMetaEvent(props: HanderProps) {

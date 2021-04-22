@@ -5,6 +5,7 @@ import {
   PLUGIN_SDK_EK_REQUEST_FETCH_NODE_META,
   PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META,
   PLUGIN_SDK_EK_SIMPLE_NOTIFY,
+  PLUGIN_SDK_NS_APP_REQUEST_CUSTOM_ALL,
   PLUGIN_SDK_NS_DRAG_AND_DROP,
   PLUGIN_SDK_NS_META_API,
   PLUGIN_SDK_NS_NOTIFY_API,
@@ -18,9 +19,9 @@ import {
   NodeMetaUpdateRequest,
 } from "../interfaces/meta/meta.requests";
 import { NotifyRequest } from "../interfaces/notify/notify.requests";
-import { nanoid } from "nanoid";
 import { DragAndDropOnCanvasRequest } from "../interfaces/dragdrop/dragdrop.requests";
 import type { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes";
+import { reqid } from "../_id";
 
 export class PluginSdk {
   static window: Window;
@@ -167,7 +168,7 @@ export class PluginSdk {
   }
 
   private static makeRequetsId(key: string): string {
-    return `${key}-${nanoid()}`;
+    return `${key}-${reqid()}`;
   }
 
   private static registerToEventQue(requestId: string, resolve, reject) {
@@ -203,5 +204,17 @@ export class PluginSdk {
 
     // remove resolved promise from que
     this.removeFromEventQue(event.id);
+  }
+
+  /**
+   * raises custom app event/request
+   * see PluginSdkService#onAppRequest for more detail
+   */
+  static appEvent(key: string, data: any) {
+    this.request({
+      namespace: PLUGIN_SDK_NS_APP_REQUEST_CUSTOM_ALL,
+      key: key,
+      data: data,
+    });
   }
 }

@@ -1,4 +1,3 @@
-import { PluginSdkService } from "app/lib/utils/plugin-provider/plugin-service";
 import { convertIntoReflectNode } from "@bridged.xyz/design-sdk/lib/nodes/conversion";
 import { buildApp } from "core/lib/flutter";
 import { retrieveFlutterColors } from "core/lib/flutter/utils/fetch-colors";
@@ -33,6 +32,10 @@ import { ReflectFrameNode } from "@bridged.xyz/design-sdk/lib/nodes";
 import { replaceAllTextFontInFrame } from "./tool-box/manipulate/font-replacer";
 import { drawButtons } from "./reflect-render";
 import { IconConfig } from "@reflect-ui/core/lib/icon/icon.config";
+
+// init plugin
+import "app/lib/utils/plugin-init";
+import { PluginSdkService } from "app/lib/utils/plugin-provider/plugin-service";
 
 let appMode: string = "code";
 export let selection: SceneNode;
