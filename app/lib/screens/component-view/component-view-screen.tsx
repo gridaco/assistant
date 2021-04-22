@@ -13,6 +13,7 @@ import { Divider, IconButton, Typography } from "@material-ui/core";
 import { ASSISTANT_PLUGIN_NAMESPACE } from "../../constants";
 import { Edit, Settings } from "@material-ui/icons";
 import { CodeboxEditDialog } from "../../components/codebox-edit-dialog";
+import { schema } from "coli";
 
 interface VisualComponentManifest {
   name: string;
@@ -23,7 +24,7 @@ interface VisualComponentManifest {
   codeSnippet: string;
 }
 
-export default function ComponentViewScreen() {
+export function ComponentViewScreen() {
   const [data, setData] = useState<VisualComponentManifest>(undefined);
   // 1. get selected layer
   const [selectednode, setselectednode] = useState<string>(undefined);

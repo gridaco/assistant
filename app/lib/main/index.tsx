@@ -23,8 +23,8 @@ import { Switch, Route, Link, BrowserRouter, Redirect } from "react-router-dom";
 // region screens import
 import { FontReplacerScreen } from "../screens/tool-box/font-replacer";
 import { ButtonMakerScreen } from "../screens/design/button-maker-screen";
-import ComponentViewScreen from "../screens/component-view";
-import LayoutViewScreen from "../screens/layout-view";
+import { ComponentViewScreen } from "../screens/component-view";
+import { LayoutViewScreen } from "../screens/layout-view";
 import { LintScreen } from "../screens/lint-screen";
 import { GlobalizationScreen } from "../screens/g11n-screen";
 import { IconsScreen } from "../screens/icons-screen";
