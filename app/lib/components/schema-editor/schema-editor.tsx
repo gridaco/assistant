@@ -7,8 +7,13 @@ import {
   SingleLayerPropertyDefinition,
   ISingleLayerProperty,
 } from "./single-property";
-import { IReflectNodeReference } from "@bridged.xyz/design-sdk/lib/nodes";
+import {
+  IReflectNodeReference,
+  ReflectSceneNodeType,
+} from "@bridged.xyz/design-sdk/lib/nodes";
 import { mapGrandchildren } from "@bridged.xyz/design-sdk/lib/utils";
+import { extractPropertiesFromVariantName_Figma } from "@bridged.xyz/design-sdk/lib/utils/variant";
+import { Logger } from "../../utils";
 
 const ERROR_MESSAGES = {
   nothing_is_selected: "Nothing is selected",
@@ -38,16 +43,16 @@ export function SchemaEditor(props: {}) {
   useEffect(() => {
     if (selection) {
       if (
-        selection?.node?.origin != "COMPONENT" &&
-        selection?.node?.origin != "COMPONENT_SET" &&
-        selection?.node?.origin != "INSTANCE"
+        selection?.node?.origin != ReflectSceneNodeType.component &&
+        selection?.node?.origin != ReflectSceneNodeType.variant_set &&
+        selection?.node?.origin != ReflectSceneNodeType.instance
       ) {
         setMode("single-layer-property");
-      } else if (selection?.node?.origin == "COMPONENT") {
+      } else if (selection?.node?.origin == ReflectSceneNodeType.component) {
         setMode("master-component");
-      } else if (selection?.node?.origin == "COMPONENT_SET") {
+      } else if (selection?.node?.origin == ReflectSceneNodeType.variant_set) {
         setMode("master-variant-set");
-      } else if (selection?.node?.origin == "INSTANCE") {
+      } else if (selection?.node?.origin == ReflectSceneNodeType.instance) {
         setMode("instance");
       }
     } else {
@@ -162,9 +167,29 @@ function _Mode_Variant_Set(props: {
 }
 
 function _Mode_Component(props: { node: IReflectNodeReference }) {
+  const { node } = props;
   const [properties, setProperties] = useState<ISingleLayerProperty[]>(null);
 
-  const { node } = props;
+  // 0. check if variant compat component (if it's parent is variant-set then it is.)
+  const isVariantCompat =
+    node.parentReference.origin == ReflectSceneNodeType.variant_set;
+  Logger.debug("isVariantCompat", isVariantCompat);
+  // if variant, load default property set by variant namings.
+  let variantPropertyNames: string[];
+  if (isVariantCompat) {
+    // init names
+    variantPropertyNames = [];
+
+    // extract example property k:v
+    const exampleProperties = extractPropertiesFromVariantName_Figma(node.name);
+
+    // add names to propertyNames arr
+    exampleProperties.forEach((v, k) => {
+      // todo? - maybe sort alphabetically?
+      variantPropertyNames.push(k);
+    });
+  }
+
   //1. list all layers under this component
   const grandchilds = mapGrandchildren(node);
 
@@ -188,6 +213,15 @@ function _Mode_Component(props: { node: IReflectNodeReference }) {
   return (
     <>
       <h6>Properties</h6>
+      {/*  */}
+      {variantPropertyNames ? (
+        variantPropertyNames.map((n) => {
+          return <p>property from variant: {n}</p>;
+        })
+      ) : (
+        <></>
+      )}
+      {/*  */}
       {properties ? (
         <>
           {properties.map((p) => {
