@@ -1,6 +1,6 @@
 import { Button, Divider, TextField } from "@material-ui/core";
 import React, { useRef, useState } from "react";
-
+import { schema } from "coli";
 type UserInteractionMode = "editing" | "viewing";
 
 const ModeToggleButton = (props: {
@@ -14,16 +14,11 @@ const ModeToggleButton = (props: {
   return <Button onClick={props.onSave}>save</Button>;
 };
 
+/**
+ * Storable object. this is stored to layer's metadata. do not modify this.
+ */
 export interface ISingleLayerProperty {
-  name: string;
-  type: string;
-  /**
-   * spec for json schema
-   */
-  description?: string;
-  /**
-   * how this layer will be located percisely in complex design node tree
-   */
+  schema: schema.IProperty;
   locateMode: string;
   /**
    * target property on layer.
@@ -35,6 +30,7 @@ export interface ISingleLayerProperty {
 }
 interface ISingleLayerPropertyDefinitionProps {
   initial?: ISingleLayerProperty;
+  initialMode?: UserInteractionMode;
   onSave: (data: ISingleLayerProperty) => void;
 }
 
@@ -44,9 +40,8 @@ export function SingleLayerPropertyDefinition(
   const [data, setData] = useState<ISingleLayerProperty>(props.initial);
 
   // if no initial data provided, start with editing mode
-  const _initialMode: UserInteractionMode = props.initial
-    ? "viewing"
-    : "editing";
+  const _initialMode: UserInteractionMode =
+    props.initialMode ?? (props.initial ? "viewing" : "editing");
 
   // mode state of the user interaction
   const [mode, setMode] = useState<UserInteractionMode>(_initialMode);
@@ -69,11 +64,14 @@ export function SingleLayerPropertyDefinition(
         <TextField
           required
           label="name"
-          defaultValue={data?.name}
+          defaultValue={data?.schema.name}
           onChange={(e) => {
             setData({
               ...data,
-              name: e.target.value,
+              schema: {
+                ...data.schema,
+                name: e.target.value,
+              },
             });
           }}
           helperText="name for this property"
@@ -81,11 +79,14 @@ export function SingleLayerPropertyDefinition(
         />
         <TextField
           label="description"
-          defaultValue={data?.description}
+          defaultValue={data?.schema.description}
           onChange={(e) => {
             setData({
               ...data,
-              description: e.target.value,
+              schema: {
+                ...data.schema,
+                description: e.target.value,
+              },
             });
           }}
           helperText="description for this property"
@@ -94,11 +95,14 @@ export function SingleLayerPropertyDefinition(
         <TextField
           label="type"
           required
-          defaultValue={data?.type}
+          defaultValue={data?.schema.type}
           onChange={(e) => {
             setData({
               ...data,
-              type: e.target.value,
+              schema: {
+                ...data.schema,
+                type: e.target.value,
+              },
             });
           }}
           disabled={disableInputs}

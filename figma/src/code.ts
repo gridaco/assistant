@@ -28,7 +28,12 @@ import { makeApp } from "core/lib/flutter/make/app.make";
 import { ImageRepositories } from "core/lib/assets-repository";
 import { IconPlacement, renderSvgIcon } from "./reflect-render/icons.render";
 import { makeVanilla } from "core/lib/vanilla";
-import { ReflectFrameNode } from "@bridged.xyz/design-sdk/lib/nodes";
+import { Logger } from "app/lib/utils";
+import {
+  IReflectNodeReference,
+  ReflectFrameNode,
+  ReflectSceneNode,
+} from "@bridged.xyz/design-sdk/lib/nodes";
 import { replaceAllTextFontInFrame } from "./tool-box/manipulate/font-replacer";
 import { drawButtons } from "./reflect-render";
 import { IconConfig } from "@reflect-ui/core/lib/icon/icon.config";
@@ -36,9 +41,10 @@ import { IconConfig } from "@reflect-ui/core/lib/icon/icon.config";
 // init plugin
 /* do not delete this line */ import "app/lib/utils/plugin-init"; // NO REMOVE
 import { PluginSdkService } from "app/lib/utils/plugin-provider/plugin-service";
+import { makeReference } from "@bridged.xyz/design-sdk/lib/nodes/types/reflect-node-reference";
 
 let appMode: string = "code";
-export let selection: SceneNode;
+export let singleFigmaNodeSelection: SceneNode;
 export let targetNodeId: string;
 
 async function showUI() {
@@ -60,11 +66,7 @@ function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function runon(node: SceneNode) {
-  // check [ignoreStackParent] description
-  selection = node;
-  targetNodeId = selection.id;
-
+async function runon(rnode: ReflectSceneNode) {
   // region
   // notify ui that the computing process has been started.
   // use this for when displaying loading indicator etc.. for general purpose.
@@ -76,36 +78,17 @@ async function runon(node: SceneNode) {
   });
   // endregion
 
-  try {
-    console.log(
-      "constraints",
-      (figma.currentPage.selection[0] as any).constraints,
-      (figma.currentPage.selection[0] as any).layoutAlign
-    );
-  } catch (e) {}
-
-  // FIXME
-  const safeParent = selection.parent as any;
-  const convertedSelection = convertIntoReflectNode(
-    selection as any,
-    safeParent
-  );
-
   // if converted node returned nothing
-  if (!convertedSelection) {
+  if (!rnode) {
     figma.notify(
       'not a valid selection. this node is ignored with name : "//@ignore"'
     );
     return;
   }
 
-  if (process.env.NODE_ENV == "development") {
-    console.log("convertedSelection", convertedSelection);
-  }
-
   //#region  run linter
   if (appMode == "lint") {
-    const feedbacks = runLints(convertedSelection);
+    const feedbacks = runLints(rnode);
     console.warn(feedbacks);
     figma.ui.postMessage({
       type: EK_LINT_FEEDBACK,
@@ -116,9 +99,7 @@ async function runon(node: SceneNode) {
 
   // region make vanilla
   if (appMode == "g11n" || appMode == "exporter") {
-    const globalizatoinScreen = makeVanilla(
-      convertedSelection as ReflectFrameNode
-    );
+    const globalizatoinScreen = makeVanilla(rnode as ReflectFrameNode);
     const vanillaTransportableImageRepository = await globalizatoinScreen.repository.makeTransportable();
     figma.ui.postMessage({
       type: EK_IMAGE_ASSET_REPOSITORY_MAP,
@@ -132,7 +113,7 @@ async function runon(node: SceneNode) {
   // endregion
 
   if (appMode == "code") {
-    const buildResult = buildApp(convertedSelection);
+    const buildResult = buildApp(rnode);
 
     // host images
     const transportableImageAssetRepository = await ImageRepositories.current.makeTransportable();
@@ -157,7 +138,7 @@ async function runon(node: SceneNode) {
   }
 
   // send preview image
-  selection
+  singleFigmaNodeSelection
     .exportAsync({
       format: "PNG",
       contentsOnly: true,
@@ -171,14 +152,14 @@ async function runon(node: SceneNode) {
         type: EK_PREVIEW_SOURCE,
         data: {
           source: d,
-          name: selection.name,
+          name: singleFigmaNodeSelection.name,
         },
       });
     });
 
   figma.ui.postMessage({
     type: "colors",
-    data: retrieveFlutterColors([convertedSelection]),
+    data: retrieveFlutterColors([rnode]),
   });
 }
 
@@ -206,11 +187,26 @@ figma.on("selectionchange", () => {
       return false;
     case SelectionAnalysis.single:
       const target = figma.currentPage.selection[0];
+      // check [ignoreStackParent] description
+      singleFigmaNodeSelection = target;
+      targetNodeId = singleFigmaNodeSelection.id;
+
+      // todo - add memoization
+      const rnode = convertIntoReflectNode(
+        singleFigmaNodeSelection as any,
+        singleFigmaNodeSelection.parent as any
+      );
+
+      Logger.debug("reflect-converted-selection", rnode);
+
+      // region sync selection event (search "selectionchange" for references)
       figma.ui.postMessage({
         type: "selectionchange",
-        data: target,
+        data: makeReference(rnode),
       });
-      runon(target);
+      // endregion
+
+      runon(rnode);
       return;
   }
 });
@@ -232,7 +228,8 @@ PluginSdkService.registerDragAndDropHandler(
 
 // todo pass data instead of relying in types
 figma.ui.onmessage = async (msg) => {
-  console.log("[event] figma plugin data received", msg);
+  // logging
+  // console.log("[event] figma plugin data received", msg);
 
   const generalHandlingResult = PluginSdkService.handle(msg);
   // if event is handled by general event handler, no additional handling is required.
@@ -253,9 +250,9 @@ figma.ui.onmessage = async (msg) => {
   } else if (type == EK_CREATE_ICON) {
     createIcon(data);
   } else if (type == EK_REPLACE_FONT) {
-    if (selection.type == "FRAME") {
+    if (singleFigmaNodeSelection.type == "FRAME") {
       const font = "Roboto";
-      await replaceAllTextFontInFrame(selection, font);
+      await replaceAllTextFontInFrame(singleFigmaNodeSelection, font);
       figma.notify(`successfuly changed font to ${font}`);
     } else {
       figma.notify("cannot replace font of non-frame node");
@@ -298,18 +295,18 @@ async function draw100000Buttons() {
 }
 
 function hideAllExceptFromCurrentSelection(except: NodeType) {
-  if (selection.type != "FRAME") {
+  if (singleFigmaNodeSelection.type != "FRAME") {
     figma.notify("hide-all tools can be used only for framenode");
   } else {
-    hideAllExcept(selection, except);
+    hideAllExcept(singleFigmaNodeSelection, except);
   }
 }
 
 function hideAllOnlyFromCurrentSelection(only: NodeType) {
-  if (selection.type != "FRAME") {
+  if (singleFigmaNodeSelection.type != "FRAME") {
     figma.notify("hide-all tools can be used only for framenode");
   } else {
-    hideAllOnly(selection, only);
+    hideAllOnly(singleFigmaNodeSelection, only);
   }
 }
 

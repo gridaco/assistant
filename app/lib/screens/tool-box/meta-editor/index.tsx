@@ -8,6 +8,7 @@ import {
   MetaDataRepository,
   MetaDataRepositoryFactory,
 } from "../../../repositories/metadata";
+import { useSingleSelection } from "../../../utils/plugin-hooks";
 interface MetaDataFieldDef {
   name: string;
   type: MetaDataFieldType;
@@ -58,17 +59,7 @@ const DefaultComponentMetaDataSchema: ReadonlyArray<MetaDataFieldDef> = [
 ];
 
 export function MetaEditorScreen() {
-  const [selectednode, setselectednode] = useState<string>(undefined);
-  useEffect(() => {
-    window.addEventListener("message", (ev) => {
-      const message = ev.data.pluginMessage;
-      if (message?.type == "selectionchange") {
-        const node = message.data;
-        console.log("node", node);
-        setselectednode(node.id);
-      }
-    });
-  }, []);
+  const selection = useSingleSelection();
 
   const [editable, seteditable] = useState<boolean>(false);
 
@@ -76,12 +67,12 @@ export function MetaEditorScreen() {
     seteditable(event.target.checked);
   };
 
-  if (!selectednode) {
+  if (!selection) {
     return <EmptyState />;
   }
 
   return (
-    <div key={selectednode}>
+    <div key={selection.id}>
       <FormControlLabel
         control={
           <Switch
@@ -96,7 +87,7 @@ export function MetaEditorScreen() {
       <MetaDataDisplayForm
         editable={editable}
         type="component"
-        id={selectednode}
+        id={selection.id}
       />
     </div>
   );

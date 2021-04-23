@@ -23,6 +23,7 @@ import { NotifyRequest } from "../interfaces/notify/notify.requests";
 import { DragAndDropOnCanvasRequest } from "../interfaces/dragdrop/dragdrop.requests";
 import type { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes";
 import { reqid } from "../_id";
+import { ASSISTANT_PLUGIN_NAMESPACE } from "../../../constants";
 
 export class PluginSdk {
   static window: Window;
@@ -75,8 +76,24 @@ export class PluginSdk {
     });
   }
 
-  static async fetchMetadata(request: NodeMetaFetchRequest): Promise<any> {
-    return this.request({
+  /**
+   * fetches the metadata with bridged default namespace provided.
+   */
+  static async fetchMetadata_bridged<T = any>(
+    on: string,
+    key: string
+  ): Promise<T> {
+    return this.fetchMetadata<T>({
+      id: on,
+      key: key,
+      namespace: ASSISTANT_PLUGIN_NAMESPACE,
+    });
+  }
+
+  static async fetchMetadata<T = any>(
+    request: NodeMetaFetchRequest
+  ): Promise<T> {
+    return this.request<T>({
       namespace: PLUGIN_SDK_NS_META_API,
       key: PLUGIN_SDK_EK_REQUEST_FETCH_NODE_META,
       data: request,

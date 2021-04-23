@@ -81,10 +81,11 @@ export class PluginSdkService {
   }
 
   static handle(event: TransportPluginEvent): boolean {
-    console.info(
-      `start handling event from PluginSdkServer with event - `,
-      event
-    );
+    // logging
+    // console.info(
+    //   `start handling event from PluginSdkServer with event - `,
+    //   event
+    // );
 
     // validate the givven event
     if (!event.namespace) {

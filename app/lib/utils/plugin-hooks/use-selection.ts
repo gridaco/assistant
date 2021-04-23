@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { SceneNode } from "@bridged.xyz/design-sdk/lib/figma/types/v1";
+import { IReflectNodeReference } from "@bridged.xyz/design-sdk/lib/nodes";
 export enum SelectionType {
   "single", // updated with single selection
   "multi", // updated with multi selection
@@ -9,13 +9,13 @@ export enum SelectionType {
 
 interface SingleSelectionData {
   type: SelectionType.single;
-  node: SceneNode;
+  node: IReflectNodeReference;
   id: string;
 }
 
 interface MultiSelectionData {
   type: SelectionType.multi;
-  nodes: SceneNode[];
+  nodes: IReflectNodeReference[];
 }
 
 interface NoneSelectionData {
@@ -34,8 +34,10 @@ export function useSelection(): SelectionData | undefined {
     function evl(ev) {
       const message = ev.data.pluginMessage;
       if (message?.type == "selectionchange") {
-        const node = message.data;
-        handleSelectionChange(node);
+        const nodes = message.data;
+        console.log("use-selection:nodes", nodes);
+
+        handleSelectionChange(nodes);
       }
     }
 
@@ -48,16 +50,13 @@ export function useSelection(): SelectionData | undefined {
       } else {
         if (node) {
           setselectednode({
-            //@ts-ignore
             type: SelectionType.single,
-            nodes: node,
+            node: node,
             id: node.id,
           });
         } else {
           setselectednode({
-            //@ts-ignore
             type: SelectionType.none,
-            nodes: [],
           });
         }
       }

@@ -7,6 +7,8 @@ import {
   SingleLayerPropertyDefinition,
   ISingleLayerProperty,
 } from "./single-property";
+import { IReflectNodeReference } from "@bridged.xyz/design-sdk/lib/nodes";
+import { mapGrandchildren } from "@bridged.xyz/design-sdk/lib/utils";
 
 const ERROR_MESSAGES = {
   nothing_is_selected: "Nothing is selected",
@@ -17,8 +19,8 @@ const ERROR_MESSAGES = {
 type EditerMode =
   // single layer - no matter where it lives under a componennt or a raw group, etc.
   | "single-layer-property"
-  // component with variant compat
-  | "master-variant-component"
+  // component set frame
+  | "master-variant-set"
   // componennt with/without variant compat (can be used for both, but use it only for non variant component)
   | "master-component"
   // instance of simple or varianted component
@@ -36,16 +38,16 @@ export function SchemaEditor(props: {}) {
   useEffect(() => {
     if (selection) {
       if (
-        selection?.node?.type != "COMPONENT" &&
-        selection?.node?.type != "COMPONENT_SET" &&
-        selection?.node?.type != "INSTANCE"
+        selection?.node?.origin != "COMPONENT" &&
+        selection?.node?.origin != "COMPONENT_SET" &&
+        selection?.node?.origin != "INSTANCE"
       ) {
         setMode("single-layer-property");
-      } else if (selection?.node?.type == "COMPONENT") {
+      } else if (selection?.node?.origin == "COMPONENT") {
         setMode("master-component");
-      } else if (selection?.node?.type == "COMPONENT_SET") {
-        setMode("master-variant-component");
-      } else if (selection?.node?.type == "INSTANCE") {
+      } else if (selection?.node?.origin == "COMPONENT_SET") {
+        setMode("master-variant-set");
+      } else if (selection?.node?.origin == "INSTANCE") {
         setMode("instance");
       }
     } else {
@@ -62,11 +64,13 @@ export function SchemaEditor(props: {}) {
       case "loading":
         return <_Mode_Loading />;
       case "single-layer-property":
-        return <_Mode_SingleLayerProperty id={selection.id} />;
-      case "master-variant-component":
-        return <>loading..</>;
+        return <_Mode_SingleLayerProperty node={selection.node} />;
+      case "master-variant-set":
+        return <_Mode_Variant_Set />;
       case "master-component":
-        return <_Mode_Variant_Component />;
+        return <_Mode_Component node={selection.node} />;
+      case "instance":
+        return <_Mode_Instance node={selection.node} />;
       default:
         throw `${mode} not handled`;
     }
@@ -88,8 +92,10 @@ function _Mode_Loading() {
   return <>loading..</>;
 }
 
-function _Mode_SingleLayerProperty(props: { id: string }) {
-  const { id } = props;
+function _Mode_SingleLayerProperty(props: { node: IReflectNodeReference }) {
+  const { node } = props;
+  const id = node.id;
+
   const [data, setData] = useState<ISingleLayerProperty[]>([]);
   const handleOnSave = (d: ISingleLayerProperty) => {
     const newData = data;
@@ -119,19 +125,82 @@ function _Mode_SingleLayerProperty(props: { id: string }) {
 
   return (
     <>
-      {data.map((d) => (
+      {data.length > 0 ? (
+        data.map((d) => (
+          <SingleLayerPropertyDefinition
+            key={d?.schema.name}
+            onSave={handleOnSave}
+            initial={d}
+          />
+        ))
+      ) : (
+        //   automatically preset a new property
         <SingleLayerPropertyDefinition
-          key={d?.name}
+          key={"new"}
+          initialMode={"editing"}
           onSave={handleOnSave}
-          initial={d}
+          initial={{
+            schema: {
+              name: `${node.name}`,
+              type: "string",
+            },
+            targetProperty: undefined,
+            locateMode: "auto",
+          }}
         />
-      ))}
+      )}
     </>
   );
 }
 
-function _Mode_Variant_Component() {
-  return <p>variant component mode</p>;
+function _Mode_Variant_Set(props: {
+  node?: IReflectNodeReference;
+  defaultComponent?: IReflectNodeReference;
+}) {
+  // TODO
+  return <p>select component inside variant set</p>;
 }
 
-function _Mode_Component() {}
+function _Mode_Component(props: { node: IReflectNodeReference }) {
+  const [properties, setProperties] = useState<ISingleLayerProperty[]>(null);
+
+  const { node } = props;
+  //1. list all layers under this component
+  const grandchilds = mapGrandchildren(node);
+
+  //2. extract schema from layers
+  useEffect(() => {
+    Promise.all(
+      grandchilds.map((c) => {
+        return PluginSdk.fetchMetadata_bridged<ISingleLayerProperty>(
+          c.id,
+          "layer-property-data"
+        );
+      })
+    ).then((res) => {
+      const layersWithPropertyData = res.filter((i) => i !== undefined);
+      setProperties(layersWithPropertyData);
+    });
+  }, []);
+
+  //3. display available layer schema as this component's property
+
+  return (
+    <>
+      <h6>Properties</h6>
+      {properties ? (
+        <>
+          {properties.map((p) => {
+            return <p>{JSON.stringify(p)}</p>;
+          })}
+        </>
+      ) : (
+        <>Loading..</>
+      )}
+    </>
+  );
+}
+
+function _Mode_Instance(props: { node: IReflectNodeReference }) {
+  return <></>;
+}
