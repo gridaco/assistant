@@ -30,7 +30,6 @@ import { IconPlacement, renderSvgIcon } from "./reflect-render/icons.render";
 import { makeVanilla } from "core/lib/vanilla";
 import { Logger } from "app/lib/utils";
 import {
-  IReflectNodeReference,
   ReflectFrameNode,
   ReflectSceneNode,
 } from "@bridged.xyz/design-sdk/lib/nodes";

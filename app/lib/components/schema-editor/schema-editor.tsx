@@ -7,13 +7,11 @@ import {
   SingleLayerPropertyDefinition,
   ISingleLayerProperty,
 } from "./single-property";
-import {
-  IReflectNodeReference,
-  ReflectSceneNodeType,
-} from "@bridged.xyz/design-sdk/lib/nodes";
+import { ReflectSceneNodeType } from "@bridged.xyz/design-sdk/lib/nodes";
 import { mapGrandchildren } from "@bridged.xyz/design-sdk/lib/utils";
 import { extractPropertiesFromVariantName_Figma } from "@bridged.xyz/design-sdk/lib/utils/variant";
 import { Logger } from "../../utils";
+import { IReflectNodeReference } from "../../../../figma/dist/packages/design-sdk/lib/nodes/types/reflect-node-reference";
 
 const ERROR_MESSAGES = {
   nothing_is_selected: "Nothing is selected",
@@ -173,7 +171,7 @@ function _Mode_Component(props: { node: IReflectNodeReference }) {
   // 0. check if variant compat component (if it's parent is variant-set then it is.)
   const isVariantCompat =
     node.parentReference.origin == ReflectSceneNodeType.variant_set;
-  Logger.debug("isVariantCompat", isVariantCompat);
+
   // if variant, load default property set by variant namings.
   let variantPropertyNames: string[];
   if (isVariantCompat) {
@@ -182,6 +180,8 @@ function _Mode_Component(props: { node: IReflectNodeReference }) {
 
     // extract example property k:v
     const exampleProperties = extractPropertiesFromVariantName_Figma(node.name);
+
+    // extract variant types as enum by value maps
 
     // add names to propertyNames arr
     exampleProperties.forEach((v, k) => {

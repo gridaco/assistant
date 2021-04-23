@@ -68,46 +68,50 @@ export function ComponentViewScreen() {
   return (
     <div>
       <Preview auto />
-      <form key={JSON.stringify(data)}>
-        <p>component view placeholder</p>
-        <EditableComponentMetaFieldSingleValueDisplay
-          name={"name"}
-          value={data?.name}
-          handleSave={(c) => {
-            updateData("name", c);
-          }}
-        />
-        <EditableComponentMetaFieldSingleValueDisplay
-          name={"description"}
-          value={data?.description}
-          handleSave={(c) => {
-            updateData("description", c);
-          }}
-        />
-        <EditableComponentMetaFieldSingleValueDisplay
-          name={"storybook"}
-          button
-          value={data?.storybook}
-          handleSave={(c) => {
-            updateData("storybook", c);
-          }}
-        />
-        <EditableComponentMetaFieldSingleValueDisplay
-          name={"documentation"}
-          button
-          value={data?.docsUrl}
-          handleSave={(c) => {
-            updateData("docsUrl", c);
-          }}
-        />
+      {selection ? (
+        <form key={JSON.stringify(data)}>
+          <p>component view placeholder</p>
+          <EditableComponentMetaFieldSingleValueDisplay
+            name={"name"}
+            value={data?.name}
+            handleSave={(c) => {
+              updateData("name", c);
+            }}
+          />
+          <EditableComponentMetaFieldSingleValueDisplay
+            name={"description"}
+            value={data?.description}
+            handleSave={(c) => {
+              updateData("description", c);
+            }}
+          />
+          <EditableComponentMetaFieldSingleValueDisplay
+            name={"storybook"}
+            button
+            value={data?.storybook}
+            handleSave={(c) => {
+              updateData("storybook", c);
+            }}
+          />
+          <EditableComponentMetaFieldSingleValueDisplay
+            name={"documentation"}
+            button
+            value={data?.docsUrl}
+            handleSave={(c) => {
+              updateData("docsUrl", c);
+            }}
+          />
 
-        <ComponentCodebox
-          code={data?.codeSnippet}
-          onCodeChange={(c) => {
-            updateData("codeSnippet", c);
-          }}
-        />
-      </form>
+          <ComponentCodebox
+            code={data?.codeSnippet}
+            onCodeChange={(c) => {
+              updateData("codeSnippet", c);
+            }}
+          />
+        </form>
+      ) : (
+        <></>
+      )}
       <ComponentSchemaEditor />
     </div>
   );
