@@ -20,6 +20,8 @@ export const PLUGIN_SDK_EK_REQUEST_FETCH_NODE_META =
   "assistant/tools/node-meta-editor/fetch";
 export const PLUGIN_SDK_EK_REQUEST_FETCH_NODE_MAIN_COMPONENT_META =
   "assistant/tools/node-meta-editor/fetch/main-component";
+export const PLUGIN_SDK_EK_REQUEST_FETCH_NODE_MAIN_COMPONENT_LAYER_META =
+  "assistant/tools/node-meta-editor/fetch/main-component/layer";
 export const PUGIN_SDK_EK_REQUEST_UPDATE_NODE_META =
   "assistant/tools/node-meta-editor/update";
 export const PUGIN_SDK_EK_REQUEST_UPDATE_MAIN_COMPONENT_META =

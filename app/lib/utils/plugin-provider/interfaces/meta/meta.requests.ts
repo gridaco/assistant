@@ -21,6 +21,9 @@ export interface NodeMetaFetchRequest {
 }
 
 export interface NodeMetaUpdateRequest<T = any> {
+  /**
+   * the id of node
+   */
   id: string;
   namespace: string;
   key: string;

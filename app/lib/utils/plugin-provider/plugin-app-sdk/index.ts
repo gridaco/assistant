@@ -1,6 +1,7 @@
 import {
   BasePluginEvent,
   PLUGIN_SDK_EK_DRAG_AND_DROPPED,
+  PLUGIN_SDK_EK_REQUEST_FETCH_NODE_MAIN_COMPONENT_LAYER_META,
   PLUGIN_SDK_EK_REQUEST_FETCH_NODE_MAIN_COMPONENT_META,
   PLUGIN_SDK_EK_REQUEST_FETCH_NODE_META,
   PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META,
@@ -82,6 +83,12 @@ export class PluginSdk {
     });
   }
 
+  /**
+   * fetches the master component metadata no matter the input id (node id) was id of master component or a instance.
+   * when instance id was givven it will automatically locate master component to set the metadata
+   * @param request
+   * @returns
+   */
   static async fetchMainComponentMetadata(request: NodeMetaFetchRequest) {
     return this.request({
       namespace: PLUGIN_SDK_NS_META_API,
@@ -90,6 +97,27 @@ export class PluginSdk {
     });
   }
 
+  /**
+   * fetches the master component's layer corresponding to givven id. works similar like "fetchMainComponentMetadata"
+   */
+  static async fetchMainComponentLayerMetadata(request: NodeMetaFetchRequest) {
+    throw "not implemented on handler side";
+    return this.request({
+      namespace: PLUGIN_SDK_NS_META_API,
+      key: PLUGIN_SDK_EK_REQUEST_FETCH_NODE_MAIN_COMPONENT_LAYER_META,
+      data: request,
+    });
+  }
+
+  /**
+   * updates the main component's meta data.
+   * (this also works for a variant compat component,
+   * but it does't save on variant set's meta,
+   * intead saves on master component of single variant.
+   *  - so you'll need to prevent using this on some case to prevent future confusion)
+   * @param request
+   * @returns
+   */
   static async updateMainComponentMetadata(request: NodeMetaUpdateRequest) {
     return this.request({
       namespace: PLUGIN_SDK_NS_META_API,
