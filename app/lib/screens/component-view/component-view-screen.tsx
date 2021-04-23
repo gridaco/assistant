@@ -12,6 +12,7 @@ import { Divider, IconButton, Typography } from "@material-ui/core";
 import { ASSISTANT_PLUGIN_NAMESPACE } from "../../constants";
 import { Edit, Settings } from "@material-ui/icons";
 import { ComponentCodebox } from "./component-codebox";
+import { ComponentSchemaEditor } from "./schema-editor";
 
 interface VisualComponentManifest {
   name: string;
@@ -113,6 +114,7 @@ export function ComponentViewScreen() {
           }}
         />
       </form>
+      <ComponentSchemaEditor />
     </div>
   );
 }
