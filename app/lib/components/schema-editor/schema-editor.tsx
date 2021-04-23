@@ -1,5 +1,5 @@
 import { Button, TextField } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   SingleLayerPropertyDefinition,
   ISingleLayerProperty,
@@ -18,13 +18,31 @@ export function SchemaEditor(props: {}) {
 
   // use selection hook, then update the mode corresponding to selected layer on design tool
 
+  useEffect(() => {
+    // initially set mode
+    // DEV
+    setMode("single-layer-property");
+  });
+
   const handleOnSave = (d: ISingleLayerProperty) => {
     // todo
   };
+
+  const Body = () => {
+    switch (mode) {
+      case "loading":
+        return <>loading..</>;
+      case "single-layer-property":
+        return <SingleLayerPropertyDefinition onSave={handleOnSave} />;
+      case "variant-component":
+        return <>loading..</>;
+    }
+  };
+
   return (
     <>
       <p>schema editor</p>
-      <SingleLayerPropertyDefinition onSave={handleOnSave} />
+      <Body />
     </>
   );
 }
