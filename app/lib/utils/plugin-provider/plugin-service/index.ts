@@ -268,7 +268,9 @@ function response<T = any>(
   error: Error | undefined = undefined
 ): boolean {
   console.info(
-    `responding to request ${requestId} with data ${data} and error ${error}`
+    `responding to request ${requestId} with data ${JSON.stringify(data)} and ${
+      error ? "" + error : "no error"
+    }`
   );
 
   figma.ui.postMessage(<TransportPluginEvent>{

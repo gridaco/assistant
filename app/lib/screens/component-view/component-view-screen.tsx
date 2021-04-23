@@ -23,36 +23,30 @@ interface VisualComponentManifest {
   codeSnippet: string;
 }
 
+import { useSingleSelection } from "../../utils/plugin-hooks";
+
 export function ComponentViewScreen() {
   const [data, setData] = useState<VisualComponentManifest>(undefined);
-  // 1. get selected layer
-  const [selectednode, setselectednode] = useState<string>(undefined);
-  useEffect(() => {
-    window.addEventListener("message", (ev) => {
-      const message = ev.data.pluginMessage;
-      if (message?.type == "selectionchange") {
-        const node = message.data;
-        const nodeId = node.id;
-        setselectednode(nodeId);
-        console.log("ComponentViewScreen's target node id", nodeId);
 
-        // 3. find if data to display exists on a master component.
-        PluginSdk.fetchMainComponentMetadata({
-          id: nodeId,
-          namespace: ASSISTANT_PLUGIN_NAMESPACE,
-          key: "component-meta-data",
-        }).then((d) => {
-          console.log(`component-meta-data is`, d);
-          setData(d);
-        });
-      }
+  const selection = useSingleSelection();
+
+  if (selection) {
+    // 2. check if selected layer is a component or an instance.
+    // TODO
+
+    console.log("ComponentViewScreen's target node id", selection.id);
+    // 3. find if data to display exists on a master component.
+    PluginSdk.fetchMainComponentMetadata({
+      id: selection.id,
+      namespace: ASSISTANT_PLUGIN_NAMESPACE,
+      key: "component-meta-data",
+    }).then((d) => {
+      console.log(`component-meta-data is`, d);
+      setData(d);
     });
-  }, []);
-  // 2. check if selected layer is a component or an instance.
-  // TODO
+  }
 
   // 4. display data if exists. else, display input.
-
   // TODO load image data from iframe message
   const [previewImage, setPreviewImage] = useState(undefined);
 
@@ -64,7 +58,7 @@ export function ComponentViewScreen() {
     setData(newData);
 
     PluginSdk.updateMainComponentMetadata({
-      id: selectednode,
+      id: selection.id,
       namespace: ASSISTANT_PLUGIN_NAMESPACE,
       key: "component-meta-data",
       value: newData,

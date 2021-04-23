@@ -1,4 +1,4 @@
-import { Button, TextField } from "@material-ui/core";
+import { Button, Divider, TextField } from "@material-ui/core";
 import React, { useRef, useState } from "react";
 
 type UserInteractionMode = "editing" | "viewing";
@@ -64,6 +64,7 @@ export function SingleLayerPropertyDefinition(
 
   return (
     <>
+      <Divider />
       <form>
         <TextField
           required

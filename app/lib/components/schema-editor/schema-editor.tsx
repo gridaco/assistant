@@ -1,6 +1,7 @@
 import { Button, TextField } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { ASSISTANT_PLUGIN_NAMESPACE } from "../../constants";
+import { useSingleSelection } from "../../utils/plugin-hooks";
 import { PluginSdk } from "../../utils/plugin-provider/plugin-app-sdk";
 import {
   SingleLayerPropertyDefinition,
@@ -29,13 +30,28 @@ export function SchemaEditor(props: {}) {
   const [mode, setMode] = useState<EditerMode>("loading");
 
   // use selection hook, then update the mode corresponding to selected layer on design tool
-  const selection = "1"; // TODO useSelection
+
+  const selection = useSingleSelection();
 
   useEffect(() => {
-    // initially set mode
-    // DEV
-    setMode("single-layer-property");
-  });
+    if (selection) {
+      if (
+        selection?.node?.type != "COMPONENT" &&
+        selection?.node?.type != "COMPONENT_SET" &&
+        selection?.node?.type != "INSTANCE"
+      ) {
+        setMode("single-layer-property");
+      } else if (selection?.node?.type == "COMPONENT") {
+        setMode("master-component");
+      } else if (selection?.node?.type == "COMPONENT_SET") {
+        setMode("master-variant-component");
+      } else if (selection?.node?.type == "INSTANCE") {
+        setMode("instance");
+      }
+    } else {
+      setMode("loading");
+    }
+  }, [selection]);
 
   const Body = () => {
     if (!selection) {
@@ -46,11 +62,13 @@ export function SchemaEditor(props: {}) {
       case "loading":
         return <_Mode_Loading />;
       case "single-layer-property":
-        return <_Mode_SingleLayerProperty />;
+        return <_Mode_SingleLayerProperty id={selection.id} />;
       case "master-variant-component":
         return <>loading..</>;
       case "master-component":
         return <_Mode_Variant_Component />;
+      default:
+        throw `${mode} not handled`;
     }
   };
 
@@ -70,28 +88,46 @@ function _Mode_Loading() {
   return <>loading..</>;
 }
 
-function _Mode_SingleLayerProperty() {
-  const [data, setData] = useState<any[]>([]);
+function _Mode_SingleLayerProperty(props: { id: string }) {
+  const { id } = props;
+  const [data, setData] = useState<ISingleLayerProperty[]>([]);
   const handleOnSave = (d: ISingleLayerProperty) => {
-    // todo
+    const newData = data;
+    newData.push(d);
+    setData(newData);
+
+    // this update logic shall be applied to master node's corresponding layer
+    PluginSdk.updateMetadata({
+      id: id,
+      namespace: ASSISTANT_PLUGIN_NAMESPACE,
+      key: "layer-property-data",
+      value: data,
+    });
   };
 
-  PluginSdk.fetchMainComponentMetadata({
-    id: nodeId,
-    namespace: ASSISTANT_PLUGIN_NAMESPACE,
-    key: "layer-property-data",
-  }).then((d) => {
-    setData(d);
-  });
+  useEffect(() => {
+    PluginSdk.fetchMetadata({
+      id: id,
+      namespace: ASSISTANT_PLUGIN_NAMESPACE,
+      key: "layer-property-data",
+    }).then((d) => {
+      if (d) {
+        setData(d);
+      }
+    });
+  }, []);
 
-  PluginSdk.updateMainComponentMetadata({
-    id: selectednode,
-    namespace: ASSISTANT_PLUGIN_NAMESPACE,
-    key: "component-meta-data",
-    value: newData,
-  });
-
-  return <SingleLayerPropertyDefinition onSave={handleOnSave} />;
+  return (
+    <>
+      {data.map((d) => (
+        <SingleLayerPropertyDefinition
+          key={d?.name}
+          onSave={handleOnSave}
+          initial={d}
+        />
+      ))}
+    </>
+  );
 }
 
 function _Mode_Variant_Component() {
