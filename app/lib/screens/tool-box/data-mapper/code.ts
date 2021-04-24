@@ -1,17 +1,11 @@
 import { normalizedName } from "@bridged.xyz/design-sdk/lib/features/key-annotations";
 import { Figma } from "@bridged.xyz/design-sdk/lib/figma";
 import { mapGrandchildren } from "@bridged.xyz/design-sdk/lib/utils/children";
-import {
-  buildVariantName_Figma,
-  swapVariant,
-} from "@bridged.xyz/design-sdk/lib/utils/variant";
+import { variant } from "@bridged.xyz/design-sdk/lib/utils";
 import { PluginSdk } from "../../../utils/plugin-provider/plugin-app-sdk";
 import { extractDataFromDataSourceNode } from "./data-source-node";
 import { onService, _Event_DataMapper_GoodUserInputTransfer } from "./events";
-import {
-  //   ExampleDataMapperMockDataSource,
-  __ExampleComponentProps,
-} from "./example-data-source";
+import type { IReflectNodeReference } from "@bridged.xyz/design-sdk/lib/nodes/lignt";
 
 export const TEMPLATE_NODE_PATTERN = "@//template-for-manipulation/*";
 
@@ -25,11 +19,10 @@ function main_cb(evt: _Event_DataMapper_GoodUserInputTransfer) {
   ) as Figma.SceneNode;
   const targets = evt.targetNodesId.map((id) => Figma.figma.getNodeById(id));
   const data = extractDataFromDataSourceNode(datasourceNode);
-  console.log("onService", "data", data);
 
   targets.forEach((target) => {
     if ("children" in target) {
-      mapDataToSelection(target as Figma.ChildrenMixin, data);
+      mapDataToSelection(target as Figma.SceneNode, data);
     } else {
       PluginSdk.notify(
         "ignoring since one of the selection is not a type of frame or group"
@@ -76,36 +69,42 @@ interface MappingSchema {
   }[];
 }
 
-type DataSchema = object;
+type DataSchema = Map<string, Object>;
 
 interface MappedData {}
 
-function mapDataToSelection(selection: Figma.ChildrenMixin, data: DataSchema) {
+function mapDataToSelection(selection: Figma.SceneNode, data: DataSchema) {
+  // handle root selection's instance swap if possible and requested
+  // this is because figma's variant is actually same as property and input data will have same level with this variant setting.
+  // this can cause some untracked bugs, but this is the right way to be.
+  if (selection.type == "INSTANCE") {
+    const replaced = mapVariant_try(selection, data);
+    if (replaced) {
+      selection = replaced;
+    }
+  }
+
   const grandchilds = mapGrandchildren<Figma.ChildrenMixin, Figma.SceneNode>(
-    selection
+    // this is fine. it's casted on this function's caller
+    // if this is changed, fix this statement
+    selection as Figma.ChildrenMixin
   );
 
   grandchilds.forEach((c) => {
+    // handle componentized layers
+    if (c.type == "INSTANCE") {
+      mapVariant_try(c, data);
+    }
+
     for (const k of Object.keys(data)) {
       const propertyName = k;
       const propertyValue = data[k];
 
-      console.log(
-        "propertyName",
-        propertyName,
-        "normalizedName(c.name)",
-        normalizedName(c.name),
-        c.name
-      );
-
+      // handle non componentized layers
       // check loosen name checking
       if (propertyName == normalizedName(c.name)) {
         if (c.type == "TEXT") {
           mapText(c, propertyValue);
-        } else if (c.type == "INSTANCE") {
-          console.error("TODO");
-          // check if variant compat
-          // mapVariant(c, propertyValue);
         } else {
           console.warn(
             `the type ${c.type} from "${c.name}", child of "${c.parent.name}" cannot be handled from data mapper`
@@ -147,13 +146,10 @@ function mapText(
   };
 
   const finalString = stringfyFull(stringfyRaw(data) /** options here */);
-  console.log("finalString", finalString);
 
   // finally apply fully formed string
-  console.log("text node", text);
   figma.loadFontAsync(text.fontName as FontName).then(() => {
     text.characters = finalString;
-    console.log("text updated");
   });
   //   (figma.getNodeById(text.id) as TextNode).characters = finalString;
 
@@ -164,16 +160,58 @@ function mapComponent(instance: Figma.InstanceNode, data: any) {
   // loop
 }
 
-const dummyVariantTypes = ["ellipse", "rectangle", "triangle", "poligon"];
+/**
+ * this is a safe-to-use function for "mapDataToSelection" the logics are complex so everything is handled here, which non variant component can also be put as input - which will be safely ignored.
+ * this also means it requires caution for use
+ * @param instance
+ * @param data
+ */
+function mapVariant_try(
+  instance: Figma.InstanceNode,
+  data: DataSchema
+): Figma.InstanceNode {
+  let replaced: Figma.InstanceNode;
+  // 1. lookup master variant set
+  // 2. check if variant compat
+  if (instance.mainComponent.parent.type == "COMPONENT_SET") {
+    const thisVariantName = instance.mainComponent.name;
 
-function mapVariant(instance: Figma.InstanceNode, data: any) {
-  // demo
-  const type =
-    dummyVariantTypes[Math.floor(Math.random() * dummyVariantTypes.length)];
+    // 3. get property maps and check if value is assignable to variant
+    const variantset = instance.mainComponent.parent as Figma.ComponentSetNode;
+    const _names = variant.getVariantNamesSetFromRawNode_Figma(variantset);
+    const set = variant.extractTypeFromVariantNames_Figma(_names);
 
-  const name = buildVariantName_Figma(new Map([["type", type]]));
-  // const
-  swapVariant(instance, name);
+    for (const s of set) {
+      const value = data[s.name];
+      const _isConpat =
+        value && typeof s.type == "string"
+          ? s.type == value
+          : s.type.includes(value);
+
+      if (_isConpat) {
+        // 4. map the variant
+
+        const swappingName = variant.buildVariantNameIncluding_Figma({
+          including: {
+            swapPropertyName: s.name,
+            swapPropertyValue: value,
+            thisOriginName: thisVariantName,
+          },
+          existing: { names: _names },
+        });
+
+        // check if this already set like the input data and do not require swapping
+        if (swappingName == thisVariantName) {
+          return;
+        }
+
+        replaced = variant.swapVariant(instance, swappingName);
+        break;
+      }
+    }
+  }
+
+  return replaced;
 }
 
 type ImageCompatNode = Figma.RectangleNode | Figma.EllipseNode;

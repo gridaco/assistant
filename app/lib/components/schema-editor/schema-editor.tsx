@@ -12,7 +12,7 @@ import { mapGrandchildren } from "@bridged.xyz/design-sdk/lib/utils";
 import {
   extractTypeFromVariantNames_Figma,
   FimaVariantPropertyData,
-  getVariantNamesSet_Figma,
+  getVariantNamesSetFromReference_Figma,
 } from "@bridged.xyz/design-sdk/lib/utils/variant";
 import { IReflectNodeReference } from "@bridged.xyz/design-sdk/lib/nodes/lignt";
 
@@ -178,7 +178,7 @@ function _Mode_Component(props: { node: IReflectNodeReference }) {
   // if variant, load default property set by variant namings.
   let variantProperties: FimaVariantPropertyData[];
   if (isVariantCompat) {
-    const names = getVariantNamesSet_Figma(node);
+    const names = getVariantNamesSetFromReference_Figma(node);
     variantProperties = extractTypeFromVariantNames_Figma(names);
   }
 
