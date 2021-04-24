@@ -1,3 +1,4 @@
+import { normalizedName } from "@bridged.xyz/design-sdk/lib/features/key-annotations";
 import { Figma } from "@bridged.xyz/design-sdk/lib/figma";
 import { mapGrandchildren } from "@bridged.xyz/design-sdk/lib/utils/children";
 import {
@@ -5,6 +6,7 @@ import {
   swapVariant,
 } from "@bridged.xyz/design-sdk/lib/utils/variant";
 import { PluginSdk } from "../../../utils/plugin-provider/plugin-app-sdk";
+import { extractDataFromDataSourceNode } from "./data-source-node";
 import { onService, _Event_DataMapper_GoodUserInputTransfer } from "./events";
 import {
   //   ExampleDataMapperMockDataSource,
@@ -13,21 +15,27 @@ import {
 
 export const TEMPLATE_NODE_PATTERN = "@//template-for-manipulation/*";
 
+// register callback
 onService(main_cb);
-// main callback
-function main_cb(data: _Event_DataMapper_GoodUserInputTransfer) {
-  const datasourceNode = Figma.figma.getNodeById(data.sourceNodeId);
-  const target = Figma.figma.getNodeById(data.targetNodeId);
 
-  // target => {
-  if ("children" in target) {
-    // mapDataToSelection(s, data); //mockData.getSingleRandom()
-  } else {
-    PluginSdk.notify(
-      "ignoring since one of the selection is not a type of frame or group"
-    );
-  }
-  // });
+// main callback
+function main_cb(evt: _Event_DataMapper_GoodUserInputTransfer) {
+  const datasourceNode = Figma.figma.getNodeById(
+    evt.sourceNodeId
+  ) as Figma.SceneNode;
+  const targets = evt.targetNodesId.map((id) => Figma.figma.getNodeById(id));
+  const data = extractDataFromDataSourceNode(datasourceNode);
+  console.log("onService", "data", data);
+
+  targets.forEach((target) => {
+    if ("children" in target) {
+      mapDataToSelection(target as Figma.ChildrenMixin, data);
+    } else {
+      PluginSdk.notify(
+        "ignoring since one of the selection is not a type of frame or group"
+      );
+    }
+  });
 }
 
 // input
@@ -68,26 +76,42 @@ interface MappingSchema {
   }[];
 }
 
-type DataSchema = __ExampleComponentProps;
+type DataSchema = object;
 
 interface MappedData {}
 
 function mapDataToSelection(selection: Figma.ChildrenMixin, data: DataSchema) {
-  console.log("start:: mapDataToSelection");
-  console.log("selection", selection);
   const grandchilds = mapGrandchildren<Figma.ChildrenMixin, Figma.SceneNode>(
     selection
   );
 
-  console.log("grandchilds", grandchilds);
-
   grandchilds.forEach((c) => {
-    if (c.name == "title") {
-      mapText(c as Figma.TextNode, data.title);
-    } else if (c.name == "description") {
-      mapText(c as Figma.TextNode, data.description);
-    } else if (c.name == "email") {
-      mapText(c as Figma.TextNode, data.email);
+    for (const k of Object.keys(data)) {
+      const propertyName = k;
+      const propertyValue = data[k];
+
+      console.log(
+        "propertyName",
+        propertyName,
+        "normalizedName(c.name)",
+        normalizedName(c.name),
+        c.name
+      );
+
+      // check loosen name checking
+      if (propertyName == normalizedName(c.name)) {
+        if (c.type == "TEXT") {
+          mapText(c, propertyValue);
+        } else if (c.type == "INSTANCE") {
+          console.error("TODO");
+          // check if variant compat
+          // mapVariant(c, propertyValue);
+        } else {
+          console.warn(
+            `the type ${c.type} from "${c.name}", child of "${c.parent.name}" cannot be handled from data mapper`
+          );
+        }
+      }
     }
   });
 }

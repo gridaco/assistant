@@ -2,9 +2,9 @@
 /// if node with name pattern "@//data-source/*", it means it contians data for logic representation.
 
 import {
-  ignoranceTypeFrom,
-  IgnoreKeys,
-} from "@bridged.xyz/design-sdk/lib/features/ignore";
+  specialKeyTypeFrom,
+  SpecialKeys,
+} from "@bridged.xyz/design-sdk/lib/features/key-annotations";
 import { Figma } from "@bridged.xyz/design-sdk/lib/figma";
 import type { IReflectNodeReference } from "@bridged.xyz/design-sdk/lib/nodes/lignt";
 
@@ -12,10 +12,24 @@ import type { IReflectNodeReference } from "@bridged.xyz/design-sdk/lib/nodes/li
  * currently only root level text are supported for data source node.
  * @param node
  */
-export function extractDataFromDataSourceNode<T>(node: Figma.TextNode) {
-  const raw = node.characters;
-  const data = JSON.parse(raw);
-  return data as T;
+export function extractDataFromDataSourceNode<T = any>(
+  node: Figma.SceneNode
+): T | null {
+  try {
+    if (node.type == "TEXT") {
+      const raw = node.characters;
+      const data = JSON.parse(raw);
+      return data as T;
+    } else {
+      console.warn(
+        `the givven data source node was not in text node type. selected node was "${node.name}"`
+      );
+      return null;
+    }
+  } catch (_) {
+    console.warn(_);
+    return null;
+  }
 }
 
 interface DataSourceNodeAndOthers {
@@ -31,10 +45,9 @@ export function findDatasourceNodeAndOthers(
   };
 
   all.forEach((v) => {
-    const ignoranceType = ignoranceTypeFrom(v.name);
-    console.log(`ignoranceType for ${v.name}`, ignoranceType);
+    const ignoranceType = specialKeyTypeFrom(v.name);
     if (ignoranceType) {
-      if (ignoranceType == IgnoreKeys.KEY_DATA_SOURCE) {
+      if (ignoranceType == SpecialKeys.KEY_DATA_SOURCE) {
         if (res.datasource) {
           throw "multiple datasource node was selected. this is not allowed and assistant cannot identify how to handle this form of input.";
         }

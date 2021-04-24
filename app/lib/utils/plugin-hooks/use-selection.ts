@@ -113,3 +113,27 @@ export function usePairSelection(): _PairSelectionEvent {
   });
   return pair;
 }
+
+/**
+ * len >= min
+ * len < max
+ * @param min
+ * @param max
+ * @returns
+ */
+export function useRangeSelection(min: number, max: number) {
+  const [rangedSelections, setRangedSelections] = useState<MultiSelectionData>(
+    null
+  );
+  const selection = useSelection();
+  useEffect(() => {
+    if (selection) {
+      if (selection.type == SelectionType.multi) {
+        if (selection.nodes.length >= min && selection.nodes.length < max) {
+          setRangedSelections(selection);
+        }
+      }
+    }
+  });
+  return rangedSelections;
+}

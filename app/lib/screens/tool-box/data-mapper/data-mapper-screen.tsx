@@ -1,28 +1,28 @@
 import { Button } from "@material-ui/core";
 import React, { useState } from "react";
-import { usePairSelection } from "../../../utils/plugin-hooks";
+import {
+  usePairSelection,
+  useRangeSelection,
+} from "../../../utils/plugin-hooks";
 import { findDatasourceNodeAndOthers } from "./data-source-node";
 import { fromApp } from "./events";
 
 export function DataMapperScreen() {
-  const pairSelection = usePairSelection();
+  const pairSelections = useRangeSelection(2, 5);
 
-  if (!pairSelection) {
-    return <>two nodes must be selected</>;
+  if (!pairSelections) {
+    return <>more than two nodes must be selected with data source included</>;
   }
 
   // one of the selection must be data source and other must be target node.
-  const __$ = findDatasourceNodeAndOthers(
-    pairSelection.first,
-    pairSelection.second
-  );
+  const __$ = findDatasourceNodeAndOthers(...pairSelections.nodes);
   const datasourceNode = __$.datasource;
-  const otherNode = __$.others[0];
+  const otherNodes = __$.others;
 
   const handleMapDataToSelected = () => {
     fromApp({
       sourceNodeId: datasourceNode.id,
-      targetNodeId: otherNode.id,
+      targetNodesId: otherNodes.map((n) => n.id),
     });
   };
 
@@ -40,13 +40,13 @@ export function DataMapperScreen() {
         <>data source is not selected</>
       )}
 
-      {otherNode ? (
+      {otherNodes ? (
         <>target node is selected</>
       ) : (
         <>target node is not selected</>
       )}
 
-      {datasourceNode && otherNode ? (
+      {datasourceNode && otherNodes ? (
         <Button onClick={handleMapDataToSelected}>Map Data</Button>
       ) : (
         <></>
