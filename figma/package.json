@@ -18,7 +18,7 @@
     "@bridged.xyz/web-builder": "0.0.1",
     "core": "^0.0.1",
     "app": "^0.0.1",
-    "@reflect-ui/uiutils": "0.0.7",
+    "@reflect-ui/uiutils": "0.0.8",
     "@reflect-ui/core": "0.0.2-rc.7",
     "@reflect-ui/lint": "0.0.5-rc",
     "@reflect-ui/detection": "0.1.1",
