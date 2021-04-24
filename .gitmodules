@@ -33,3 +33,6 @@
 [submodule "packages/editor-ui"]
 	path = packages/editor-ui
 	url = https://github.com/bridgedxyz/reflect-editor-ui
+[submodule "packages/design-to-code"]
+	path = packages/design-to-code
+	url = https://github.com/bridgedxyz/design-to-code
