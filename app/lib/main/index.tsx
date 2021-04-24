@@ -10,9 +10,12 @@ import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
-
 import { EK_SET_APP_MODE } from "../constants/ek.constant";
-import { ReleaseChannel, WorkScreen, WorkspaceMode } from "../states/app-state";
+import {
+  getWorkspaceTabLayout,
+  WorkScreen,
+  WorkspaceMode,
+} from "../states/app-state";
 import { PluginApp } from "../utils/plugin-provider/pugin-app";
 import BatchMetaEditor from "../screens/tool-box/batch-meta-editor";
 import { Switch, Route, Link, BrowserRouter, Redirect } from "react-router-dom";
@@ -20,8 +23,8 @@ import { Switch, Route, Link, BrowserRouter, Redirect } from "react-router-dom";
 // region screens import
 import { FontReplacerScreen } from "../screens/tool-box/font-replacer";
 import { ButtonMakerScreen } from "../screens/design/button-maker-screen";
-import ComponentViewScreen from "../screens/component-view";
-import LayoutViewScreen from "../screens/layout-view";
+import { ComponentViewScreen } from "../screens/component-view";
+import { LayoutViewScreen } from "../screens/layout-view";
 import { LintScreen } from "../screens/lint-screen";
 import { GlobalizationScreen } from "../screens/g11n-screen";
 import { IconsScreen } from "../screens/icons-screen";
@@ -29,8 +32,7 @@ import { CodeScreen } from "../screens/code-screen";
 import { ToolboxScreen } from "../screens/tool-box";
 import { MetaEditorScreen } from "../screens/tool-box/meta-editor";
 import { ExporterScreen } from "../screens/tool-box/exporter";
-
-
+import { DataMapperScreen } from "../screens/tool-box/data-mapper/data-mapper-screen";
 // endregion screens import
 
 interface TabPanelProps {
@@ -79,17 +81,19 @@ function workScreenToName(appMode: WorkScreen): string {
     case WorkScreen.slot:
       return "slots";
     case WorkScreen.exporter:
-      return "exporter"
+      return "exporter";
     case WorkScreen.g11n:
       return "globalization";
+    case WorkScreen.desing_button_maker:
+      return "button maker";
     case WorkScreen.tool_font_replacer:
       return "font replacer";
     case WorkScreen.tool_meta_editor:
       return "meta datas";
     case WorkScreen.tool_batch_meta_editor:
       return "batch meta data";
-    case WorkScreen.desing_button_maker:
-      return "button maker";
+    case WorkScreen.tool_data_mapper:
+      return "data mapper";
   }
   console.warn(`name not found for ${appMode}`);
   return "N/A";
@@ -110,64 +114,6 @@ function worspaceModeToName(workspaceMode: WorkspaceMode): string {
   }
   console.warn(`no name found for workspace mode ${workspaceMode}`);
   return "N/A";
-}
-
-const SCREEN_VISIBILITY_PREFERENCE: Map<WorkScreen, ReleaseChannel> = new Map([
-  [WorkScreen.code, "release"],
-  [WorkScreen.component, "release"],
-  [WorkScreen.layout, "beta"],
-  [WorkScreen.icon, "release"],
-  [WorkScreen.lint, "release"],
-  [WorkScreen.g11n, "beta"],
-  [WorkScreen.exporter, "beta"],
-  [WorkScreen.dev, "beta"],
-  [WorkScreen.slot, "alpha"],
-  [WorkScreen.desing_button_maker, "alpha"],
-  [WorkScreen.tool_font_replacer, "release"],
-]);
-
-type TabLayout = ReadonlyArray<WorkScreen>;
-
-function getWorkspaceTabLayout(workspaceMode: WorkspaceMode): TabLayout {
-  const layouts = (): TabLayout => {
-    switch (workspaceMode) {
-      case WorkspaceMode.code:
-        return [
-          WorkScreen.code,
-          WorkScreen.component,
-          WorkScreen.layout,
-          WorkScreen.lint,
-          WorkScreen.slot,
-        ];
-      case WorkspaceMode.design:
-        return [WorkScreen.icon, WorkScreen.layout, WorkScreen.lint];
-      case WorkspaceMode.content:
-        return [WorkScreen.g11n, WorkScreen.lint, WorkScreen.exporter];
-      case WorkspaceMode.settings:
-        return [];
-      case WorkspaceMode.toolbox:
-        return [
-          WorkScreen.tool_font_replacer,
-          WorkScreen.desing_button_maker,
-          WorkScreen.tool_meta_editor,
-          WorkScreen.tool_batch_meta_editor,
-        ];
-    }
-  };
-
-  // this only returns release capable screens on production mode, if not -> reutns all.
-  const filtered = layouts().filter((e) => {
-    const release = process.env.NODE_ENV == "production";
-    if (release) {
-      if (SCREEN_VISIBILITY_PREFERENCE.get(e) === "release") {
-        return true;
-      } else {
-        return false;
-      }
-    }
-    return true;
-  });
-  return filtered;
 }
 
 export default function App() {
@@ -247,6 +193,8 @@ export default function App() {
     const tabs = (
       <Tabs
         value={tabIndex}
+        variant="scrollable"
+        scrollButtons="on"
         onChange={handleTabChange}
         aria-label="primary tab"
       >
@@ -314,7 +262,13 @@ export default function App() {
                 <TabPanel key={i} value={tabIndex} index={i}>
                   <ExporterScreen />
                 </TabPanel>
-              )
+              );
+            case WorkScreen.desing_button_maker:
+              return (
+                <TabPanel key={i} value={tabIndex} index={i}>
+                  <ButtonMakerScreen />
+                </TabPanel>
+              );
             case WorkScreen.tool_font_replacer:
               return (
                 <TabPanel key={i} value={tabIndex} index={i}>
@@ -333,10 +287,10 @@ export default function App() {
                   <BatchMetaEditor />
                 </TabPanel>
               );
-            case WorkScreen.desing_button_maker:
+            case WorkScreen.tool_data_mapper:
               return (
                 <TabPanel key={i} value={tabIndex} index={i}>
-                  <ButtonMakerScreen />
+                  <DataMapperScreen />
                 </TabPanel>
               );
           }

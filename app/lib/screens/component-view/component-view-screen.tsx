@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Preview } from "../../components/preview";
 import Button from "@material-ui/core/Button";
-import CodeBox from "../../components/codebox";
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent/DialogContent";
@@ -12,7 +11,8 @@ import { PluginSdk } from "../../utils/plugin-provider/plugin-app-sdk";
 import { Divider, IconButton, Typography } from "@material-ui/core";
 import { ASSISTANT_PLUGIN_NAMESPACE } from "../../constants";
 import { Edit, Settings } from "@material-ui/icons";
-import { CodeboxEditDialog } from "../../components/codebox-edit-dialog";
+import { ComponentCodebox } from "./component-codebox";
+import { ComponentSchemaEditor } from "./schema-editor";
 
 interface VisualComponentManifest {
   name: string;
@@ -23,36 +23,30 @@ interface VisualComponentManifest {
   codeSnippet: string;
 }
 
-export default function ComponentViewScreen() {
-  const [data, setData] = useState<VisualComponentManifest>(undefined);
-  // 1. get selected layer
-  const [selectednode, setselectednode] = useState<string>(undefined);
-  useEffect(() => {
-    window.addEventListener("message", (ev) => {
-      const message = ev.data.pluginMessage;
-      if (message?.type == "selectionchange") {
-        const node = message.data;
-        const nodeId = node.id;
-        setselectednode(nodeId);
-        console.log("ComponentViewScreen's target node id", nodeId);
+import { useSingleSelection } from "../../utils/plugin-hooks";
 
-        // 3. find if data to display exists on a master component.
-        PluginSdk.fetchMainComponentMetadata({
-          id: nodeId,
-          namespace: ASSISTANT_PLUGIN_NAMESPACE,
-          key: "component-meta-data",
-        }).then((d) => {
-          console.log(`component-meta-data is`, d);
-          setData(d);
-        });
-      }
+export function ComponentViewScreen() {
+  const [data, setData] = useState<VisualComponentManifest>(undefined);
+
+  const selection = useSingleSelection();
+
+  if (selection) {
+    // 2. check if selected layer is a component or an instance.
+    // TODO
+
+    console.log("ComponentViewScreen's target node id", selection.id);
+    // 3. find if data to display exists on a master component.
+    PluginSdk.fetchMainComponentMetadata({
+      id: selection.id,
+      namespace: ASSISTANT_PLUGIN_NAMESPACE,
+      key: "component-meta-data",
+    }).then((d) => {
+      console.log(`component-meta-data is`, d);
+      setData(d);
     });
-  }, []);
-  // 2. check if selected layer is a component or an instance.
-  // TODO
+  }
 
   // 4. display data if exists. else, display input.
-
   // TODO load image data from iframe message
   const [previewImage, setPreviewImage] = useState(undefined);
 
@@ -64,7 +58,7 @@ export default function ComponentViewScreen() {
     setData(newData);
 
     PluginSdk.updateMainComponentMetadata({
-      id: selectednode,
+      id: selection.id,
       namespace: ASSISTANT_PLUGIN_NAMESPACE,
       key: "component-meta-data",
       value: newData,
@@ -74,46 +68,51 @@ export default function ComponentViewScreen() {
   return (
     <div>
       <Preview auto />
-      <form key={JSON.stringify(data)}>
-        <p>component view placeholder</p>
-        <EditableComponentMetaFieldSingleValueDisplay
-          name={"name"}
-          value={data?.name}
-          handleSave={(c) => {
-            updateData("name", c);
-          }}
-        />
-        <EditableComponentMetaFieldSingleValueDisplay
-          name={"description"}
-          value={data?.description}
-          handleSave={(c) => {
-            updateData("description", c);
-          }}
-        />
-        <EditableComponentMetaFieldSingleValueDisplay
-          name={"storybook"}
-          button
-          value={data?.storybook}
-          handleSave={(c) => {
-            updateData("storybook", c);
-          }}
-        />
-        <EditableComponentMetaFieldSingleValueDisplay
-          name={"documentation"}
-          button
-          value={data?.docsUrl}
-          handleSave={(c) => {
-            updateData("docsUrl", c);
-          }}
-        />
+      {selection ? (
+        <form key={JSON.stringify(data)}>
+          <p>component view placeholder</p>
+          <EditableComponentMetaFieldSingleValueDisplay
+            name={"name"}
+            value={data?.name}
+            handleSave={(c) => {
+              updateData("name", c);
+            }}
+          />
+          <EditableComponentMetaFieldSingleValueDisplay
+            name={"description"}
+            value={data?.description}
+            handleSave={(c) => {
+              updateData("description", c);
+            }}
+          />
+          <EditableComponentMetaFieldSingleValueDisplay
+            name={"storybook"}
+            button
+            value={data?.storybook}
+            handleSave={(c) => {
+              updateData("storybook", c);
+            }}
+          />
+          <EditableComponentMetaFieldSingleValueDisplay
+            name={"documentation"}
+            button
+            value={data?.docsUrl}
+            handleSave={(c) => {
+              updateData("docsUrl", c);
+            }}
+          />
 
-        <ComponentCodebox
-          code={data?.codeSnippet}
-          onCodeChange={(c) => {
-            updateData("codeSnippet", c);
-          }}
-        />
-      </form>
+          <ComponentCodebox
+            code={data?.codeSnippet}
+            onCodeChange={(c) => {
+              updateData("codeSnippet", c);
+            }}
+          />
+        </form>
+      ) : (
+        <></>
+      )}
+      <ComponentSchemaEditor />
     </div>
   );
 }
@@ -223,46 +222,5 @@ function EditableComponentMetaFieldSingleValueInputDialog(props: {
         </DialogActions>
       </Dialog>
     </>
-  );
-}
-
-function ComponentCodebox(props: {
-  onCodeChange: (code: string) => void;
-  code: string;
-}) {
-  const [dopened, setdOpen] = React.useState(false);
-  const [code, setCode] = React.useState(props.code);
-
-  const handleClose = () => {
-    setdOpen(false);
-  };
-
-  const handleEditCodeClick = () => {
-    setdOpen(true);
-  };
-  return (
-    <div>
-      <CodeboxEditDialog
-        initialValue={code}
-        handleSave={(c) => {
-          setCode(c);
-          props.onCodeChange(c);
-        }}
-        label="code"
-        title="override code"
-        description="override the component code"
-        open={dopened}
-        handleClose={handleClose}
-      />
-      <CodeBox
-        codeActions={[
-          <IconButton onClick={handleEditCodeClick}>
-            <Settings />
-          </IconButton>,
-        ]}
-        language="tsx"
-        code={code ?? "//no code snippet provided"}
-      />
-    </div>
   );
 }

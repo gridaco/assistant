@@ -15,6 +15,7 @@
         "@reflect-ui/core": "0.0.2-rc.7",
         "@reflect-ui/lint": "0.0.5-rc",
         "copy-to-clipboard": "^3.3.1",
+        "coli": "0.0.3",
         "nanoid": "^3.1.20",
         "open": "^7.3.0",
         "prism-react-renderer": "^1.1.1",
@@ -27,7 +28,7 @@
         "refractor": "^3.1.0"
     },
     "devDependencies": {
-        "@types/react": "^16.9.53",
+        "@types/react": "^17.0.3",
         "@types/react-dom": "^16.9.8"
     }
 }

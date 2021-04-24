@@ -29,3 +29,9 @@
 [submodule "packages/uiutils"]
 	path = packages/uiutils
 	url = https://github.com/bridgedxyz/uiutils
+[submodule "packages/coli"]
+	path = packages/coli
+	url = https://github.com/bridgedxyz/coli
+[submodule "packages/editor-ui"]
+	path = packages/editor-ui
+	url = https://github.com/bridgedxyz/reflect-editor-ui
