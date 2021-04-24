@@ -2,12 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import reportWebVitals from "./reportWebVitals";
 import App from "app/lib/main";
-import {
-  initializeTargetPlatform,
-  TargetPlatform,
-} from "@bridged.xyz/design-sdk/lib/platform";
+import { _platform } from "@bridged.xyz/design-sdk";
 
-initializeTargetPlatform(TargetPlatform.webdev);
+_platform.initializeTargetPlatform(_platform.TargetPlatform.webdev);
 ReactDOM.render(<App />, document.getElementById("root"));
 
 // If you want to start measuring performance in your app, pass a function

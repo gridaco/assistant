@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { IReflectNodeReference } from "@bridged.xyz/design-sdk/lib/nodes/types/reflect-node-reference";
+import type { IReflectNodeReference } from "@bridged.xyz/design-sdk/lib/nodes/lignt";
 export enum SelectionType {
   "single", // updated with single selection
   "multi", // updated with multi selection

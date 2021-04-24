@@ -1,11 +1,7 @@
 /// utils for extracting data from data source node
 /// if node with name pattern "@//data-source/*", it means it contians data for logic representation.
 
-import {
-  specialKeyTypeFrom,
-  SpecialKeys,
-} from "@bridged.xyz/design-sdk/lib/features/key-annotations";
-import { Figma } from "@bridged.xyz/design-sdk/lib/figma";
+import { keyAnnotations, Figma } from "@bridged.xyz/design-sdk";
 import type { IReflectNodeReference } from "@bridged.xyz/design-sdk/lib/nodes/lignt";
 
 /**
@@ -45,9 +41,9 @@ export function findDatasourceNodeAndOthers(
   };
 
   all.forEach((v) => {
-    const ignoranceType = specialKeyTypeFrom(v.name);
+    const ignoranceType = keyAnnotations.specialKeyTypeFrom(v.name);
     if (ignoranceType) {
-      if (ignoranceType == SpecialKeys.KEY_DATA_SOURCE) {
+      if (ignoranceType == keyAnnotations.SpecialKeys.KEY_DATA_SOURCE) {
         if (res.datasource) {
           throw "multiple datasource node was selected. this is not allowed and assistant cannot identify how to handle this form of input.";
         }

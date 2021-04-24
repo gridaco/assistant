@@ -1,11 +1,10 @@
-import { normalizedName } from "@bridged.xyz/design-sdk/lib/features/key-annotations";
-import { Figma } from "@bridged.xyz/design-sdk/lib/figma";
-import { mapGrandchildren } from "@bridged.xyz/design-sdk/lib/utils/children";
-import { variant } from "@bridged.xyz/design-sdk/lib/utils";
+import { keyAnnotations } from "@bridged.xyz/design-sdk";
+import { Figma } from "@bridged.xyz/design-sdk";
+import { utils } from "@bridged.xyz/design-sdk";
+import { variant } from "@bridged.xyz/design-sdk";
 import { PluginSdk } from "../../../utils/plugin-provider/plugin-app-sdk";
 import { extractDataFromDataSourceNode } from "./data-source-node";
 import { onService, _Event_DataMapper_GoodUserInputTransfer } from "./events";
-import type { IReflectNodeReference } from "@bridged.xyz/design-sdk/lib/nodes/lignt";
 
 export const TEMPLATE_NODE_PATTERN = "@//template-for-manipulation/*";
 
@@ -84,7 +83,10 @@ function mapDataToSelection(selection: Figma.SceneNode, data: DataSchema) {
     }
   }
 
-  const grandchilds = mapGrandchildren<Figma.ChildrenMixin, Figma.SceneNode>(
+  const grandchilds = utils.mapGrandchildren<
+    Figma.ChildrenMixin,
+    Figma.SceneNode
+  >(
     // this is fine. it's casted on this function's caller
     // if this is changed, fix this statement
     selection as Figma.ChildrenMixin
@@ -102,7 +104,7 @@ function mapDataToSelection(selection: Figma.SceneNode, data: DataSchema) {
 
       // handle non componentized layers
       // check loosen name checking
-      if (propertyName == normalizedName(c.name)) {
+      if (propertyName == keyAnnotations.normalizedName(c.name)) {
         if (c.type == "TEXT") {
           mapText(c, propertyValue);
         } else {

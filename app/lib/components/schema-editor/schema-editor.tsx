@@ -1,4 +1,3 @@
-import { Button, TextField } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { ASSISTANT_PLUGIN_NAMESPACE } from "../../constants";
 import { useSingleSelection } from "../../utils/plugin-hooks";
@@ -7,14 +6,7 @@ import {
   SingleLayerPropertyDefinition,
   ISingleLayerProperty,
 } from "./single-property";
-import { ReflectSceneNodeType } from "@bridged.xyz/design-sdk/lib/nodes";
-import { mapGrandchildren } from "@bridged.xyz/design-sdk/lib/utils";
-import {
-  extractTypeFromVariantNames_Figma,
-  FimaVariantPropertyData,
-  getVariantNamesSetFromReference_Figma,
-} from "@bridged.xyz/design-sdk/lib/utils/variant";
-import { IReflectNodeReference } from "@bridged.xyz/design-sdk/lib/nodes/lignt";
+import { nodes, utils, variant } from "@bridged.xyz/design-sdk";
 
 const ERROR_MESSAGES = {
   nothing_is_selected: "Nothing is selected",
@@ -44,16 +36,22 @@ export function SchemaEditor(props: {}) {
   useEffect(() => {
     if (selection) {
       if (
-        selection?.node?.origin != ReflectSceneNodeType.component &&
-        selection?.node?.origin != ReflectSceneNodeType.variant_set &&
-        selection?.node?.origin != ReflectSceneNodeType.instance
+        selection?.node?.origin != nodes.ReflectSceneNodeType.component &&
+        selection?.node?.origin != nodes.ReflectSceneNodeType.variant_set &&
+        selection?.node?.origin != nodes.ReflectSceneNodeType.instance
       ) {
         setMode("single-layer-property");
-      } else if (selection?.node?.origin == ReflectSceneNodeType.component) {
+      } else if (
+        selection?.node?.origin == nodes.ReflectSceneNodeType.component
+      ) {
         setMode("master-component");
-      } else if (selection?.node?.origin == ReflectSceneNodeType.variant_set) {
+      } else if (
+        selection?.node?.origin == nodes.ReflectSceneNodeType.variant_set
+      ) {
         setMode("master-variant-set");
-      } else if (selection?.node?.origin == ReflectSceneNodeType.instance) {
+      } else if (
+        selection?.node?.origin == nodes.ReflectSceneNodeType.instance
+      ) {
         setMode("instance");
       }
     } else {
@@ -98,7 +96,9 @@ function _Mode_Loading() {
   return <>loading..</>;
 }
 
-function _Mode_SingleLayerProperty(props: { node: IReflectNodeReference }) {
+function _Mode_SingleLayerProperty(props: {
+  node: nodes.light.IReflectNodeReference;
+}) {
   const { node } = props;
   const id = node.id;
 
@@ -160,30 +160,30 @@ function _Mode_SingleLayerProperty(props: { node: IReflectNodeReference }) {
 }
 
 function _Mode_Variant_Set(props: {
-  node?: IReflectNodeReference;
-  defaultComponent?: IReflectNodeReference;
+  node?: nodes.light.IReflectNodeReference;
+  defaultComponent?: nodes.light.IReflectNodeReference;
 }) {
   // TODO
   return <p>select component inside variant set</p>;
 }
 
-function _Mode_Component(props: { node: IReflectNodeReference }) {
+function _Mode_Component(props: { node: nodes.light.IReflectNodeReference }) {
   const { node } = props;
   const [properties, setProperties] = useState<ISingleLayerProperty[]>(null);
 
   // 0. check if variant compat component (if it's parent is variant-set then it is.)
   const isVariantCompat =
-    node.parentReference.origin == ReflectSceneNodeType.variant_set;
+    node.parentReference.origin == nodes.ReflectSceneNodeType.variant_set;
 
   // if variant, load default property set by variant namings.
-  let variantProperties: FimaVariantPropertyData[];
+  let variantProperties: variant.FimaVariantPropertyData[];
   if (isVariantCompat) {
-    const names = getVariantNamesSetFromReference_Figma(node);
-    variantProperties = extractTypeFromVariantNames_Figma(names);
+    const names = variant.getVariantNamesSetFromReference_Figma(node);
+    variantProperties = variant.extractTypeFromVariantNames_Figma(names);
   }
 
   //1. list all layers under this component
-  const grandchilds = mapGrandchildren(node);
+  const grandchilds = utils.mapGrandchildren(node);
 
   //2. extract schema from layers
   useEffect(() => {
@@ -234,6 +234,6 @@ function _Mode_Component(props: { node: IReflectNodeReference }) {
   );
 }
 
-function _Mode_Instance(props: { node: IReflectNodeReference }) {
+function _Mode_Instance(props: { node: nodes.light.IReflectNodeReference }) {
   return <></>;
 }

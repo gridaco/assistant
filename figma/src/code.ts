@@ -1,4 +1,5 @@
-import { convertIntoReflectNode } from "@bridged.xyz/design-sdk/lib/nodes/conversion";
+import { convert } from "@bridged.xyz/design-sdk";
+
 import { buildApp } from "core/lib/flutter";
 import { retrieveFlutterColors } from "core/lib/flutter/utils/fetch-colors";
 import {
@@ -40,7 +41,7 @@ import { IconConfig } from "@reflect-ui/core/lib/icon/icon.config";
 // init plugin
 /* do not delete this line */ import "app/lib/utils/plugin-init"; // NO REMOVE
 import { PluginSdkService } from "app/lib/utils/plugin-provider/plugin-service";
-import { makeReference } from "@bridged.xyz/design-sdk/lib/nodes/types/reflect-node-reference";
+import { light } from "@bridged.xyz/design-sdk/lib/nodes";
 
 let appMode: string = "code";
 export let singleFigmaNodeSelection: SceneNode;
@@ -189,14 +190,14 @@ figma.on("selectionchange", () => {
 
       // todo - add memoization
       const rnodes = rawSelections.map((s) => {
-        return convertIntoReflectNode(s as any, s.parent as any);
+        return convert.intoReflectNode(s as any, s.parent as any);
       });
       Logger.debug("reflect-converted-selections", rnodes);
 
       // region sync selection event (search "selectionchange" for references)
       figma.ui.postMessage({
         type: "selectionchange",
-        data: rnodes.map((n) => makeReference(n)),
+        data: rnodes.map((n) => light.makeReference(n)),
       });
     // endregion
 
@@ -207,7 +208,7 @@ figma.on("selectionchange", () => {
       targetNodeId = singleFigmaNodeSelection.id;
 
       // todo - add memoization
-      const rnode = convertIntoReflectNode(
+      const rnode = convert.intoReflectNode(
         singleFigmaNodeSelection as any,
         singleFigmaNodeSelection.parent as any
       );
@@ -217,7 +218,7 @@ figma.on("selectionchange", () => {
       // region sync selection event (search "selectionchange" for references)
       figma.ui.postMessage({
         type: "selectionchange",
-        data: makeReference(rnode),
+        data: light.makeReference(rnode),
       });
       // endregion
 
