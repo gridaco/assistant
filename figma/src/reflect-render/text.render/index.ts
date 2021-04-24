@@ -1,5 +1,4 @@
-import { reflectColorToFigmaColor } from "@bridged.xyz/design-sdk/lib/figma/converters/color.convert";
-import { TextManifest } from "@reflect-ui/core/lib";
+import { converters } from "@bridged.xyz/design-sdk";
 import { Color } from "@reflect-ui/core/lib/color";
 
 // FIXME - this should be repplaced by reflect's `TextManifest` when fully constructed
@@ -22,7 +21,9 @@ export function renderText(textManifest: FigmaRenderTextManifest): TextNode {
   // randomize font size
   text.fontSize = textManifest.fontSize;
 
-  const textColor = reflectColorToFigmaColor(textManifest.color);
+  const textColor = converters.figma.reflectColorToFigmaColor(
+    textManifest.color
+  );
 
   text.fills = [
     {
