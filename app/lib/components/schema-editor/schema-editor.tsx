@@ -9,9 +9,12 @@ import {
 } from "./single-property";
 import { ReflectSceneNodeType } from "@bridged.xyz/design-sdk/lib/nodes";
 import { mapGrandchildren } from "@bridged.xyz/design-sdk/lib/utils";
-import { extractPropertiesFromVariantName_Figma } from "@bridged.xyz/design-sdk/lib/utils/variant";
-import { Logger } from "../../utils";
-import { IReflectNodeReference } from "../../../../figma/dist/packages/design-sdk/lib/nodes/types/reflect-node-reference";
+import {
+  extractTypeFromVariantNames_Figma,
+  FimaVariantPropertyData,
+  getVariantNamesSet_Figma,
+} from "@bridged.xyz/design-sdk/lib/utils/variant";
+import { IReflectNodeReference } from "@bridged.xyz/design-sdk/lib/nodes/lignt";
 
 const ERROR_MESSAGES = {
   nothing_is_selected: "Nothing is selected",
@@ -173,21 +176,10 @@ function _Mode_Component(props: { node: IReflectNodeReference }) {
     node.parentReference.origin == ReflectSceneNodeType.variant_set;
 
   // if variant, load default property set by variant namings.
-  let variantPropertyNames: string[];
+  let variantProperties: FimaVariantPropertyData[];
   if (isVariantCompat) {
-    // init names
-    variantPropertyNames = [];
-
-    // extract example property k:v
-    const exampleProperties = extractPropertiesFromVariantName_Figma(node.name);
-
-    // extract variant types as enum by value maps
-
-    // add names to propertyNames arr
-    exampleProperties.forEach((v, k) => {
-      // todo? - maybe sort alphabetically?
-      variantPropertyNames.push(k);
-    });
+    const names = getVariantNamesSet_Figma(node);
+    variantProperties = extractTypeFromVariantNames_Figma(names);
   }
 
   //1. list all layers under this component
@@ -214,10 +206,17 @@ function _Mode_Component(props: { node: IReflectNodeReference }) {
     <>
       <h6>Properties</h6>
       {/*  */}
-      {variantPropertyNames ? (
-        variantPropertyNames.map((n) => {
-          return <p>property from variant: {n}</p>;
-        })
+      {variantProperties ? (
+        <>
+          <h6>variant properties</h6>
+          {variantProperties.map((n) => {
+            return (
+              <p>
+                name:{n.name}, type:{n.type}
+              </p>
+            );
+          })}
+        </>
       ) : (
         <></>
       )}

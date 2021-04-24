@@ -166,9 +166,9 @@ figma.on("selectionchange", () => {
   // clear the console for better debugging
   console.clear();
   console.warn("log cleared. optimized for new build");
-  console.log("selection", figma.currentPage.selection);
-
-  const selectionType = analyzeSelection(figma.currentPage.selection);
+  const rawSelections = figma.currentPage.selection;
+  console.log("selection", rawSelections);
+  const selectionType = analyzeSelection(rawSelections);
   switch (selectionType) {
     case SelectionAnalysis.empty:
       // ignore when nothing was selected
@@ -178,12 +178,28 @@ figma.on("selectionchange", () => {
       });
       return;
     case SelectionAnalysis.multi:
-      // force to single selection
-      // return false or raise error if more than one node is selected.
-      figma.notify("only single selection is supported", {
-        timeout: 1.5,
+      // force to <5 selection
+      // return false or raise error if more than 5 nodes are selected.
+      if (rawSelections.length > 5) {
+        figma.notify("only less than 5 selection is supported", {
+          timeout: 1.5,
+        });
+        return false;
+      }
+
+      // todo - add memoization
+      const rnodes = rawSelections.map((s) => {
+        return convertIntoReflectNode(s as any, s.parent as any);
       });
-      return false;
+      Logger.debug("reflect-converted-selections", rnodes);
+
+      // region sync selection event (search "selectionchange" for references)
+      figma.ui.postMessage({
+        type: "selectionchange",
+        data: rnodes.map((n) => makeReference(n)),
+      });
+    // endregion
+
     case SelectionAnalysis.single:
       const target = figma.currentPage.selection[0];
       // check [ignoreStackParent] description

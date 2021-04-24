@@ -5,30 +5,30 @@ import {
   swapVariant,
 } from "@bridged.xyz/design-sdk/lib/utils/variant";
 import { PluginSdk } from "../../../utils/plugin-provider/plugin-app-sdk";
-import { PluginSdkService } from "../../../utils/plugin-provider/plugin-service";
+import { onService, _Event_DataMapper_GoodUserInputTransfer } from "./events";
 import {
   //   ExampleDataMapperMockDataSource,
   __ExampleComponentProps,
 } from "./example-data-source";
 
-export const DATA_SOURCE_NODE_PATTERN = "@//data-source/*";
 export const TEMPLATE_NODE_PATTERN = "@//template-for-manipulation/*";
 
-PluginSdkService.onAppReqquest("custom-test", (data: any) => {
-  const selection = Figma.figma.currentPage.selection;
+onService(main_cb);
+// main callback
+function main_cb(data: _Event_DataMapper_GoodUserInputTransfer) {
+  const datasourceNode = Figma.figma.getNodeById(data.sourceNodeId);
+  const target = Figma.figma.getNodeById(data.targetNodeId);
 
-  // mapVariant(selection[0] as any, undefined);
-
-  selection.forEach((s) => {
-    if ("children" in s) {
-      mapDataToSelection(s, data); //mockData.getSingleRandom()
-    } else {
-      PluginSdk.notify(
-        "ignoring since one of the selection is not a type of frame or group"
-      );
-    }
-  });
-});
+  // target => {
+  if ("children" in target) {
+    // mapDataToSelection(s, data); //mockData.getSingleRandom()
+  } else {
+    PluginSdk.notify(
+      "ignoring since one of the selection is not a type of frame or group"
+    );
+  }
+  // });
+}
 
 // input
 

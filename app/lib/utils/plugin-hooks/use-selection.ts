@@ -27,6 +27,15 @@ type SelectionData =
   | MultiSelectionData
   | NoneSelectionData;
 
+/**
+ * pair selection - this is multi selection with 2, explicitly requested by client
+ */
+interface _PairSelectionEvent {
+  first: IReflectNodeReference;
+  second: IReflectNodeReference;
+  nodes: IReflectNodeReference[];
+}
+
 export function useSelection(): SelectionData | undefined {
   const [selectednode, setselectednode] = useState<SelectionData>(undefined);
 
@@ -84,4 +93,23 @@ export function useSingleSelection(): SingleSelectionData | undefined {
   });
 
   return single;
+}
+
+export function usePairSelection(): _PairSelectionEvent {
+  const [pair, setPair] = useState<_PairSelectionEvent>(null);
+  const selection = useSelection();
+  useEffect(() => {
+    if (selection) {
+      if (selection.type == SelectionType.multi) {
+        if (selection.nodes.length == 2) {
+          setPair({
+            first: selection.nodes[0],
+            second: selection.nodes[1],
+            nodes: selection.nodes,
+          });
+        }
+      }
+    }
+  });
+  return pair;
 }
