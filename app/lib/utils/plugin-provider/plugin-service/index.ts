@@ -28,7 +28,7 @@ import {
   NodeMetaUpdateRequest,
 } from "../interfaces/meta/meta.requests";
 import { NotifyRequest } from "../interfaces/notify/notify.requests";
-import { figma, SceneNode } from "@bridged.xyz/design-sdk/lib/figma/types/v1";
+import { Figma, figma } from "@bridged.xyz/design-sdk";
 interface HanderProps<T = any> {
   id: string;
   key: string;
@@ -189,14 +189,14 @@ function handleMetaEvent(props: HanderProps) {
   ) {
     const request: NodeMetaFetchRequest = props.data;
     const node = figma.getNodeById(request.id);
-    let targetNode: SceneNode = getMaincomponentLike(node?.id);
+    let targetNode: Figma.SceneNode = getMaincomponentLike(node?.id);
     const data = targetNode.getSharedPluginData(request.namespace, request.key);
     const normData = normalizeMetadata(data);
     return response(props.id, normData);
   } else if (props.key == PUGIN_SDK_EK_REQUEST_UPDATE_MAIN_COMPONENT_META) {
     const request: NodeMetaUpdateRequest = props.data;
     const node = figma.getNodeById(request.id);
-    let targetNode: SceneNode = getMaincomponentLike(node?.id);
+    let targetNode: Figma.SceneNode = getMaincomponentLike(node?.id);
     targetNode.setSharedPluginData(
       request.namespace,
       request.key,
@@ -234,12 +234,12 @@ function normalizeMetadata(data: string): object | string {
   }
 }
 
-function getMaincomponentLike(nodeID: string): SceneNode {
+function getMaincomponentLike(nodeID: string): Figma.SceneNode {
   if (!nodeID) {
     throw `node id is required in order to perform meta fetch`;
   }
   const node = figma.getNodeById(nodeID);
-  let targetNode: SceneNode;
+  let targetNode: Figma.SceneNode;
   if (node.type == "INSTANCE") {
     targetNode = node.mainComponent;
   } else if (node.type == "COMPONENT") {

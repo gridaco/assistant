@@ -1,4 +1,4 @@
-import { reflectColorToFigmaColor } from "@bridged.xyz/design-sdk/lib/figma/converters/color.convert";
+import { converters } from "@bridged.xyz/design-sdk";
 import { Color } from "@reflect-ui/core/lib/color";
 import { IconConfig } from "@reflect-ui/core/lib/icon/icon.config";
 import {
@@ -89,7 +89,7 @@ export function switchSvgColor(
         node.fills = [
           {
             type: "SOLID",
-            color: reflectColorToFigmaColor(sets[0].to),
+            color: converters.figma.reflectColorToFigmaColor(sets[0].to),
           },
         ];
       }

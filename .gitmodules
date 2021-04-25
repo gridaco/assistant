@@ -23,8 +23,6 @@
 [submodule "packages/reflect-ui-generator"]
 	path = packages/reflect-ui-generator
 	url = https://github.com/bridgedxyz/reflect-ui-generator.git
-[submodule "core"]
-	path = core
 	url = https://github.com/bridgedxyz/design-to-code.git
 [submodule "packages/uiutils"]
 	path = packages/uiutils
@@ -35,3 +33,6 @@
 [submodule "packages/editor-ui"]
 	path = packages/editor-ui
 	url = https://github.com/bridgedxyz/reflect-editor-ui
+[submodule "packages/design-to-code"]
+	path = packages/design-to-code
+	url = https://github.com/bridgedxyz/design-to-code
