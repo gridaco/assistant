@@ -46,9 +46,3 @@ To open the developer console in the Figma desktop app, go to `Plugins` → `Dev
 - [React plugin](https://www.figma.com/plugin-docs/bundling-react/)
 - [Create Figma Plugin](https://github.com/yuanqing/create-figma-plugin)
 
-
-### DISCLAIMER
-re-use of this software and it's license is overrided by [contributing-and-license](https://github.com/bridgedxyz/contributing-and-license)
-
-the initial commit of this project was inspired by [FigmaToCode](https://github.com/bernaferrari/FigmaToCode) , which was (is) under GPL-3.0 License License. By this acknowledgement Bridged have done all legal obligation operations.
-(the current source is all overriten, no origin source remaining. if you want to see legacy logics, go link above)
