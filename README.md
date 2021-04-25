@@ -90,7 +90,7 @@ Learn more at [console repository](https://github.com/bridgedxyz/console.bridged
 
 ## UI Element Detection
 
-> rule based button / input / icon detection with [@reflect.bridged.xyz/detection](./packages/detection)
+> rule based button / input / icon detection with [@reflect-ui/detection](./packages/detection)
 > Higher quality ML based detection available at [Bridged's context engine](https://github.com/bridgedxyz/context)
 
 ## Design Assistant
