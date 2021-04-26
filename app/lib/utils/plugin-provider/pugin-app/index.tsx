@@ -12,8 +12,12 @@ import {
 import { NetworkRequest } from "../interfaces/remote-api/remote-api.requests";
 import { PluginSdk } from "../plugin-app-sdk";
 import { currentlySelectedPrimaryNodeId } from "./states/canvas";
+import {
+  initializeTargetPlatform,
+  TargetPlatform,
+} from "../../plugin-init/init-target-platform";
 
-export function PluginApp(props: { children: any }) {
+export function PluginApp(props: { platform: TargetPlatform; children: any }) {
   useEffect(() => {
     PluginSdk.initializeWindow(parent);
     window.addEventListener("message", (ev: MessageEvent) => {
@@ -38,7 +42,10 @@ export function PluginApp(props: { children: any }) {
       registerPluginRemoteCallHandler(message);
     });
 
-    console.info("PluginApp initiallized");
+    // init platform
+    initializeTargetPlatform(props.platform).then(() => {
+      console.info("PluginApp initiallized");
+    });
   }, []);
 
   return <div>{props.children}</div>;

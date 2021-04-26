@@ -30,9 +30,10 @@ import {
 import { NotifyRequest } from "../interfaces/notify/notify.requests";
 import { Figma, figma } from "@bridged.xyz/design-sdk";
 import {
+  __syncTargetPlatformForCodeThread,
   TargetPlatform,
   TARGET_PLATFORM,
-} from "@bridged.xyz/design-sdk/lib/platform";
+} from "../../plugin-init/init-target-platform";
 interface HanderProps<T = any> {
   id: string;
   key: string;
@@ -95,6 +96,11 @@ export class PluginSdkService {
     if (!event.namespace) {
       return;
     }
+
+    if (event.namespace == "__INTERNAL__") {
+      return handleInternalEvent(event);
+    }
+
     if (!event.namespace.includes(PLUGIN_SDK_NAMESPACE_BASE_TOKEN)) {
       console.warn(
         `the event is passed to PluginSdkServer, but the namespace or structure does not meet the standard interface. the givven event was - `,
@@ -163,6 +169,13 @@ export class PluginSdkService {
     }
   }
   ////#endregion custom app request handling
+}
+
+function handleInternalEvent(event: HanderProps) {
+  if (event.key == "sync-target-platform") {
+    return __syncTargetPlatformForCodeThread(event.data);
+  }
+  return response(event.id, true);
 }
 
 function handleMetaEvent(props: HanderProps) {
@@ -280,9 +293,9 @@ function response<T = any>(
   error: Error | undefined = undefined
 ): boolean {
   console.info(
-    `responding to request ${requestId} with data ${JSON.stringify(data)} and ${
-      error ? "" + error : "no error"
-    }`
+    `${TARGET_PLATFORM}>> responding to request ${requestId} with data ${JSON.stringify(
+      data
+    )} and ${error ? "" + error : "no error"}`
   );
 
   const msg = <TransportPluginEvent>{

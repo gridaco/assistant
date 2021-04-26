@@ -1,12 +1,9 @@
 import React from "react";
 import App from "app/lib/main";
-import {
-  initializeTargetPlatform,
-  TargetPlatform,
-} from "@bridged.xyz/design-sdk/lib/platform";
+import { TargetPlatform } from "app/lib/utils/plugin-init/init-target-platform";
 import * as ReactDOM from "react-dom";
 
-// initialize platform as figma
-initializeTargetPlatform(TargetPlatform.figma);
-
-ReactDOM.render(<App />, document.getElementById("react-page"));
+ReactDOM.render(
+  <App platform={TargetPlatform.figma} />,
+  document.getElementById("react-page")
+);
