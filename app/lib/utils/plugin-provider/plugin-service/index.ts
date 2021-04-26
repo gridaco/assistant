@@ -29,6 +29,10 @@ import {
 } from "../interfaces/meta/meta.requests";
 import { NotifyRequest } from "../interfaces/notify/notify.requests";
 import { Figma, figma } from "@bridged.xyz/design-sdk";
+import {
+  TargetPlatform,
+  TARGET_PLATFORM,
+} from "@bridged.xyz/design-sdk/lib/platform";
 interface HanderProps<T = any> {
   id: string;
   key: string;
@@ -164,11 +168,11 @@ export class PluginSdkService {
 function handleMetaEvent(props: HanderProps) {
   if (props.key == PLUGIN_SDK_EK_BATCH_META_UPDATE) {
     const d = props.data as BatchMetaUpdateRequest;
-    figma.root.setSharedPluginData(NS_FILE_ROOT_METADATA, d.key, d.value);
-    figma.notify("metadata updated", { timeout: 1 });
+    figma?.root.setSharedPluginData(NS_FILE_ROOT_METADATA, d.key, d.value);
+    figma?.notify("metadata updated", { timeout: 1 });
   } else if (props.key == PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META) {
     const d = props.data as BatchMetaFetchRequest;
-    const fetched = figma.root.getSharedPluginData(
+    const fetched = figma?.root.getSharedPluginData(
       NS_FILE_ROOT_METADATA,
       d.key
     );
@@ -188,14 +192,14 @@ function handleMetaEvent(props: HanderProps) {
     props.key == PLUGIN_SDK_EK_REQUEST_FETCH_NODE_MAIN_COMPONENT_META
   ) {
     const request: NodeMetaFetchRequest = props.data;
-    const node = figma.getNodeById(request.id);
+    const node = figma?.getNodeById(request.id);
     let targetNode: Figma.SceneNode = getMaincomponentLike(node?.id);
     const data = targetNode.getSharedPluginData(request.namespace, request.key);
     const normData = normalizeMetadata(data);
     return response(props.id, normData);
   } else if (props.key == PUGIN_SDK_EK_REQUEST_UPDATE_MAIN_COMPONENT_META) {
     const request: NodeMetaUpdateRequest = props.data;
-    const node = figma.getNodeById(request.id);
+    const node = figma?.getNodeById(request.id);
     let targetNode: Figma.SceneNode = getMaincomponentLike(node?.id);
     targetNode.setSharedPluginData(
       request.namespace,
@@ -238,7 +242,7 @@ function getMaincomponentLike(nodeID: string): Figma.SceneNode {
   if (!nodeID) {
     throw `node id is required in order to perform meta fetch`;
   }
-  const node = figma.getNodeById(nodeID);
+  const node = figma?.getNodeById(nodeID);
   let targetNode: Figma.SceneNode;
   if (node.type == "INSTANCE") {
     targetNode = node.mainComponent;
@@ -256,9 +260,16 @@ function handleRemoteApiEvent(props: HanderProps) {}
 
 export function handleNotify(props: HanderProps<NotifyRequest>) {
   if (props.key == PLUGIN_SDK_EK_SIMPLE_NOTIFY) {
-    figma.notify(props.data.message, {
-      timeout: props.data.duration ?? 1,
-    });
+    switch (TARGET_PLATFORM) {
+      case TargetPlatform.webdev: {
+        alert(props.data.message);
+      }
+      case TargetPlatform.figma: {
+        figma?.notify(props.data.message, {
+          timeout: props.data.duration ?? 1,
+        });
+      }
+    }
   }
   response(props.id, true);
 }
@@ -274,13 +285,21 @@ function response<T = any>(
     }`
   );
 
-  figma.ui.postMessage(<TransportPluginEvent>{
+  const msg = <TransportPluginEvent>{
     id: requestId,
     namespace: PLUGIN_SDK_NS_RESPONSE_ALL,
     type: "response",
     error: error,
     data: data,
-  });
+  };
+  switch (TARGET_PLATFORM) {
+    case TargetPlatform.webdev: {
+      window.postMessage(msg, undefined);
+    }
+    case TargetPlatform.figma: {
+      figma.ui.postMessage(msg);
+    }
+  }
 
   return true;
 }
