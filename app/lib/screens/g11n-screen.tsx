@@ -36,9 +36,9 @@ export class GlobalizationScreen extends React.Component<any, State> {
   }
 
   onMessage = (ev: MessageEvent) => {
-    const msg = ev.data.pluginMessage;
+    const msg = ev?.data?.pluginMessage;
 
-    switch (msg.type) {
+    switch (msg?.type) {
       case EK_COMPUTE_STARTED:
         this.setState(() => {
           return {

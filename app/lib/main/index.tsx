@@ -33,6 +33,7 @@ import { ToolboxScreen } from "../screens/tool-box";
 import { MetaEditorScreen } from "../screens/tool-box/meta-editor";
 import { ExporterScreen } from "../screens/tool-box/exporter";
 import { DataMapperScreen } from "../screens/tool-box/data-mapper/data-mapper-screen";
+import { TargetPlatform } from "../utils/plugin-init/init-target-platform";
 // endregion screens import
 
 interface TabPanelProps {
@@ -116,7 +117,7 @@ function worspaceModeToName(workspaceMode: WorkspaceMode): string {
   return "N/A";
 }
 
-export default function App() {
+export default function App(props: { platform: TargetPlatform }) {
   // region init firebase
   try {
     firebase.analytics();
@@ -361,7 +362,7 @@ export default function App() {
   const workspaceModeSelectLayout = makeWorkspaceModeSelect();
 
   return (
-    <PluginApp>
+    <PluginApp platform={props.platform}>
       <BrowserRouter>
         {workspaceModeSelectLayout}
         {screenLayout}

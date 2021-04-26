@@ -5,7 +5,6 @@
 	"license": "https://github.com/bridgedxyz/contributing-and-license",
 	"description": "Bridged assistant mono repository. for figma, sketch, zeplin.",
 	"workspaces": [
-		"core",
 		"app",
 		"packages/*",
 		"packages/coli/packages/*",
