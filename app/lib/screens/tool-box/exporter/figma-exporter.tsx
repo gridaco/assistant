@@ -6,6 +6,7 @@ import { parseFileIdFromUrl_Figma } from "./figma-api-utils";
 import { PluginSdk } from "../../../utils/plugin-provider/plugin-app-sdk";
 import { downloadFile } from "./export-utils";
 
+const _maybetoken = process.env.FIGMA_PERSONAL_ACCESS_TOKEN;
 function makeClient(token?: string): FigmaApi.ClientInterface {
   if (!token) {
     const maybePersonalAccessToken = process.env.FIGMA_PERSONAL_ACCESS_TOKEN;
@@ -21,36 +22,54 @@ function makeClient(token?: string): FigmaApi.ClientInterface {
   });
 }
 
-export async function fetchFile(id: string) {
-  const client = makeClient();
+export async function fetchFile(
+  id: string,
+  opt?: {
+    token?: string;
+  }
+) {
+  const client = makeClient(opt?.token);
   const _fileRes = await client.file(id);
   const file = _fileRes.data;
   return file;
 }
 
-async function fetchNode(fileId: string, ...nodeIds: string[]) {
-  const client = makeClient();
+async function fetchNode(
+  fileId: string,
+  nodeIds: string[],
+  opt?: {
+    token?: string;
+  }
+) {
+  const client = makeClient(opt?.token);
   const _nodesRes = await client.fileNodes(fileId, {
     ids: nodeIds,
   });
-
-  const nodes = _nodesRes.data.nodes;
-  //   nodes[0].components[''].key
+  return _nodesRes.data.nodes;
 }
 
 export function FigmaExporter() {
   const selection = useSingleSelection();
+  const [personalToken, setPersonalToken] = useState(_maybetoken);
   const [computing, setComputing] = useState<boolean>(false);
   const [fileId, setFileId] = useState(undefined);
   const handleExportCurrentSelection = () => {
-    fetchNode(fileId, selection.id).then((d) => {
+    setComputing(true);
+    fetchNode(fileId, [selection.id], {
+      token: personalToken,
+    }).then((d) => {
       downloadFile(JSON.stringify(d, null, 4));
+      setComputing(false);
     });
   };
 
   const handleExportCurrentFile = () => {
-    fetchFile(fileId).then((d) => {
+    setComputing(true);
+    fetchFile(fileId, {
+      token: personalToken,
+    }).then((d) => {
       downloadFile(JSON.stringify(d, null, 4));
+      setComputing(false);
     });
   };
 
@@ -82,7 +101,15 @@ export function FigmaExporter() {
         </>
       ) : (
         <>
-          <TextField label="personal access token" disabled fullWidth />
+          <TextField
+            label="personal access token"
+            fullWidth
+            type="password"
+            defaultValue={personalToken}
+            onChange={(e) => {
+              setPersonalToken(e.target.value);
+            }}
+          />
           <TextField
             required
             disabled={fileId !== undefined}
