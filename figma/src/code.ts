@@ -26,8 +26,7 @@ import {
   EK_ICON_DRAG_AND_DROPPED,
 } from "app/lib/constants/ek.constant";
 import { makeApp } from "@designto.codes/core/lib/flutter/make/app.make";
-import { ImageRepositories } from "@designto.codes/core/lib/assets-repository";
-import { makeVanilla } from "@designto.codes/core/lib/vanilla";
+import { vanilla, repo_assets } from "@bridged.xyz/design-sdk";
 import { IconPlacement, renderSvgIcon } from "./reflect-render/icons.render";
 import { Logger } from "app/lib/utils";
 import {
@@ -99,7 +98,7 @@ async function runon(rnode: ReflectSceneNode) {
 
   // region make vanilla
   if (appMode == "g11n" || appMode == "exporter") {
-    const globalizatoinScreen = makeVanilla(rnode as ReflectFrameNode);
+    const globalizatoinScreen = vanilla.makeVanilla(rnode as ReflectFrameNode);
     const vanillaTransportableImageRepository = await globalizatoinScreen.repository.makeTransportable();
     figma.ui.postMessage({
       type: EK_IMAGE_ASSET_REPOSITORY_MAP,
@@ -116,7 +115,7 @@ async function runon(rnode: ReflectSceneNode) {
     const buildResult = buildApp(rnode);
 
     // host images
-    const transportableImageAssetRepository = await ImageRepositories.current.makeTransportable();
+    const transportableImageAssetRepository = await repo_assets.ImageRepositories.current.makeTransportable();
     figma.ui.postMessage({
       type: EK_IMAGE_ASSET_REPOSITORY_MAP,
       data: transportableImageAssetRepository,

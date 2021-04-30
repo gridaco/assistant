@@ -1,8 +1,7 @@
 import { VanillaSceneTransport } from "@bridged.xyz/client-sdk/lib";
 import Button from "@material-ui/core/Button";
 import React from "react";
-import { TransportableImageRepository } from "@designto.codes/core/lib/assets-repository";
-import { ImageHostingRepository } from "@designto.codes/core/lib/assets-repository/hosting";
+import { repo_assets } from "@bridged.xyz/design-sdk";
 import {
   EK_COMPUTE_STARTED,
   EK_IMAGE_ASSET_REPOSITORY_MAP,
@@ -56,8 +55,8 @@ export class VanillaExporter extends React.Component<any, State> {
         break;
 
       case EK_IMAGE_ASSET_REPOSITORY_MAP:
-        const imageRepo = msg.data as TransportableImageRepository;
-        ImageHostingRepository.setRepository(imageRepo);
+        const imageRepo = msg.data as repo_assets.TransportableImageRepository;
+        repo_assets.ImageHostingRepository.setRepository(imageRepo);
         break;
     }
   };
