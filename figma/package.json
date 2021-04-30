@@ -12,7 +12,6 @@
   "author": "bridged.xyz by softmarshmallow <woojoo@softmarshmallow.com>",
   "dependencies": {
     "app": "^0.0.1",
-    "core": "^0.0.1",
     "figma-js": "^1.13.0"
   },
   "devDependencies": {

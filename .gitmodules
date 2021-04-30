@@ -13,9 +13,6 @@
 [submodule "packages/reflect-ui-generator"]
 	path = packages/reflect-ui-generator
 	url = https://github.com/bridgedxyz/reflect-ui-generator.git
-[submodule "packages/coli"]
-	path = packages/coli
-	url = https://github.com/bridgedxyz/coli
 [submodule "packages/editor-ui"]
 	path = packages/editor-ui
 	url = https://github.com/bridgedxyz/reflect-editor-ui

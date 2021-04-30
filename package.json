@@ -7,7 +7,8 @@
 	"workspaces": [
 		"app",
 		"packages/*",
-		"packages/coli/packages/*",
+		"packages/design-to-code/packages/*",
+		"packages/design-to-code/packages/coli/packages/*",
 		"figma",
 		"sketch",
 		"webdev",
