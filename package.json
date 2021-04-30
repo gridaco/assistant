@@ -25,7 +25,8 @@
 		"figma": "yarn workspace figma run webpack:watch",
 		"sketch": "yarn workspace sketch run render",
 		"webdev": "yarn workspace webdev run start",
-		"xd": "yarn workspace xd run build"
+		"xd": "yarn workspace xd run build",
+		"test": "cd figma && yarn build"
 	},
 	"collective": {
 		"type": "opencollective",
