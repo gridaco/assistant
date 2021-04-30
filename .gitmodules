@@ -13,9 +13,6 @@
 [submodule "packages/reflect-core"]
 	path = packages/reflect-core
 	url = https://github.com/bridgedxyz/reflect-core-ts.git
-[submodule "packages/web-builder"]
-	path = packages/web-builder
-	url = https://github.com/bridgedxyz/web-builder.git
 [submodule "packages/reflect-ui-generator"]
 	path = packages/reflect-ui-generator
 	url = https://github.com/bridgedxyz/reflect-ui-generator.git
