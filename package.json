@@ -4,16 +4,21 @@
 	"private": true,
 	"license": "https://github.com/bridgedxyz/contributing-and-license",
 	"description": "Bridged assistant mono repository. for figma, sketch, zeplin.",
-	"workspaces": [
-		"app",
-		"packages/*",
-		"packages/design-to-code/packages/*",
-		"packages/design-to-code/packages/coli/packages/*",
-		"figma",
-		"sketch",
-		"webdev",
-		"xd"
-	],
+	"workspaces": {
+		"packages": [
+			"app",
+			"figma",
+			"sketch",
+			"webdev",
+			"xd",
+			"packages/*",
+			"packages/design-to-code/packages/core",
+			"packages/design-to-code/packages/flutter-builder",
+			"packages/design-to-code/packages/web-builder",
+			"packages/design-to-code/packages/reflect-detection",
+			"packages/design-to-code/packages/coli/packages/*"
+		]
+	},
 	"repository": "https://github.com/bridgedxyz/assistant",
 	"author": "bridged.xyz softmarshmallow <woojoo@softmarshmallow.com>",
 	"scripts": {
