@@ -2889,6 +2889,16 @@
   resolved "https://registry.yarnpkg.com/@reflect-ui/core/-/core-0.0.2-rc.5.local.tgz#c1c50574166aabd5f6dde190a05ab5486465b0f6"
   integrity sha512-NEz8WvibGyxS2a1KiDKTNt3B3T/WsXeG0kkVDh2/G9YUV9t6qx/zJcVvv0w6Gqa4zfg2fojnJwbSg1j0KF+tqA==
 
+"@reflect-ui/namings@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@reflect-ui/namings/-/namings-0.0.3.tgz#6e9fd4809dd5c9d2a996516236c71b99ea93fbcb"
+  integrity sha512-rNNW9nK8qhz+54pOL11MRUTjRhRHTL/rbM5kvtddDY2g7t/1XxGl7d3tLs/0LEoy2LFPtNf/fFZYEgQD/jyoFA==
+
+"@reflect-ui/uiutils@0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@reflect-ui/uiutils/-/uiutils-0.1.1.tgz#6075ef272b1c3fd633e2a3e92afce8d3880509b9"
+  integrity sha512-Qom8dvU6SLxUyllPqT5+a92RzZWCaBD1H1CYVLdmqHE0ml1t6eLoK5N9s3lpxqKWfEWzEskMMDqtqjelwqE/uQ==
+
 "@rollup/plugin-node-resolve@^7.1.1":
   version "7.1.3"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-node-resolve/-/plugin-node-resolve-7.1.3.tgz#80de384edfbd7bfc9101164910f86078151a3eca"
@@ -4658,10 +4668,20 @@ ajv@^6.1.0, ajv@^6.10.0, ajv@^6.10.2, ajv@^6.12.2, ajv@^6.12.3, ajv@^6.12.4, ajv
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-ajv@^8.0.1, ajv@^8.1.0:
+ajv@^8.0.1:
   version "8.1.0"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.1.0.tgz#45d5d3d36c7cdd808930cc3e603cf6200dbeb736"
   integrity sha512-B/Sk2Ix7A36fs/ZkuGLIR86EdjbgR6fsAcbx9lOP/QBSXujDNbVmIS/U4Itz5k8fPFDeVZl/zQ/gJW4Jrq6XjQ==
+  dependencies:
+    fast-deep-equal "^3.1.1"
+    json-schema-traverse "^1.0.0"
+    require-from-string "^2.0.2"
+    uri-js "^4.2.2"
+
+ajv@^8.1.0:
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.2.0.tgz#c89d3380a784ce81b2085f48811c4c101df4c602"
+  integrity sha512-WSNGFuyWd//XO8n/m/EaOlNLtO0yL8EXT/74LqT4khdhpZjP7lkj/kT5uwRmGitKEVp/Oj7ZUHeGfPtgHhQ5CA==
   dependencies:
     fast-deep-equal "^3.1.1"
     json-schema-traverse "^1.0.0"

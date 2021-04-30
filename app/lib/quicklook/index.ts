@@ -2,7 +2,7 @@ import { composeAppWithHome } from "@bridged.xyz/flutter-builder/lib/composer";
 import { Widget } from "@bridged.xyz/flutter-builder/lib";
 import { buildConsoleQuicklookUrl } from "@bridged.xyz/client-sdk/lib/projects/quicklook";
 import { upload } from "@bridged.xyz/client-sdk/lib/hosting";
-import { ImageHostingRepository } from "core/lib/assets-repository/hosting";
+import { ImageHostingRepository } from "@designto.codes/core/lib/assets-repository/hosting";
 import { AppFramework } from "@bridged.xyz/client-sdk/lib/types/app-frameworks";
 import { AppLanguage } from "@bridged.xyz/client-sdk/lib/types/app-languages";
 

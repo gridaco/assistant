@@ -8,8 +8,8 @@ import Button from "@material-ui/core/Button";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { ImageManifest } from "@reflect-ui/core/lib";
 import React from "react";
-import { TransportableImageRepository } from "core/lib/assets-repository";
-import { ImageHostingRepository } from "core/lib/assets-repository/hosting";
+import { TransportableImageRepository } from "@designto.codes/core/lib/assets-repository";
+import { ImageHostingRepository } from "@designto.codes/core/lib/assets-repository/hosting";
 import {
   EK_COMPUTE_STARTED,
   EK_IMAGE_ASSET_REPOSITORY_MAP,

@@ -1,7 +1,7 @@
 import { convert } from "@bridged.xyz/design-sdk";
 
-import { buildApp } from "core/lib/flutter";
-import { retrieveFlutterColors } from "core/lib/flutter/utils/fetch-colors";
+import { buildApp } from "@designto.codes/core/lib/flutter";
+import { retrieveFlutterColors } from "@designto.codes/core/lib/flutter/utils/fetch-colors";
 import {
   analyzeSelection,
   SelectionAnalysis,
@@ -11,7 +11,7 @@ import {
   hideAllOnly,
   randimizeText,
 } from "./tool-box/manipulate";
-import { runLints } from "core/lib/lint/lint";
+import { runLints } from "@designto.codes/core/lib/lint/lint";
 import {
   EK_COMPUTE_STARTED,
   EK_CREATE_ICON,
@@ -25,10 +25,10 @@ import {
   EK_VANILLA_TRANSPORT,
   EK_ICON_DRAG_AND_DROPPED,
 } from "app/lib/constants/ek.constant";
-import { makeApp } from "core/lib/flutter/make/app.make";
-import { ImageRepositories } from "core/lib/assets-repository";
+import { makeApp } from "@designto.codes/core/lib/flutter/make/app.make";
+import { ImageRepositories } from "@designto.codes/core/lib/assets-repository";
+import { makeVanilla } from "@designto.codes/core/lib/vanilla";
 import { IconPlacement, renderSvgIcon } from "./reflect-render/icons.render";
-import { makeVanilla } from "core/lib/vanilla";
 import { Logger } from "app/lib/utils";
 import {
   ReflectFrameNode,

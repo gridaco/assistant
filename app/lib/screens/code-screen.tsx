@@ -1,7 +1,7 @@
 import { Widget } from "@bridged.xyz/flutter-builder/lib";
 import * as React from "react";
-import { TransportableImageRepository } from "core/lib/assets-repository";
-import { ImageHostingRepository } from "core/lib/assets-repository/hosting";
+import { TransportableImageRepository } from "@designto.codes/core/lib/assets-repository";
+import { ImageHostingRepository } from "@designto.codes/core/lib/assets-repository/hosting";
 import { format } from "../utils/dart-format";
 import CodeBox from "../components/codebox";
 import { Preview } from "../components/preview";
