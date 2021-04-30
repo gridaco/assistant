@@ -14163,7 +14163,7 @@ react-docgen-typescript@^1.20.5:
   resolved "https://registry.yarnpkg.com/react-docgen-typescript/-/react-docgen-typescript-1.22.0.tgz#00232c8e8e47f4437cac133b879b3e9437284bee"
   integrity sha512-MPLbF8vzRwAG3GcjdL+OHQlhgtWsLTXs+7uJiHfEeT3Ur7IsZaNYqRTLQ9sj2nB6M6jylcPCeCmH7qbszJmecg==
 
-react-docgen@^5.0.0, react-docgen@^5.3.0:
+react-docgen@^5.0.0:
   version "5.3.1"
   resolved "https://registry.yarnpkg.com/react-docgen/-/react-docgen-5.3.1.tgz#940b519646a6c285c2950b96512aed59e8f90934"
   integrity sha512-YG7YujVTwlLslr2Ny8nQiUfbBuEwKsLHJdQTSdEga1eY/nRFh/7LjCWUn6ogYhu2WDKg4z+6W/BJtUi+DPUIlA==
