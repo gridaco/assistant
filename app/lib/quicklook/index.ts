@@ -1,5 +1,5 @@
-import { composeAppWithHome } from "@bridged.xyz/flutter-builder/lib/composer";
-import { Widget } from "@bridged.xyz/flutter-builder/lib";
+import { composeAppWithHome } from "@bridged.xyz/flutter-builder";
+import { Widget } from "@bridged.xyz/flutter-builder";
 import { features } from "@bridged.xyz/base-sdk";
 import { hosting, types } from "@bridged.xyz/base-sdk";
 import { repo_assets } from "@bridged.xyz/design-sdk";
