@@ -4,9 +4,9 @@
 [submodule "packages/design-sdk"]
 	path = packages/design-sdk
 	url = https://github.com/bridgedxyz/design-sdk.git
-[submodule "packages/client-sdk"]
-	path = packages/client-sdk
-	url = https://github.com/bridgedxyz/client-sdk-ts.git
+[submodule "packages/base-sdk"]
+	path = packages/base-sdk
+	url = https://github.com/bridgedxyz/base-sdk-ts.git
 [submodule "packages/reflect-core"]
 	path = packages/reflect-core
 	url = https://github.com/bridgedxyz/reflect-core-ts.git

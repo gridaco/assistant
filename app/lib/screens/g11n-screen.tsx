@@ -3,7 +3,7 @@ import {
   StorableLayerType,
   StorableSceneType,
   VanillaSceneTransport,
-} from "@bridged.xyz/client-sdk/lib";
+} from "@bridged.xyz/base-sdk";
 import { repo_assets } from "@bridged.xyz/design-sdk";
 import Button from "@material-ui/core/Button";
 import LinearProgress from "@material-ui/core/LinearProgress";

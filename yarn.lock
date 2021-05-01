@@ -1416,6 +1416,17 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@bridged.xyz/base-sdk@0.0.1-19":
+  version "0.0.1-19"
+  resolved "https://registry.yarnpkg.com/@bridged.xyz/base-sdk/-/base-sdk-0.0.1-19.tgz#743fcdf0402455474f0e53fb1b7b4baa6e0dd7fb"
+  integrity sha512-di4YNgM/aPDOwijaQfRpUBI1iQr12UXIFqkYbu4heJBoLkUNllU7qB4JBiPxRAKx0X/hWuyyeV2TqASaNj++7Q==
+  dependencies:
+    aws-sdk "^2.783.0"
+    axios "^0.21.0"
+    dart-services "^0.2.3"
+    form-data "^3.0.0"
+    nanoid "^3.1.22"
+
 "@chromaui/localtunnel@^2.0.2":
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/@chromaui/localtunnel/-/localtunnel-2.0.3.tgz#b43c8560d9cae8744c37f6ed51bc78ce04e0969a"
