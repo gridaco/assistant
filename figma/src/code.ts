@@ -1,7 +1,7 @@
 import { convert } from "@bridged.xyz/design-sdk";
+import { flutter } from "@designto/codes";
+import { runLints } from "@designto/codes/lib/lint/lint";
 
-import { buildApp } from "@designto.codes/core/lib/flutter";
-import { retrieveFlutterColors } from "@designto.codes/core/lib/flutter/utils/fetch-colors";
 import {
   analyzeSelection,
   SelectionAnalysis,
@@ -11,7 +11,6 @@ import {
   hideAllOnly,
   randimizeText,
 } from "./tool-box/manipulate";
-import { runLints } from "@designto.codes/core/lib/lint/lint";
 import {
   EK_COMPUTE_STARTED,
   EK_CREATE_ICON,
@@ -25,7 +24,6 @@ import {
   EK_VANILLA_TRANSPORT,
   EK_ICON_DRAG_AND_DROPPED,
 } from "app/lib/constants/ek.constant";
-import { makeApp } from "@designto.codes/core/lib/flutter/make/app.make";
 import { vanilla, repo_assets } from "@bridged.xyz/design-sdk";
 import { IconPlacement, renderSvgIcon } from "./reflect-render/icons.render";
 import { Logger } from "app/lib/utils";
@@ -112,7 +110,7 @@ async function runon(rnode: ReflectSceneNode) {
   // endregion
 
   if (appMode == "code") {
-    const buildResult = buildApp(rnode);
+    const buildResult = flutter.buildApp(rnode);
 
     // host images
     const transportableImageAssetRepository = await repo_assets.ImageRepositories.current.makeTransportable();
@@ -122,7 +120,7 @@ async function runon(rnode: ReflectSceneNode) {
     });
 
     const widget = buildResult.widget;
-    const app = makeApp({
+    const app = flutter.makeApp({
       widget: widget,
       scrollable: buildResult.scrollable,
     });
@@ -155,11 +153,6 @@ async function runon(rnode: ReflectSceneNode) {
         },
       });
     });
-
-  figma.ui.postMessage({
-    type: "colors",
-    data: retrieveFlutterColors([rnode]),
-  });
 }
 
 figma.on("selectionchange", () => {
