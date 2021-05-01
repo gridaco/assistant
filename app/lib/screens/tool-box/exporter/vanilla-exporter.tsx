@@ -7,8 +7,6 @@ import {
   EK_IMAGE_ASSET_REPOSITORY_MAP,
   EK_VANILLA_TRANSPORT,
 } from "../../../constants/ek.constant";
-import { fetchFile } from "./figma-exporter";
-import { FIGMA_DEMO_DEFAULT_FILE_ID } from "./figma-api-utils";
 import { downloadFile } from "./export-utils";
 import copy from "copy-to-clipboard";
 
@@ -28,9 +26,6 @@ export class VanillaExporter extends React.Component<any, State> {
 
   componentDidMount() {
     window.addEventListener("message", this.onMessage);
-
-    // test
-    fetchFile(FIGMA_DEMO_DEFAULT_FILE_ID);
   }
 
   onMessage = (ev: MessageEvent) => {
