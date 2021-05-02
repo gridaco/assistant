@@ -14,7 +14,7 @@
         "@reflect-ui/core": "0.0.2-rc.7",
         "@reflect-ui/lint": "0.0.5-rc",
         "@reflect.bridged.xyz/ui-generator": "0.0.1",
-        "@designto/codes": "0.0.1",
+        "@designto/code": "0.0.1",
         "copy-to-clipboard": "^3.3.1",
         "coli": "0.0.3",
         "nanoid": "^3.1.20",

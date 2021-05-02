@@ -1875,20 +1875,15 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha1-p3c2C1s5oaLlEG+OhY8v0tBgxXA=
 
-"@reflect-ui/core@0.0.2-rc.5.local":
-  version "0.0.2-rc.5.local"
-  resolved "https://registry.yarnpkg.com/@reflect-ui/core/-/core-0.0.2-rc.5.local.tgz#c1c50574166aabd5f6dde190a05ab5486465b0f6"
-  integrity sha512-NEz8WvibGyxS2a1KiDKTNt3B3T/WsXeG0kkVDh2/G9YUV9t6qx/zJcVvv0w6Gqa4zfg2fojnJwbSg1j0KF+tqA==
-
 "@reflect-ui/namings@0.0.3":
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/@reflect-ui/namings/-/namings-0.0.3.tgz#6e9fd4809dd5c9d2a996516236c71b99ea93fbcb"
   integrity sha512-rNNW9nK8qhz+54pOL11MRUTjRhRHTL/rbM5kvtddDY2g7t/1XxGl7d3tLs/0LEoy2LFPtNf/fFZYEgQD/jyoFA==
 
-"@reflect-ui/uiutils@0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@reflect-ui/uiutils/-/uiutils-0.1.1.tgz#6075ef272b1c3fd633e2a3e92afce8d3880509b9"
-  integrity sha512-Qom8dvU6SLxUyllPqT5+a92RzZWCaBD1H1CYVLdmqHE0ml1t6eLoK5N9s3lpxqKWfEWzEskMMDqtqjelwqE/uQ==
+"@reflect-ui/uiutils@0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@reflect-ui/uiutils/-/uiutils-0.1.2.tgz#1020e557d2fdbf512a10b97b0c424c430ff7ad38"
+  integrity sha512-uhE5Btrzud86MuNykB23EfEHn/jBJ8BicYjOkq7ZFgh38dnvF54vqZV0/LNYF77Z+3jTgQMwZR++e4gL8zCyHw==
 
 "@rollup/plugin-node-resolve@^7.1.1":
   version "7.1.3"

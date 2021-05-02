@@ -1,6 +1,6 @@
 import { convert } from "@bridged.xyz/design-sdk";
-import { flutter } from "@designto/codes";
-import { runLints } from "@designto/codes/lib/lint/lint";
+import { flutter } from "@designto/code";
+import { runLints } from "@designto/clean";
 
 import {
   analyzeSelection,
