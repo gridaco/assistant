@@ -12,8 +12,7 @@
 			"webdev",
 			"xd",
 			"packages/*",
-			"packages/design-to-code/packages/core",
-			"packages/design-to-code/packages/flutter-builder",
+			"packages/design-to-code/packages/designto-*",
 			"packages/design-to-code/packages/web-builder",
 			"packages/design-to-code/packages/reflect-detection",
 			"packages/design-to-code/packages/coli/packages/*"

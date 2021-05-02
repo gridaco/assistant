@@ -1,7 +1,5 @@
-import { Widget } from "@bridged.xyz/flutter-builder/lib";
+import { Widget } from "@bridged.xyz/flutter-builder";
 import * as React from "react";
-import { TransportableImageRepository } from "@designto.codes/core/lib/assets-repository";
-import { ImageHostingRepository } from "@designto.codes/core/lib/assets-repository/hosting";
 import { format } from "../utils/dart-format";
 import CodeBox from "../components/codebox";
 import { Preview } from "../components/preview";
@@ -10,6 +8,7 @@ import {
   EK_IMAGE_ASSET_REPOSITORY_MAP,
   EK_PREVIEW_SOURCE,
 } from "../constants/ek.constant";
+import { repo_assets } from "@bridged.xyz/design-sdk";
 
 const DEFAULT_EMPTY_CODE_SNIPPET = `//
 //
@@ -53,8 +52,8 @@ export class CodeScreen extends React.Component<any, State> {
           });
           break;
         case EK_IMAGE_ASSET_REPOSITORY_MAP:
-          const imageRepo = msg.data as TransportableImageRepository;
-          ImageHostingRepository.setRepository(imageRepo);
+          const imageRepo = msg.data as repo_assets.TransportableImageRepository;
+          repo_assets.ImageHostingRepository.setRepository(imageRepo);
           break;
       }
     } else {
