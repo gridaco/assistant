@@ -35,10 +35,12 @@ import {
 import { replaceAllTextFontInFrame } from "./tool-box/manipulate/font-replacer";
 import { drawButtons } from "./reflect-render";
 import { IconConfig } from "@reflect-ui/core/lib/icon/icon.config";
+import { ImageRepositories } from "@design-sdk/figma/asset-repository";
 
 // init plugin
 /* do not delete this line */ import "app/lib/utils/plugin-init"; // NO REMOVE
 import { PluginSdkService } from "app/lib/utils/plugin-provider/plugin-service";
+import { MainImageRepository } from "@design-sdk/core/assets-repository";
 
 let appMode: string = "code";
 export let singleFigmaNodeSelection: SceneNode;
@@ -319,6 +321,8 @@ function hideAllOnlyFromCurrentSelection(only: NodeType) {
 }
 
 function main() {
+  MainImageRepository.instance = new ImageRepositories();
+
   showUI();
 }
 
