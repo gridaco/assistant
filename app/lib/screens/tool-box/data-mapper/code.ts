@@ -1,7 +1,6 @@
-import { keyAnnotations } from "@bridged.xyz/design-sdk";
-import { Figma } from "@bridged.xyz/design-sdk";
-import { utils } from "@bridged.xyz/design-sdk";
-import { variant } from "@bridged.xyz/design-sdk";
+import { utils, keyAnnotations } from "@design-sdk/core";
+import { variant } from "@design-sdk/figma/features";
+import { Figma } from "@design-sdk/figma";
 import { PluginSdk } from "../../../utils/plugin-provider/plugin-app-sdk";
 import { extractDataFromDataSourceNode } from "./data-source-node";
 import { onService, _Event_DataMapper_GoodUserInputTransfer } from "./events";

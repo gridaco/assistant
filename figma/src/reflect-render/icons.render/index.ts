@@ -1,4 +1,5 @@
-import { converters } from "@bridged.xyz/design-sdk";
+// todo - make this universal
+import { converters } from "@design-sdk/figma";
 import { Color } from "@reflect-ui/core/lib/color";
 import { IconConfig } from "@reflect-ui/core/lib/icon/icon.config";
 import {
@@ -89,7 +90,7 @@ export function switchSvgColor(
         node.fills = [
           {
             type: "SOLID",
-            color: converters.figma.reflectColorToFigmaColor(sets[0].to),
+            color: converters.reflectColorToFigmaColor(sets[0].to),
           },
         ];
       }

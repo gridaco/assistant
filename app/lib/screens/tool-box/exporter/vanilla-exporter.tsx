@@ -1,7 +1,7 @@
 import { VanillaSceneTransport } from "@bridged.xyz/base-sdk";
 import Button from "@material-ui/core/Button";
 import React from "react";
-import { repo_assets } from "@bridged.xyz/design-sdk";
+import { repo_assets } from "@design-sdk/core";
 import {
   EK_COMPUTE_STARTED,
   EK_IMAGE_ASSET_REPOSITORY_MAP,

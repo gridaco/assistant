@@ -1,4 +1,4 @@
-import { convert } from "@bridged.xyz/design-sdk";
+import { convert } from "@design-sdk/figma";
 import { flutter } from "@designto/code";
 import { runLints } from "@designto/clean";
 
@@ -24,21 +24,23 @@ import {
   EK_VANILLA_TRANSPORT,
   EK_ICON_DRAG_AND_DROPPED,
 } from "app/lib/constants/ek.constant";
-import { vanilla, repo_assets } from "@bridged.xyz/design-sdk";
+import { vanilla, repo_assets } from "@design-sdk/core";
 import { IconPlacement, renderSvgIcon } from "./reflect-render/icons.render";
 import { Logger } from "app/lib/utils";
 import {
   ReflectFrameNode,
   ReflectSceneNode,
-} from "@bridged.xyz/design-sdk/lib/nodes";
+  light,
+} from "@design-sdk/core/nodes";
 import { replaceAllTextFontInFrame } from "./tool-box/manipulate/font-replacer";
 import { drawButtons } from "./reflect-render";
 import { IconConfig } from "@reflect-ui/core/lib/icon/icon.config";
+import { ImageRepositories } from "@design-sdk/figma/asset-repository";
 
 // init plugin
 /* do not delete this line */ import "app/lib/utils/plugin-init"; // NO REMOVE
 import { PluginSdkService } from "app/lib/utils/plugin-provider/plugin-service";
-import { light } from "@bridged.xyz/design-sdk/lib/nodes";
+import { MainImageRepository } from "@design-sdk/core/assets-repository";
 
 let appMode: string = "code";
 export let singleFigmaNodeSelection: SceneNode;
@@ -113,7 +115,7 @@ async function runon(rnode: ReflectSceneNode) {
     const buildResult = flutter.buildApp(rnode);
 
     // host images
-    const transportableImageAssetRepository = await repo_assets.ImageRepositories.current.makeTransportable();
+    const transportableImageAssetRepository = await repo_assets.MainImageRepository.instance.current.makeTransportable();
     figma.ui.postMessage({
       type: EK_IMAGE_ASSET_REPOSITORY_MAP,
       data: transportableImageAssetRepository,
@@ -319,6 +321,8 @@ function hideAllOnlyFromCurrentSelection(only: NodeType) {
 }
 
 function main() {
+  MainImageRepository.instance = new ImageRepositories();
+
   showUI();
 }
 

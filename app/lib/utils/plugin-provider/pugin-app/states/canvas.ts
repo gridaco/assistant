@@ -1,4 +1,4 @@
-import type { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes";
+import type { ReflectSceneNode } from "@design-sdk/core/nodes";
 import { atom, GetRecoilValue, selector } from "recoil";
 
 const ATOM_KEY_CURRENT_NODE_SELECTION_PRIMARY =
