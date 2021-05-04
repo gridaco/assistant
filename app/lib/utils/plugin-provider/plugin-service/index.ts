@@ -28,7 +28,9 @@ import {
   NodeMetaUpdateRequest,
 } from "../interfaces/meta/meta.requests";
 import { NotifyRequest } from "../interfaces/notify/notify.requests";
-import { Figma, figma } from "@bridged.xyz/design-sdk";
+
+// TODO - make it universal
+import { Figma, figma } from "@design-sdk/figma";
 import {
   __syncTargetPlatformForCodeThread,
   TargetPlatform,

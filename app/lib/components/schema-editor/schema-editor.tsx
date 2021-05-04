@@ -6,7 +6,8 @@ import {
   SingleLayerPropertyDefinition,
   ISingleLayerProperty,
 } from "./single-property";
-import { nodes, utils, variant } from "@bridged.xyz/design-sdk";
+import { nodes, utils } from "@design-sdk/core";
+import { variant } from "@design-sdk/figma/features";
 
 const ERROR_MESSAGES = {
   nothing_is_selected: "Nothing is selected",

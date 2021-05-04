@@ -4,7 +4,7 @@ import {
   StorableSceneType,
   VanillaSceneTransport,
 } from "@bridged.xyz/base-sdk";
-import { repo_assets } from "@bridged.xyz/design-sdk";
+import { repo_assets } from "@design-sdk/core";
 import Button from "@material-ui/core/Button";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { ImageManifest } from "@reflect-ui/core/lib";

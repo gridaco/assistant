@@ -8,7 +8,7 @@ import {
   EK_IMAGE_ASSET_REPOSITORY_MAP,
   EK_PREVIEW_SOURCE,
 } from "../constants/ek.constant";
-import { repo_assets } from "@bridged.xyz/design-sdk";
+import { repo_assets } from "@design-sdk/core";
 
 const DEFAULT_EMPTY_CODE_SNIPPET = `//
 //

@@ -1,4 +1,4 @@
-import { converters } from "@bridged.xyz/design-sdk";
+import { converters } from "@design-sdk/figma";
 import { Color } from "@reflect-ui/core/lib/color";
 
 // his should be repplaced by reflect's `CGRectManifest` when fully constructed
@@ -25,7 +25,7 @@ export function renderCgRect(
     rect.fills = [
       {
         type: "SOLID",
-        color: converters.figma.reflectColorToFigmaRGB(rectManifest.color),
+        color: converters.reflectColorToFigmaRGB(rectManifest.color),
         opacity: 1,
       },
     ];
@@ -47,11 +47,11 @@ export function renderCgRect(
         ],
         gradientStops: [
           {
-            color: converters.figma.reflectColorToFigmaRGBA(startColor),
+            color: converters.reflectColorToFigmaRGBA(startColor),
             position: 0,
           },
           {
-            color: converters.figma.reflectColorToFigmaRGBA(endColor),
+            color: converters.reflectColorToFigmaRGBA(endColor),
             position: 1,
           },
         ],

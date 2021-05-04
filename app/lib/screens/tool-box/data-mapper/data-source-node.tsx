@@ -1,8 +1,9 @@
 /// utils for extracting data from data source node
 /// if node with name pattern "@//data-source/*", it means it contians data for logic representation.
 
-import { keyAnnotations, Figma } from "@bridged.xyz/design-sdk";
-import type { IReflectNodeReference } from "@bridged.xyz/design-sdk/lib/nodes/lignt";
+// TOOD - make it universal
+import { keyAnnotations, Figma } from "@design-sdk/figma";
+import type { IReflectNodeReference } from "@design-sdk/core/nodes/lignt";
 
 /**
  * currently only root level text are supported for data source node.

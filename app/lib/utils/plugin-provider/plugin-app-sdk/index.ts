@@ -21,7 +21,7 @@ import {
 } from "../interfaces/meta/meta.requests";
 import { NotifyRequest } from "../interfaces/notify/notify.requests";
 import { DragAndDropOnCanvasRequest } from "../interfaces/dragdrop/dragdrop.requests";
-import type { ReflectSceneNode } from "@bridged.xyz/design-sdk/lib/nodes";
+import type { ReflectSceneNode } from "@design-sdk/core/nodes";
 import { reqid } from "../_id";
 import { ASSISTANT_PLUGIN_NAMESPACE } from "../../../constants";
 
