@@ -1,6 +1,23 @@
-import ReactGA from 'react-ga';
+// import { nanoid } from "nanoid";
+import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 
-export function initialize(){
-    ReactGA.initialize('G-8WGR5NZPJR');
-    ReactGA.pageview(window.location.pathname + window.location.search);
+export function initialize() {
+  if (process.env.NODE_ENV == "production") {
+    // init & hit page view
+    // we yet do not track client id, every session is anonymous.
+    // const client_id = nanoid();
+    // with proxy
+    analytics.initWithProxy(
+      process.env.BRIDGED_FIRST_PARTY_ANALYTICS_PROXY_SERVICE_TOTP_SECRET
+    );
+
+    analytics.initWithCors();
+
+    // TODO - chagne with current page
+    analytics.event_page_view("code");
+  } else {
+    console.log(
+      "[ASSITANT] using development build. ignoring analytics feature."
+    );
+  }
 }
