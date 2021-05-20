@@ -16,6 +16,7 @@ const CONFIG_JSON_S3 =
   "https://reflect-icons.s3-us-west-1.amazonaws.com/all.json";
 import "./icons-loader.css";
 import { Draggable } from "../utils/draggable";
+import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 
 // cached icons configs
 let CONFIGS: Map<string, IconConfig>;
@@ -246,7 +247,15 @@ function IconItem(props: { name: string; config: IconConfig }) {
   const { name, config } = props;
   const [downloading, setDownloading] = useState<boolean>(false);
 
+  const _onUserLoadIconToCanvas = () => {
+    // ANALYTICS
+    analytics.event_load_icon({
+      icon_name: props.name,
+    });
+  };
+
   async function loadData() {
+    _onUserLoadIconToCanvas();
     try {
       setDownloading(true);
       const svg = await resources.loadSvg(name, config);
@@ -264,6 +273,7 @@ function IconItem(props: { name: string; config: IconConfig }) {
   }
 
   const onClick = () => {
+    _onUserLoadIconToCanvas();
     console.log(name, "clicked");
     loadData().then((d) => {
       parent.postMessage(
