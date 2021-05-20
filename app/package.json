@@ -7,7 +7,7 @@
     "author": "bridged.xyz by softmarshmallow <woojoo@softmarshmallow.com>",
     "scripts": {},
     "dependencies": {
-        "@analytics.bridged.xyz/internal": "^0.0.8",
+        "@analytics.bridged.xyz/internal": "^0.0.9",
         "@bridged.xyz/base-sdk": "^0.0.2-1",
         "@design-sdk/universal": "^0.0.0",
         "@designto/code": "0.0.1",
