@@ -11,6 +11,8 @@
         "@bridged.xyz/base-sdk": "^0.0.2-1",
         "@design-sdk/universal": "^0.0.0",
         "@designto/code": "0.0.1",
+        "@emotion/react": "^11.4.0",
+        "@emotion/styled": "^11.3.0",
         "@material-ui/core": "^4.11.0",
         "@material-ui/icons": "^4.11.2",
         "@reflect-ui/core": "0.0.2-rc.7",
