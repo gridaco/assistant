@@ -13,6 +13,14 @@ export function initialize() {
 
     analytics.initWithCors();
 
+    // Emmit login event to mock user. (since user authentication is optional to initially use assistant.)
+    analytics.event({
+      name: "login",
+      params: {
+        method: "anonymous",
+      },
+    });
+
     // TODO - chagne with current page
     analytics.event_page_view("code");
   } else {
