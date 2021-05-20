@@ -26,6 +26,16 @@
 - [Flutter] Poligon Node support with XImage (svg)
 - [Lint] Primal naming & grouping linting for better code export quality. this is tracked sperately on [lint](https://github.com/bridgedxyz/lint)
 
+## [2021.0.2f0] - 2021-5-21
+
+> Deisgn to code logical separation. Design to code is now imported from [designto.codes](https://designto.codes)
+
+- [new/ui] About page - https://github.com/bridgedxyz/assistant/pull/106
+- [features/design-to-code] Core foundation refactoring - https://github.com/bridgedxyz/assistant/pull/99, https://github.com/bridgedxyz/assistant/pull/98
+- [features/analytics] Secure proxy analytics added for improving UX. - https://github.com/bridgedxyz/assistant/pull/104
+- [features/tool-box] Made internal toolbox available for production.
+- [features/component-view] Components registration & metadata editing, interface design is added (will be fully supported on next version) - https://github.com/bridgedxyz/assistant/pull/72
+
 ## [2021.0.1f1.1] - 2021-2-7
 
 > cors issue hot fix. cors anywhere usage has been replaced with cors.bridged.cc
