@@ -9,7 +9,12 @@ import {
   EK_PREVIEW_SOURCE,
 } from "../constants/ek.constant";
 import { repo_assets } from "@design-sdk/core";
+import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 
+/**
+ * default message
+ * @todo - detect the platform and customize the message.
+ */
 const DEFAULT_EMPTY_CODE_SNIPPET = `//
 //
 //
@@ -48,6 +53,11 @@ export class CodeScreen extends React.Component<any, State> {
           const code = format(msg.data.code);
           const widget = msg.data.widget;
           this.setState((state, props) => {
+            // ANALYTICS --
+            analytics.event_selection_to_code({
+              framework: "flutter",
+            });
+            // ------------
             return { code: code, widget: widget, app: app };
           });
           break;

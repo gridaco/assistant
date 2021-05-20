@@ -7,10 +7,10 @@
   resolved "https://registry.yarnpkg.com/@abraham/reflection/-/reflection-0.7.0.tgz#16d4ff597d3797001bcf88738d6edc3dd19b50c7"
   integrity sha512-W4V4I0PzxeWCiMKnS4n4x3Fzb8cQp2qlmBO7RACS/00YsvIgijjcBz5Mp3P1PPP9vSzpbmi0qwuVYZ4twXKwxg==
 
-"@analytics.bridged.xyz/internal@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@analytics.bridged.xyz/internal/-/internal-0.0.6.tgz#387a9e283f5f7dda79b764493a1e41adfe4f78ea"
-  integrity sha512-Cuj3OLTT4wWfv5ovcM/TWHI3gcxuUy8C8e8YWx38mOkVYFDnoHUBnKL27WhY9xrlnLdFuGWl/LrHabb3pRUwpQ==
+"@analytics.bridged.xyz/internal@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@analytics.bridged.xyz/internal/-/internal-0.0.7.tgz#0b267ba68a55006d3a071c5834e32a81bbf9b947"
+  integrity sha512-UB/BwFuvVH7lEY+7uASdlz9VwiEM329Z+Rdu7krkna/zx+vGC0eVBhMm9w7qw5eQr+jw1gKEbV7KFjaemEQukA==
   dependencies:
     axios "^0.21.1"
     otplib "^12.0.1"
