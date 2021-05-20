@@ -5,10 +5,11 @@ export enum WorkspaceMode {
   design,
   content,
   toolbox,
-  settings,
+  settings, // "about" page for now
 }
 
 export enum WorkScreen {
+  about = "about",
   code = "code",
   component = "component",
   layout = "layout",
@@ -59,7 +60,7 @@ export function getWorkspaceTabLayout(workspaceMode: WorkspaceMode): TabLayout {
       case WorkspaceMode.content:
         return [WorkScreen.g11n, WorkScreen.lint, WorkScreen.exporter];
       case WorkspaceMode.settings:
-        return [];
+        return [WorkScreen.about];
       case WorkspaceMode.toolbox:
         return [
           WorkScreen.tool_font_replacer,
@@ -88,6 +89,7 @@ export function getWorkspaceTabLayout(workspaceMode: WorkspaceMode): TabLayout {
 
 const SCREEN_VISIBILITY_PREFERENCE: Map<WorkScreen, ReleaseChannel> = new Map([
   [WorkScreen.code, "release"],
+  [WorkScreen.about, "release"],
   [WorkScreen.component, "release"],
   [WorkScreen.layout, "beta"],
   [WorkScreen.icon, "release"],
@@ -98,4 +100,7 @@ const SCREEN_VISIBILITY_PREFERENCE: Map<WorkScreen, ReleaseChannel> = new Map([
   [WorkScreen.slot, "alpha"],
   [WorkScreen.desing_button_maker, "alpha"],
   [WorkScreen.tool_font_replacer, "release"],
+  [WorkScreen.tool_meta_editor, "release"],
+  [WorkScreen.tool_batch_meta_editor, "release"],
+  [WorkScreen.tool_data_mapper, "release"],
 ]);

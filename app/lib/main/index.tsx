@@ -33,6 +33,7 @@ import { MetaEditorScreen } from "../screens/tool-box/meta-editor";
 import { ExporterScreen } from "../screens/tool-box/exporter";
 import { DataMapperScreen } from "../screens/tool-box/data-mapper/data-mapper-screen";
 import { TargetPlatform } from "../utils/plugin-init/init-target-platform";
+import { AboutScreen } from "../screens/about";
 // endregion screens import
 
 interface TabPanelProps {
@@ -66,6 +67,8 @@ function a11yProps(index: number) {
 
 function workScreenToName(appMode: WorkScreen): string {
   switch (appMode) {
+    case WorkScreen.about:
+      return "about";
     case WorkScreen.code:
       return "code";
     case WorkScreen.component:
@@ -108,7 +111,7 @@ function worspaceModeToName(workspaceMode: WorkspaceMode): string {
     case WorkspaceMode.content:
       return "CONTENT";
     case WorkspaceMode.settings:
-      return "SETTINGS";
+      return "ABOUT"; // change to settings after other features are implemented.
     case WorkspaceMode.toolbox:
       return "TOOLS";
   }
@@ -205,6 +208,12 @@ export default function App(props: { platform: TargetPlatform }) {
       <>
         {tabLayout.map((v, i) => {
           switch (v) {
+            case WorkScreen.about:
+              return (
+                <TabPanel key={i} value={tabIndex} index={i}>
+                  <AboutScreen />
+                </TabPanel>
+              );
             case WorkScreen.code:
               return (
                 <TabPanel key={i} value={tabIndex} index={i}>
@@ -341,6 +350,12 @@ export default function App(props: { platform: TargetPlatform }) {
             value={WorkspaceMode.toolbox}
           >
             TOOLS
+          </MenuItem>
+          <MenuItem
+            onClick={handleWorkspaceModeSelect}
+            value={WorkspaceMode.settings}
+          >
+            ABOUT
           </MenuItem>
         </Menu>
       </div>
