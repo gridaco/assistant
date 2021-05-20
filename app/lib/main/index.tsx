@@ -1,5 +1,4 @@
 import * as React from "react";
-import firebase from "../firebase/firebase-init";
 import { initialize } from "../analytics";
 import "../app.css";
 
@@ -118,17 +117,7 @@ function worspaceModeToName(workspaceMode: WorkspaceMode): string {
 }
 
 export default function App(props: { platform: TargetPlatform }) {
-  // region init firebase
-  try {
-    firebase.analytics();
-  } catch (e) {
-    console.warn(
-      "firebase is disabled. it seems you are contributing to this project!, no worries, other functionalyties will work fine."
-    );
-  }
-  // endregion init firebase
-
-  // region init GA
+  // region init analytics
   try {
     initialize();
   } catch (e) {

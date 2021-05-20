@@ -6,6 +6,7 @@ import {
 } from "prism-react-renderer";
 import copy from "copy-to-clipboard";
 import "./highlight.css";
+import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 
 // region custom dart support
 // https://github.com/FormidableLabs/prism-react-renderer/issues/22#issuecomment-553042928
@@ -43,6 +44,9 @@ export default class CodeBox extends React.Component<Props, State> {
   onCopyClicked = (e) => {
     copy(this.props.code);
     PluginSdk.notifyCopied();
+
+    // ANALYTICS
+    analytics.event_click_copy_code();
   };
 
   onQuickLookClicked = (e) => {
@@ -65,6 +69,9 @@ export default class CodeBox extends React.Component<Props, State> {
         setLoadingState(false);
         PluginSdk.notify("compile failed. view console for details.", 2);
       });
+
+    // ANALYTICS
+    analytics.event_click_quicklook();
   };
 
   render() {
