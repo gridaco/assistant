@@ -15,6 +15,7 @@
 
 - [toolbox/meta-editor] Meta data editor of root (file)'s metadata single property editor available for developer experience. (you can manually set files property to mock or give context to assistant which this design system holds as a data. e.g. - uses-designsystem=material-design)
 - [linter/textstyles] `MissingTextStyleWarning` : New Linter added. this lints the design warning the plain text with no textstyle specified. [PR](https://github.com/bridgedxyz/assistant/pull/80)
+- [assistant/ux] Resizing added. Now you can resize the plugin as you want. starting on figma platform. ([#107](https://github.com/bridgedxyz/assistant/pull/107))
 
 ### Will be added
 
