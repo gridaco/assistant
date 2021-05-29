@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { resources } from "@bridged.xyz/base-sdk";
+import { icons } from "@base-sdk/resources";
 import { IconConfig } from "@reflect-ui/core/lib";
 import Tooltip from "@material-ui/core/Tooltip";
 import GridList from "@material-ui/core/GridList";
@@ -258,7 +258,7 @@ function IconItem(props: { name: string; config: IconConfig }) {
     _onUserLoadIconToCanvas();
     try {
       setDownloading(true);
-      const svg = await resources.loadSvg(name, config);
+      const svg = await icons.loadSvg(name, config);
       const data = {
         key: name,
         svg: svg,
@@ -313,7 +313,7 @@ function IconItem(props: { name: string; config: IconConfig }) {
           ) : (
             <svg width="24" height="24">
               <image
-                xlinkHref={resources.makeIconUrl(name, config)}
+                xlinkHref={icons.makeIconUrl(name, config)}
                 width="24"
                 height="24"
               />
