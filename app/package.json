@@ -9,6 +9,8 @@
     "dependencies": {
         "@analytics.bridged.xyz/internal": "^0.0.9",
         "@bridged.xyz/base-sdk": "^0.0.2-1",
+        "@base-sdk/base": "0.1.0-1",
+        "@base-sdk/auth-first-party": "0.1.0",
         "@design-sdk/universal": "^0.0.0",
         "@designto/code": "0.0.1",
         "@emotion/react": "^11.4.0",
