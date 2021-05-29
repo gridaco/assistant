@@ -1,7 +1,6 @@
 import { composeAppWithHome } from "@bridged.xyz/flutter-builder";
 import { Widget } from "@bridged.xyz/flutter-builder";
-import { features } from "@bridged.xyz/base-sdk";
-import { hosting, types } from "@bridged.xyz/base-sdk";
+import { features, hosting, types } from "@base-sdk/base";
 import { repo_assets } from "@design-sdk/core";
 
 export async function quickLook(id: string, app: Widget | string) {

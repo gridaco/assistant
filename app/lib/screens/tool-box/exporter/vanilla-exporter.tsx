@@ -1,4 +1,4 @@
-import { VanillaSceneTransport } from "@bridged.xyz/base-sdk";
+import { VanillaSceneTransport } from "@base-sdk/base";
 import Button from "@material-ui/core/Button";
 import React from "react";
 import { repo_assets } from "@design-sdk/core";
