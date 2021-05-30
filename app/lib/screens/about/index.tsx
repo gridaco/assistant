@@ -1,6 +1,10 @@
 import React from "react";
 import styled from "@emotion/styled";
 import * as about from "../../about";
+import {
+  __auth_proxy,
+  ProxyAuthenticationMode,
+} from "@base-sdk/auth-first-party";
 
 const URLS = {
   logo_256:
@@ -33,6 +37,20 @@ export function AboutScreen() {
     };
   };
 
+  const signIntoAssistant = () => {
+    __auth_proxy.requesetProxyAuth(
+      process.env.BRIDGED_FIRST_PARTY_PROXY_AUTH_REQUEST_TOTP_SECRET,
+      {
+        appId: "xyz.bridged.assistant",
+        clientId: "", // todo
+        mode: ProxyAuthenticationMode.ws,
+      },
+      {
+        autoOpen: true,
+      }
+    );
+  };
+
   return (
     <>
       <AboutTitleSection>
@@ -53,7 +71,7 @@ export function AboutScreen() {
         </MenuSection>
         <MenuSection>
           <MenuSectionTitleItem>More from Bridged</MenuSectionTitleItem>
-          <MenuItem onClick={linkTo(URLS.signup)}>Signup</MenuItem>
+          <MenuItem onClick={signIntoAssistant}>Signup / Signin</MenuItem>
           <MenuItem onClick={linkTo(URLS.blog)}>Medium</MenuItem>
           <MenuItem onClick={linkTo(URLS.homepage_bridged)}>Homepage</MenuItem>
         </MenuSection>
