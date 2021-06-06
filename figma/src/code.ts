@@ -1,5 +1,4 @@
 import { convert } from "@design-sdk/figma";
-import { flutter } from "@designto/code";
 import { runLints } from "@designto/clean";
 
 import {
@@ -41,8 +40,17 @@ import { ImageRepositories } from "@design-sdk/figma/asset-repository";
 /* do not delete this line */ import "app/lib/utils/plugin-init"; // NO REMOVE
 import { PluginSdkService } from "app/lib/utils/plugin-provider/plugin-service";
 import { MainImageRepository } from "@design-sdk/core/assets-repository";
+import { designToFlutter, designToReact } from "./design-to-code";
 
-let appMode: string = "code";
+/**
+ * current user viewing screen name
+ */
+let user_interest: string;
+
+function userInterestUnset(): boolean {
+  return user_interest === undefined;
+}
+
 export let singleFigmaNodeSelection: SceneNode;
 export let targetNodeId: string;
 
@@ -88,7 +96,7 @@ async function runon(rnode: ReflectSceneNode) {
   figma.ui.postMessage({
     type: EK_COMPUTE_STARTED,
     data: {
-      mode: appMode,
+      mode: user_interest,
     },
   });
   // endregion
@@ -102,7 +110,7 @@ async function runon(rnode: ReflectSceneNode) {
   }
 
   //#region  run linter
-  if (appMode == "lint") {
+  if (userInterestUnset() || user_interest == "lint") {
     const feedbacks = runLints(rnode);
     console.warn(feedbacks);
     figma.ui.postMessage({
@@ -113,9 +121,10 @@ async function runon(rnode: ReflectSceneNode) {
   //#endregion
 
   // region make vanilla
-  if (appMode == "g11n" || appMode == "exporter") {
+  if (user_interest == "g11n" || user_interest == "exporter") {
     const globalizatoinScreen = vanilla.makeVanilla(rnode as ReflectFrameNode);
-    const vanillaTransportableImageRepository = await globalizatoinScreen.repository.makeTransportable();
+    const vanillaTransportableImageRepository =
+      await globalizatoinScreen.repository.makeTransportable();
     figma.ui.postMessage({
       type: EK_IMAGE_ASSET_REPOSITORY_MAP,
       data: vanillaTransportableImageRepository,
@@ -127,33 +136,51 @@ async function runon(rnode: ReflectSceneNode) {
   }
   // endregion
 
-  if (appMode == "code") {
-    const buildResult = flutter.buildApp(rnode);
+  if (userInterestUnset() || user_interest.startsWith("code")) {
+    const codePlatform = "react"; // static dev
+    const hostingjob = async () => {
+      // host images
+      const transportableImageAssetRepository =
+        await repo_assets.MainImageRepository.instance.current.makeTransportable();
+      figma.ui.postMessage({
+        type: EK_IMAGE_ASSET_REPOSITORY_MAP,
+        data: transportableImageAssetRepository,
+      });
+    };
 
-    // host images
-    const transportableImageAssetRepository = await repo_assets.MainImageRepository.instance.current.makeTransportable();
-    figma.ui.postMessage({
-      type: EK_IMAGE_ASSET_REPOSITORY_MAP,
-      data: transportableImageAssetRepository,
-    });
-
-    const widget = buildResult.widget;
-    const app = flutter.makeApp({
-      widget: widget,
-      scrollable: buildResult.scrollable,
-    });
-
-    figma.ui.postMessage({
-      type: EK_GENERATED_CODE_PLAIN,
-      data: {
-        code: widget.build().finalize(),
-        app: app.build().finalize(),
-      },
-    });
+    //@ts-ignore
+    if (codePlatform == "flutter") {
+      const flutterBuild = await designToFlutter(rnode, hostingjob);
+      figma.ui.postMessage({
+        type: EK_GENERATED_CODE_PLAIN,
+        data: {
+          code: flutterBuild.widget.build().finalize(),
+          app: flutterBuild.app.build().finalize(),
+        },
+      });
+    } else if (codePlatform == "react") {
+      const reactBuild = designToReact(rnode);
+      figma.ui.postMessage({
+        type: EK_GENERATED_CODE_PLAIN,
+        data: {
+          code: reactBuild.app,
+          app: reactBuild.app,
+        },
+      });
+    }
   }
 
   // send preview image
-  singleFigmaNodeSelection
+  broadcastSelectionPreview(singleFigmaNodeSelection);
+}
+
+/**
+ * extracts the png image of selection, broadcasts to listeners.
+ * @todo - only broadcast when required.
+ * @param selection
+ */
+function broadcastSelectionPreview(selection: SceneNode) {
+  selection
     .exportAsync({
       format: "PNG",
       contentsOnly: true,
@@ -167,7 +194,7 @@ async function runon(rnode: ReflectSceneNode) {
         type: EK_PREVIEW_SOURCE,
         data: {
           source: d,
-          name: singleFigmaNodeSelection.name,
+          name: selection.name,
         },
       });
     });
@@ -267,8 +294,8 @@ figma.ui.onmessage = async (msg) => {
   const data = msg.data;
 
   if (type == EK_SET_APP_MODE) {
-    appMode = msg.data;
-    console.log(`app mode set event recieved, now setting as ${appMode}`);
+    user_interest = msg.data;
+    console.log(`app mode set event recieved, now setting as ${user_interest}`);
   } else if (type == EK_FOCUS_REQUEST) {
     const target = figma.getNodeById(msg.data.id) as SceneNode;
     figma.currentPage.selection = [target];
