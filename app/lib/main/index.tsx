@@ -27,7 +27,7 @@ import { LayoutViewScreen } from "../screens/layout-view";
 import { LintScreen } from "../screens/lint-screen";
 import { GlobalizationScreen } from "../screens/g11n-screen";
 import { IconsScreen } from "../screens/icons-screen";
-import { CodeScreen } from "../screens/code-screen";
+import { CodeScreen } from "../screens/code/code-screen";
 import { ToolboxScreen } from "../screens/tool-box";
 import { MetaEditorScreen } from "../screens/tool-box/meta-editor";
 import { ExporterScreen } from "../screens/tool-box/exporter";
@@ -71,6 +71,10 @@ function workScreenToName(appMode: WorkScreen): string {
       return "about";
     case WorkScreen.code:
       return "code";
+    case WorkScreen.code_flutter:
+      return "flutter";
+    case WorkScreen.code_react:
+      return "react";
     case WorkScreen.component:
       return "component";
     case WorkScreen.layout:
@@ -215,6 +219,18 @@ export default function App(props: { platform: TargetPlatform }) {
                 </TabPanel>
               );
             case WorkScreen.code:
+              return (
+                <TabPanel key={i} value={tabIndex} index={i}>
+                  <CodeScreen />
+                </TabPanel>
+              );
+            case WorkScreen.code_flutter:
+              return (
+                <TabPanel key={i} value={tabIndex} index={i}>
+                  <CodeScreen />
+                </TabPanel>
+              );
+            case WorkScreen.code_react:
               return (
                 <TabPanel key={i} value={tabIndex} index={i}>
                   <CodeScreen />

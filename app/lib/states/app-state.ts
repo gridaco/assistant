@@ -11,6 +11,8 @@ export enum WorkspaceMode {
 export enum WorkScreen {
   about = "about",
   code = "code",
+  code_flutter = "code/flutter",
+  code_react = "code/react",
   component = "component",
   layout = "layout",
   icon = "icon",
@@ -49,7 +51,9 @@ export function getWorkspaceTabLayout(workspaceMode: WorkspaceMode): TabLayout {
     switch (workspaceMode) {
       case WorkspaceMode.code:
         return [
-          WorkScreen.code,
+          // WorkScreen.code,
+          WorkScreen.code_flutter,
+          WorkScreen.code_react,
           WorkScreen.component,
           WorkScreen.layout,
           WorkScreen.lint,
