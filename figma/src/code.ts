@@ -41,6 +41,7 @@ import { ImageRepositories } from "@design-sdk/figma/asset-repository";
 /* do not delete this line */ import "app/lib/utils/plugin-init"; // NO REMOVE
 import { PluginSdkService } from "app/lib/utils/plugin-provider/plugin-service";
 import { MainImageRepository } from "@design-sdk/core/assets-repository";
+import { provideFigma } from "@design-sdk/figma";
 
 let appMode: string = "code";
 export let singleFigmaNodeSelection: SceneNode;
@@ -115,7 +116,8 @@ async function runon(rnode: ReflectSceneNode) {
   // region make vanilla
   if (appMode == "g11n" || appMode == "exporter") {
     const globalizatoinScreen = vanilla.makeVanilla(rnode as ReflectFrameNode);
-    const vanillaTransportableImageRepository = await globalizatoinScreen.repository.makeTransportable();
+    const vanillaTransportableImageRepository =
+      await globalizatoinScreen.repository.makeTransportable();
     figma.ui.postMessage({
       type: EK_IMAGE_ASSET_REPOSITORY_MAP,
       data: vanillaTransportableImageRepository,
@@ -131,7 +133,8 @@ async function runon(rnode: ReflectSceneNode) {
     const buildResult = flutter.buildApp(rnode);
 
     // host images
-    const transportableImageAssetRepository = await repo_assets.MainImageRepository.instance.current.makeTransportable();
+    const transportableImageAssetRepository =
+      await repo_assets.MainImageRepository.instance.current.makeTransportable();
     figma.ui.postMessage({
       type: EK_IMAGE_ASSET_REPOSITORY_MAP,
       data: transportableImageAssetRepository,
@@ -338,7 +341,7 @@ function hideAllOnlyFromCurrentSelection(only: NodeType) {
 
 function main() {
   MainImageRepository.instance = new ImageRepositories();
-
+  provideFigma(figma);
   showUI();
 }
 
