@@ -12,6 +12,7 @@
 			"webdev",
 			"xd",
 			"packages/*",
+			"packages/reflect-core/packages/*",
 			"packages/design-sdk/*",
 			"packages/base-sdk/*",
 			"packages/design-to-code/packages/designto-*",
