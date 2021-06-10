@@ -14,6 +14,7 @@
 			"packages/*",
 			"packages/design-sdk/*",
 			"packages/base-sdk/*",
+			"packages/reflect-core/packages/*",
 			"packages/design-to-code/packages/designto-*",
 			"packages/design-to-code/packages/coli/packages/*",
 			"packages/design-to-code/packages/coli-web-builder/*",
