@@ -41,6 +41,7 @@ import { ImageRepositories } from "@design-sdk/figma/asset-repository";
 import { PluginSdkService } from "app/lib/utils/plugin-provider/plugin-service";
 import { MainImageRepository } from "@design-sdk/core/assets-repository";
 import { designToFlutter, designToReact } from "./design-to-code";
+import { provideFigma } from "@design-sdk/figma";
 
 /**
  * current user viewing screen name
@@ -365,7 +366,7 @@ function hideAllOnlyFromCurrentSelection(only: NodeType) {
 
 function main() {
   MainImageRepository.instance = new ImageRepositories();
-
+  provideFigma(figma);
   showUI();
 }
 
