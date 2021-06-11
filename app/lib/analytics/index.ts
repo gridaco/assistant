@@ -1,4 +1,3 @@
-// import { nanoid } from "nanoid";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 
 export function initialize() {
