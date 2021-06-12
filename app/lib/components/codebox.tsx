@@ -18,6 +18,7 @@ import Button from "@material-ui/core/Button";
 import { PluginSdk } from "../utils/plugin-provider/plugin-app-sdk";
 import { IconButton } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
+import { useState } from "react";
 dartLang(Prism);
 // endregion
 
@@ -33,33 +34,24 @@ interface Props {
   codeActions?: Array<JSX.Element>;
 }
 
-export default class CodeBox extends React.Component<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLaunchingConsole: false,
-    };
-  }
+export default function CodeBox(props: Props) {
+  const [isLaunchingConsole, setIsLaunchingConsole] = useState<boolean>(false);
 
-  onCopyClicked = (e) => {
-    copy(this.props.code);
+  const onCopyClicked = (e) => {
+    copy(props.code);
     PluginSdk.notifyCopied();
 
     // ANALYTICS
     analytics.event_click_copy_code();
   };
 
-  onQuickLookClicked = (e) => {
+  const onQuickLookClicked = (e) => {
     const setLoadingState = (loading: boolean) => {
-      this.setState((p, s) => {
-        return {
-          isLaunchingConsole: loading,
-        };
-      });
+      setIsLaunchingConsole(loading);
     };
 
     setLoadingState(true);
-    quickLook("quicklook", this.props.app)
+    quickLook("quicklook", props.app)
       .then((r) => {
         setLoadingState(false);
         PluginSdk.notify("quick look ready !");
@@ -74,49 +66,47 @@ export default class CodeBox extends React.Component<Props, State> {
     analytics.event_click_quicklook();
   };
 
-  render() {
-    return (
-      <>
-        <code>
-          {this.props.codeActions &&
-            this.props.codeActions.map((e) => {
-              return e;
-            })}
-          <PrismHighlight
-            {...defaultProps}
-            Prism={Prism}
-            code={this.props.code}
-            language={this.props.language}
-          >
-            {({ className, style, tokens, getLineProps, getTokenProps }) => (
-              <pre className={className} style={style}>
-                {tokens.map((line, i) => (
-                  <div {...getLineProps({ line, key: i })}>
-                    {line.map((token, key) => (
-                      <span {...getTokenProps({ token, key })} />
-                    ))}
-                  </div>
-                ))}
-              </pre>
-            )}
-          </PrismHighlight>
-        </code>
-
-        <div className="code-info-wrapper">
-          <Button className="btn-copy-code" onClick={this.onCopyClicked}>
-            copy code
-          </Button>
-          {this.props.app && (
-            <Button
-              className="btn-quick-look"
-              disabled={this.state.isLaunchingConsole}
-              onClick={this.onQuickLookClicked}
-            >
-              {this.state.isLaunchingConsole ? "launching.." : "quick look"}
-            </Button>
+  return (
+    <>
+      <code>
+        {props.codeActions &&
+          props.codeActions.map((e) => {
+            return e;
+          })}
+        <PrismHighlight
+          {...defaultProps}
+          Prism={Prism}
+          code={props.code}
+          language={props.language}
+        >
+          {({ className, style, tokens, getLineProps, getTokenProps }) => (
+            <pre className={className} style={style}>
+              {tokens.map((line, i) => (
+                <div {...getLineProps({ line, key: i })}>
+                  {line.map((token, key) => (
+                    <span {...getTokenProps({ token, key })} />
+                  ))}
+                </div>
+              ))}
+            </pre>
           )}
-        </div>
-      </>
-    );
-  }
+        </PrismHighlight>
+      </code>
+
+      <div className="code-info-wrapper">
+        <Button className="btn-copy-code" onClick={onCopyClicked}>
+          copy code
+        </Button>
+        {props.app && (
+          <Button
+            className="btn-quick-look"
+            disabled={isLaunchingConsole}
+            onClick={onQuickLookClicked}
+          >
+            {isLaunchingConsole ? "launching.." : "quick look"}
+          </Button>
+        )}
+      </div>
+    </>
+  );
 }
