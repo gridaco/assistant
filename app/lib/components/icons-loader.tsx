@@ -274,7 +274,7 @@ function IconItem(props: { name: string; config: IconConfig }) {
 
   const onClick = () => {
     _onUserLoadIconToCanvas();
-    console.log(name, "clicked");
+    console.log('icon', name, "clicked");
     loadData().then((d) => {
       parent.postMessage(
         {

@@ -1,4 +1,8 @@
-// content randomizer, work on progress..
+/**
+ * randomize the current selection of text
+ * @todo - support other types. (currently only text supported)
+ * @returns
+ */
 export async function randimizeText() {
   if (figma.currentPage.selection.length >= 2) {
     figma.notify("only single node randomize is supported");
