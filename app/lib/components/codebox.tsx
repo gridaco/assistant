@@ -3,63 +3,53 @@ import {
   default as PrismHighlight,
   defaultProps,
   Language,
+  Prism,
 } from "prism-react-renderer";
 import copy from "copy-to-clipboard";
-import "./highlight.css";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 
-// region custom dart support
-// https://github.com/FormidableLabs/prism-react-renderer/issues/22#issuecomment-553042928
-import Prism from "prism-react-renderer/prism";
-import dartLang from "refractor/lang/dart";
+// import Prism from "prism-react-renderer/prism";
 import { quickLook } from "../quicklook";
-import { Widget } from "@bridged.xyz/flutter-builder";
 import Button from "@material-ui/core/Button";
 import { PluginSdk } from "../utils/plugin-provider/plugin-app-sdk";
-import { IconButton } from "@material-ui/core";
-import { Add } from "@material-ui/icons";
-dartLang(Prism);
-// endregion
-
-interface State {
-  isLaunchingConsole: boolean;
-}
+import { useEffect, useState } from "react";
+import styled from "@emotion/styled";
 
 interface Props {
-  language: Language | any;
+  language: "dart" | "jsx" | string;
   code: string;
-  app?: string;
-  widget?: Widget;
+  app?: any;
   codeActions?: Array<JSX.Element>;
 }
 
-export default class CodeBox extends React.Component<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLaunchingConsole: false,
-    };
-  }
+export default function CodeBox(props: Props) {
+  const [isLaunchingConsole, setIsLaunchingConsole] = useState<boolean>(false);
 
-  onCopyClicked = (e) => {
-    copy(this.props.code);
+  useEffect(() => {
+    if (props.language == "dart") {
+      // region custom dart support
+      // https://github.com/FormidableLabs/prism-react-renderer/issues/22#issuecomment-553042928
+      const dartLang = require("refractor/lang/dart");
+      dartLang(Prism);
+      // endregion
+    }
+  }, []);
+
+  const onCopyClicked = (e) => {
+    copy(props.code);
     PluginSdk.notifyCopied();
 
     // ANALYTICS
     analytics.event_click_copy_code();
   };
 
-  onQuickLookClicked = (e) => {
+  const onQuickLookClicked = (e) => {
     const setLoadingState = (loading: boolean) => {
-      this.setState((p, s) => {
-        return {
-          isLaunchingConsole: loading,
-        };
-      });
+      setIsLaunchingConsole(loading);
     };
 
     setLoadingState(true);
-    quickLook("quicklook", this.props.app)
+    quickLook("quicklook", props.app)
       .then((r) => {
         setLoadingState(false);
         PluginSdk.notify("quick look ready !");
@@ -74,49 +64,89 @@ export default class CodeBox extends React.Component<Props, State> {
     analytics.event_click_quicklook();
   };
 
-  render() {
-    return (
-      <>
-        <code>
-          {this.props.codeActions &&
-            this.props.codeActions.map((e) => {
-              return e;
-            })}
-          <PrismHighlight
-            {...defaultProps}
-            Prism={Prism}
-            code={this.props.code}
-            language={this.props.language}
-          >
-            {({ className, style, tokens, getLineProps, getTokenProps }) => (
-              <pre className={className} style={style}>
-                {tokens.map((line, i) => (
-                  <div {...getLineProps({ line, key: i })}>
-                    {line.map((token, key) => (
-                      <span {...getTokenProps({ token, key })} />
-                    ))}
-                  </div>
-                ))}
-              </pre>
-            )}
-          </PrismHighlight>
-        </code>
+  return (
+    <>
+      <CodeWrapper>
+        {props.codeActions &&
+          props.codeActions.map((e) => {
+            return e;
+          })}
 
-        <div className="code-info-wrapper">
-          <Button className="btn-copy-code" onClick={this.onCopyClicked}>
-            copy code
-          </Button>
-          {this.props.app && (
-            <Button
-              className="btn-quick-look"
-              disabled={this.state.isLaunchingConsole}
-              onClick={this.onQuickLookClicked}
-            >
-              {this.state.isLaunchingConsole ? "launching.." : "quick look"}
-            </Button>
-          )}
-        </div>
-      </>
-    );
-  }
+        {typeof props.code == "string" ? (
+          <PrismCodehighlight code={props.code} language={props.language} />
+        ) : (
+          <>Invalid code was givven. cannot display result (this is a bug)</>
+        )}
+      </CodeWrapper>
+
+      <CodeInfroWrapper>
+        <CopyCodeButton onClick={onCopyClicked}>copy code</CopyCodeButton>
+        {props.app && (
+          <QuickLookButton
+            disabled={isLaunchingConsole}
+            onClick={onQuickLookClicked}
+          >
+            {isLaunchingConsole ? "launching.." : "quick look"}
+          </QuickLookButton>
+        )}
+      </CodeInfroWrapper>
+    </>
+  );
 }
+
+function PrismCodehighlight(props: { code: string; language: any | Language }) {
+  return (
+    <PrismHighlight
+      {...defaultProps}
+      Prism={Prism}
+      code={props.code}
+      language={props.language}
+    >
+      {({ className, style, tokens, getLineProps, getTokenProps }) => (
+        <CodeInnerWrapper className={className} style={style}>
+          {tokens.map((line, i) => (
+            <div {...getLineProps({ line, key: i })}>
+              {line.map((token, key) => (
+                <span {...getTokenProps({ token, key })} />
+              ))}
+            </div>
+          ))}
+        </CodeInnerWrapper>
+      )}
+    </PrismHighlight>
+  );
+}
+
+const CopyCodeButton = styled(Button)`
+  width: calc(50% - 5px);
+  /* for unused .MuiButton-root margin: 0  */
+  margin-right: 5px !important;
+  font-weight: bold;
+`;
+
+const QuickLookButton = styled(Button)`
+  width: calc(50% - 5px);
+  /* for unused .MuiButton-root margin: 0  */
+  margin-left: 5px !important;
+  background-color: #151617 !important;
+  color: #fff !important;
+  font-weight: bold;
+`;
+
+const CodeInfroWrapper = styled.div`
+  margin: 0 -8px;
+  padding: 10px 10px 0 10px;
+`;
+
+const CodeWrapper = styled.code`
+  width: max-content;
+  height: auto;
+`;
+
+const CodeInnerWrapper = styled.pre`
+  margin: 0 -8px;
+  padding: 8px;
+  overflow: scroll;
+  width: 100%;
+  height: 408px;
+`;

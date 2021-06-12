@@ -27,13 +27,14 @@ import { LayoutViewScreen } from "../screens/layout-view";
 import { LintScreen } from "../screens/lint-screen";
 import { GlobalizationScreen } from "../screens/g11n-screen";
 import { IconsScreen } from "../screens/icons-screen";
-import { CodeScreen } from "../screens/code-screen";
+import { CodeScreen } from "../screens/code/code-screen";
 import { ToolboxScreen } from "../screens/tool-box";
 import { MetaEditorScreen } from "../screens/tool-box/meta-editor";
 import { ExporterScreen } from "../screens/tool-box/exporter";
 import { DataMapperScreen } from "../screens/tool-box/data-mapper/data-mapper-screen";
 import { TargetPlatform } from "../utils/plugin-init/init-target-platform";
 import { AboutScreen } from "../screens/about";
+import { FlutterCodeScreen, ReactCodeScreen } from "../screens/code";
 // endregion screens import
 
 interface TabPanelProps {
@@ -71,6 +72,10 @@ function workScreenToName(appMode: WorkScreen): string {
       return "about";
     case WorkScreen.code:
       return "code";
+    case WorkScreen.code_flutter:
+      return "flutter";
+    case WorkScreen.code_react:
+      return "react";
     case WorkScreen.component:
       return "component";
     case WorkScreen.layout:
@@ -120,13 +125,18 @@ function worspaceModeToName(workspaceMode: WorkspaceMode): string {
 }
 
 export default function App(props: { platform: TargetPlatform }) {
-  // region init analytics
-  try {
-    initialize();
-  } catch (e) {
-    console.warn("GA disabled", e);
-  }
-  // endregion init GA
+  React.useEffect(() => {
+    // todo - dynamicallt change initial focused screen. (currently inital setup is not implemented. - initial setup is done by below line.)
+    updateFocusedScreen(WorkScreen.code_flutter);
+
+    // region init analytics
+    try {
+      initialize();
+    } catch (e) {
+      console.warn("GA disabled", e);
+    }
+    // endregion init GA
+  }, []);
 
   const [workspaceMode, setWorkspaceMode] = React.useState<WorkspaceMode>(
     WorkspaceMode.code
@@ -173,6 +183,9 @@ export default function App(props: { platform: TargetPlatform }) {
       },
       "*"
     );
+    console.log(
+      `sending back thread about changed screen (user interest) data - "${screen}"`
+    );
   };
 
   function makeTabLayout(workspaceMode: WorkspaceMode) {
@@ -217,7 +230,20 @@ export default function App(props: { platform: TargetPlatform }) {
             case WorkScreen.code:
               return (
                 <TabPanel key={i} value={tabIndex} index={i}>
-                  <CodeScreen />
+                  {/* <CodeScreen /> */}
+                  <>THIS WILL BE REMOVED</>
+                </TabPanel>
+              );
+            case WorkScreen.code_flutter:
+              return (
+                <TabPanel key={i} value={tabIndex} index={i}>
+                  <FlutterCodeScreen />
+                </TabPanel>
+              );
+            case WorkScreen.code_react:
+              return (
+                <TabPanel key={i} value={tabIndex} index={i}>
+                  <ReactCodeScreen />
                 </TabPanel>
               );
             case WorkScreen.component:

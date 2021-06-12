@@ -6,6 +6,7 @@
 
 > unreleased features will be added here
 
+- [engines/react] Figma to React with styled components is initailly added, under beta label.
 - [packages/detection] Screen detection - determines if selected node should be considered as an screen or not.
 - [packages/detection] Pattern detection - detects the patttern from givven layout (node), finds the pattern from it if exists. (used for List layout detection)
 - [packages/detection] List detection - determines if selected node is a list of specific component, or complex layout.
