@@ -24,6 +24,12 @@ figma.on("selectionchange", () => {
 figma.ui.onmessage = async (msg) => {
   onfigmamessage(msg);
 };
+figma.on("close", () => {
+  console.log("close");
+});
+figma.on("currentpagechange", () => {
+  console.log("currentpagechange");
+});
 
 /// ============================================================
 // MAIN INITIALIZATION

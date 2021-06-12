@@ -125,13 +125,18 @@ function worspaceModeToName(workspaceMode: WorkspaceMode): string {
 }
 
 export default function App(props: { platform: TargetPlatform }) {
-  // region init analytics
-  try {
-    initialize();
-  } catch (e) {
-    console.warn("GA disabled", e);
-  }
-  // endregion init GA
+  React.useEffect(() => {
+    // todo - dynamicallt change initial focused screen. (currently inital setup is not implemented. - initial setup is done by below line.)
+    updateFocusedScreen(WorkScreen.code_flutter);
+
+    // region init analytics
+    try {
+      initialize();
+    } catch (e) {
+      console.warn("GA disabled", e);
+    }
+    // endregion init GA
+  }, []);
 
   const [workspaceMode, setWorkspaceMode] = React.useState<WorkspaceMode>(
     WorkspaceMode.code
