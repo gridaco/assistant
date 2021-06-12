@@ -34,6 +34,7 @@ import { ExporterScreen } from "../screens/tool-box/exporter";
 import { DataMapperScreen } from "../screens/tool-box/data-mapper/data-mapper-screen";
 import { TargetPlatform } from "../utils/plugin-init/init-target-platform";
 import { AboutScreen } from "../screens/about";
+import { FlutterCodeScreen, ReactCodeScreen } from "../screens/code";
 // endregion screens import
 
 interface TabPanelProps {
@@ -221,19 +222,20 @@ export default function App(props: { platform: TargetPlatform }) {
             case WorkScreen.code:
               return (
                 <TabPanel key={i} value={tabIndex} index={i}>
-                  <CodeScreen />
+                  {/* <CodeScreen /> */}
+                  <>THIS WILL BE REMOVED</>
                 </TabPanel>
               );
             case WorkScreen.code_flutter:
               return (
                 <TabPanel key={i} value={tabIndex} index={i}>
-                  <CodeScreen />
+                  <FlutterCodeScreen />
                 </TabPanel>
               );
             case WorkScreen.code_react:
               return (
                 <TabPanel key={i} value={tabIndex} index={i}>
-                  <CodeScreen />
+                  <ReactCodeScreen />
                 </TabPanel>
               );
             case WorkScreen.component:

@@ -3,6 +3,12 @@ import { flutter } from "@designto/code";
 import * as react from "@designto/react";
 import { tokenize } from "@designto/token";
 
+interface GenerationResultToUI {
+  tokens?: any;
+  widget: any;
+  app: any;
+}
+
 type InterceptorJobProcessor = () => Promise<void>;
 export async function designToFlutter(
   reflectDesign: ReflectSceneNode,
@@ -20,9 +26,9 @@ export async function designToFlutter(
     scrollable: buildResult.scrollable,
   });
 
-  return {
-    widget,
-    app,
+  return <GenerationResultToUI>{
+    widget: widget,
+    app: app,
   };
 }
 
@@ -33,10 +39,10 @@ export function designToReact(reflectDesign: ReflectSceneNode) {
     template: "cra",
   });
 
-  return {
+  return <GenerationResultToUI>{
     tokens: tokens,
     widget: widget,
-    app: app,
+    app: app.code,
   };
 }
 

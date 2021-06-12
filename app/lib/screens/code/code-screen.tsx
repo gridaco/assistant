@@ -1,6 +1,4 @@
-import * as flutter from "@bridged.xyz/flutter-builder";
 import React, { useEffect, useState } from "react";
-import { format } from "../../utils/dart-format";
 import CodeBox from "../../components/codebox";
 import { Preview } from "../../components/preview";
 import {
@@ -10,30 +8,14 @@ import {
 import { repo_assets } from "@design-sdk/core";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 
-/**
- * default message
- * @todo - detect the platform and customize the message.
- */
-const DEFAULT_EMPTY_CODE_SNIPPET = `//
-//
-//
-// there is no selected design.
-// select your screen or component on figma
-//
-//
-//`;
-
-interface State {
-  app: string;
-  code: string;
-  widget: flutter.Widget;
+interface CodeScreenProps {
+  placeholderSource: string;
+  framework: "flutter" | "react";
+  formatter: (source: string) => string;
 }
 
-interface CodeScreenProps {}
-
 export function CodeScreen(props: CodeScreenProps) {
-  const [source, setSource] = useState<string>(DEFAULT_EMPTY_CODE_SNIPPET);
-  const [widget, setWidget] = useState<flutter.Widget>();
+  const [source, setSource] = useState<string>(props.placeholderSource);
   const [app, setApp] = useState<string>();
 
   const onMessage = (ev: MessageEvent) => {
@@ -41,14 +23,12 @@ export function CodeScreen(props: CodeScreenProps) {
     if (msg) {
       switch (msg.type) {
         case EK_GENERATED_CODE_PLAIN:
-          const app = format(msg.data.app);
-          const code = format(msg.data.code);
-          const widget = msg.data.widget;
+          const app = props.formatter(msg.data.app);
+          const code = props.formatter(msg.data.code);
           setSource(code);
-          setWidget(widget);
           setApp(app);
           analytics.event_selection_to_code({
-            framework: "flutter",
+            framework: props.framework,
           });
 
           break;
@@ -74,11 +54,24 @@ export function CodeScreen(props: CodeScreenProps) {
     <div>
       <Preview auto />
       <CodeBox
-        language="dart"
+        language={_language(props.framework)}
         app={app}
         code={source}
-        widget={widget}
       ></CodeBox>
     </div>
   );
 }
+
+/**
+ * get language by framework (default) (for code display) (non critical)
+ */
+const _language = (framework: string): string => {
+  switch (framework) {
+    case "flutter":
+      return "dart";
+    case "react":
+      return "jsx";
+    default:
+      throw `default language for code display on framework "${framework}" is not supported`;
+  }
+};
