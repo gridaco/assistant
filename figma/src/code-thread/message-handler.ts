@@ -8,7 +8,7 @@ const messageHandlers: FigmaMessageHandler[] = [];
 
 export function onfigmamessage(msg) {
   // logging
-  console.log("[event] figma plugin data received", msg);
+  // console.log("[event] figma plugin data received", msg);
 
   messageHandlers.forEach((handler) => {
     handler?.({
