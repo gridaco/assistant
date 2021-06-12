@@ -41,7 +41,6 @@ import { ImageRepositories } from "@design-sdk/figma/asset-repository";
 import { PluginSdkService } from "app/lib/utils/plugin-provider/plugin-service";
 import { MainImageRepository } from "@design-sdk/core/assets-repository";
 import { designToFlutter, designToReact } from "./design-to-code";
-import { provideFigma } from "@design-sdk/figma";
 
 /**
  * current user viewing screen name
@@ -55,42 +54,15 @@ function userInterestUnset(): boolean {
 export let singleFigmaNodeSelection: SceneNode;
 export let targetNodeId: string;
 
-async function showUI() {
-  // communicates with ui.html
-  // load plugin with confugured w/h
-  // restore previous size
-
-  const MIN_WIDTH = 320;
-  const MIN_HEIGHT = 600;
-
-  let size: { w: number; h: number } = { w: 375, h: 812 };
-  try {
-    const savedsize: {
-      w: number;
-      h: number;
-    } = await figma.clientStorage.getAsync("size");
-    savedsize && (size = savedsize);
-  } catch (_) {}
-
-  figma.ui.onmessage = (msg) => {
-    switch (msg.type) {
-      case "resize":
-        const w = Math.max(MIN_WIDTH, msg.size.w);
-        const h = Math.max(MIN_HEIGHT, msg.size.h);
-        figma.ui.resize(w, h);
-        figma.clientStorage.setAsync("size", { w: w, h: h }).catch((err) => {}); // save size
-        break;
-    }
-  };
-
-  figma.showUI(__html__, { width: size.w, height: size.h });
-}
-
 function delay(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 async function runon(rnode: ReflectSceneNode) {
+  console.log(
+    `handling main runon function targetting to user interest - "${user_interest}"`
+  );
+
   // region
   // notify ui that the computing process has been started.
   // use this for when displaying loading indicator etc.. for general purpose.
@@ -138,7 +110,20 @@ async function runon(rnode: ReflectSceneNode) {
   // endregion
 
   if (userInterestUnset() || user_interest.startsWith("code")) {
-    const codePlatform = "react"; // static dev
+    const codePlatform = (() => {
+      switch (user_interest) {
+        case "code/react":
+          return "react";
+        case "code":
+          return "flutter"; // currently default mode is flutter due to flutter is default legacy.
+        case "code/flutter":
+          return "flutter";
+      }
+      throw `unrecognized user_interest givven "${user_interest}"`;
+    })();
+
+    console.log("codePlatform", codePlatform);
+
     const hostingjob = async () => {
       // host images
       const transportableImageAssetRepository =
@@ -283,7 +268,7 @@ PluginSdkService.registerDragAndDropHandler(
 // todo pass data instead of relying in types
 figma.ui.onmessage = async (msg) => {
   // logging
-  // console.log("[event] figma plugin data received", msg);
+  console.log("[event] figma plugin data received", msg);
 
   const generalHandlingResult = PluginSdkService.handle(msg);
   // if event is handled by general event handler, no additional handling is required.
@@ -296,7 +281,9 @@ figma.ui.onmessage = async (msg) => {
 
   if (type == EK_SET_APP_MODE) {
     user_interest = msg.data;
-    console.log(`app mode set event recieved, now setting as ${user_interest}`);
+    console.log(
+      `app mode set event recieved, now setting as "${user_interest}"`
+    );
   } else if (type == EK_FOCUS_REQUEST) {
     const target = figma.getNodeById(msg.data.id) as SceneNode;
     figma.currentPage.selection = [target];
@@ -364,6 +351,9 @@ function hideAllOnlyFromCurrentSelection(only: NodeType) {
   }
 }
 
+// MAIN INITIALIZATION
+import { showUI } from "./show-ui";
+import { provideFigma } from "@design-sdk/figma";
 function main() {
   MainImageRepository.instance = new ImageRepositories();
   provideFigma(figma);

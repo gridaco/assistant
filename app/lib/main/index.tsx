@@ -169,6 +169,9 @@ export default function App(props: { platform: TargetPlatform }) {
 
   const updateFocusedScreen = (screen: WorkScreen) => {
     // notify code.ts that app mode has set.
+    console.log(
+      `sending back thread about changed screen (user interest) data - "${screen}"`
+    );
     parent.postMessage(
       {
         pluginMessage: {
