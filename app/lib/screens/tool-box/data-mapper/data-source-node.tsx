@@ -42,7 +42,7 @@ export function findDatasourceNodeAndOthers(
   };
 
   all.forEach((v) => {
-    const ignoranceType = keyAnnotations.specialKeyTypeFrom(v.name);
+    const ignoranceType = keyAnnotations.utils.specialKeyTypeFrom(v.name);
     if (ignoranceType) {
       if (ignoranceType == keyAnnotations.SpecialKeys.KEY_DATA_SOURCE) {
         if (res.datasource) {

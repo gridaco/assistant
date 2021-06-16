@@ -103,7 +103,7 @@ function mapDataToSelection(selection: Figma.SceneNode, data: DataSchema) {
 
       // handle non componentized layers
       // check loosen name checking
-      if (propertyName == keyAnnotations.normalizedName(c.name)) {
+      if (propertyName == keyAnnotations.utils.normalizedName(c.name)) {
         if (c.type == "TEXT") {
           mapText(c, propertyValue);
         } else {

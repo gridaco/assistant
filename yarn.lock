@@ -1235,6 +1235,14 @@
     "@babel/helper-validator-identifier" "^7.14.5"
     to-fast-properties "^2.0.0"
 
+"@base-sdk/auth-first-party@0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@base-sdk/auth-first-party/-/auth-first-party-0.1.0.tgz#50684e76f7c5280db284b60824345b4ab52c3e72"
+  integrity sha512-4ZG9zTSUe8KrxvgcKYjPkeSQwLu3E7SxWpxPjPXL0UIw4/0Ky5bqT6bmDr75CwwP7ZPGQWf4TlVTv7iYJNqy7A==
+  dependencies:
+    "@base-sdk/core" "0.1.0"
+    otplib "^12.0.1"
+
 "@base-sdk/base@0.1.0-1":
   version "0.1.0-1"
   resolved "https://registry.yarnpkg.com/@base-sdk/base/-/base-0.1.0-1.tgz#aaf84625698693f9690b85c46f453c69910ca5a3"
@@ -1255,6 +1263,14 @@
     "@base-sdk/hosting" "0.1.0"
     "@base-sdk/url" "0.1.0"
     dart-services "^0.2.3"
+
+"@base-sdk/core@0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@base-sdk/core/-/core-0.1.0.tgz#865eb7373b77d367dd57dc7660452a889d6bb139"
+  integrity sha512-JDSgW8OXIj9bpkCZiSZZ4vlDaN+8bZplvCgpkS5yFKbvYlxAFRsAF6AKTxfLu0bGZIxnwt7ZIgDLoPyz4rPtjg==
+  dependencies:
+    "@reflect-ui/core" "0.0.2-rc.7"
+    axios "^0.21.0"
 
 "@base-sdk/hosting@0.1.0":
   version "0.1.0"
