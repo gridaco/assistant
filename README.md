@@ -1,19 +1,19 @@
 ---
 framework: figma, flutter, react
 platform: Android, iOS, Web, macOS, Linux, Windows
-title: bridged assistant for figma, sketch, xd
+title: Grida assistant for figma, sketch, xd
 ---
 
   <meta name="description" content="figma to flutter code exporter, lint your design. generate human level quality code from figma">
-  <meta name="title" content="bridged assistant">
+  <meta name="title" content="Grida assistant">
 
-![bridged assistant](./branding/assistant-cover-v0.1.1.png)
+![Grida assistant](./branding/assistant-cover-v0.1.1.png)
 
-# Bridged Assistant plugin (figma to flutter)
+# Grdia Assistant plugin (figma to flutter)
 
 > Any design to high quality code, with live preview.
 
-![bridged figma to code demo with live preview](docs/gifs/assistant-demo-2021.0.1.gif)
+![Grida figma to code demo with live preview](docs/gifs/assistant-demo-2021.0.1.gif)
 
 - ✅ Human readable code generation.
 - ✅ code generation built with CoLI, developed especially for assistant usage, ensuring the best code generation quality.
@@ -21,8 +21,8 @@ title: bridged assistant for figma, sketch, xd
 - ✅ Modularized code generation / readability. All production level code, code beign generated as Functions, Varables, Ect..
 - ✅ Design Linting - Visaully makes sence, Structure made sence.
 - ✅ Cloud Resource Copy. Copy your resource in 1 second. (No need to download images and move under `res/`)
-- ✅ Live preview via [console](https://console.bridged.xyz) - compiles output source remotely makes design to living application within seconds
-- ✅ Context detection - bridged assistant understands the design, than converts it into a hight quality code. we don't generate rect and text code for a button. We generate button code for a button.
+- ✅ Live preview via [console](https://console.grida.co) - compiles output source remotely makes design to living application within seconds
+- ✅ Context detection - Grida assistant understands the design, than converts it into a hight quality code. we don't generate rect and text code for a button. We generate button code for a button.
 
 ## Usage
 
@@ -36,7 +36,7 @@ install via figma plugin [link here](https://www.figma.com/community/plugin/8964
 
 ```shell
 # [REQUIRED] we use git submodules for `packages/`. you have to explicitly execute this command instead default clone.
-git clone --recurse-submodules https://github.com/bridgedxyz/assistant.git
+git clone --recurse-submodules https://github.com/gridaco/assistant.git
 
 cd assistant
 
@@ -71,8 +71,8 @@ git submodule update --init --recursive
 flutter widget builder is done by [figma/flutter](/flutter) and the core builder is powered by [bridged's dynamic](https://github.com/bridgedxyz/dynamic)
 
 - [figma/flutter](/figma/src/flutter)
-- [bridgedxyz/flutter-js](https://github.com/bridgedxyz/flutter-builder)
-- [bridgedxyz/dynamic](https://github.com/bridgedxyz/dynamic)
+- [bridged/flutter-builder](https://github.com/bridgedxyz/flutter-builder)
+- [bridged/dynamic](https://github.com/bridgedxyz/dynamic)
 - ✅ `Theme.of` Textstyle support
 - ✅ `Colors.` Color support
 - ✅ Slots support (not static content)
@@ -82,16 +82,16 @@ flutter widget builder is done by [figma/flutter](/flutter) and the core builder
 
 ## Console & Cloud integrations
 
-> Watch the demo on our [website](https://bridged.xyz)
+> Watch the demo on our [website](https://grida.co)
 
-Bridged consle integrated with assistant enables you to manage your design's content in one place. even if text, image is updated, you don't need to update your code. our cloud service got your back.
+Grida console integrated with assistant enables you to manage your design's content in one place. even if text, image is updated, you don't need to update your code. our cloud service got your back.
 
-Learn more at [console repository](https://github.com/bridgedxyz/console.bridged.xyz)
+Learn more at [console repository](https://github.com/gridaco/console.grida.co)
 
 ## UI Element Detection
 
 > rule based button / input / icon detection with [@reflect-ui/detection](./packages/detection)
-> Higher quality ML based detection available at [Bridged's context engine](https://github.com/bridgedxyz/context)
+> Higher quality ML based detection available at [Grida's context engine](https://github.com/bridgedxyz/context)
 
 ## Design Assistant
 
@@ -101,10 +101,10 @@ Learn more at [console repository](https://github.com/bridgedxyz/console.bridged
 
 - **icons loader** (Design Tab ➡️ Icons)
 
-  ![bridged figma to load icons](docs/gifs/assistant-icons-loader-2021.0.1f.gif)
+  ![Grida figma to load icons](docs/gifs/assistant-icons-loader-2021.0.1f.gif)
 
-  - 5,000 + [material design icons](https://github.com/bridgedxyz/reflect-icons)
-  - 800 + [ant design icons](https://github.com/bridgedxyz/reflect-icons)
+  - 5,000 + [material design icons](https://github.com/reflect-ui/reflect-icons)
+  - 800 + [ant design icons](https://github.com/reflect-ui/reflect-icons)
   - Read our blog about Icons Loader feature on [medium](https://medium.com/bridgedxyz/bridged-assistant-update-2021-0-1f1-meet-powerful-bridged-design-assistants-icon-loader-552b452396a4)
 
 - fonts replacer
@@ -150,13 +150,13 @@ To open the developer console in the Figma desktop app, go to `Plugins` → `Dev
 
 **general**
 See this project's contributing guideline and technical overview [here](./CONTRIBUTING.md).
-And general bridged project contribution and collaboration guideline [here](https://github.com/bridgedxyz/contributing-and-license).
+And general Grida project contribution and collaboration guideline [here](https://github.com/bridgedxyz/contributing-and-license).
 
 **supported platforms and frameworks**
 
 - ✅ [figma](./figma)
 - ✅ [flutter](./core)
-- ✅ [bridged web](https://github.com/bridgedxyz/console.bridged.xyz)
+- ✅ [grida web](https://github.com/gridaco/console.grida.co)
 - [sketch](./sketch) -- coming soon
 - react -- coming soon & under [development](https://github.com/bridgedxyz/web-builder)
 - vue -- coming soon & under [development](https://github.com/bridgedxyz/web-builder)
@@ -166,7 +166,7 @@ And general bridged project contribution and collaboration guideline [here](http
 
 ## Changelog
 
-we release new updates in a by-monthluy cycle. Watch this repository on github or signup for our news letters on [bridged.xyz](https://bridged.xyz)
+we release new updates in a by-monthluy cycle. Watch this repository on github or signup for our news letters on [grida.co](https://grida.co)
 
 All update logs available at [CHANGELOG.md](./CHANGELOG.md)
 
