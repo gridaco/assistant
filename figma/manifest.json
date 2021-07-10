@@ -1,7 +1,7 @@
 {
     "api": "1.0.0",
     "id": "896445082033423994",
-    "name": "Bridged",
+    "name": "Grida",
     "main": "dist/code.js",
     "ui": "dist/ui.html"
 }
