@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import * as FigmaApi from "figma-js";
 import { Button, LinearProgress, TextField, Tooltip } from "@material-ui/core";
 import { useSingleSelection } from "../../../utils/plugin-hooks";
-import { utils } from "@design-sdk/core";
+import { parseFileId } from "@design-sdk/figma-url";
 import { PluginSdk } from "../../../utils/plugin-provider/plugin-app-sdk";
 import { downloadFile } from "./export-utils";
 
@@ -76,7 +76,7 @@ export function FigmaExporter() {
   const handleFileUrlUpdate = (e) => {
     const input = e.target.value;
     try {
-      const id = utils.figmaApi.parseFileIdFromUrl_Figma(input);
+      const id = parseFileId(input);
       setFileId(id);
     } catch (_) {
       PluginSdk.notify("url is invalid");
