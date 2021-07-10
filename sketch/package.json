@@ -14,10 +14,11 @@
     "sketch-assets-file": "sketch-assets/icons.sketch"
   },
   "scripts": {
+    "clean": "rimraf assistant.sketchplugin",
     "build": "skpm-build",
     "watch": "skpm-build --watch",
     "start": "skpm-build --watch",
-    "postinstall": "yarn run build && skpm-link"
+    "ready": "yarn run build && skpm-link"
   },
   "devDependencies": {
     "@skpm/builder": "^0.7.4",

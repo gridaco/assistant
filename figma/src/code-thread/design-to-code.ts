@@ -1,7 +1,5 @@
 import type { ReflectSceneNode } from "@design-sdk/core/nodes";
-import { flutter } from "@designto/code";
-import * as react from "@designto/react";
-import { tokenize } from "@designto/token";
+import { flutter, react, token } from "@designto/code";
 
 interface GenerationResultToUI {
   tokens?: any;
@@ -33,7 +31,7 @@ export async function designToFlutter(
 }
 
 export function designToReact(reflectDesign: ReflectSceneNode) {
-  const tokens = tokenize(reflectDesign);
+  const tokens = token.tokenize(reflectDesign);
   const widget = react.buildReactWidget(tokens);
   const app = react.buildReactApp(widget, {
     template: "cra",
