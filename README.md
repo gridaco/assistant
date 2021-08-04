@@ -7,7 +7,7 @@ title: Grida assistant for figma, sketch, xd
   <meta name="description" content="figma to flutter code exporter, lint your design. generate human level quality code from figma">
   <meta name="title" content="Grida assistant">
 
-![Grida assistant](./branding/assistant-cover-v0.1.1.png)
+![Grida assistant](./branding/assistant-cover-v2021.2.0.png)
 
 # Grdia Assistant plugin (figma to flutter)
 
@@ -68,11 +68,11 @@ git submodule update --init --recursive
 
 ## Flutter code builder
 
-flutter widget builder is done by [figma/flutter](/flutter) and the core builder is powered by [bridged's dynamic](https://github.com/bridgedxyz/dynamic)
+flutter widget builder is done by [figma/flutter](/flutter) and the core builder is powered by [Grida dynamic](https://github.com/bridgedxyz/dynamic)
 
 - [figma/flutter](/figma/src/flutter)
-- [bridged/flutter-builder](https://github.com/bridgedxyz/flutter-builder)
-- [bridged/dynamic](https://github.com/bridgedxyz/dynamic)
+- [grida/flutter-builder](https://github.com/bridgedxyz/flutter-builder)
+- [grida/dynamic](https://github.com/bridgedxyz/dynamic)
 - ✅ `Theme.of` Textstyle support
 - ✅ `Colors.` Color support
 - ✅ Slots support (not static content)
