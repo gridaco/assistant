@@ -81,8 +81,9 @@ export default function CodeBox(props: Props) {
         )}
       </CodeWrapper>
 
-      <CodeInfroWrapper>
-        <CopyCodeButton onClick={onCopyClicked}>copy code</CopyCodeButton>
+      <CodeFooterCtaWrapper>
+        {/* copy feature should be inside the code viewer box with copy icon button.*/}
+        {/* <CopyCodeButton onClick={onCopyClicked}>copy code</CopyCodeButton> */}
         {props.app && (
           <QuickLookButton
             disabled={isLaunchingConsole}
@@ -91,7 +92,9 @@ export default function CodeBox(props: Props) {
             {isLaunchingConsole ? "launching.." : "quick look"}
           </QuickLookButton>
         )}
-      </CodeInfroWrapper>
+
+        <button onClick={onQuickLookClicked}>{"register"}</button>
+      </CodeFooterCtaWrapper>
     </>
   );
 }
@@ -135,7 +138,7 @@ const QuickLookButton = styled(Button)`
   font-weight: bold;
 `;
 
-const CodeInfroWrapper = styled.div`
+const CodeFooterCtaWrapper = styled.div`
   margin: 0 -8px;
   padding: 10px 10px 0 10px;
 `;
