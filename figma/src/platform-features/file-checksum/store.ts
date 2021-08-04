@@ -1,5 +1,5 @@
 import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "app/lib/constants";
-
+import { checksum } from "./api";
 /**
  * root node's id is always 0:0 on plugin api. [learn more](https://github.com/figma/plugin-typings/issues/13)
  */
@@ -16,7 +16,7 @@ export async function saveFileKey_userprovided(filekey: string) {
   await __save_on_both(__VALUE_KEY_trusted, filekey);
 }
 
-export async function getFileKey_userprovided() {
+export function getFileKey_userprovided() {
   return __get_on_root(__VALUE_KEY_userprovided);
   //
 }
@@ -53,7 +53,8 @@ export async function doChecksumAndSave(
   // do checksum and save the key if passed.
 
   try {
-    const checked = true; // TODO: call remote api for cheking the checksum
+    const fileidnotrust = getFileKey_userprovided();
+    const checked = await checksum(fileidnotrust); // TODO: call remote api for cheking the checksum
 
     if (checked) {
       saveFileKey_trusted(local);
