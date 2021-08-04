@@ -7,7 +7,7 @@ import {
   FigmaUrlType,
 } from "@design-sdk/figma-url";
 
-function saveUserInput(input: string): boolean {
+export function saveUserInput(input: string): boolean {
   let fileid;
   try {
     const res = analyze(input);
@@ -38,4 +38,16 @@ function saveUserInput(input: string): boolean {
   } catch (_) {
     return false;
   }
+}
+
+/**
+ * global function for getting current file's trusted id.
+ * return trusted value of file id. if non existing, throws.
+ */
+export function getFileId(): string {
+  const stored = store.getFileKey_trusted();
+  if (stored) {
+    return stored;
+  }
+  throw "no trusted file id provided. (file id might be provided by user, but did not passed checksum - or did not run checksum)";
 }
