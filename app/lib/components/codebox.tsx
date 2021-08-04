@@ -17,13 +17,15 @@ import styled from "@emotion/styled";
 
 interface Props {
   language: "dart" | "jsx" | string;
-  code: string;
+  code: string | { raw: string };
   app?: any;
   codeActions?: Array<JSX.Element>;
 }
 
 export default function CodeBox(props: Props) {
   const [isLaunchingConsole, setIsLaunchingConsole] = useState<boolean>(false);
+
+  const raw = typeof props.code == "string" ? props.code : props.code.raw;
 
   useEffect(() => {
     if (props.language == "dart") {
@@ -36,7 +38,7 @@ export default function CodeBox(props: Props) {
   }, []);
 
   const onCopyClicked = (e) => {
-    copy(props.code);
+    copy(raw);
     PluginSdk.notifyCopied();
 
     // ANALYTICS
@@ -72,8 +74,8 @@ export default function CodeBox(props: Props) {
             return e;
           })}
 
-        {typeof props.code == "string" ? (
-          <PrismCodehighlight code={props.code} language={props.language} />
+        {typeof raw == "string" ? (
+          <PrismCodehighlight code={raw} language={props.language} />
         ) : (
           <>Invalid code was givven. cannot display result (this is a bug)</>
         )}
