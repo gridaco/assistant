@@ -16,25 +16,25 @@ import {
   WorkspaceMode,
 } from "../states/app-state";
 import { PluginApp } from "../utils/plugin-provider/pugin-app";
-import BatchMetaEditor from "../screens/tool-box/batch-meta-editor";
+import BatchMetaEditor from "../pages/tool-box/batch-meta-editor";
 import { Switch, Route, Link, BrowserRouter, Redirect } from "react-router-dom";
 
 // region screens import
-import { FontReplacerScreen } from "../screens/tool-box/font-replacer";
-import { ButtonMakerScreen } from "../screens/design/button-maker-screen";
-import { ComponentViewScreen } from "../screens/component-view";
-import { LayoutViewScreen } from "../screens/layout-view";
-import { LintScreen } from "../screens/lint-screen";
-import { GlobalizationScreen } from "../screens/g11n-screen";
-import { IconsScreen } from "../screens/icons-screen";
-import { CodeScreen } from "../screens/code/code-screen";
-import { ToolboxScreen } from "../screens/tool-box";
-import { MetaEditorScreen } from "../screens/tool-box/meta-editor";
-import { ExporterScreen } from "../screens/tool-box/exporter";
-import { DataMapperScreen } from "../screens/tool-box/data-mapper/data-mapper-screen";
+import { FontReplacerScreen } from "../pages/tool-box/font-replacer";
+import { ButtonMakerScreen } from "../pages/design/button-maker-screen";
+import { ComponentViewScreen } from "../pages/component-view";
+import { LayoutViewScreen } from "../pages/layout-view";
+import { LintScreen } from "../pages/lint-screen";
+import { GlobalizationScreen } from "../pages/g11n-screen";
+import { IconsScreen } from "../pages/icons-screen";
+import { CodeScreen } from "../pages/code/code-screen";
+import { ToolboxScreen } from "../pages/tool-box";
+import { MetaEditorScreen } from "../pages/tool-box/meta-editor";
+import { ExporterScreen } from "../pages/tool-box/exporter";
+import { DataMapperScreen } from "../pages/tool-box/data-mapper/data-mapper-screen";
 import { TargetPlatform } from "../utils/plugin-init/init-target-platform";
-import { AboutScreen } from "../screens/about";
-import { FlutterCodeScreen, ReactCodeScreen } from "../screens/code";
+import { AboutScreen } from "../pages/about";
+import { FlutterCodeScreen, ReactCodeScreen } from "../pages/code";
 // endregion screens import
 
 interface TabPanelProps {

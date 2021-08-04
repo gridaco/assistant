@@ -1,1 +1,1 @@
-# Assistant shared ui library
+# Assistant shared app (ui) library
