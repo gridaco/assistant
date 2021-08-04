@@ -22,7 +22,7 @@
 			"packages/design-to-code/packages/reflect-detection"
 		]
 	},
-	"repository": "https://github.com/bridgedxyz/assistant",
+	"repository": "https://github.com/gridaco/assistant",
 	"author": "Grida.co, bridged.xyz softmarshmallow <woojoo@softmarshmallow.com>",
 	"scripts": {
 		"pull:all": "git submodule update --init --recursive",

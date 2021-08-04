@@ -68,11 +68,11 @@ git submodule update --init --recursive
 
 ## Flutter code builder
 
-flutter widget builder is done by [figma/flutter](/flutter) and the core builder is powered by [bridged's dynamic](https://github.com/bridgedxyz/dynamic)
+flutter widget builder is done by [figma/flutter](/flutter) and the core builder is powered by [Grida dynamic](https://github.com/bridgedxyz/dynamic)
 
 - [figma/flutter](/figma/src/flutter)
-- [bridged/flutter-builder](https://github.com/bridgedxyz/flutter-builder)
-- [bridged/dynamic](https://github.com/bridgedxyz/dynamic)
+- [grida/flutter-builder](https://github.com/bridgedxyz/flutter-builder)
+- [grida/dynamic](https://github.com/bridgedxyz/dynamic)
 - ✅ `Theme.of` Textstyle support
 - ✅ `Colors.` Color support
 - ✅ Slots support (not static content)
