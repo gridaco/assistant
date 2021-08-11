@@ -34,7 +34,6 @@ import { ExporterScreen } from "../pages/tool-box/exporter";
 import { DataMapperScreen } from "../pages/tool-box/data-mapper/data-mapper-screen";
 import { TargetPlatform } from "../utils/plugin-init/init-target-platform";
 import { AboutScreen } from "../pages/about";
-import { DEFAULT_EMPTY_CODE_SNIPPET } from "../pages/code/constants";
 
 // endregion screens import
 
@@ -231,7 +230,7 @@ export default function App(props: { platform: TargetPlatform }) {
             case WorkScreen.code:
               return (
                 <TabPanel key={i} value={tabIndex} index={i}>
-                  <CodeScreen placeholderSource={DEFAULT_EMPTY_CODE_SNIPPET} />
+                  <CodeScreen />
                 </TabPanel>
               );
             case WorkScreen.component:

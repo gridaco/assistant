@@ -16,16 +16,12 @@ import {
 } from "./framework-option";
 import { CodeScreenControl } from "./code-screen-control";
 import { WorkScreen } from "../../states/app-state";
-interface CodeScreenProps {
-  placeholderSource: string;
-  // framework?: Framework;
-  // formatter: ;
-}
 
 type Formatter = (source: string) => string;
 
 type DesigntoCodeUserOptions = FrameworkOption;
 import { format as dart_format } from "../../utils/dart-format";
+import { make_empty_selection_state_text_content } from "./constants";
 
 const formatter_by_lang = (lang: Language): Formatter => {
   switch (lang) {
@@ -37,12 +33,27 @@ const formatter_by_lang = (lang: Language): Formatter => {
   }
 };
 
-export function CodeScreen(props: CodeScreenProps) {
-  const [source, setSource] = useState<string>(props.placeholderSource);
+export function CodeScreen() {
   const [app, setApp] = useState<string>();
   const [useroption, setUseroption] = React.useState<DesigntoCodeUserOptions>(
     all_preset_options_map__prod.flutter_default
   );
+
+  const [source, setSource] = useState<string>();
+
+  const _make_placeholder = () => {
+    return make_empty_selection_state_text_content({
+      platform: "figma",
+      lang: useroption.language,
+    });
+  };
+
+  const _make_source = (): string => {
+    if (source && source.length > 0) {
+      return source;
+    }
+    return _make_placeholder();
+  };
 
   const formatter = formatter_by_lang(useroption.language);
   const onMessage = (ev: MessageEvent) => {
@@ -108,12 +119,9 @@ export function CodeScreen(props: CodeScreenProps) {
     /**
      * endregion DIRTY CODE FIXME: !!!
      */
-
-    console.log("setting from view as.. ", _frameworknameforeventtransport);
   }, [useroption.framework]);
 
   const onOptionChange = (op: DesigntoCodeUserOptions) => {
-    console.log("onOptionChange", op);
     setUseroption(op);
   };
   return (
@@ -127,7 +135,7 @@ export function CodeScreen(props: CodeScreenProps) {
       <CodeBox
         language={_src_view_language(useroption.framework)}
         app={app}
-        code={source}
+        code={_make_source()}
       ></CodeBox>
     </div>
   );
