@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import CodeBox from "../../components/codebox";
+import CodeBox, { SourceInput } from "../../components/codebox";
 import { Preview } from "../../components/preview";
 import {
   EK_GENERATED_CODE_PLAIN,
@@ -39,7 +39,7 @@ export function CodeScreen() {
     all_preset_options_map__prod.flutter_default
   );
 
-  const [source, setSource] = useState<string>();
+  const [source, setSource] = useState<SourceInput>();
 
   const _make_placeholder = () => {
     return make_empty_selection_state_text_content({
@@ -48,9 +48,15 @@ export function CodeScreen() {
     });
   };
 
-  const _make_source = (): string => {
-    if (source && source.length > 0) {
-      return source;
+  const _make_source = (): SourceInput => {
+    if (typeof source == "string") {
+      if (source && source.length > 0) {
+        return source;
+      }
+    } else {
+      if (source && source.raw.length > 0) {
+        return source;
+      }
     }
     return _make_placeholder();
   };
