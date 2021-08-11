@@ -10,10 +10,10 @@ import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 
 // import Prism from "prism-react-renderer/prism";
 import { quickLook } from "../quicklook";
-import Button from "@material-ui/core/Button";
 import { PluginSdk } from "../utils/plugin-provider/plugin-app-sdk";
 import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
+import { css } from "@emotion/react";
 
 interface Props {
   language: "dart" | "jsx" | string;
@@ -94,7 +94,7 @@ export default function CodeBox(props: Props) {
         )}
 
         {/* TODO: Fix it */}
-        <button onClick={onQuickLookClicked}>{"register"}</button>
+        <RegisterBtn onClick={onQuickLookClicked}>{"register"}</RegisterBtn>
       </CodeFooterCtaWrapper>
     </>
   );
@@ -123,25 +123,49 @@ function PrismCodehighlight(props: { code: string; language: any | Language }) {
   );
 }
 
-const CopyCodeButton = styled(Button)`
+const CopyCodeButton = styled.button`
   width: calc(50% - 5px);
   /* for unused .MuiButton-root margin: 0  */
   margin-right: 5px !important;
   font-weight: bold;
 `;
 
-const QuickLookButton = styled(Button)`
+const StyledButton = css`
   width: calc(50% - 5px);
   /* for unused .MuiButton-root margin: 0  */
-  margin-left: 5px !important;
+  /* margin-left: 5px !important; */
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 4px;
+  border: 1px solid #151617;
+  box-sizing: border-box;
+  padding-top: 16px;
+  padding-bottom: 16px;
+`;
+
+const QuickLookButton = styled.button`
+  ${StyledButton}
   background-color: #151617 !important;
   color: #fff !important;
-  font-weight: bold;
+`;
+
+const RegisterBtn = styled.button`
+  ${StyledButton}
+  color: #151617 !important;
+  background-color: #fff !important;
 `;
 
 const CodeFooterCtaWrapper = styled.div`
   margin: 0 -8px;
   padding: 10px 10px 0 10px;
+
+  button {
+    margin-right: 8px;
+
+    &:last-child() {
+      margin-right: 0;
+    }
+  }
 `;
 
 const CodeWrapper = styled.code`
@@ -155,9 +179,4 @@ const CodeInnerWrapper = styled.pre`
   overflow: scroll;
   width: 100%;
   height: 408px;
-`;
-
-const RegisterBtn = styled.button`
-  // TODO: TMP
-  padding: 10px;
 `;
