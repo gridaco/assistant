@@ -15,9 +15,11 @@ import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
+export type SourceInput = string | { raw: string };
+
 interface Props {
   language: "dart" | "jsx" | string;
-  code: string | { raw: string };
+  code: SourceInput;
   app?: any;
   codeActions?: Array<JSX.Element>;
 }
