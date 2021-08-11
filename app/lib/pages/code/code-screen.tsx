@@ -12,7 +12,7 @@ import {
   Framework,
   FrameworkOption,
   Language,
-  react_presets,
+  all_preset_options_map__prod,
 } from "./framework-option";
 import { CodeScreenControl } from "./code-screen-control";
 import { WorkScreen } from "../../states/app-state";
@@ -41,7 +41,7 @@ export function CodeScreen(props: CodeScreenProps) {
   const [source, setSource] = useState<string>(props.placeholderSource);
   const [app, setApp] = useState<string>();
   const [useroption, setUseroption] = React.useState<DesigntoCodeUserOptions>(
-    react_presets.react_default
+    all_preset_options_map__prod.flutter_default
   );
 
   const formatter = formatter_by_lang(useroption.language);
