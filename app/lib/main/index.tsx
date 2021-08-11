@@ -35,6 +35,9 @@ import { DataMapperScreen } from "../pages/tool-box/data-mapper/data-mapper-scre
 import { TargetPlatform } from "../utils/plugin-init/init-target-platform";
 import { AboutScreen } from "../pages/about";
 import { FlutterCodeScreen, ReactCodeScreen } from "../pages/code";
+import { CodeLikeView } from "@code-ui/docstring";
+import { DEFAULT_EMPTY_CODE_SNIPPET } from "../pages/code/constants";
+
 // endregion screens import
 
 interface TabPanelProps {
@@ -230,16 +233,20 @@ export default function App(props: { platform: TargetPlatform }) {
             case WorkScreen.code:
               return (
                 <TabPanel key={i} value={tabIndex} index={i}>
-                  {/* <CodeScreen /> */}
-                  <>THIS WILL BE REMOVED</>
+                  <CodeScreen
+                    placeholderSource={DEFAULT_EMPTY_CODE_SNIPPET}
+                    formatter={(s) => s}
+                  />
                 </TabPanel>
               );
+            // TODO: check
             case WorkScreen.code_flutter:
               return (
                 <TabPanel key={i} value={tabIndex} index={i}>
                   <FlutterCodeScreen />
                 </TabPanel>
               );
+            // TODO: check
             case WorkScreen.code_react:
               return (
                 <TabPanel key={i} value={tabIndex} index={i}>

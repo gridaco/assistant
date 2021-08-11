@@ -7,16 +7,22 @@ import {
 } from "../../constants/ek.constant";
 import { repo_assets } from "@design-sdk/core";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
+// TODO: fix type struct
+import { IField } from "@code-ui/docstring/dist/lib/field/type";
+import { LanguageType } from "@code-ui/docstring/dist/lib/type";
+import { CodeLikeView } from "@code-ui/docstring";
 
+type FrameworkType = "flutter" | "react";
 interface CodeScreenProps {
   placeholderSource: string;
-  framework: "flutter" | "react";
+  framework?: FrameworkType;
   formatter: (source: string) => string;
 }
 
 export function CodeScreen(props: CodeScreenProps) {
   const [source, setSource] = useState<string>(props.placeholderSource);
   const [app, setApp] = useState<string>();
+  const [framework, setFramework] = React.useState<FrameworkType>("react");
 
   const onMessage = (ev: MessageEvent) => {
     const msg = ev.data.pluginMessage;
@@ -28,7 +34,7 @@ export function CodeScreen(props: CodeScreenProps) {
           setSource(code);
           setApp(app);
           analytics.event_selection_to_code({
-            framework: props.framework,
+            framework: framework,
           });
 
           break;
@@ -50,11 +56,36 @@ export function CodeScreen(props: CodeScreenProps) {
     };
   }, []);
 
+  // TODO: remove it
+  const platform_field: IField = {
+    tag: "@",
+    name: "platform",
+    template: `{{ tag }}{{ name }} {{ options.value }} `,
+    options: [
+      {
+        name: "Flutter",
+        value: "platform.flutter",
+        description: "flutter",
+      },
+    ],
+  };
   return (
     <div>
       <Preview auto />
+      <CodeLikeView
+        lang={getLangType(framework)}
+        style={"monokai"}
+        padding={"10px"}
+        controls={[platform_field]}
+        expandableConfig={{
+          lines: 2,
+          expandable: true,
+          hidable: true,
+        }}
+        onChange={() => {}}
+      />
       <CodeBox
-        language={_language(props.framework)}
+        language={_language(framework)}
         app={app}
         code={source}
       ></CodeBox>
@@ -75,3 +106,14 @@ const _language = (framework: string): string => {
       throw `default language for code display on framework "${framework}" is not supported`;
   }
 };
+
+function getLangType(framework: FrameworkType): LanguageType {
+  switch (framework) {
+    case "react":
+      return "js";
+    case "flutter":
+      return "dart";
+    default:
+      return "js";
+  }
+}

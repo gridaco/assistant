@@ -51,7 +51,7 @@ export function getWorkspaceTabLayout(workspaceMode: WorkspaceMode): TabLayout {
     switch (workspaceMode) {
       case WorkspaceMode.code:
         return [
-          // WorkScreen.code,
+          WorkScreen.code,
           WorkScreen.code_flutter,
           WorkScreen.code_react,
           WorkScreen.component,
