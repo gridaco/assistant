@@ -34,7 +34,6 @@ import { ExporterScreen } from "../pages/tool-box/exporter";
 import { DataMapperScreen } from "../pages/tool-box/data-mapper/data-mapper-screen";
 import { TargetPlatform } from "../utils/plugin-init/init-target-platform";
 import { AboutScreen } from "../pages/about";
-import { FlutterCodeScreen, ReactCodeScreen } from "../pages/code";
 import { DEFAULT_EMPTY_CODE_SNIPPET } from "../pages/code/constants";
 
 // endregion screens import
