@@ -1308,10 +1308,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@code-ui/docstring@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@code-ui/docstring/-/docstring-0.0.2.tgz#4a00158458d31f4eca6c82b7d899353e7920430c"
-  integrity sha512-+iPcqLYsFjRzK+NzEiWMr2eFzZLos3xqn2C3mRTfbSiI2FRlZthmZ3hpIc9MHfxjGRIydqbV4S7nE4hcRcQBcg==
+"@code-ui/docstring@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@code-ui/docstring/-/docstring-0.0.7.tgz#f962826eac27b290fa90faf50f523c4031a82118"
+  integrity sha512-99jtPLF1R9GtRyJjS7fzK4m6I7NloZzvSnmTUsYM86/etaUmo36HagN23pgLjbkHrd2Ub/KLWBTgcX35Lhtwiw==
   dependencies:
     "@tippyjs/react" "^4.2.5"
     handlebars "^4.7.7"

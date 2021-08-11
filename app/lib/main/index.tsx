@@ -35,7 +35,6 @@ import { DataMapperScreen } from "../pages/tool-box/data-mapper/data-mapper-scre
 import { TargetPlatform } from "../utils/plugin-init/init-target-platform";
 import { AboutScreen } from "../pages/about";
 import { FlutterCodeScreen, ReactCodeScreen } from "../pages/code";
-import { CodeLikeView } from "@code-ui/docstring";
 import { DEFAULT_EMPTY_CODE_SNIPPET } from "../pages/code/constants";
 
 // endregion screens import
