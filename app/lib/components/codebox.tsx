@@ -93,6 +93,7 @@ export default function CodeBox(props: Props) {
           </QuickLookButton>
         )}
 
+        {/* TODO: Fix it */}
         <button onClick={onQuickLookClicked}>{"register"}</button>
       </CodeFooterCtaWrapper>
     </>
@@ -154,4 +155,9 @@ const CodeInnerWrapper = styled.pre`
   overflow: scroll;
   width: 100%;
   height: 408px;
+`;
+
+const RegisterBtn = styled.button`
+  // TODO: TMP
+  padding: 10px;
 `;

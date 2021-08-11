@@ -232,24 +232,7 @@ export default function App(props: { platform: TargetPlatform }) {
             case WorkScreen.code:
               return (
                 <TabPanel key={i} value={tabIndex} index={i}>
-                  <CodeScreen
-                    placeholderSource={DEFAULT_EMPTY_CODE_SNIPPET}
-                    formatter={(s) => s}
-                  />
-                </TabPanel>
-              );
-            // TODO: check
-            case WorkScreen.code_flutter:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <FlutterCodeScreen />
-                </TabPanel>
-              );
-            // TODO: check
-            case WorkScreen.code_react:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <ReactCodeScreen />
+                  <CodeScreen placeholderSource={DEFAULT_EMPTY_CODE_SNIPPET} />
                 </TabPanel>
               );
             case WorkScreen.component:

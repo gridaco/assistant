@@ -78,8 +78,6 @@ export async function runon(rnode: ReflectSceneNode) {
       throw `unrecognized user_interest givven "${user_interest}"`;
     })();
 
-    console.log("codePlatform", codePlatform);
-
     const hostingjob = async () => {
       // host images
       const transportableImageAssetRepository =
