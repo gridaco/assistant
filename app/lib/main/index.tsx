@@ -199,8 +199,8 @@ export default function App(props: { platform: TargetPlatform }) {
     const tabs = (
       <Tabs
         value={tabIndex}
-        variant="scrollable"
-        scrollButtons="on"
+        variant="standard"
+        scrollButtons="off"
         onChange={handleTabChange}
         aria-label="primary tab"
       >
