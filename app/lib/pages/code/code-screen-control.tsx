@@ -13,6 +13,7 @@ import {
   FlutterOption,
   react_styles,
 } from "./framework-option";
+import styled from "@emotion/styled";
 
 export type DesigntoCodeUserOptions = FrameworkOption;
 
@@ -161,19 +162,21 @@ export function CodeScreenControl(props: CodeScreenProps) {
 
   // console.log("code-screen-control::useroption", useroption);
   return (
-    <DocstringView
-      key={JSON.stringify(useroption)}
-      lang={__lang_to_docstring_lang(useroption.language)}
-      style={"monokai"}
-      padding={"24px"}
-      controls={fields_config[useroption.framework]}
-      expandableConfig={{
-        lines: 2,
-        expandable: true,
-        hidable: true,
-      }}
-      onChange={onChagne}
-    />
+    <Wrapper>
+      <DocstringView
+        key={JSON.stringify(useroption)}
+        lang={__lang_to_docstring_lang(useroption.language)}
+        style={"monokai"}
+        padding={"16px"}
+        controls={fields_config[useroption.framework]}
+        expandableConfig={{
+          lines: 2,
+          expandable: true,
+          hidable: true,
+        }}
+        onChange={onChagne}
+      />
+    </Wrapper>
   );
 }
 
@@ -186,3 +189,9 @@ function __lang_to_docstring_lang(lang: Language): LanguageType {
       return "js";
   }
 }
+
+const Wrapper = styled.div`
+  // for reset body margin 8px
+  margin-right: -8px;
+  margin-left: -8px;
+`;
