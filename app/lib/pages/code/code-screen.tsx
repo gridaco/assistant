@@ -152,6 +152,7 @@ export function CodeScreen() {
     <div>
       <Preview auto />
 
+      {/* FIXME: add onCopyClicked to code-box */}
       <CopyCodeButton>
         <svg
           width="19"

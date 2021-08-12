@@ -6,7 +6,7 @@ import {
   TransparencyButton,
 } from "../../components/style/global-style";
 import { Button } from "@material-ui/core";
-import { motion } from "framer-motion";
+import { ProgressBar } from "../../components/progress-bar";
 
 const step = [
   "converting design to universal format",
@@ -19,44 +19,46 @@ const step = [
 
 export function UploadSteps() {
   return (
-    <Wrapper>
-      <Loading>
-        <Title>
-          Uploading your design
-          <br />
-          “button”
-        </Title>
-        <StepsWrapper>
-          {step.map((s) => (
-            <Field>
-              <Icon></Icon>
-              <Item>{s}</Item>
-            </Field>
-          ))}
-        </StepsWrapper>
-      </Loading>
-      <Finish>
-        <motion.path d="M 0, 20 a 20, 20 0 1,0 40,0 a 20, 20 0 1,0 -40,0" />
-        <Field>
-          <Icon></Icon>
-          <Title>Your design is ready</Title>
-        </Field>
-        <Item>
-          You can start using this component in your existing project
-          immideitly.
-        </Item>
-        <FooterButtonWrapper>
-          <CheckButton>Check it out</CheckButton>
-          <UncheckButton>do it later</UncheckButton>
-        </FooterButtonWrapper>
-      </Finish>
-    </Wrapper>
+    <>
+      <ProgressBar />
+      <InnerWrapper>
+        <Loading>
+          <Title>
+            Uploading your design
+            <br />
+            “button”
+          </Title>
+          <StepsWrapper>
+            {step.map((item) => (
+              <Field>
+                <Icon></Icon>
+                <Item>{item}</Item>
+              </Field>
+            ))}
+          </StepsWrapper>
+        </Loading>
+        <Finish>
+          <Field>
+            <Icon></Icon>
+            <Title>Your design is ready</Title>
+          </Field>
+          <Item>
+            You can start using this component in your existing project
+            immideitly.
+          </Item>
+          <FooterButtonWrapper>
+            <CheckButton>Check it out</CheckButton>
+            <UncheckButton>do it later</UncheckButton>
+          </FooterButtonWrapper>
+        </Finish>
+      </InnerWrapper>
+    </>
   );
 }
 
-const Wrapper = styled.div`
+const InnerWrapper = styled.div`
   padding: 12px;
-  padding-top: 80px;
+  padding-top: 72px;
 
   // TODO: contorl stateus!
   /* display: none; */
