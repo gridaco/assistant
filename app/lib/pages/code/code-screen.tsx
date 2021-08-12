@@ -11,7 +11,6 @@ import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import {
   Framework,
   FrameworkOption,
-  Language,
   all_preset_options_map__prod,
 } from "./framework-option";
 import { CodeScreenControl } from "./code-screen-control";
@@ -19,22 +18,11 @@ import { WorkScreen } from "../../states/app-state";
 import { Button } from "@material-ui/core";
 import styled from "@emotion/styled";
 
-type Formatter = (source: string) => string;
-
-type DesigntoCodeUserOptions = FrameworkOption;
-import { format as dart_format } from "../../utils/dart-format";
 import { make_empty_selection_state_text_content } from "./constants";
 import { ButtonStyle } from "../../components/style/global-style";
+import { format } from "./formatter";
 
-const formatter_by_lang = (lang: Language): Formatter => {
-  switch (lang) {
-    case Language.dart:
-      return dart_format;
-    case Language.jsx:
-    case Language.tsx:
-      return (s) => s;
-  }
-};
+type DesigntoCodeUserOptions = FrameworkOption;
 
 export function CodeScreen() {
   const [app, setApp] = useState<string>();
@@ -64,17 +52,43 @@ export function CodeScreen() {
     return _make_placeholder();
   };
 
-  const formatter = formatter_by_lang(useroption.language);
+  const handleSourceInput = ({
+    app,
+    code,
+  }: {
+    app: string;
+    code: SourceInput;
+  }) => {
+    format(app, useroption.language, (s) => {
+      setApp(s);
+    });
+
+    // for SourceInput, we need type checking
+    if (typeof code == "string") {
+      // source input as string
+      format(code, useroption.language, (s) => {
+        setSource(s);
+      });
+    } else {
+      // source input as { raw: string }
+      format(code.raw, useroption.language, (s) => {
+        setSource({
+          raw: s,
+        });
+      });
+    }
+  };
+
   const onMessage = (ev: MessageEvent) => {
     const msg = ev.data.pluginMessage;
     if (msg) {
       switch (msg.type) {
         case EK_GENERATED_CODE_PLAIN:
-          const app = formatter(msg.data.app);
-          console.log(`$c ${app}`, "color: red");
-          const code = formatter(msg.data.code);
-          setSource(code);
-          setApp(app);
+          handleSourceInput({
+            app: msg.data.app,
+            code: msg.data.code,
+          });
+          // analytics
           analytics.event_selection_to_code({
             framework: useroption.framework,
           });

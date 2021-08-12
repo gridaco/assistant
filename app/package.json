@@ -10,6 +10,7 @@
         "@analytics.bridged.xyz/internal": "^0.0.9",
         "@base-sdk/auth-first-party": "0.1.0",
         "@base-sdk/base": "0.1.0-1",
+        "@base-sdk/functions-code-format": "^0.0.0",
         "@bridged.xyz/base-sdk": "^0.0.2-1",
         "@code-ui/docstring": "^0.0.7",
         "@design-sdk/universal": "^0.0.0",

@@ -1272,6 +1272,14 @@
     "@reflect-ui/core" "0.0.2-rc.7"
     axios "^0.21.0"
 
+"@base-sdk/functions-code-format@^0.0.0":
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/@base-sdk/functions-code-format/-/functions-code-format-0.0.0.tgz#9758170fa8541cba5510c27d7a315fda628f1f95"
+  integrity sha512-+riF6kvswzBJgMcY8sCQkuDJHmMHNU1nUKixAz3l0JAeRmLYRVRgOci2KKahahgtIb99heqEviFR1jh9inLsZg==
+  dependencies:
+    "@base-sdk/core" "0.1.0"
+    axios "^0.21.1"
+
 "@base-sdk/hosting@0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@base-sdk/hosting/-/hosting-0.1.0.tgz#ecf5aa91f51125ccad1d7821ff48eef74521cb5b"
