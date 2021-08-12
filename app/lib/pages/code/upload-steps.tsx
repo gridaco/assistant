@@ -6,7 +6,9 @@ import {
   TransparencyButton,
 } from "../../components/style/global-style";
 import { Button } from "@material-ui/core";
-import { ProgressBar } from "../../components/progress-bar";
+import { ProgressBar } from "../../components/animation/progress-bar";
+import { AnimatedCheckIcon } from "../../components/animation/animated-check-icon";
+import { motion } from "framer-motion";
 
 const step = [
   "converting design to universal format",
@@ -16,6 +18,12 @@ const step = [
   "making builds (flutter, react, ..)",
   "running tests",
 ];
+
+const variants = {
+  "make-active": {
+    transition: { staggerChildren: 0.8, delayChildren: 1 },
+  },
+};
 
 export function UploadSteps() {
   return (
@@ -28,9 +36,9 @@ export function UploadSteps() {
             <br />
             “button”
           </Title>
-          <StepsWrapper>
-            {step.map((item) => (
-              <Field>
+          <StepsWrapper variants={variants} animate="make-active">
+            {step.map((item, i) => (
+              <Field key={`Upload-Step-${item}-${i}`}>
                 <Icon></Icon>
                 <Item>{item}</Item>
               </Field>
@@ -65,10 +73,12 @@ const InnerWrapper = styled.div`
 `;
 
 const Loading = styled.div`
-  display: none;
+  /* display: none; */
 `;
 
-const Finish = styled.div``;
+const Finish = styled.div`
+  display: none;
+`;
 
 const Title = styled.h1`
   font-style: normal;
@@ -79,7 +89,7 @@ const Title = styled.h1`
   margin: 0;
 `;
 
-const StepsWrapper = styled.div`
+const StepsWrapper = styled(motion.div)`
   margin-top: 16px;
 `;
 
@@ -91,11 +101,10 @@ const Field = styled.div`
     margin-bottom: 0;
   }
 `;
-const Icon = styled.div`
-  width: 16px;
+const Icon = styled(AnimatedCheckIcon)`
+  /* width: 16px;
   height: 16px;
-  line-height: 19px;
-  background: wheat;
+  line-height: 19px; */
   margin-right: 9px;
 `;
 

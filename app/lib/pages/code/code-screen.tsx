@@ -179,7 +179,7 @@ export function CodeScreen() {
           code={_make_source()}
         />
       </CodeWrapper>
-      <UploadSteps />
+      {/* <UploadSteps /> */}
     </div>
   );
 }
@@ -211,5 +211,5 @@ const CopyCodeButton = styled.div`
 `;
 const CodeWrapper = styled.div`
   // FIXME: remove
-  display: none;
+  /* display: none; */
 `;

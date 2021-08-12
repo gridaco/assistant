@@ -10,7 +10,11 @@ export function ProgressBar() {
         <Bar
           initial={{ width: "0" }}
           animate={{ width: "100%" }}
-          transition={{ ease: "easeOut", duration: 10, delay: 2 }}
+          transition={{
+            ease: "easeOut",
+            duration: 10,
+            delay: 2,
+          }}
         />
       </AnimatePresence>
     </Background>
