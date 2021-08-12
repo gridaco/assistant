@@ -13,7 +13,8 @@ import { quickLook } from "../quicklook";
 import { PluginSdk } from "../utils/plugin-provider/plugin-app-sdk";
 import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { css } from "@emotion/react";
+import { Button } from "@material-ui/core";
+import { ButtonStyle } from "./style/global-style";
 
 export type SourceInput = string | { raw: string };
 
@@ -70,6 +71,7 @@ export default function CodeBox(props: Props) {
 
   return (
     <>
+      {/* <CopyCodeButton /> */}
       <CodeWrapper>
         {props.codeActions &&
           props.codeActions.map((e) => {
@@ -86,17 +88,20 @@ export default function CodeBox(props: Props) {
       <CodeFooterCtaWrapper>
         {/* copy feature should be inside the code viewer box with copy icon button.*/}
         {/* <CopyCodeButton onClick={onCopyClicked}>copy code</CopyCodeButton> */}
+
+        <NextStepButton>next</NextStepButton>
+
         {props.app && (
-          <QuickLookButton
+          <PreviewButton
             disabled={isLaunchingConsole}
             onClick={onQuickLookClicked}
           >
             {isLaunchingConsole ? "launching.." : "quick look"}
-          </QuickLookButton>
+          </PreviewButton>
         )}
 
-        {/* TODO: Fix it */}
-        <RegisterBtn onClick={onQuickLookClicked}>{"register"}</RegisterBtn>
+        {/* FIXME: It is not regsiter button! just auick look btn for develop mode  */}
+        <PreviewButton onClick={onQuickLookClicked}>{"register"}</PreviewButton>
       </CodeFooterCtaWrapper>
     </>
   );
@@ -125,41 +130,10 @@ function PrismCodehighlight(props: { code: string; language: any | Language }) {
   );
 }
 
-const CopyCodeButton = styled.button`
-  width: calc(50% - 5px);
-  /* for unused .MuiButton-root margin: 0  */
-  margin-right: 5px !important;
-  font-weight: bold;
-`;
-
-const StyledButton = css`
-  width: calc(50% - 5px);
-  /* for unused .MuiButton-root margin: 0  */
-  /* margin-left: 5px !important; */
-  font-size: 14px;
-  font-weight: bold;
-  border-radius: 4px;
-  border: 1px solid #151617;
-  box-sizing: border-box;
-  padding-top: 16px;
-  padding-bottom: 16px;
-`;
-
-const QuickLookButton = styled.button`
-  ${StyledButton}
-  background-color: #151617 !important;
-  color: #fff !important;
-`;
-
-const RegisterBtn = styled.button`
-  ${StyledButton}
-  color: #151617 !important;
-  background-color: #fff !important;
-`;
-
 const CodeFooterCtaWrapper = styled.div`
   margin: 0 -8px;
   padding: 10px 10px 0 10px;
+  display: flex;
 
   button {
     margin-right: 8px;
@@ -168,6 +142,26 @@ const CodeFooterCtaWrapper = styled.div`
       margin-right: 0;
     }
   }
+`;
+
+const NextStepButton = styled(Button)`
+  ${ButtonStyle}
+  color: #fff;
+  background: #151617;
+  width: 66.666666%;
+
+  // for reset material-ui button style
+  &:hover {
+    color: #fff;
+    background: #17181a;
+  }
+`;
+
+const PreviewButton = styled(Button)`
+  ${ButtonStyle}
+  color: #151617;
+  background: #fff;
+  width: 33.333333%;
 `;
 
 const CodeWrapper = styled.code`

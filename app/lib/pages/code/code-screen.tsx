@@ -16,12 +16,15 @@ import {
 } from "./framework-option";
 import { CodeScreenControl } from "./code-screen-control";
 import { WorkScreen } from "../../states/app-state";
+import { Button } from "@material-ui/core";
+import styled from "@emotion/styled";
 
 type Formatter = (source: string) => string;
 
 type DesigntoCodeUserOptions = FrameworkOption;
 import { format as dart_format } from "../../utils/dart-format";
 import { make_empty_selection_state_text_content } from "./constants";
+import { ButtonStyle } from "../../components/style/global-style";
 
 const formatter_by_lang = (lang: Language): Formatter => {
   switch (lang) {
@@ -133,6 +136,21 @@ export function CodeScreen() {
   return (
     <div>
       <Preview auto />
+
+      <CopyCodeButton>
+        <svg
+          width="19"
+          height="22"
+          viewBox="0 0 19 22"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M14 0H0V16H2V2H14V0ZM19 4H4V22H19V4ZM17 20H6V6H17V20Z"
+            fill="white"
+          />
+        </svg>
+      </CopyCodeButton>
       <CodeScreenControl
         // key={JSON.stringify(useroption)} // FIXME: do not uncomment me
         // initialPreset="react_default" // FIXME: do not uncomment me
@@ -142,7 +160,7 @@ export function CodeScreen() {
         language={_src_view_language(useroption.framework)}
         app={app}
         code={_make_source()}
-      ></CodeBox>
+      />
     </div>
   );
 }
@@ -162,3 +180,13 @@ const _src_view_language = (framework: string): string => {
       throw `default language for code display on framework "${framework}" is not supported`;
   }
 };
+
+const CopyCodeButton = styled.div`
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  right: 0;
+  margin-top: 24px;
+  margin-right: 20px;
+  cursor: pointer;
+`;

@@ -165,7 +165,7 @@ export function CodeScreenControl(props: CodeScreenProps) {
       key={JSON.stringify(useroption)}
       lang={__lang_to_docstring_lang(useroption.language)}
       style={"monokai"}
-      padding={"10px"}
+      padding={"24px"}
       controls={fields_config[useroption.framework]}
       expandableConfig={{
         lines: 2,
