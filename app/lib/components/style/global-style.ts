@@ -32,7 +32,7 @@ export const BlackButton = css`
 
 export const WhtieButton = css`
   ${ButtonStyle}
-  border: 1px solid #151617;
+  /* border: 1px solid #151617; */
   color: #151617;
   background: #fff;
 `;

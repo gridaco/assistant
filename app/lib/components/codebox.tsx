@@ -14,7 +14,7 @@ import { PluginSdk } from "../utils/plugin-provider/plugin-app-sdk";
 import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { Button } from "@material-ui/core";
-import { ButtonStyle } from "./style/global-style";
+import { BlackButton, ButtonStyle, WhtieButton } from "./style/global-style";
 
 export type SourceInput = string | { raw: string };
 
@@ -148,9 +148,7 @@ const CodeFooterCtaWrapper = styled.div`
 `;
 
 const NextStepButton = styled(Button)`
-  ${ButtonStyle}
-  color: #fff;
-  background: #151617;
+  ${BlackButton}
   width: 66.666666%;
 
   // for reset material-ui button style
@@ -161,9 +159,7 @@ const NextStepButton = styled(Button)`
 `;
 
 const PreviewButton = styled(Button)`
-  ${ButtonStyle}
-  color: #151617;
-  background: #fff;
+  ${WhtieButton}
   width: 33.333333%;
 `;
 
