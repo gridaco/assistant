@@ -210,5 +210,5 @@ const CopyCodeButton = styled.div`
 `;
 const CodeWrapper = styled.div`
   // FIXME: remove
-  /* display: none; */
+  display: none;
 `;

@@ -57,6 +57,9 @@ export function UploadSteps() {
 const Wrapper = styled.div`
   padding: 12px;
   padding-top: 80px;
+
+  // TODO: contorl stateus!
+  /* display: none; */
 `;
 
 const Loading = styled.div`
