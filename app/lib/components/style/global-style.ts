@@ -8,19 +8,19 @@ export const ButtonStyle = css`
   font-size: 14px;
   font-weight: bold;
   border-radius: 4px;
-  border: 1px solid #151617;
   box-sizing: border-box;
   padding-top: 16px;
   padding-bottom: 16px;
 
-  // FIXME: CHEKC IS RIGHT CA[ITALIZE? ]
+  // FIXME: CHEKC IS RIGHT capitalize?
   text-transform: capitalize;
 `;
 
 export const BlackButton = css`
   ${ButtonStyle}
-
+  border: 1px solid #151617;
   background: #151617;
+  color: #fff;
   width: 66.666666%;
 
   // for reset material-ui button style
@@ -32,7 +32,16 @@ export const BlackButton = css`
 
 export const WhtieButton = css`
   ${ButtonStyle}
-
+  border: 1px solid #151617;
   color: #151617;
   background: #fff;
+`;
+
+export const TransparencyButton = css`
+  ${ButtonStyle}
+  color: #C1C1C1;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0);
+  }
 `;

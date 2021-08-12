@@ -85,23 +85,26 @@ export default function CodeBox(props: Props) {
         )}
       </CodeWrapper>
 
+      {/* FIXME: Need to move that wrapper to parent position  */}
       <CodeFooterCtaWrapper>
         {/* copy feature should be inside the code viewer box with copy icon button.*/}
         {/* <CopyCodeButton onClick={onCopyClicked}>copy code</CopyCodeButton> */}
 
-        <NextStepButton>next</NextStepButton>
-
+        <NextStepButton onClick={onQuickLookClicked}>next</NextStepButton>
         {props.app && (
           <PreviewButton
             disabled={isLaunchingConsole}
             onClick={onQuickLookClicked}
           >
-            {isLaunchingConsole ? "launching.." : "quick look"}
+            {isLaunchingConsole ? "launching.." : "preview"}
           </PreviewButton>
         )}
-
-        {/* FIXME: It is not regsiter button! just auick look btn for develop mode  */}
-        <PreviewButton onClick={onQuickLookClicked}>{"register"}</PreviewButton>
+        <PreviewButton
+          disabled={isLaunchingConsole}
+          onClick={onQuickLookClicked}
+        >
+          {isLaunchingConsole ? "launching.." : "preview"}
+        </PreviewButton>
       </CodeFooterCtaWrapper>
     </>
   );

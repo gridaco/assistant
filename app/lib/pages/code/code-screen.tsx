@@ -25,6 +25,7 @@ type DesigntoCodeUserOptions = FrameworkOption;
 import { format as dart_format } from "../../utils/dart-format";
 import { make_empty_selection_state_text_content } from "./constants";
 import { ButtonStyle } from "../../components/style/global-style";
+import { UploadSteps } from "./upload-steps";
 
 const formatter_by_lang = (lang: Language): Formatter => {
   switch (lang) {
@@ -151,16 +152,19 @@ export function CodeScreen() {
           />
         </svg>
       </CopyCodeButton>
-      <CodeScreenControl
-        // key={JSON.stringify(useroption)} // FIXME: do not uncomment me
-        // initialPreset="react_default" // FIXME: do not uncomment me
-        onUseroptionChange={onOptionChange}
-      />
-      <CodeBox
-        language={_src_view_language(useroption.framework)}
-        app={app}
-        code={_make_source()}
-      />
+      <CodeWrapper>
+        <CodeScreenControl
+          // key={JSON.stringify(useroption)} // FIXME: do not uncomment me
+          // initialPreset="react_default" // FIXME: do not uncomment me
+          onUseroptionChange={onOptionChange}
+        />
+        <CodeBox
+          language={_src_view_language(useroption.framework)}
+          app={app}
+          code={_make_source()}
+        />
+      </CodeWrapper>
+      <UploadSteps />
     </div>
   );
 }
@@ -189,4 +193,8 @@ const CopyCodeButton = styled.div`
   margin-top: 24px;
   margin-right: 20px;
   cursor: pointer;
+`;
+const CodeWrapper = styled.div`
+  // FIXME: remove
+  /* display: none; */
 `;
