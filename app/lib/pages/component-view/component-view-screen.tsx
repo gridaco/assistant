@@ -9,7 +9,7 @@ import TextField from "@material-ui/core/TextField/TextField";
 import DialogActions from "@material-ui/core/DialogActions/DialogActions";
 import { PluginSdk } from "../../utils/plugin-provider/plugin-app-sdk";
 import { Divider, IconButton, Typography } from "@material-ui/core";
-import { ASSISTANT_PLUGIN_NAMESPACE } from "../../constants";
+import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "../../constants";
 import { Edit, Settings } from "@material-ui/icons";
 import { ComponentCodebox } from "./component-codebox";
 import { ComponentSchemaEditor } from "./schema-editor";
@@ -38,7 +38,7 @@ export function ComponentViewScreen() {
     // 3. find if data to display exists on a master component.
     PluginSdk.fetchMainComponentMetadata({
       id: selection.id,
-      namespace: ASSISTANT_PLUGIN_NAMESPACE,
+      namespace: ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE,
       key: "component-meta-data",
     }).then((d) => {
       console.log(`component-meta-data is`, d);
@@ -59,7 +59,7 @@ export function ComponentViewScreen() {
 
     PluginSdk.updateMainComponentMetadata({
       id: selection.id,
-      namespace: ASSISTANT_PLUGIN_NAMESPACE,
+      namespace: ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE,
       key: "component-meta-data",
       value: newData,
     });

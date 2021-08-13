@@ -34,7 +34,8 @@ import { ExporterScreen } from "../pages/tool-box/exporter";
 import { DataMapperScreen } from "../pages/tool-box/data-mapper/data-mapper-screen";
 import { TargetPlatform } from "../utils/plugin-init/init-target-platform";
 import { AboutScreen } from "../pages/about";
-import { FlutterCodeScreen, ReactCodeScreen } from "../pages/code";
+import { UploadSteps } from "../components/upload-steps";
+
 // endregion screens import
 
 interface TabPanelProps {
@@ -86,8 +87,6 @@ function workScreenToName(appMode: WorkScreen): string {
       return "icon";
     case WorkScreen.lint:
       return "lint";
-    case WorkScreen.slot:
-      return "slots";
     case WorkScreen.exporter:
       return "exporter";
     case WorkScreen.g11n:
@@ -145,6 +144,8 @@ export default function App(props: { platform: TargetPlatform }) {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
+  const [isUploading, setIsUploading] = React.useState<boolean>(false);
+
   const handleOpenWorkspaceModeChangeClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -170,6 +171,10 @@ export default function App(props: { platform: TargetPlatform }) {
     // explicitly triggering the event.
     const newTabLayout = getWorkspaceTabLayout(selected);
     updateFocusedScreen(newTabLayout[0]);
+  };
+
+  const handleIsUploading = () => {
+    setIsUploading(!isUploading);
   };
 
   const updateFocusedScreen = (screen: WorkScreen) => {
@@ -199,8 +204,8 @@ export default function App(props: { platform: TargetPlatform }) {
     const tabs = (
       <Tabs
         value={tabIndex}
-        variant="scrollable"
-        scrollButtons="on"
+        variant="standard"
+        scrollButtons="off"
         onChange={handleTabChange}
         aria-label="primary tab"
       >
@@ -230,20 +235,7 @@ export default function App(props: { platform: TargetPlatform }) {
             case WorkScreen.code:
               return (
                 <TabPanel key={i} value={tabIndex} index={i}>
-                  {/* <CodeScreen /> */}
-                  <>THIS WILL BE REMOVED</>
-                </TabPanel>
-              );
-            case WorkScreen.code_flutter:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <FlutterCodeScreen />
-                </TabPanel>
-              );
-            case WorkScreen.code_react:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <ReactCodeScreen />
+                  <CodeScreen handleIsUploading={handleIsUploading} />
                 </TabPanel>
               );
             case WorkScreen.component:
@@ -394,8 +386,14 @@ export default function App(props: { platform: TargetPlatform }) {
   return (
     <PluginApp platform={props.platform}>
       <BrowserRouter>
-        {workspaceModeSelectLayout}
-        {screenLayout}
+        {isUploading ? (
+          <UploadSteps />
+        ) : (
+          <>
+            {workspaceModeSelectLayout}
+            {screenLayout}
+          </>
+        )}
       </BrowserRouter>
     </PluginApp>
   );

@@ -11,7 +11,9 @@ export enum WorkspaceMode {
 export enum WorkScreen {
   about = "about",
   code = "code",
+  /** @deprecated only used for sendig event */
   code_flutter = "code/flutter",
+  /** @deprecated only used for sendig event */
   code_react = "code/react",
   component = "component",
   layout = "layout",
@@ -51,13 +53,10 @@ export function getWorkspaceTabLayout(workspaceMode: WorkspaceMode): TabLayout {
     switch (workspaceMode) {
       case WorkspaceMode.code:
         return [
-          // WorkScreen.code,
-          WorkScreen.code_flutter,
-          WorkScreen.code_react,
+          WorkScreen.code,
           WorkScreen.component,
           WorkScreen.layout,
           WorkScreen.lint,
-          WorkScreen.slot,
         ];
       case WorkspaceMode.design:
         return [WorkScreen.icon, WorkScreen.layout, WorkScreen.lint];
@@ -101,7 +100,6 @@ const SCREEN_VISIBILITY_PREFERENCE: Map<WorkScreen, ReleaseChannel> = new Map([
   [WorkScreen.g11n, "beta"],
   [WorkScreen.exporter, "beta"],
   [WorkScreen.dev, "beta"],
-  [WorkScreen.slot, "alpha"],
   [WorkScreen.desing_button_maker, "alpha"],
   [WorkScreen.tool_font_replacer, "release"],
   [WorkScreen.tool_meta_editor, "release"],
