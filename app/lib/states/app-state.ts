@@ -54,12 +54,9 @@ export function getWorkspaceTabLayout(workspaceMode: WorkspaceMode): TabLayout {
       case WorkspaceMode.code:
         return [
           WorkScreen.code,
-          // WorkScreen.code_flutter,
-          // WorkScreen.code_react,
           WorkScreen.component,
           WorkScreen.layout,
           WorkScreen.lint,
-          WorkScreen.slot,
         ];
       case WorkspaceMode.design:
         return [WorkScreen.icon, WorkScreen.layout, WorkScreen.lint];
@@ -103,7 +100,6 @@ const SCREEN_VISIBILITY_PREFERENCE: Map<WorkScreen, ReleaseChannel> = new Map([
   [WorkScreen.g11n, "beta"],
   [WorkScreen.exporter, "beta"],
   [WorkScreen.dev, "beta"],
-  [WorkScreen.slot, "alpha"],
   [WorkScreen.desing_button_maker, "alpha"],
   [WorkScreen.tool_font_replacer, "release"],
   [WorkScreen.tool_meta_editor, "release"],
