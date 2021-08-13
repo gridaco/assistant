@@ -86,8 +86,6 @@ function workScreenToName(appMode: WorkScreen): string {
       return "icon";
     case WorkScreen.lint:
       return "lint";
-    case WorkScreen.slot:
-      return "slots";
     case WorkScreen.exporter:
       return "exporter";
     case WorkScreen.g11n:
