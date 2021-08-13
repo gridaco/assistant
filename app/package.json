@@ -12,7 +12,7 @@
         "@base-sdk/base": "0.1.0-1",
         "@base-sdk/functions-code-format": "^0.0.0",
         "@bridged.xyz/base-sdk": "^0.0.2-1",
-        "@code-ui/docstring": "^0.0.7",
+        "@code-ui/docstring": "^0.0.9",
         "@design-sdk/universal": "^0.0.0",
         "@designto/code": "0.0.1",
         "@emotion/react": "^11.4.0",

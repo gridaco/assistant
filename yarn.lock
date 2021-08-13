@@ -1316,10 +1316,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@code-ui/docstring@^0.0.7":
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/@code-ui/docstring/-/docstring-0.0.7.tgz#f962826eac27b290fa90faf50f523c4031a82118"
-  integrity sha512-99jtPLF1R9GtRyJjS7fzK4m6I7NloZzvSnmTUsYM86/etaUmo36HagN23pgLjbkHrd2Ub/KLWBTgcX35Lhtwiw==
+"@code-ui/docstring@^0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@code-ui/docstring/-/docstring-0.0.9.tgz#d46d6024924f4ec6f1e3cceee4816a23c903f35d"
+  integrity sha512-xe2vUOtUJmTgQSn9+dDpDaWRvc6B696wAKID+mfGA3s8WwncAOiE60mQJbxq4Td+HwyWDpaEOZScb/1/OEDDqw==
   dependencies:
     "@tippyjs/react" "^4.2.5"
     handlebars "^4.7.7"
