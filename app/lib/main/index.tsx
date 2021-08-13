@@ -32,11 +32,14 @@ import { AboutScreen } from "../pages/about";
 import { UploadSteps } from "../components/upload-steps";
 import {
   getWorkmodeTabLayout,
+  get_page_config,
   WorkMode,
   WorkScreen,
   workScreenToName,
   worspaceModeToName,
 } from "../navigation";
+
+import { WorkmodeTabs } from "../components/navigation";
 
 // endregion screens import
 
@@ -60,13 +63,6 @@ function TabPanel(props: TabPanelProps) {
       {value === index && <>{props.children}</>}
     </div>
   );
-}
-
-function a11yProps(index: number) {
-  return {
-    id: `app-tab-${index}`,
-    // 'aria-controls': `tab-${mode}`,
-  };
 }
 
 export default function App(props: { platform: TargetPlatform }) {
@@ -138,31 +134,26 @@ export default function App(props: { platform: TargetPlatform }) {
 
   function makeTabLayout(workspaceMode: WorkMode) {
     const tabLayout = getWorkmodeTabLayout(workspaceMode);
-    const handleTabChange = (event, index: number) => {
+    const handleTabChange = (index: number) => {
       const screen = tabLayout[index];
       updateFocusedScreen(screen);
       setTabIndex(index);
     };
 
+    const tabs_as_page_configs = tabLayout.map((screen, index) => {
+      const _ = get_page_config(screen);
+      return {
+        id: _.id,
+        name: _.title,
+      };
+    });
+
     const tabs = (
-      <Tabs
-        value={tabIndex}
-        variant="standard"
-        scrollButtons="off"
-        onChange={handleTabChange}
-        aria-label="primary tab"
-      >
-        {tabLayout.map((v, i) => {
-          return (
-            <Tab
-              key={v}
-              label={workScreenToName(v)}
-              {...a11yProps(i)}
-              style={{ textTransform: "capitalize" }}
-            />
-          );
-        })}
-      </Tabs>
+      <WorkmodeTabs
+        layout={tabs_as_page_configs}
+        tabIndex={tabIndex}
+        onSelect={handleTabChange}
+      />
     );
 
     const panels = (
@@ -223,7 +214,7 @@ export default function App(props: { platform: TargetPlatform }) {
                   <ExporterScreen />
                 </TabPanel>
               );
-            case WorkScreen.desing_button_maker:
+            case WorkScreen.tool_desing_button_maker:
               return (
                 <TabPanel key={i} value={tabIndex} index={i}>
                   <ButtonMakerScreen />

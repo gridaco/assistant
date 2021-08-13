@@ -13,7 +13,7 @@ export enum WorkScreen {
   dev = "dev",
   slot = "slot",
   exporter = "exporter",
-  desing_button_maker = "desing_button_maker",
+  tool_desing_button_maker = "tool_desing_button_maker",
   tool_font_replacer = "tool_font_replacer",
   tool_meta_editor = "tool_meta_editor",
   tool_batch_meta_editor = "tool_batch_meta_editor",

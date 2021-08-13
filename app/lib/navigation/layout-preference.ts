@@ -17,13 +17,13 @@ export function getWorkmodeTabLayout(workspaceMode: WorkMode): TabLayout {
       case WorkMode.design:
         return [WorkScreen.icon, WorkScreen.layout, WorkScreen.lint];
       case WorkMode.content:
-        return [WorkScreen.g11n, WorkScreen.lint, WorkScreen.exporter];
+        return [WorkScreen.g11n, WorkScreen.exporter];
       case WorkMode.settings:
         return [WorkScreen.about];
       case WorkMode.toolbox:
         return [
           WorkScreen.tool_font_replacer,
-          WorkScreen.desing_button_maker,
+          WorkScreen.tool_desing_button_maker,
           WorkScreen.tool_meta_editor,
           WorkScreen.tool_batch_meta_editor,
           WorkScreen.tool_data_mapper,
@@ -58,7 +58,7 @@ export function workScreenToName(appMode: WorkScreen): string {
       return "exporter";
     case WorkScreen.g11n:
       return "globalization";
-    case WorkScreen.desing_button_maker:
+    case WorkScreen.tool_desing_button_maker:
       return "button maker";
     case WorkScreen.tool_font_replacer:
       return "font replacer";
