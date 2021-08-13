@@ -40,16 +40,9 @@ export default function CodeBox(props: Props) {
     }
   }, []);
 
-  const onCopyClicked = (e) => {
-    copy(raw);
-    PluginSdk.notifyCopied();
-
-    // ANALYTICS
-    analytics.event_click_copy_code();
-  };
-
   const onQuickLookClicked = (e) => {
     const setLoadingState = (loading: boolean) => {
+      console.log(loading);
       setIsLaunchingConsole(loading);
     };
 
@@ -99,12 +92,14 @@ export default function CodeBox(props: Props) {
             {isLaunchingConsole ? "launching.." : "preview"}
           </PreviewButton>
         )}
-        <PreviewButton
+
+        {/* for develop */}
+        {/* <PreviewButton
           disabled={isLaunchingConsole}
           onClick={onQuickLookClicked}
         >
           {isLaunchingConsole ? "launching.." : "preview"}
-        </PreviewButton>
+        </PreviewButton> */}
       </CodeFooterCtaWrapper>
     </>
   );

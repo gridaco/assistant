@@ -17,11 +17,12 @@ import { CodeScreenControl } from "./code-screen-control";
 import { WorkScreen } from "../../states/app-state";
 import { Button } from "@material-ui/core";
 import styled from "@emotion/styled";
-
 import { make_empty_selection_state_text_content } from "./constants";
 import { ButtonStyle } from "../../components/style/global-style";
-import { UploadSteps } from "./upload-steps";
+import { UploadSteps } from "../../components/upload-steps";
 import { format } from "./formatter";
+import copy from "copy-to-clipboard";
+import { PluginSdk } from "../../utils/plugin-provider/plugin-app-sdk";
 
 type DesigntoCodeUserOptions = FrameworkOption;
 
@@ -30,8 +31,46 @@ export function CodeScreen() {
   const [useroption, setUseroption] = React.useState<DesigntoCodeUserOptions>(
     all_preset_options_map__prod.flutter_default
   );
-
   const [source, setSource] = useState<SourceInput>();
+
+  useEffect(() => {
+    window.addEventListener("message", onMessage);
+    return function cleaup() {
+      window.removeEventListener("message", onMessage);
+    };
+  }, [useroption.language]);
+
+  // post to code thread about target framework change
+  useEffect(() => {
+    /**
+     * region DIRTY CODE FIXME: !!!
+     */
+    // region get workscreen name (FOR PREV VER)
+    let _frameworknameforeventtransport: WorkScreen;
+    switch (useroption.framework) {
+      case Framework.flutter:
+        _frameworknameforeventtransport = WorkScreen.code_flutter;
+        break;
+      case Framework.react:
+        _frameworknameforeventtransport = WorkScreen.code_react;
+        break;
+    }
+
+    // endregion get workscreen name
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: EK_SET_APP_MODE,
+          // TODO: provide other options INCLUDING framework info, currently we only provide framework info for last version compatibility.
+          data: _frameworknameforeventtransport,
+        },
+      },
+      "*"
+    );
+    /**
+     * endregion DIRTY CODE FIXME: !!!
+     */
+  }, [useroption.framework]);
 
   const _make_placeholder = () => {
     return make_empty_selection_state_text_content({
@@ -106,54 +145,26 @@ export function CodeScreen() {
     }
   };
 
-  useEffect(() => {
-    window.addEventListener("message", onMessage);
-    return function cleaup() {
-      window.removeEventListener("message", onMessage);
-    };
-  }, [useroption.language]);
+  const onCopyClicked = (e) => {
+    const _code: SourceInput = _make_source();
+    const raw = typeof _code == "string" ? _code : _code.raw;
+    copy(raw);
+    PluginSdk.notifyCopied();
 
-  // post to code thread about target framework change
-  useEffect(() => {
-    /**
-     * region DIRTY CODE FIXME: !!!
-     */
-    // region get workscreen name (FOR PREV VER)
-    let _frameworknameforeventtransport: WorkScreen;
-    switch (useroption.framework) {
-      case Framework.flutter:
-        _frameworknameforeventtransport = WorkScreen.code_flutter;
-        break;
-      case Framework.react:
-        _frameworknameforeventtransport = WorkScreen.code_react;
-        break;
-    }
-
-    // endregion get workscreen name
-    parent.postMessage(
-      {
-        pluginMessage: {
-          type: EK_SET_APP_MODE,
-          // TODO: provide other options INCLUDING framework info, currently we only provide framework info for last version compatibility.
-          data: _frameworknameforeventtransport,
-        },
-      },
-      "*"
-    );
-    /**
-     * endregion DIRTY CODE FIXME: !!!
-     */
-  }, [useroption.framework]);
+    // ANALYTICS
+    analytics.event_click_copy_code();
+  };
 
   const onOptionChange = (op: DesigntoCodeUserOptions) => {
     setUseroption(op);
   };
+
   return (
     <div>
       <Preview auto />
 
       {/* FIXME: add onCopyClicked to code-box */}
-      <CopyCodeButton>
+      <CopyCodeButton onClick={onCopyClicked}>
         <svg
           width="19"
           height="22"
