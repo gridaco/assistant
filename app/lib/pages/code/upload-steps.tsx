@@ -2,7 +2,6 @@ import React from "react";
 import styled from "@emotion/styled";
 import {
   BlackButton,
-  ButtonStyle,
   TransparencyButton,
 } from "../../components/style/global-style";
 import { Button } from "@material-ui/core";
@@ -19,9 +18,16 @@ const step = [
   "running tests",
 ];
 
-const variants = {
+const fieldVariants = {
   "make-active": {
     transition: { staggerChildren: 0.8, delayChildren: 1 },
+  },
+};
+
+const itemVariants = {
+  "make-active": {
+    color: "#8B8B8B",
+    transition: { ease: "easeIn", duration: 0.2 },
   },
 };
 
@@ -36,18 +42,20 @@ export function UploadSteps() {
             <br />
             “button”
           </Title>
-          <StepsWrapper variants={variants} animate="make-active">
+          <StepsWrapper variants={fieldVariants} animate="make-active">
             {step.map((item, i) => (
-              <Field key={`Upload-Step-${item}-${i}`}>
-                <Icon></Icon>
-                <Item>{item}</Item>
+              <Field key={`Upload-Step-${item}-${i}`} variants={itemVariants}>
+                <Icon />
+                <Item variants={itemVariants} initial={{ color: "#C1C1C1" }}>
+                  {item}
+                </Item>
               </Field>
             ))}
           </StepsWrapper>
         </Loading>
         <Finish>
           <Field>
-            <Icon></Icon>
+            <Icon></Icon>``
             <Title>Your design is ready</Title>
           </Field>
           <Item>
@@ -93,7 +101,7 @@ const StepsWrapper = styled(motion.div)`
   margin-top: 16px;
 `;
 
-const Field = styled.div`
+const Field = styled(motion.div)`
   display: flex;
   margin-bottom: 9px;
 
@@ -108,12 +116,12 @@ const Icon = styled(AnimatedCheckIcon)`
   margin-right: 9px;
 `;
 
-const Item = styled.h5`
+const Item = styled(motion.h5)`
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
   line-height: 19px;
-  color: #8b8b8b;
+
   margin: 0;
   vertical-align: middle;
 `;
