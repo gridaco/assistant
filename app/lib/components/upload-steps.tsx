@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { BlackButton, TransparencyButton } from "./style/global-style";
 import { Button } from "@material-ui/core";
 import { ProgressBar } from "./animation/progress-bar";
 import { AnimatedCheckIcon } from "./animation/animated-check-icon";
 import { motion } from "framer-motion";
+import { Preview } from ".";
 
 const step = [
   "converting design to universal format",
@@ -14,6 +15,17 @@ const step = [
   "making builds (flutter, react, ..)",
   "running tests",
 ];
+
+const loadingVariants = {
+  "make-active": {
+    // display: "none",
+    // opacity: 1,
+    // transitionEnd: {
+    //   display: "none",
+    // },
+    transition: { duration: 1 },
+  },
+};
 
 const fieldVariants = {
   "make-active": {
@@ -28,48 +40,72 @@ const itemVariants = {
   },
 };
 
+const finishVariants = {
+  "make-active": {
+    display: "none",
+    transition: { display: "block" },
+  },
+};
+
 export function UploadSteps() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    console.log(isLoading);
+  }, [isLoading]);
   return (
     <>
-      <ProgressBar />
-      <InnerWrapper>
-        <Loading>
-          <Title>
-            Uploading your design
-            <br />
-            “button”
-          </Title>
-          <StepsWrapper variants={fieldVariants} animate="make-active">
-            {step.map((item, i) => (
-              <Field key={`Upload-Step-${item}-${i}`} variants={itemVariants}>
-                <Icon />
-                <Item variants={itemVariants} initial={{ color: "#C1C1C1" }}>
-                  {item}
-                </Item>
+      <Preview auto />
+      <InnerWrapper variants={fieldVariants} animate="make-active">
+        {isLoading ? (
+          <Loading variants={loadingVariants} animate="make-active">
+            <ProgressBar />
+            <Title>
+              Uploading your design
+              <br />
+              “button”
+            </Title>
+            <StepsWrapper
+              variants={fieldVariants}
+              animate="make-active"
+              onTransitionEnd={() => {
+                setIsLoading(!isLoading);
+              }}
+            >
+              {step.map((item, i) => (
+                <Field key={`Upload-Step-${item}-${i}`} variants={itemVariants}>
+                  <Icon />
+                  <Item variants={itemVariants} initial={{ color: "#C1C1C1" }}>
+                    {item}
+                  </Item>
+                </Field>
+              ))}
+            </StepsWrapper>
+          </Loading>
+        ) : (
+          <>
+            <Finish variants={finishVariants} initial={{ display: "none" }}>
+              <Field>
+                <Icon></Icon>
+                <Title>Your design is ready</Title>
               </Field>
-            ))}
-          </StepsWrapper>
-        </Loading>
-        <Finish>
-          <Field>
-            <Icon></Icon>
-            <Title>Your design is ready</Title>
-          </Field>
-          <Item>
-            You can start using this component in your existing project
-            immideitly.
-          </Item>
-          <FooterButtonWrapper>
-            <CheckButton>Check it out</CheckButton>
-            <UncheckButton>do it later</UncheckButton>
-          </FooterButtonWrapper>
-        </Finish>
+              <Item>
+                You can start using this component in your existing project
+                immideitly.
+              </Item>
+              <FooterButtonWrapper>
+                <CheckButton>Check it out</CheckButton>
+                <UncheckButton>do it later</UncheckButton>
+              </FooterButtonWrapper>
+            </Finish>
+          </>
+        )}
       </InnerWrapper>
     </>
   );
 }
 
-const InnerWrapper = styled.div`
+const InnerWrapper = styled(motion.div)`
   padding: 12px;
   padding-top: 72px;
 
@@ -77,12 +113,12 @@ const InnerWrapper = styled.div`
   /* display: none; */
 `;
 
-const Loading = styled.div`
+const Loading = styled(motion.div)`
   /* display: none; */
 `;
 
-const Finish = styled.div`
-  display: none;
+const Finish = styled(motion.div)`
+  /* display: none; */
 `;
 
 const Title = styled.h1`

@@ -5,16 +5,9 @@ import {
   Language,
   Prism,
 } from "prism-react-renderer";
-import copy from "copy-to-clipboard";
-import { assistant as analytics } from "@analytics.bridged.xyz/internal";
-
 // import Prism from "prism-react-renderer/prism";
-import { quickLook } from "../quicklook";
-import { PluginSdk } from "../utils/plugin-provider/plugin-app-sdk";
 import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { Button } from "@material-ui/core";
-import { BlackButton, ButtonStyle, WhtieButton } from "./style/global-style";
 
 export type SourceInput = string | { raw: string };
 

@@ -34,6 +34,7 @@ import { ExporterScreen } from "../pages/tool-box/exporter";
 import { DataMapperScreen } from "../pages/tool-box/data-mapper/data-mapper-screen";
 import { TargetPlatform } from "../utils/plugin-init/init-target-platform";
 import { AboutScreen } from "../pages/about";
+import { UploadSteps } from "../components/upload-steps";
 
 // endregion screens import
 
@@ -143,6 +144,8 @@ export default function App(props: { platform: TargetPlatform }) {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
+  const [isUploading, setIsUploading] = React.useState<boolean>(false);
+
   const handleOpenWorkspaceModeChangeClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -168,6 +171,10 @@ export default function App(props: { platform: TargetPlatform }) {
     // explicitly triggering the event.
     const newTabLayout = getWorkspaceTabLayout(selected);
     updateFocusedScreen(newTabLayout[0]);
+  };
+
+  const handleIsUploading = () => {
+    setIsUploading(!isUploading);
   };
 
   const updateFocusedScreen = (screen: WorkScreen) => {
@@ -228,7 +235,7 @@ export default function App(props: { platform: TargetPlatform }) {
             case WorkScreen.code:
               return (
                 <TabPanel key={i} value={tabIndex} index={i}>
-                  <CodeScreen />
+                  <CodeScreen handleIsUploading={handleIsUploading} />
                 </TabPanel>
               );
             case WorkScreen.component:
@@ -379,8 +386,14 @@ export default function App(props: { platform: TargetPlatform }) {
   return (
     <PluginApp platform={props.platform}>
       <BrowserRouter>
-        {workspaceModeSelectLayout}
-        {screenLayout}
+        {isUploading ? (
+          <UploadSteps />
+        ) : (
+          <>
+            {workspaceModeSelectLayout}
+            {screenLayout}
+          </>
+        )}
       </BrowserRouter>
     </PluginApp>
   );

@@ -26,8 +26,11 @@ import { PluginSdk } from "../../utils/plugin-provider/plugin-app-sdk";
 import { CodeScreenFooter } from "./code-screen-footer";
 
 type DesigntoCodeUserOptions = FrameworkOption;
+interface ICodeScreen {
+  handleIsUploading: () => void;
+}
 
-export function CodeScreen() {
+export function CodeScreen(props: ICodeScreen) {
   const [app, setApp] = useState<string>();
   const [useroption, setUseroption] = React.useState<DesigntoCodeUserOptions>(
     all_preset_options_map__prod.flutter_default
@@ -192,7 +195,7 @@ export function CodeScreen() {
         />
       </CodeWrapper>
 
-      <CodeScreenFooter app={app} />
+      <CodeScreenFooter app={app} handleIsUploading={props.handleIsUploading} />
       {/* <UploadSteps /> */}
     </div>
   );

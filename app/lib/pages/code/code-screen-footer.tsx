@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { Button } from "@material-ui/core";
-import {
-  BlackButton,
-  ButtonStyle,
-  WhtieButton,
-} from "../../components/style/global-style";
+import { BlackButton, WhtieButton } from "../../components/style/global-style";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import { PluginSdk } from "../../utils/plugin-provider/plugin-app-sdk";
 import { quickLook } from "../../quicklook";
 
 interface ICodeScreenFooter {
   app?: any;
+  handleIsUploading: () => void;
 }
 
 export function CodeScreenFooter(props: ICodeScreenFooter) {
   const [isLaunchingConsole, setIsLaunchingConsole] = useState<boolean>(false);
+
+  const onLoading = () => {};
 
   const onQuickLookClicked = (e) => {
     const setLoadingState = (loading: boolean) => {
@@ -42,7 +41,7 @@ export function CodeScreenFooter(props: ICodeScreenFooter) {
       {/* copy feature should be inside the code viewer box with copy icon button.*/}
       {/* <CopyCodeButton onClick={onCopyClicked}>copy code</CopyCodeButton> */}
 
-      <NextStepButton onClick={onQuickLookClicked}>next</NextStepButton>
+      <NextStepButton onClick={props.handleIsUploading}>next</NextStepButton>
       {props.app && (
         <PreviewButton
           disabled={isLaunchingConsole}
