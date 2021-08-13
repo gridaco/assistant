@@ -10,14 +10,9 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
 import { EK_SET_APP_MODE } from "../constants/ek.constant";
-import {
-  getWorkspaceTabLayout,
-  WorkScreen,
-  WorkspaceMode,
-} from "../states/app-state";
 import { PluginApp } from "../utils/plugin-provider/pugin-app";
 import BatchMetaEditor from "../pages/tool-box/batch-meta-editor";
-import { Switch, Route, Link, BrowserRouter, Redirect } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
 // region screens import
 import { FontReplacerScreen } from "../pages/tool-box/font-replacer";
@@ -35,6 +30,13 @@ import { DataMapperScreen } from "../pages/tool-box/data-mapper/data-mapper-scre
 import { TargetPlatform } from "../utils/plugin-init/init-target-platform";
 import { AboutScreen } from "../pages/about";
 import { UploadSteps } from "../components/upload-steps";
+import {
+  getWorkmodeTabLayout,
+  WorkMode,
+  WorkScreen,
+  workScreenToName,
+  worspaceModeToName,
+} from "../navigation";
 
 // endregion screens import
 
@@ -67,62 +69,6 @@ function a11yProps(index: number) {
   };
 }
 
-function workScreenToName(appMode: WorkScreen): string {
-  switch (appMode) {
-    case WorkScreen.about:
-      return "about";
-    case WorkScreen.code:
-      return "code";
-    case WorkScreen.code_flutter:
-      return "flutter";
-    case WorkScreen.code_react:
-      return "react";
-    case WorkScreen.component:
-      return "component";
-    case WorkScreen.layout:
-      return "layout";
-    case WorkScreen.dev:
-      return "tools";
-    case WorkScreen.icon:
-      return "icon";
-    case WorkScreen.lint:
-      return "lint";
-    case WorkScreen.exporter:
-      return "exporter";
-    case WorkScreen.g11n:
-      return "globalization";
-    case WorkScreen.desing_button_maker:
-      return "button maker";
-    case WorkScreen.tool_font_replacer:
-      return "font replacer";
-    case WorkScreen.tool_meta_editor:
-      return "meta datas";
-    case WorkScreen.tool_batch_meta_editor:
-      return "batch meta data";
-    case WorkScreen.tool_data_mapper:
-      return "data mapper";
-  }
-  console.warn(`name not found for ${appMode}`);
-  return "N/A";
-}
-
-function worspaceModeToName(workspaceMode: WorkspaceMode): string {
-  switch (workspaceMode) {
-    case WorkspaceMode.code:
-      return "CODE";
-    case WorkspaceMode.design:
-      return "DESIGN";
-    case WorkspaceMode.content:
-      return "CONTENT";
-    case WorkspaceMode.settings:
-      return "ABOUT"; // change to settings after other features are implemented.
-    case WorkspaceMode.toolbox:
-      return "TOOLS";
-  }
-  console.warn(`no name found for workspace mode ${workspaceMode}`);
-  return "N/A";
-}
-
 export default function App(props: { platform: TargetPlatform }) {
   React.useEffect(() => {
     // todo - dynamicallt change initial focused screen. (currently inital setup is not implemented. - initial setup is done by below line.)
@@ -137,8 +83,8 @@ export default function App(props: { platform: TargetPlatform }) {
     // endregion init GA
   }, []);
 
-  const [workspaceMode, setWorkspaceMode] = React.useState<WorkspaceMode>(
-    WorkspaceMode.code
+  const [workspaceMode, setWorkspaceMode] = React.useState<WorkMode>(
+    WorkMode.code
   );
   const [tabIndex, setTabIndex] = React.useState<number>(0);
 
@@ -146,18 +92,15 @@ export default function App(props: { platform: TargetPlatform }) {
 
   const [isUploading, setIsUploading] = React.useState<boolean>(false);
 
-  const handleOpenWorkspaceModeChangeClick = (event) => {
+  const handleOpenWorkModeChangeClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleWorkspaceModeSelect = (e) => {
     setAnchorEl(null);
 
-    console.log(
-      "workspace mode menu clicked e:",
-      e.target.value as WorkspaceMode
-    );
-    let selected: WorkspaceMode = e.target.value;
+    console.log("workspace mode menu clicked e:", e.target.value as WorkMode);
+    let selected: WorkMode = e.target.value;
     console.log("newly selected workspace mode is:", selected);
 
     // when outside of menu is clicked, value is undefined -- so as the selected will be.
@@ -169,7 +112,7 @@ export default function App(props: { platform: TargetPlatform }) {
 
     // when workspace mode is updated, by default the first index 0 tab will be selected without select event.
     // explicitly triggering the event.
-    const newTabLayout = getWorkspaceTabLayout(selected);
+    const newTabLayout = getWorkmodeTabLayout(selected);
     updateFocusedScreen(newTabLayout[0]);
   };
 
@@ -193,8 +136,8 @@ export default function App(props: { platform: TargetPlatform }) {
     );
   };
 
-  function makeTabLayout(workspaceMode: WorkspaceMode) {
-    const tabLayout = getWorkspaceTabLayout(workspaceMode);
+  function makeTabLayout(workspaceMode: WorkMode) {
+    const tabLayout = getWorkmodeTabLayout(workspaceMode);
     const handleTabChange = (event, index: number) => {
       const screen = tabLayout[index];
       updateFocusedScreen(screen);
@@ -333,7 +276,7 @@ export default function App(props: { platform: TargetPlatform }) {
           endIcon={<KeyboardArrowDown />}
           aria-controls="workspace-mode"
           aria-haspopup="true"
-          onClick={handleOpenWorkspaceModeChangeClick}
+          onClick={handleOpenWorkModeChangeClick}
         >
           {worspaceModeToName(workspaceMode)}
         </Button>
@@ -345,33 +288,27 @@ export default function App(props: { platform: TargetPlatform }) {
           onClose={handleWorkspaceModeSelect}
           style={{ fontWeight: "bold" }}
         >
-          <MenuItem
-            onClick={handleWorkspaceModeSelect}
-            value={WorkspaceMode.code}
-          >
+          <MenuItem onClick={handleWorkspaceModeSelect} value={WorkMode.code}>
             CODE
           </MenuItem>
-          <MenuItem
-            onClick={handleWorkspaceModeSelect}
-            value={WorkspaceMode.design}
-          >
+          <MenuItem onClick={handleWorkspaceModeSelect} value={WorkMode.design}>
             DESIGN
           </MenuItem>
           <MenuItem
             onClick={handleWorkspaceModeSelect}
-            value={WorkspaceMode.content}
+            value={WorkMode.content}
           >
             CONTENT
           </MenuItem>
           <MenuItem
             onClick={handleWorkspaceModeSelect}
-            value={WorkspaceMode.toolbox}
+            value={WorkMode.toolbox}
           >
             TOOLS
           </MenuItem>
           <MenuItem
             onClick={handleWorkspaceModeSelect}
-            value={WorkspaceMode.settings}
+            value={WorkMode.settings}
           >
             ABOUT
           </MenuItem>
