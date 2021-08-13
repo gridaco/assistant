@@ -1,12 +1,9 @@
 import React from "react";
 import styled from "@emotion/styled";
-import {
-  BlackButton,
-  TransparencyButton,
-} from "../../components/style/global-style";
+import { BlackButton, TransparencyButton } from "./style/global-style";
 import { Button } from "@material-ui/core";
-import { ProgressBar } from "../../components/animation/progress-bar";
-import { AnimatedCheckIcon } from "../../components/animation/animated-check-icon";
+import { ProgressBar } from "./animation/progress-bar";
+import { AnimatedCheckIcon } from "./animation/animated-check-icon";
 import { motion } from "framer-motion";
 
 const step = [
@@ -55,7 +52,7 @@ export function UploadSteps() {
         </Loading>
         <Finish>
           <Field>
-            <Icon></Icon>``
+            <Icon></Icon>
             <Title>Your design is ready</Title>
           </Field>
           <Item>
