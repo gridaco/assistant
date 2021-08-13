@@ -6,6 +6,8 @@ import {
   TransparencyButton,
 } from "../../components/style/global-style";
 import { Button } from "@material-ui/core";
+import { ProgressBar } from "../../components/animation/progress-bar";
+import { AnimatedCheckIcon } from "../../components/animation/animated-check-icon";
 import { motion } from "framer-motion";
 
 const step = [
@@ -17,56 +19,66 @@ const step = [
   "running tests",
 ];
 
+const variants = {
+  "make-active": {
+    transition: { staggerChildren: 0.8, delayChildren: 1 },
+  },
+};
+
 export function UploadSteps() {
   return (
-    <Wrapper>
-      <Loading>
-        <Title>
-          Uploading your design
-          <br />
-          “button”
-        </Title>
-        <StepsWrapper>
-          {step.map((s) => (
-            <Field>
-              <Icon></Icon>
-              <Item>{s}</Item>
-            </Field>
-          ))}
-        </StepsWrapper>
-      </Loading>
-      <Finish>
-        <motion.path d="M 0, 20 a 20, 20 0 1,0 40,0 a 20, 20 0 1,0 -40,0" />
-        <Field>
-          <Icon></Icon>
-          <Title>Your design is ready</Title>
-        </Field>
-        <Item>
-          You can start using this component in your existing project
-          immideitly.
-        </Item>
-        <FooterButtonWrapper>
-          <CheckButton>Check it out</CheckButton>
-          <UncheckButton>do it later</UncheckButton>
-        </FooterButtonWrapper>
-      </Finish>
-    </Wrapper>
+    <>
+      <ProgressBar />
+      <InnerWrapper>
+        <Loading>
+          <Title>
+            Uploading your design
+            <br />
+            “button”
+          </Title>
+          <StepsWrapper variants={variants} animate="make-active">
+            {step.map((item, i) => (
+              <Field key={`Upload-Step-${item}-${i}`}>
+                <Icon></Icon>
+                <Item>{item}</Item>
+              </Field>
+            ))}
+          </StepsWrapper>
+        </Loading>
+        <Finish>
+          <Field>
+            <Icon></Icon>
+            <Title>Your design is ready</Title>
+          </Field>
+          <Item>
+            You can start using this component in your existing project
+            immideitly.
+          </Item>
+          <FooterButtonWrapper>
+            <CheckButton>Check it out</CheckButton>
+            <UncheckButton>do it later</UncheckButton>
+          </FooterButtonWrapper>
+        </Finish>
+      </InnerWrapper>
+    </>
   );
 }
 
-const Wrapper = styled.div`
+const InnerWrapper = styled.div`
   padding: 12px;
-  padding-top: 80px;
+  padding-top: 72px;
 
   // TODO: contorl stateus!
   /* display: none; */
 `;
 
 const Loading = styled.div`
-  display: none;
+  /* display: none; */
 `;
 
-const Finish = styled.div``;
+const Finish = styled.div`
+  display: none;
+`;
 
 const Title = styled.h1`
   font-style: normal;
@@ -77,7 +89,7 @@ const Title = styled.h1`
   margin: 0;
 `;
 
-const StepsWrapper = styled.div`
+const StepsWrapper = styled(motion.div)`
   margin-top: 16px;
 `;
 
@@ -89,11 +101,10 @@ const Field = styled.div`
     margin-bottom: 0;
   }
 `;
-const Icon = styled.div`
-  width: 16px;
+const Icon = styled(AnimatedCheckIcon)`
+  /* width: 16px;
   height: 16px;
-  line-height: 19px;
-  background: wheat;
+  line-height: 19px; */
   margin-right: 9px;
 `;
 
