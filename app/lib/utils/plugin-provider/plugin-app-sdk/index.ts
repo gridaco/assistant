@@ -23,7 +23,7 @@ import { NotifyRequest } from "../interfaces/notify/notify.requests";
 import { DragAndDropOnCanvasRequest } from "../interfaces/dragdrop/dragdrop.requests";
 import type { ReflectSceneNode } from "@design-sdk/core/nodes";
 import { reqid } from "../_id";
-import { ASSISTANT_PLUGIN_NAMESPACE } from "../../../constants";
+import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "../../../constants";
 
 export class PluginSdk {
   static window: Window;
@@ -86,7 +86,7 @@ export class PluginSdk {
     return this.fetchMetadata<T>({
       id: on,
       key: key,
-      namespace: ASSISTANT_PLUGIN_NAMESPACE,
+      namespace: ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE,
     });
   }
 
