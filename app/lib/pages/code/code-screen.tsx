@@ -23,6 +23,7 @@ import { UploadSteps } from "../../components/upload-steps";
 import { format } from "./formatter";
 import copy from "copy-to-clipboard";
 import { PluginSdk } from "../../utils/plugin-provider/plugin-app-sdk";
+import { CodeScreenFooter } from "./code-screen-footer";
 
 type DesigntoCodeUserOptions = FrameworkOption;
 
@@ -190,6 +191,8 @@ export function CodeScreen() {
           code={_make_source()}
         />
       </CodeWrapper>
+
+      <CodeScreenFooter app={app} />
       {/* <UploadSteps /> */}
     </div>
   );
@@ -220,7 +223,11 @@ const CopyCodeButton = styled.div`
   margin-right: 20px;
   cursor: pointer;
 `;
+
 const CodeWrapper = styled.div`
-  // FIXME: remove
-  /* display: none; */
+  /* width: 100%; */
+  /* height: 408px; */
+  background: rgb(42, 39, 52);
+  margin: 0 -8px;
+  overflow-y: scroll;
 `;
