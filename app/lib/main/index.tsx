@@ -1,6 +1,6 @@
 import * as React from "react";
-import { initialize } from "../analytics";
 import "../app.css";
+import { initialize } from "../analytics";
 
 // UI COMPS
 import Button from "@material-ui/core/Button";
@@ -12,6 +12,7 @@ import { PluginApp } from "../utils/plugin-provider/pugin-app";
 import BatchMetaEditor from "../pages/tool-box/batch-meta-editor";
 import { BrowserRouter } from "react-router-dom";
 
+//
 // region screens import
 import { FontReplacerScreen } from "../pages/tool-box/font-replacer";
 import { ButtonMakerScreen } from "../pages/design/button-maker-screen";
@@ -28,6 +29,9 @@ import { DataMapperScreen } from "../pages/tool-box/data-mapper/data-mapper-scre
 import { TargetPlatform } from "../utils/plugin-init/init-target-platform";
 import { AboutScreen } from "../pages/about";
 import { UploadSteps } from "../components/upload-steps";
+// endregion screens import
+//
+
 import {
   getWorkmodeTabLayout,
   get_page_config,
@@ -37,8 +41,6 @@ import {
 } from "../navigation";
 
 import { WorkmodeTabs } from "../components/navigation";
-
-// endregion screens import
 
 /** The container of tab content */
 function TabPanel(props: {
@@ -117,6 +119,39 @@ function WorkmodeSelect(props: {
   );
 }
 
+function Screen(props: { screen: WorkScreen }) {
+  switch (props.screen) {
+    case WorkScreen.about:
+      return <AboutScreen />;
+    case WorkScreen.code:
+      return <CodeScreen />;
+    case WorkScreen.component:
+      return <ComponentViewScreen />;
+    case WorkScreen.layout:
+      return <LayoutViewScreen />;
+    case WorkScreen.icon:
+      return <IconsScreen />;
+    case WorkScreen.lint:
+      return <LintScreen />;
+    case WorkScreen.dev:
+      return <ToolboxScreen />;
+    case WorkScreen.g11n:
+      return <GlobalizationScreen />;
+    case WorkScreen.exporter:
+      return <ExporterScreen />;
+    case WorkScreen.tool_desing_button_maker:
+      return <ButtonMakerScreen />;
+    case WorkScreen.tool_font_replacer:
+      return <FontReplacerScreen />;
+    case WorkScreen.tool_meta_editor:
+      return <MetaEditorScreen />;
+    case WorkScreen.tool_batch_meta_editor:
+      return <BatchMetaEditor />;
+    case WorkScreen.tool_data_mapper:
+      return <DataMapperScreen />;
+  }
+}
+
 export default function App(props: { platform: TargetPlatform }) {
   React.useEffect(() => {
     // todo - dynamicallt change initial focused screen. (currently inital setup is not implemented. - initial setup is done by below line.)
@@ -135,12 +170,6 @@ export default function App(props: { platform: TargetPlatform }) {
     WorkMode.code
   );
   const [tabIndex, setTabIndex] = React.useState<number>(0);
-
-  const [isUploading, setIsUploading] = React.useState<boolean>(false);
-
-  const handleIsUploading = () => {
-    setIsUploading(!isUploading);
-  };
 
   const updateFocusedScreen = (screen: WorkScreen) => {
     // notify code.ts that app mode has set.
@@ -174,114 +203,21 @@ export default function App(props: { platform: TargetPlatform }) {
       };
     });
 
-    const tabs = (
-      <WorkmodeTabs
-        layout={tabs_as_page_configs}
-        tabIndex={tabIndex}
-        onSelect={handleTabChange}
-      />
-    );
-
-    const panels = (
-      <>
-        {tabLayout.map((v, i) => {
-          switch (v) {
-            case WorkScreen.about:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <AboutScreen />
-                </TabPanel>
-              );
-            case WorkScreen.code:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <CodeScreen handleIsUploading={handleIsUploading} />
-                </TabPanel>
-              );
-            case WorkScreen.component:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <ComponentViewScreen />
-                </TabPanel>
-              );
-            case WorkScreen.layout:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <LayoutViewScreen />
-                </TabPanel>
-              );
-            case WorkScreen.icon:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <IconsScreen />
-                </TabPanel>
-              );
-            case WorkScreen.lint:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <LintScreen />
-                </TabPanel>
-              );
-            case WorkScreen.dev:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <ToolboxScreen />
-                </TabPanel>
-              );
-            case WorkScreen.g11n:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <GlobalizationScreen />
-                </TabPanel>
-              );
-            case WorkScreen.exporter:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <ExporterScreen />
-                </TabPanel>
-              );
-            case WorkScreen.tool_desing_button_maker:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <ButtonMakerScreen />
-                </TabPanel>
-              );
-            case WorkScreen.tool_font_replacer:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <FontReplacerScreen />
-                </TabPanel>
-              );
-            case WorkScreen.tool_meta_editor:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <MetaEditorScreen />
-                </TabPanel>
-              );
-            case WorkScreen.tool_batch_meta_editor:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <BatchMetaEditor />
-                </TabPanel>
-              );
-            case WorkScreen.tool_data_mapper:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <DataMapperScreen />
-                </TabPanel>
-              );
-          }
-        })}
-      </>
-    );
-
     return (
       <div className="outer-ui">
         <div className="tabs-wrapper" style={{ margin: "0 -8px" }}>
-          {tabs}
+          <WorkmodeTabs
+            layout={tabs_as_page_configs}
+            tabIndex={tabIndex}
+            onSelect={handleTabChange}
+          />
         </div>
 
-        {panels}
+        {tabLayout.map((v, i) => {
+          <TabPanel key={i} value={tabIndex} index={i}>
+            <Screen screen={v} />
+          </TabPanel>;
+        })}
       </div>
     );
   }
@@ -303,14 +239,10 @@ export default function App(props: { platform: TargetPlatform }) {
   return (
     <PluginApp platform={props.platform}>
       <BrowserRouter>
-        {isUploading ? (
-          <UploadSteps />
-        ) : (
-          <>
-            {workspaceModeSelectLayout}
-            {screenLayout}
-          </>
-        )}
+        <>
+          {workspaceModeSelectLayout}
+          {screenLayout}
+        </>
       </BrowserRouter>
     </PluginApp>
   );
