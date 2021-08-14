@@ -23,9 +23,7 @@ import { WorkScreen } from "../../navigation";
 import { CodeScreenControl } from "./code-screen-control";
 
 type DesigntoCodeUserOptions = FrameworkOption;
-interface ICodeScreen {
-  handleIsUploading: () => void;
-}
+interface ICodeScreen {}
 
 export function CodeScreen(props: ICodeScreen) {
   const [app, setApp] = useState<string>();
@@ -192,7 +190,7 @@ export function CodeScreen(props: ICodeScreen) {
         />
       </CodeWrapper>
 
-      <CodeScreenFooter app={app} handleIsUploading={props.handleIsUploading} />
+      <CodeScreenFooter app={app} />
       {/* <UploadSteps /> */}
     </div>
   );
