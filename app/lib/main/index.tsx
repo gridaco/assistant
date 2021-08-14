@@ -37,9 +37,13 @@ import {
   WorkMode,
   WorkScreen,
   worspaceModeToName,
+  PrimaryWorkmodeSet,
 } from "../navigation";
 
-import { WorkmodeTabs } from "../components/navigation";
+import {
+  WorkmodeScreenTabs,
+  PrimaryWorkmodeSelect,
+} from "../components/navigation";
 
 /** The container of tab content */
 function TabPanel(props: {
@@ -174,7 +178,7 @@ function TabsLayout(props: {
   return (
     <div className="outer-ui">
       <div className="tabs-wrapper" style={{ margin: "0 -8px" }}>
-        <WorkmodeTabs
+        <WorkmodeScreenTabs
           layout={tabs_as_page_configs}
           tabIndex={tabIndex}
           onSelect={handleTabChange}
@@ -191,25 +195,39 @@ function TabsLayout(props: {
 }
 
 function TabNavigationApp() {
-  const [workspaceMode, setWorkspaceMode] = React.useState<WorkMode>(
-    WorkMode.code
-  );
+  const [workmode, setWorkmode] = React.useState<WorkMode>(WorkMode.code);
+  const [workmodeSet, setWorkmodeSet] = React.useState<PrimaryWorkmodeSet>({
+    first: WorkMode.code,
+    second: WorkMode.design,
+  });
+
+  const on_workmode_select = (workmode: WorkMode) => {
+    setWorkmode(workmode);
+  };
+
   const [tabIndex, setTabIndex] = React.useState<number>(0);
 
   return (
     <>
-      <WorkmodeSelect
-        current={workspaceMode}
+      <PrimaryWorkmodeSelect
+        selection={workmode}
+        set={workmodeSet}
+        onSelect={on_workmode_select}
+      />
+
+      {/* LEGACY */}
+      {/* <WorkmodeSelect
+        current={workmode}
         onSelect={(selected) => {
           // when workspace mode is updated, by default the first index 0 tab will be selected without select event.
           // explicitly triggering the event.
-          setWorkspaceMode(selected);
+          setWorkmode(selected);
           const newTabLayout = getWorkmodeTabLayout(selected);
           _update_focused_screen_ev(newTabLayout[0]);
         }}
-      />
+      /> */}
       <TabsLayout
-        workmode={workspaceMode}
+        workmode={workmode}
         tabIndex={tabIndex}
         onChange={(index, screen) => {
           _update_focused_screen_ev(screen);

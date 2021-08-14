@@ -9,7 +9,7 @@ function a11yProps(index: number) {
   };
 }
 
-export function WorkmodeTabs(props: {
+export function WorkmodeScreenTabs(props: {
   layout: {
     id: string;
     name: string;

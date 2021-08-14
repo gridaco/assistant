@@ -38,14 +38,14 @@ function WorkmodeButton(props: {
   // TODO: add hover style support
   return (
     <>
-      <h6
+      <h3
         onClick={props.onClick}
         style={{
           color: props.active ? "black" : "gray",
         }}
       >
         {props.name}
-      </h6>
+      </h3>
     </>
   );
 }
