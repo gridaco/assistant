@@ -3,8 +3,6 @@ import { initialize } from "../analytics";
 import "../app.css";
 
 // UI COMPS
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
 import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
@@ -35,7 +33,6 @@ import {
   get_page_config,
   WorkMode,
   WorkScreen,
-  workScreenToName,
   worspaceModeToName,
 } from "../navigation";
 
@@ -43,13 +40,12 @@ import { WorkmodeTabs } from "../components/navigation";
 
 // endregion screens import
 
-interface TabPanelProps {
+/** The container of tab content */
+function TabPanel(props: {
   children?: React.ReactNode;
   index: number;
   value: number;
-}
-
-function TabPanel(props: TabPanelProps) {
+}) {
   const { children, value, index, ...other } = props;
 
   return (
@@ -61,6 +57,62 @@ function TabPanel(props: TabPanelProps) {
       {...other}
     >
       {value === index && <>{props.children}</>}
+    </div>
+  );
+}
+
+function WorkmodeSelect(props: {
+  current: WorkMode;
+  onSelect: (value: WorkMode) => void;
+}) {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleOpenWorkModeChangeClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleWorkspaceModeSelect = (e) => {
+    setAnchorEl(null);
+
+    // when outside of menu is clicked, value is undefined -- so as the selected will be.
+    let selected: WorkMode = e.target.value ?? props.current;
+    // console.log("newly selected workspace mode is:", selected);
+
+    props.onSelect(selected);
+  };
+
+  return (
+    <div>
+      <Button
+        endIcon={<KeyboardArrowDown />}
+        aria-controls="workspace-mode"
+        aria-haspopup="true"
+        onClick={handleOpenWorkModeChangeClick}
+      >
+        {worspaceModeToName(props.current)}
+      </Button>
+      <Menu
+        id="workspace-mode"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleWorkspaceModeSelect}
+        style={{ fontWeight: "bold" }}
+      >
+        {[
+          WorkMode.code,
+          WorkMode.design,
+          WorkMode.content,
+          WorkMode.toolbox,
+          WorkMode.settings,
+        ].map((w) => {
+          return (
+            <MenuItem onClick={handleWorkspaceModeSelect} value={w}>
+              {worspaceModeToName(w)}
+            </MenuItem>
+          );
+        })}
+      </Menu>
     </div>
   );
 }
@@ -84,33 +136,7 @@ export default function App(props: { platform: TargetPlatform }) {
   );
   const [tabIndex, setTabIndex] = React.useState<number>(0);
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
   const [isUploading, setIsUploading] = React.useState<boolean>(false);
-
-  const handleOpenWorkModeChangeClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleWorkspaceModeSelect = (e) => {
-    setAnchorEl(null);
-
-    console.log("workspace mode menu clicked e:", e.target.value as WorkMode);
-    let selected: WorkMode = e.target.value;
-    console.log("newly selected workspace mode is:", selected);
-
-    // when outside of menu is clicked, value is undefined -- so as the selected will be.
-    if (selected === undefined) {
-      selected = workspaceMode;
-    }
-
-    setWorkspaceMode(selected);
-
-    // when workspace mode is updated, by default the first index 0 tab will be selected without select event.
-    // explicitly triggering the event.
-    const newTabLayout = getWorkmodeTabLayout(selected);
-    updateFocusedScreen(newTabLayout[0]);
-  };
 
   const handleIsUploading = () => {
     setIsUploading(!isUploading);
@@ -260,56 +286,19 @@ export default function App(props: { platform: TargetPlatform }) {
     );
   }
 
-  function makeWorkspaceModeSelect() {
-    return (
-      <div>
-        <Button
-          endIcon={<KeyboardArrowDown />}
-          aria-controls="workspace-mode"
-          aria-haspopup="true"
-          onClick={handleOpenWorkModeChangeClick}
-        >
-          {worspaceModeToName(workspaceMode)}
-        </Button>
-        <Menu
-          id="workspace-mode"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleWorkspaceModeSelect}
-          style={{ fontWeight: "bold" }}
-        >
-          <MenuItem onClick={handleWorkspaceModeSelect} value={WorkMode.code}>
-            CODE
-          </MenuItem>
-          <MenuItem onClick={handleWorkspaceModeSelect} value={WorkMode.design}>
-            DESIGN
-          </MenuItem>
-          <MenuItem
-            onClick={handleWorkspaceModeSelect}
-            value={WorkMode.content}
-          >
-            CONTENT
-          </MenuItem>
-          <MenuItem
-            onClick={handleWorkspaceModeSelect}
-            value={WorkMode.toolbox}
-          >
-            TOOLS
-          </MenuItem>
-          <MenuItem
-            onClick={handleWorkspaceModeSelect}
-            value={WorkMode.settings}
-          >
-            ABOUT
-          </MenuItem>
-        </Menu>
-      </div>
-    );
-  }
-
   const screenLayout = makeTabLayout(workspaceMode);
-  const workspaceModeSelectLayout = makeWorkspaceModeSelect();
+  const workspaceModeSelectLayout = (
+    <WorkmodeSelect
+      current={workspaceMode}
+      onSelect={(selected) => {
+        // when workspace mode is updated, by default the first index 0 tab will be selected without select event.
+        // explicitly triggering the event.
+        setWorkspaceMode(selected);
+        const newTabLayout = getWorkmodeTabLayout(selected);
+        updateFocusedScreen(newTabLayout[0]);
+      }}
+    />
+  );
 
   return (
     <PluginApp platform={props.platform}>
