@@ -28,7 +28,6 @@ import { ExporterScreen } from "../pages/tool-box/exporter";
 import { DataMapperScreen } from "../pages/tool-box/data-mapper/data-mapper-screen";
 import { TargetPlatform } from "../utils/plugin-init/init-target-platform";
 import { AboutScreen } from "../pages/about";
-import { UploadSteps } from "../components/upload-steps";
 // endregion screens import
 //
 
@@ -152,98 +151,111 @@ function Screen(props: { screen: WorkScreen }) {
   }
 }
 
-export default function App(props: { platform: TargetPlatform }) {
-  React.useEffect(() => {
-    // todo - dynamicallt change initial focused screen. (currently inital setup is not implemented. - initial setup is done by below line.)
-    updateFocusedScreen(WorkScreen.code_flutter);
+function TabsLayout(props: {
+  workmode: WorkMode;
+  tabIndex: number;
+  onChange: (index: number, tab: WorkScreen) => void;
+}) {
+  const { workmode, tabIndex, onChange } = props;
+  const tabLayout = getWorkmodeTabLayout(workmode);
+  const handleTabChange = (index: number) => {
+    const screen = tabLayout[index];
+    onChange(index, screen);
+  };
 
-    // region init analytics
-    try {
-      initialize();
-    } catch (e) {
-      console.warn("GA disabled", e);
-    }
-    // endregion init GA
-  }, []);
+  const tabs_as_page_configs = tabLayout.map((screen, index) => {
+    const _ = get_page_config(screen);
+    return {
+      id: _.id,
+      name: _.title,
+    };
+  });
 
+  return (
+    <div className="outer-ui">
+      <div className="tabs-wrapper" style={{ margin: "0 -8px" }}>
+        <WorkmodeTabs
+          layout={tabs_as_page_configs}
+          tabIndex={tabIndex}
+          onSelect={handleTabChange}
+        />
+      </div>
+
+      {tabLayout.map((v, i) => {
+        <TabPanel key={i} value={tabIndex} index={i}>
+          <Screen screen={v} />
+        </TabPanel>;
+      })}
+    </div>
+  );
+}
+
+function TabNavigationApp() {
   const [workspaceMode, setWorkspaceMode] = React.useState<WorkMode>(
     WorkMode.code
   );
   const [tabIndex, setTabIndex] = React.useState<number>(0);
 
-  const updateFocusedScreen = (screen: WorkScreen) => {
-    // notify code.ts that app mode has set.
-    parent.postMessage(
-      {
-        pluginMessage: {
-          type: EK_SET_APP_MODE,
-          data: screen,
-        },
-      },
-      "*"
-    );
-    console.log(
-      `sending back thread about changed screen (user interest) data - "${screen}"`
-    );
-  };
-
-  function makeTabLayout(workspaceMode: WorkMode) {
-    const tabLayout = getWorkmodeTabLayout(workspaceMode);
-    const handleTabChange = (index: number) => {
-      const screen = tabLayout[index];
-      updateFocusedScreen(screen);
-      setTabIndex(index);
-    };
-
-    const tabs_as_page_configs = tabLayout.map((screen, index) => {
-      const _ = get_page_config(screen);
-      return {
-        id: _.id,
-        name: _.title,
-      };
-    });
-
-    return (
-      <div className="outer-ui">
-        <div className="tabs-wrapper" style={{ margin: "0 -8px" }}>
-          <WorkmodeTabs
-            layout={tabs_as_page_configs}
-            tabIndex={tabIndex}
-            onSelect={handleTabChange}
-          />
-        </div>
-
-        {tabLayout.map((v, i) => {
-          <TabPanel key={i} value={tabIndex} index={i}>
-            <Screen screen={v} />
-          </TabPanel>;
-        })}
-      </div>
-    );
-  }
-
-  const screenLayout = makeTabLayout(workspaceMode);
-  const workspaceModeSelectLayout = (
-    <WorkmodeSelect
-      current={workspaceMode}
-      onSelect={(selected) => {
-        // when workspace mode is updated, by default the first index 0 tab will be selected without select event.
-        // explicitly triggering the event.
-        setWorkspaceMode(selected);
-        const newTabLayout = getWorkmodeTabLayout(selected);
-        updateFocusedScreen(newTabLayout[0]);
-      }}
-    />
+  return (
+    <>
+      <WorkmodeSelect
+        current={workspaceMode}
+        onSelect={(selected) => {
+          // when workspace mode is updated, by default the first index 0 tab will be selected without select event.
+          // explicitly triggering the event.
+          setWorkspaceMode(selected);
+          const newTabLayout = getWorkmodeTabLayout(selected);
+          _update_focused_screen_ev(newTabLayout[0]);
+        }}
+      />
+      <TabsLayout
+        workmode={workspaceMode}
+        tabIndex={tabIndex}
+        onChange={(index, screen) => {
+          _update_focused_screen_ev(screen);
+          setTabIndex(index);
+        }}
+      />
+    </>
   );
+  //
+}
+
+export default function App(props: { platform: TargetPlatform }) {
+  React.useEffect(() => {
+    // FIXME: - dynamicallt change initial focused screen. (currently inital setup is not implemented. - initial setup is done by below line.)
+    _update_focused_screen_ev(WorkScreen.code_flutter);
+
+    // region init analytics
+    try {
+      initialize();
+    } catch (e) {
+      console.warn("Analytics disabled", e);
+    }
+    // endregion init GA
+  }, []);
 
   return (
     <PluginApp platform={props.platform}>
       <BrowserRouter>
-        <>
-          {workspaceModeSelectLayout}
-          {screenLayout}
-        </>
+        <TabNavigationApp />
       </BrowserRouter>
     </PluginApp>
+  );
+}
+
+function _update_focused_screen_ev(screen: WorkScreen) {
+  // notify code.ts that app mode has set.
+  parent.postMessage(
+    {
+      pluginMessage: {
+        type: EK_SET_APP_MODE,
+        data: screen,
+      },
+    },
+    "*"
+  );
+  console.log(
+    `sending back thread about changed screen (user interest) data - "${screen}"`
   );
 }
