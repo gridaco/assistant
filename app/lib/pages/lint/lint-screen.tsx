@@ -3,10 +3,7 @@ import { ReflectLintFeedback } from "@reflect-ui/lint/lib/feedbacks";
 import * as React from "react";
 import { Preview } from "../../components/preview";
 import { LintTreeView } from "../../lint";
-import {
-  EK_FOCUS_REQUEST,
-  EK_LINT_FEEDBACK,
-} from "../../constants/ek.constant";
+import { EK_FOCUS_REQUEST } from "../../constants/ek.constant";
 import styled from "@emotion/styled";
 import { LintLevelIndicator } from "./lint-level-indicator";
 import { LintColor } from "./lint-colors";
