@@ -1,7 +1,7 @@
 import { utils, keyAnnotations } from "@design-sdk/core";
 import { variant } from "@design-sdk/figma/features";
 import { Figma } from "@design-sdk/figma";
-import { PluginSdk } from "../../../../utils/plugin-provider/plugin-app-sdk";
+import { PluginSdk } from "@plugin-sdk/app";
 import { extractDataFromDataSourceNode } from "../data-source-node";
 import { onService, _Event_DataMapper_GoodUserInputTransfer } from "../events";
 

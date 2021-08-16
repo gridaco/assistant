@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "../../constants";
-import { PluginSdk } from "../plugin-provider/plugin-app-sdk";
+import { PluginSdk } from "@plugin-sdk/app";
 
 export function useMeta() {}
 

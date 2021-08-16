@@ -1,4 +1,4 @@
-import { PluginSdk } from "../../../utils/plugin-provider/plugin-app-sdk";
+import { PluginSdk } from "@plugin-sdk/app";
 import { PluginSdkService } from "../../../utils/plugin-provider/plugin-service";
 
 const EVKEY = "data-mapper-custom-transport";

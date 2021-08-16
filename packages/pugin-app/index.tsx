@@ -9,7 +9,7 @@ import {
   TransportPluginEvent,
 } from "@plugin-sdk/core/events";
 import { NetworkRequest } from "@plugin-sdk/core";
-import { PluginSdk } from "../../app/lib/utils/plugin-provider/plugin-app-sdk";
+import { PluginSdk } from "@plugin-sdk/app";
 import { currentlySelectedPrimaryNodeId } from "./states/canvas";
 import {
   initializeTargetPlatform,
