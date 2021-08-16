@@ -8,7 +8,6 @@ export interface _Event_DataMapper_GoodUserInputTransfer {
 }
 
 export function fromApp(data: _Event_DataMapper_GoodUserInputTransfer) {
-  console.log("from app");
   PluginSdk.appEvent(EVKEY, data);
 }
 
