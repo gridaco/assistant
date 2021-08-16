@@ -57,6 +57,10 @@ const WorkmodeLabel = styled.h3<Props>`
   cursor: pointer;
   user-select: none;
 
+  // reset for h3 init style
+  margin: 0;
+  margin-top: 8px;
+
   &:first-child {
     margin-right: 12px;
   }
