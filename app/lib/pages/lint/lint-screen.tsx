@@ -7,6 +7,7 @@ import { EK_FOCUS_REQUEST } from "../../constants/ek.constant";
 import styled from "@emotion/styled";
 import { LintLevelIndicator } from "./lint-level-indicator";
 import { Level } from "./lint-colors";
+import { _APP_EVENT_LINT_RESULT_EK } from "../../lint/__plugin/events";
 
 interface State {
   feedbacks: Array<ReflectLintFeedback>;
@@ -180,15 +181,15 @@ export class LintScreen extends React.Component<any, State> {
   }
 
   componentDidMount() {
-    // window.addEventListener("message", (ev: MessageEvent) => {
-    //   const msg = ev.data.pluginMessage;
-    //   if (msg.type == EK_LINT_FEEDBACK) {
-    //     const feedbacks = msg.data as Array<ReflectLintFeedback>;
-    //     this.setState((state, props) => {
-    //       return { feedbacks: feedbacks };
-    //     });
-    //   }
-    // });
+    window.addEventListener("message", (ev: MessageEvent) => {
+      const msg = ev.data.pluginMessage;
+      if (msg.type == _APP_EVENT_LINT_RESULT_EK) {
+        const feedbacks = msg.data as Array<ReflectLintFeedback>;
+        this.setState((state, props) => {
+          return { feedbacks: feedbacks };
+        });
+      }
+    });
   }
 
   onFeedbackTap(feedback: ReflectLintFeedback) {

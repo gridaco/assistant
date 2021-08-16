@@ -3,7 +3,7 @@ import { PluginSdkService } from "@plugin-sdk/service";
 
 const EVKEY = "lint-runner-custom-transport";
 export const _APP_EVENT_LINT_RESULT_EK = "lint-result";
-interface LintRequest {
+export interface LintRequest {
   type: "lint-request";
 }
 
