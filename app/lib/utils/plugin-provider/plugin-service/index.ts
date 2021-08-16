@@ -21,14 +21,12 @@ import {
 import {
   DragAndDropHandlerCallback,
   DragAndDropOnCanvasRequest,
-} from "../interfaces/dragdrop/dragdrop.requests";
-import {
   BatchMetaFetchRequest,
   BatchMetaUpdateRequest,
   NodeMetaFetchRequest,
   NodeMetaUpdateRequest,
-} from "../interfaces/meta/meta.requests";
-import { NotifyRequest } from "../interfaces/notify/notify.requests";
+  NotifyRequest,
+} from "@plugin-sdk/core";
 import { WebStorage, FigmaStorage, IStorage } from "../storage";
 
 // TODO - make it universal
@@ -38,7 +36,10 @@ import {
   TargetPlatform,
   TARGET_PLATFORM,
 } from "../../plugin-init/init-target-platform";
-import { StorageGetItemResponse, StorageRequest } from "../interfaces/storage";
+import {
+  StorageGetItemResponse,
+  StorageRequest,
+} from "../../../../../packages/plugin-sdk-core/interfaces/storage";
 interface HanderProps<T = any> {
   id: string;
   key: string;

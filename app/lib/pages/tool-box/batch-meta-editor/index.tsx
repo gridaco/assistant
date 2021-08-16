@@ -9,9 +9,9 @@ import Divider from "@material-ui/core/Divider";
 import { PluginSdk } from "../../../utils/plugin-provider/plugin-app-sdk";
 import {
   BatchMetaOperationTargetType,
+  BatchMetaUpdateRequest,
   SupportedBatchMetaOperationTargetTypes,
-} from "../../../utils/plugin-provider/interfaces/meta/meta.types";
-import { BatchMetaUpdateRequest } from "../../../utils/plugin-provider/interfaces/meta/meta.requests";
+} from "@plugin-sdk/core";
 
 export default function BatchMetaEditor() {
   const [targetType, setTargetType] = useState<BatchMetaOperationTargetType>(

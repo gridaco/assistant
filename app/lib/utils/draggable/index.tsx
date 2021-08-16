@@ -1,5 +1,5 @@
 import React from "react";
-import { DragAndDropOnCanvasRequest } from "../plugin-provider/interfaces/dragdrop/dragdrop.requests";
+import { DragAndDropOnCanvasRequest } from "@plugin-sdk/core";
 import { PluginSdk } from "../plugin-provider/plugin-app-sdk";
 
 export function Draggable(props: {

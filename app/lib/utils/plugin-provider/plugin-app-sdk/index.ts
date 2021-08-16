@@ -17,19 +17,17 @@ import {
   TransportPluginEvent,
 } from "../events";
 import {
+  reqid,
   BatchMetaFetchRequest,
   NodeMetaFetchRequest,
   NodeMetaUpdateRequest,
-} from "../interfaces/meta";
-import {
   StorageSetItemRequest,
   StorageGetItemRequest,
   StorageGetItemResponse,
-} from "../interfaces/storage";
-import { NotifyRequest } from "../interfaces/notify/notify.requests";
-import { DragAndDropOnCanvasRequest } from "../interfaces/dragdrop/dragdrop.requests";
+  NotifyRequest,
+  DragAndDropOnCanvasRequest,
+} from "@plugin-sdk/core";
 import type { ReflectSceneNode } from "@design-sdk/core/nodes";
-import { reqid } from "@plugin-sdk/core";
 import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "../../../constants";
 
 import { _SharedStorageCache } from "./_shared-storage-cache";

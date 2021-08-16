@@ -8,7 +8,7 @@ import {
   PLUGIN_SDK_NS_REMOTE_API,
   TransportPluginEvent,
 } from "../events";
-import { NetworkRequest } from "../interfaces/remote-api/remote-api.requests";
+import { NetworkRequest } from "@plugin-sdk/core";
 import { PluginSdk } from "../plugin-app-sdk";
 import { currentlySelectedPrimaryNodeId } from "./states/canvas";
 import {
