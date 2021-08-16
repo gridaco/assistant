@@ -1,7 +1,4 @@
-import {
-  analyzeSelection,
-  SelectionAnalysis,
-} from "app/lib/utils/plugin-provider/pugin-app/utils";
+import { analyzeSelection, SelectionAnalysis } from "plugin-app/utils";
 import { convert } from "@design-sdk/figma";
 import { Logger } from "app/lib/utils";
 import { light } from "@design-sdk/core/nodes";

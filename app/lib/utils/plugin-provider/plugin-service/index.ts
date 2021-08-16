@@ -27,7 +27,7 @@ import {
   NotifyRequest,
 } from "@plugin-sdk/core";
 
-import { WebStorage, FigmaStorage, IStorage } from "../storage";
+import { WebStorage, FigmaStorage, IStorage } from "./storage";
 
 // TODO - make it universal
 import { Figma, figma } from "@design-sdk/figma";
