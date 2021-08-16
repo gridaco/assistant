@@ -13,6 +13,7 @@ import {
   PLUGIN_SDK_NS_NOTIFY_API,
   PLUGIN_SDK_NS_REMOTE_API,
   PLUGIN_SDK_NS_RESPONSE_ALL,
+  PLUGIN_SDK_NS_STORAGE,
   PUGIN_SDK_EK_REQUEST_UPDATE_MAIN_COMPONENT_META,
   PUGIN_SDK_EK_REQUEST_UPDATE_NODE_META,
   TransportPluginEvent,
@@ -28,6 +29,7 @@ import {
   NodeMetaUpdateRequest,
 } from "../interfaces/meta/meta.requests";
 import { NotifyRequest } from "../interfaces/notify/notify.requests";
+import { WebStorage, FigmaStorage, IStorage } from "../storage";
 
 // TODO - make it universal
 import { Figma, figma } from "@design-sdk/figma";
@@ -36,6 +38,7 @@ import {
   TargetPlatform,
   TARGET_PLATFORM,
 } from "../../plugin-init/init-target-platform";
+import { StorageGetItemResponse, StorageRequest } from "../interfaces/storage";
 interface HanderProps<T = any> {
   id: string;
   key: string;
@@ -119,6 +122,12 @@ export class PluginSdkService {
     // meta
     if (event.namespace == PLUGIN_SDK_NS_META_API) {
       handleMetaEvent(handerProps);
+      return true;
+    }
+
+    // storage
+    if (event.namespace == PLUGIN_SDK_NS_STORAGE) {
+      handleStorageEvent(handerProps);
       return true;
     }
 
@@ -289,6 +298,70 @@ export function handleNotify(props: HanderProps<NotifyRequest>) {
   response(props.id, true);
 }
 
+function handleStorageEvent(props: HanderProps<StorageRequest>) {
+  const _get_dedicated_storage = (): IStorage => {
+    switch (TARGET_PLATFORM) {
+      case TargetPlatform.webdev: {
+        return new WebStorage();
+      }
+      case TargetPlatform.figma: {
+        return new FigmaStorage();
+      }
+    }
+  };
+
+  const _storage = _get_dedicated_storage();
+  switch (props.data.type) {
+    case "get-item":
+      _storage.getItem(props.data.key).then((d) => {
+        response<StorageGetItemResponse>(props.id, { value: d });
+      });
+      break;
+    case "set-item":
+      _storage.setItem(props.data.key, props.data.value).then(() => {
+        response(props.id, true); // setting data to storage does not require response data payload (using `true`.).
+      });
+      break;
+  }
+}
+
+function handleDragDropped(props: HanderProps<DragAndDropOnCanvasRequest>) {
+  console.log("handling drop event", props.data);
+  const { dropPosition, windowSize, offset, itemSize, eventKey, customData } =
+    props.data;
+
+  // Getting the position and size of the visible area of the canvas.
+  const bounds = figma.viewport.bounds;
+
+  // Getting the zoom level
+  const zoom = figma.viewport.zoom;
+
+  // There are two states of the Figma interface: With or without the UI (toolbar + left and right panes)
+  // The calculations would be slightly different, depending on whether the UI is shown.
+  // So to determine if the UI is shown, we'll be comparing the bounds to the window's width.
+  // Math.round is used here because sometimes bounds.width * zoom may return a floating point number very close but not exactly the window width.
+  const hasUI = Math.round(bounds.width * zoom) !== windowSize.width;
+
+  // Since the left pane is resizable, we need to get its width by subtracting the right pane and the canvas width from the window width.
+  const leftPaneWidth = windowSize.width - bounds.width * zoom - 240;
+
+  // Getting the position of the cursor relative to the top-left corner of the canvas.
+  const xFromCanvas = hasUI
+    ? dropPosition.clientX - leftPaneWidth
+    : dropPosition.clientX;
+  const yFromCanvas = hasUI ? dropPosition.clientY - 40 : dropPosition.clientY;
+
+  // The canvas position of the drop point can be calculated using the following:
+  const x = bounds.x + xFromCanvas / zoom - offset.x;
+  const y = bounds.y + yFromCanvas / zoom - offset.y;
+
+  PluginSdkService.handleDragAndDropEvent(eventKey, customData, { x: x, y: y });
+}
+
+///
+/// -------------------------- footer response section ----------------------------
+///
+
 function response<T = any>(
   requestId: string,
   data: T,
@@ -324,42 +397,3 @@ function response<T = any>(
  * @param withEvent
  */
 function sync(withEvent: TransportPluginEvent) {}
-
-function handleDragDropped(props: HanderProps<DragAndDropOnCanvasRequest>) {
-  console.log("handling drop event", props.data);
-  const {
-    dropPosition,
-    windowSize,
-    offset,
-    itemSize,
-    eventKey,
-    customData,
-  } = props.data;
-
-  // Getting the position and size of the visible area of the canvas.
-  const bounds = figma.viewport.bounds;
-
-  // Getting the zoom level
-  const zoom = figma.viewport.zoom;
-
-  // There are two states of the Figma interface: With or without the UI (toolbar + left and right panes)
-  // The calculations would be slightly different, depending on whether the UI is shown.
-  // So to determine if the UI is shown, we'll be comparing the bounds to the window's width.
-  // Math.round is used here because sometimes bounds.width * zoom may return a floating point number very close but not exactly the window width.
-  const hasUI = Math.round(bounds.width * zoom) !== windowSize.width;
-
-  // Since the left pane is resizable, we need to get its width by subtracting the right pane and the canvas width from the window width.
-  const leftPaneWidth = windowSize.width - bounds.width * zoom - 240;
-
-  // Getting the position of the cursor relative to the top-left corner of the canvas.
-  const xFromCanvas = hasUI
-    ? dropPosition.clientX - leftPaneWidth
-    : dropPosition.clientX;
-  const yFromCanvas = hasUI ? dropPosition.clientY - 40 : dropPosition.clientY;
-
-  // The canvas position of the drop point can be calculated using the following:
-  const x = bounds.x + xFromCanvas / zoom - offset.x;
-  const y = bounds.y + yFromCanvas / zoom - offset.y;
-
-  PluginSdkService.handleDragAndDropEvent(eventKey, customData, { x: x, y: y });
-}

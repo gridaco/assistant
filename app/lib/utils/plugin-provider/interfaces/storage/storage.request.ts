@@ -9,8 +9,6 @@ export interface StorageSetItemRequest<T = string> {
 export interface StorageGetItemRequest<T = string> {
   type: "get-item";
   key: string;
-  /** value must be json serializable. (without circular reference.) */
-  value: T;
 }
 
 export interface StorageRemoveItemRequest {
