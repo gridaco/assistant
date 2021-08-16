@@ -1,3 +1,5 @@
+import { css } from "@emotion/react";
+import styled from "@emotion/styled";
 import React from "react";
 import { PrimaryWorkmodeSet, WorkMode } from "../../navigation";
 
@@ -11,7 +13,7 @@ export function PrimaryWorkmodeSelect(props: {
   };
 
   return (
-    <>
+    <Wrapper>
       <WorkmodeButton
         name={props.set.first}
         active={_is_active(props.set.first)}
@@ -26,7 +28,7 @@ export function PrimaryWorkmodeSelect(props: {
           props.onSelect(props.set.second);
         }}
       />
-    </>
+    </Wrapper>
   );
 }
 
@@ -35,17 +37,51 @@ function WorkmodeButton(props: {
   active: boolean;
   onClick: () => void;
 }) {
-  // TODO: add hover style support
   return (
     <>
-      <h3
-        onClick={props.onClick}
-        style={{
-          color: props.active ? "black" : "gray",
-        }}
-      >
+      <WorkmodeLabel active={props.active} onClick={props.onClick}>
         {props.name}
-      </h3>
+      </WorkmodeLabel>
     </>
   );
 }
+interface Props {
+  active: boolean;
+}
+
+const Wrapper = styled.div`
+  display: flex;
+`;
+
+const WorkmodeLabel = styled.h3<Props>`
+  display: flex;
+  text-transform: capitalize;
+  font-size: 21px;
+  letter-spacing: 0em;
+  cursor: pointer;
+
+  &:first-child {
+    margin-right: 12px;
+  }
+
+  ${(props) =>
+    props.active
+      ? css`
+          font-weight: 700;
+          line-height: 26px;
+          color: #000;
+        `
+      : css`
+          font-weight: 400;
+          line-height: 25px;
+          color: #cfcfcf;
+        `}
+
+  &:hover {
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 25px;
+    letter-spacing: 0em;
+    color: #606060;
+  }
+`;
