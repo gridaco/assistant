@@ -260,12 +260,11 @@ function TabNavigationApp() {
               onSelect={on_workmode_select}
             />
             <NavigatorExpansionControlButton
-              action={expansion ? "expand" : "close"}
+              action={expansion ? "close" : "expand"}
               onClick={() => setExpansion(!expansion)}
             />
           </Row>
-
-          <DropNav />
+          {!expansion && <DropNav />}
         </Column>
 
         {/* <WorkmodeSelect current={workmode} onSelect={(workmode) => {}} /> */}
@@ -282,14 +281,16 @@ function TabNavigationApp() {
           _update_focused_screen_ev(newTabLayout[0]);
         }}
       /> */}
-      <TabsLayout
-        workmode={workmode}
-        tabIndex={tabIndex}
-        onChange={(index, screen) => {
-          _update_focused_screen_ev(screen);
-          setTabIndex(index);
-        }}
-      />
+      {expansion && (
+        <TabsLayout
+          workmode={workmode}
+          tabIndex={tabIndex}
+          onChange={(index, screen) => {
+            _update_focused_screen_ev(screen);
+            setTabIndex(index);
+          }}
+        />
+      )}
     </>
   );
   //
