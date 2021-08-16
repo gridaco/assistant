@@ -190,7 +190,7 @@ function _Mode_Component(props: { node: nodes.light.IReflectNodeReference }) {
   useEffect(() => {
     Promise.all(
       grandchilds.map((c) => {
-        return PluginSdk.fetchMetadata_bridged<ISingleLayerProperty>(
+        return PluginSdk.fetchMetadata_grida<ISingleLayerProperty>(
           c.id,
           "layer-property-data"
         );

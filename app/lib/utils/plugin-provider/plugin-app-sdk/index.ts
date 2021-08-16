@@ -65,8 +65,9 @@ export class PluginSdk {
     throw "not implmtd";
   }
 
-  // endregion networ api
+  // endregion network api
 
+  //
   // region metadata
   static updateMetadata(request: NodeMetaUpdateRequest) {
     return this.request({
@@ -77,9 +78,9 @@ export class PluginSdk {
   }
 
   /**
-   * fetches the metadata with bridged default namespace provided.
+   * fetches the metadata with grida default namespace provided.
    */
-  static async fetchMetadata_bridged<T = any>(
+  static async fetchMetadata_grida<T = any>(
     on: string,
     key: string
   ): Promise<T> {
