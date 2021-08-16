@@ -29,7 +29,7 @@ import {
 import { NotifyRequest } from "../interfaces/notify/notify.requests";
 import { DragAndDropOnCanvasRequest } from "../interfaces/dragdrop/dragdrop.requests";
 import type { ReflectSceneNode } from "@design-sdk/core/nodes";
-import { reqid } from "../_id";
+import { reqid } from "@plugin-sdk/core";
 import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "../../../constants";
 
 import { _SharedStorageCache } from "./_shared-storage-cache";
