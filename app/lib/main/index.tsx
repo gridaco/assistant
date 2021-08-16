@@ -70,62 +70,6 @@ function TabPanel(props: {
   );
 }
 
-function WorkmodeSelect(props: {
-  current: WorkMode;
-  onSelect: (value: WorkMode) => void;
-}) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleOpenWorkModeChangeClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleWorkspaceModeSelect = (e) => {
-    setAnchorEl(null);
-
-    // when outside of menu is clicked, value is undefined -- so as the selected will be.
-    let selected: WorkMode = e.target.value ?? props.current;
-    // console.log("newly selected workspace mode is:", selected);
-
-    props.onSelect(selected);
-  };
-
-  return (
-    <div>
-      <Button
-        endIcon={<KeyboardArrowDown />}
-        aria-controls="workspace-mode"
-        aria-haspopup="true"
-        onClick={handleOpenWorkModeChangeClick}
-      >
-        {worspaceModeToName(props.current)}
-      </Button>
-      <Menu
-        id="workspace-mode"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleWorkspaceModeSelect}
-        style={{ fontWeight: "bold" }}
-      >
-        {[
-          WorkMode.code,
-          WorkMode.design,
-          WorkMode.content,
-          WorkMode.toolbox,
-          WorkMode.settings,
-        ].map((w) => {
-          return (
-            <MenuItem onClick={handleWorkspaceModeSelect} value={w}>
-              {worspaceModeToName(w)}
-            </MenuItem>
-          );
-        })}
-      </Menu>
-    </div>
-  );
-}
-
 function DropNav() {
   const menu = [
     // {
@@ -226,11 +170,12 @@ function TabsLayout(props: {
           onSelect={handleTabChange}
         />
       </div>
-
       {tabLayout.map((v, i) => {
-        <TabPanel key={i} value={tabIndex} index={i}>
-          <Screen screen={v} />
-        </TabPanel>;
+        return (
+          <TabPanel key={i} value={tabIndex} index={i}>
+            <Screen screen={v} />
+          </TabPanel>
+        );
       })}
     </div>
   );
