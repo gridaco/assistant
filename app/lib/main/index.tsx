@@ -47,6 +47,7 @@ import {
   SecondaryWorkmodeMenu,
 } from "../components/navigation";
 import styled from "@emotion/styled";
+import { Column, Row } from "../components/style/global-style";
 
 /** The container of tab content */
 function TabPanel(props: {
@@ -337,13 +338,5 @@ function _update_focused_screen_ev(screen: WorkScreen) {
 
 const Wrapper = styled.div`
   display: flex;
-`;
-
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
+  padding: 14px 8px;
 `;

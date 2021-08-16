@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import React from "react";
+import { Column, Row } from "../style/global-style";
 import { SecondaryWorkmodeChoice } from "./secondary-workmode-choice";
 export function SecondaryWorkmodeMenu(props: {
   menus: {
@@ -11,18 +12,36 @@ export function SecondaryWorkmodeMenu(props: {
 }) {
   return (
     <Wrapper>
-      {props.menus.map((menu, index) => {
-        return (
-          <>
-            <SecondaryWorkmodeChoice
-              key={menu.id}
-              name={menu.name}
-              disabled={menu.disabled}
-              onClick={props.onSelect}
-            />
-          </>
-        );
-      })}
+      <Column>
+        <Row style={{ marginBottom: "4px" }}>
+          {props.menus.map((menu, index) => {
+            if (index < 3) {
+              return (
+                <SecondaryWorkmodeChoice
+                  key={menu.id}
+                  name={menu.name}
+                  disabled={menu.disabled}
+                  onClick={props.onSelect}
+                />
+              );
+            }
+          })}
+        </Row>
+        <Row>
+          {props.menus.map((menu, index) => {
+            if (index >= 3) {
+              return (
+                <SecondaryWorkmodeChoice
+                  key={menu.id}
+                  name={menu.name}
+                  disabled={menu.disabled}
+                  onClick={props.onSelect}
+                />
+              );
+            }
+          })}
+        </Row>
+      </Column>
     </Wrapper>
   );
 }
