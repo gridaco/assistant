@@ -1,6 +1,6 @@
 import React from "react";
-import { DragAndDropOnCanvasRequest } from "../plugin-provider/interfaces/dragdrop/dragdrop.requests";
-import { PluginSdk } from "../plugin-provider/plugin-app-sdk";
+import { DragAndDropOnCanvasRequest } from "@plugin-sdk/core";
+import { PluginSdk } from "@plugin-sdk/app";
 
 export function Draggable(props: {
   customData?: object;

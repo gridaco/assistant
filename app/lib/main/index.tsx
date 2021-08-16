@@ -8,7 +8,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
 import { EK_SET_APP_MODE } from "../constants/ek.constant";
-import { PluginApp } from "../utils/plugin-provider/pugin-app";
+import { PluginApp } from "plugin-app";
 import BatchMetaEditor from "../pages/tool-box/batch-meta-editor";
 import { BrowserRouter } from "react-router-dom";
 
@@ -18,7 +18,7 @@ import { FontReplacerScreen } from "../pages/tool-box/font-replacer";
 import { ButtonMakerScreen } from "../pages/design/button-maker-screen";
 import { ComponentViewScreen } from "../pages/component-view";
 import { LayoutViewScreen } from "../pages/layout-view";
-import { LintScreen } from "../pages/lint-screen";
+import { LintScreen } from "../pages/lint/lint-screen";
 import { GlobalizationScreen } from "../pages/g11n-screen";
 import { IconsScreen } from "../pages/icons-screen";
 import { CodeScreen } from "../pages/code/code-screen";

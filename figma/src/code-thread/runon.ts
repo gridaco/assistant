@@ -1,10 +1,7 @@
-import { runLints } from "@designto/clean";
-
 import {
   EK_COMPUTE_STARTED,
   EK_GENERATED_CODE_PLAIN,
   EK_IMAGE_ASSET_REPOSITORY_MAP,
-  EK_LINT_FEEDBACK,
   EK_VANILLA_TRANSPORT,
 } from "app/lib/constants/ek.constant";
 import { vanilla, repo_assets } from "@design-sdk/core";
@@ -37,17 +34,6 @@ export async function runon(rnode: ReflectSceneNode) {
     );
     return;
   }
-
-  //#region  run linter
-  if (userInterestUnset() || user_interest == "lint") {
-    const feedbacks = runLints(rnode);
-    console.warn(feedbacks);
-    figma.ui.postMessage({
-      type: EK_LINT_FEEDBACK,
-      data: feedbacks,
-    });
-  }
-  //#endregion
 
   // region make vanilla
   if (user_interest == "g11n" || user_interest == "exporter") {
