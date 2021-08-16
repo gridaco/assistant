@@ -75,13 +75,13 @@ const WorkmodeLabel = styled.h3<Props>`
           font-weight: 400;
           line-height: 25px;
           color: #cfcfcf;
-        `}
 
-  &:hover {
-    font-size: 21px;
-    font-weight: 400;
-    line-height: 25px;
-    letter-spacing: 0em;
-    color: #606060;
-  }
+          &:hover {
+            font-size: 21px;
+            font-weight: 400;
+            line-height: 25px;
+            letter-spacing: 0em;
+            color: #606060;
+          }
+        `}
 `;

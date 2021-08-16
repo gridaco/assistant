@@ -30,6 +30,11 @@ export function WorkmodeScreenTabs(props: {
       scrollButtons="off"
       onChange={handleTabChange}
       aria-label="primary tab"
+      TabIndicatorProps={{
+        style: {
+          display: "none",
+        },
+      }}
     >
       {layout.map((v, i) => {
         return (
