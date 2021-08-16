@@ -212,19 +212,9 @@ export class LintScreen extends React.Component<any, State> {
   }
 
   render() {
-    // const { feedbacks } = this.state;
-    const feedbacks = TestObj;
-    return (
-      <>
-        <Preview data={undefined} name="selected node name" />
-
-        {console.log(feedbacks)}
-        <ErrorWrapper>
-          <ErrorTitle>{feedbacks.length} Improvements found</ErrorTitle>
-          <ErrorComent>
-            Across 24 layers, there were <b>4 must-fix errors</b> and 8
-            warnings.
-          </ErrorComent>
+    function ErrorLineItem() {
+      return (
+        <>
           <ErrorList>
             {feedbacks.map((item, i) => {
               return (
@@ -235,6 +225,22 @@ export class LintScreen extends React.Component<any, State> {
               );
             })}
           </ErrorList>
+        </>
+      );
+    }
+
+    // const { feedbacks } = this.state;
+    const feedbacks = TestObj;
+    return (
+      <>
+        <Preview data={undefined} name="selected node name" />
+        <ErrorWrapper>
+          <ErrorTitle>{feedbacks.length} Improvements found</ErrorTitle>
+          <ErrorComent>
+            Across 24 layers, there were <b>4 must-fix errors</b> and 8
+            warnings.
+          </ErrorComent>
+          {ErrorLineItem()}
         </ErrorWrapper>
       </>
     );
