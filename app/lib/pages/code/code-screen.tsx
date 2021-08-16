@@ -13,22 +13,17 @@ import {
   FrameworkOption,
   all_preset_options_map__prod,
 } from "./framework-option";
-import { CodeScreenControl } from "./code-screen-control";
-import { WorkScreen } from "../../states/app-state";
-import { Button } from "@material-ui/core";
 import styled from "@emotion/styled";
 import { make_empty_selection_state_text_content } from "./constants";
-import { ButtonStyle } from "../../components/style/global-style";
-import { UploadSteps } from "../../components/upload-steps";
 import { format } from "./formatter";
 import copy from "copy-to-clipboard";
 import { PluginSdk } from "../../utils/plugin-provider/plugin-app-sdk";
 import { CodeScreenFooter } from "./code-screen-footer";
+import { WorkScreen } from "../../navigation";
+import { CodeScreenControl } from "./code-screen-control";
 
 type DesigntoCodeUserOptions = FrameworkOption;
-interface ICodeScreen {
-  handleIsUploading: () => void;
-}
+interface ICodeScreen {}
 
 export function CodeScreen(props: ICodeScreen) {
   const [app, setApp] = useState<string>();
@@ -195,7 +190,7 @@ export function CodeScreen(props: ICodeScreen) {
         />
       </CodeWrapper>
 
-      <CodeScreenFooter app={app} handleIsUploading={props.handleIsUploading} />
+      <CodeScreenFooter app={app} />
       {/* <UploadSteps /> */}
     </div>
   );
