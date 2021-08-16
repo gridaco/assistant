@@ -9,7 +9,7 @@ import {
 } from "../../constants/ek.constant";
 import styled from "@emotion/styled";
 import { LintLevelIndicator } from "./lint-level-indicator";
-import { LintColor } from "./lint-colors";
+import { Level } from "./lint-colors";
 
 interface State {
   feedbacks: Array<ReflectLintFeedback>;
@@ -230,7 +230,7 @@ export class LintScreen extends React.Component<any, State> {
               return (
                 <List key={i}>
                   <Label>{item.node.name}</Label>
-                  <LintLevelIndicator color={LintColor.warn} />
+                  <LintLevelIndicator color={Level.warn} />
                 </List>
               );
             })}

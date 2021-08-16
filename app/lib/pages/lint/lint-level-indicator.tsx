@@ -1,10 +1,10 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import * as React from "react";
-import { LintColor } from "./lint-colors";
+import { Level } from "./lint-colors";
 
 interface ILintLevelIndicator {
-  color: LintColor;
+  color: Level;
 }
 
 export function LintLevelIndicator(props: ILintLevelIndicator) {
@@ -12,7 +12,7 @@ export function LintLevelIndicator(props: ILintLevelIndicator) {
 }
 
 interface IIndicator {
-  color: LintColor;
+  color: Level;
 }
 
 const Indicator = styled.div<IIndicator>`
@@ -21,19 +21,19 @@ const Indicator = styled.div<IIndicator>`
   border-radius: 50%;
 
   ${(props) =>
-    props.color === LintColor.warn
+    props.color === Level.warn
       ? css`
           background: #ffc700;
         `
-      : props.color === LintColor.error
+      : props.color === Level.error
       ? css`
           background: #ff3a3a;
         `
-      : props.color === LintColor.ignore
+      : props.color === Level.ignore
       ? css`
           background: #c6c6c6;
         `
-      : props.color === LintColor.todo
+      : props.color === Level.todo
       ? css`
           background: #000;
         `
