@@ -130,7 +130,7 @@ function IconSearch(props: {
       },
     },
     input: {
-      fontSize: 16,
+      fontSize: 14,
     },
   }))(InputBase);
 
@@ -159,7 +159,7 @@ function IconSearch(props: {
   return (
     <Wrapper>
       <SearchBar>
-        <Search />
+        <Search style={{ fontSize: "20px" }} />
         <Input
           placeholder="Search with icon name"
           onChange={(e) => props.onChange(e.target.value.toLocaleLowerCase())}
@@ -167,20 +167,20 @@ function IconSearch(props: {
       </SearchBar>
       <SearchChecker>
         <TypeCheck>
-          <Select
-            style={{ width: "100%" }}
+          <StyledSelect
+            classes={{ root: "root" }}
             value={iconProperty.variant}
             onChange={(e) => onSelectValue("variant", e.target.value)}
-            input={<BootstrapInput />}
+            input={<BootstrapInput classes={{ root: "root" }} />}
           >
             {iconPropertyList.variant.map((i) => (
               <MenuItem value={i}>{i}</MenuItem>
             ))}
-          </Select>
+          </StyledSelect>
         </TypeCheck>
         <SizeCheck>
-          <Select
-            style={{ width: "100%" }}
+          <StyledSelect
+            classes={{ root: "root" }}
             id="demo-customized-select-native"
             value={iconProperty.default_size}
             onChange={(e) => onSelectValue("size", e.target.value)}
@@ -191,7 +191,7 @@ function IconSearch(props: {
                 {i === "Size" ? "Size" : i + " x " + i}
               </MenuItem>
             ))}
-          </Select>
+          </StyledSelect>
         </SizeCheck>
       </SearchChecker>
     </Wrapper>
@@ -336,6 +336,8 @@ const SearchBar = styled.div`
 
   svg {
     margin: 10px;
+    margin-left: 8px;
+    font-size: 20px;
   }
 `;
 
@@ -344,6 +346,11 @@ const Input = styled.input`
   height: 90%;
   border: none;
   outline: none;
+
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  color: #adaeb2;
 `;
 
 const SearchChecker = styled.div`
@@ -360,6 +367,15 @@ const TypeCheck = styled.div`
   font-size: 14px;
   cursor: pointer;
   padding: 0px 16px;
+`;
+
+const StyledSelect = styled(Select)`
+  width: 100% !important;
+  &.root {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
+  }
 `;
 
 const SizeCheck = styled.div`
