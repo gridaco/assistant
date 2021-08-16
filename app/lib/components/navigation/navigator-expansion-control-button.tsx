@@ -32,4 +32,8 @@ const Button = styled.div`
   align-items: center;
   display: flex;
   margin-left: auto;
+
+  svg {
+    fill: #cfcfcf;
+  }
 `;

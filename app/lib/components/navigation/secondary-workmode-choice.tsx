@@ -22,6 +22,13 @@ const Title = styled.h6`
   text-align: left;
   color: #cfcfcf;
   cursor: pointer;
+  text-transform: capitalize;
+  margin: 0; // for reset h6 inital margin
+  margin-right: 10px;
+
+  /* &:nth-child(3n) {
+    margin-right: 0;
+  } */
 
   &:hover {
     color: #606060;

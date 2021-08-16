@@ -44,6 +44,7 @@ import {
   WorkmodeScreenTabs,
   PrimaryWorkmodeSelect,
   NavigatorExpansionControlButton,
+  SecondaryWorkmodeMenu,
 } from "../components/navigation";
 import styled from "@emotion/styled";
 
@@ -122,6 +123,44 @@ function WorkmodeSelect(props: {
       </Menu>
     </div>
   );
+}
+
+function DropNav() {
+  const menu = [
+    // {
+    //   id: WorkMode.code,
+    //   name: WorkMode.code,
+    // },
+    // {
+    //   id: WorkMode.design,
+    //   name: WorkMode.design,
+    // },
+    {
+      id: WorkMode.asset,
+      name: WorkMode.asset,
+    },
+    {
+      id: WorkMode.manage,
+      name: WorkMode.manage,
+    },
+    {
+      id: WorkMode.tools,
+      name: WorkMode.tools,
+    },
+    {
+      id: WorkMode.library,
+      name: WorkMode.library,
+    },
+    {
+      id: WorkMode.settings,
+      name: WorkMode.settings,
+    },
+    {
+      id: WorkMode.about,
+      name: WorkMode.about,
+    },
+  ];
+  return <SecondaryWorkmodeMenu menus={menu} onSelect={() => {}} />;
 }
 
 function Screen(props: { screen: WorkScreen }) {
@@ -213,15 +252,23 @@ function TabNavigationApp() {
   return (
     <>
       <Wrapper>
-        <PrimaryWorkmodeSelect
-          selection={workmode}
-          set={workmodeSet}
-          onSelect={on_workmode_select}
-        />
-        <NavigatorExpansionControlButton
-          action={expansion ? "expand" : "close"}
-          onClick={() => setExpansion(!expansion)}
-        />
+        <Column style={{ width: "100%" }}>
+          <Row>
+            <PrimaryWorkmodeSelect
+              selection={workmode}
+              set={workmodeSet}
+              onSelect={on_workmode_select}
+            />
+            <NavigatorExpansionControlButton
+              action={expansion ? "expand" : "close"}
+              onClick={() => setExpansion(!expansion)}
+            />
+          </Row>
+
+          <DropNav />
+        </Column>
+
+        {/* <WorkmodeSelect current={workmode} onSelect={(workmode) => {}} /> */}
       </Wrapper>
 
       {/* LEGACY */}
@@ -289,4 +336,13 @@ function _update_focused_screen_ev(screen: WorkScreen) {
 
 const Wrapper = styled.div`
   display: flex;
+`;
+
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+const Column = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
