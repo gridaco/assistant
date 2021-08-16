@@ -51,6 +51,7 @@ import {
 } from "../components/navigation";
 import styled from "@emotion/styled";
 import { Column, Row } from "../components/style/global-style";
+import { UploadSteps } from "../components/upload-steps";
 
 /** The container of tab content */
 function TabPanel(props: {
@@ -166,7 +167,7 @@ function TabsLayout(props: {
   const handleTabChange = (index: number) => {
     const screen = tabs_as_page_configs[index];
     onChange(index, screen.id);
-    history.push(screen.path);
+    history.replace(screen.path); // since it is a movement between tabs, we don't use push. we use replace to avoid the history stack to be too long.
   };
 
   return (
@@ -275,7 +276,17 @@ export default function App(props: { platform: TargetPlatform }) {
   return (
     <PluginApp platform={props.platform}>
       <BrowserRouter>
-        <TabNavigationApp />
+        {/* # region unique route section */}
+        <Switch>
+          <Route
+            path="/code/uploadsteps/final-upload"
+            component={UploadSteps}
+          />
+          <Route path="/about" component={AboutScreen} />
+          {/* # endregion unique route section */}
+          {/* dynamic route shall be placed at the last point, since it overwrites other routes */}
+          <Route path="/:workmode" component={TabNavigationApp} />
+        </Switch>
       </BrowserRouter>
     </PluginApp>
   );
