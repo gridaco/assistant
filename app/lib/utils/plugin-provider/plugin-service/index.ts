@@ -1,4 +1,5 @@
 import { NS_FILE_ROOT_METADATA } from "../../../constants/ns.constant";
+
 import {
   PLUGIN_SDK_EK_BATCH_META_UPDATE,
   PLUGIN_SDK_EK_DRAG_AND_DROPPED,
@@ -17,8 +18,6 @@ import {
   PUGIN_SDK_EK_REQUEST_UPDATE_MAIN_COMPONENT_META,
   PUGIN_SDK_EK_REQUEST_UPDATE_NODE_META,
   TransportPluginEvent,
-} from "../events";
-import {
   DragAndDropHandlerCallback,
   DragAndDropOnCanvasRequest,
   BatchMetaFetchRequest,
@@ -27,6 +26,7 @@ import {
   NodeMetaUpdateRequest,
   NotifyRequest,
 } from "@plugin-sdk/core";
+
 import { WebStorage, FigmaStorage, IStorage } from "../storage";
 
 // TODO - make it universal

@@ -23,6 +23,7 @@
         "@reflect-ui/lint": "0.0.5-rc",
         "@reflect.bridged.xyz/ui-generator": "0.0.1",
         "@plugin-sdk/core": "0.0.0",
+        "plugin-app": "0.0.0",
         "classnames": "^2.3.1",
         "coli": "0.0.3",
         "copy-to-clipboard": "^3.3.1",

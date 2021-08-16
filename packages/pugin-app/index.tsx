@@ -7,14 +7,14 @@ import {
   PLUGIN_SDK_NS_GENERAL_STATE_DATA,
   PLUGIN_SDK_NS_REMOTE_API,
   TransportPluginEvent,
-} from "../events";
+} from "@plugin-sdk/core/events";
 import { NetworkRequest } from "@plugin-sdk/core";
-import { PluginSdk } from "../plugin-app-sdk";
+import { PluginSdk } from "../../app/lib/utils/plugin-provider/plugin-app-sdk";
 import { currentlySelectedPrimaryNodeId } from "./states/canvas";
 import {
   initializeTargetPlatform,
   TargetPlatform,
-} from "../../plugin-init/init-target-platform";
+} from "../../app/lib/utils/plugin-init/init-target-platform";
 
 export function PluginApp(props: { platform: TargetPlatform; children: any }) {
   useEffect(() => {

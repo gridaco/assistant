@@ -15,8 +15,6 @@ import {
   PLUGIN_SDK_NS_STORAGE,
   PLUGIN_SDK_EK_STORAGE_ALIAS,
   TransportPluginEvent,
-} from "../events";
-import {
   reqid,
   BatchMetaFetchRequest,
   NodeMetaFetchRequest,
