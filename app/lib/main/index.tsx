@@ -1,24 +1,18 @@
 import * as React from "react";
-import { initialize } from "../analytics";
 import "../app.css";
+import { initialize } from "../analytics";
 
 // UI COMPS
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
 import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
 import { EK_SET_APP_MODE } from "../constants/ek.constant";
-import {
-  getWorkspaceTabLayout,
-  WorkScreen,
-  WorkspaceMode,
-} from "../states/app-state";
 import { PluginApp } from "../utils/plugin-provider/pugin-app";
 import BatchMetaEditor from "../pages/tool-box/batch-meta-editor";
-import { Switch, Route, Link, BrowserRouter, Redirect } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
+//
 // region screens import
 import { FontReplacerScreen } from "../pages/tool-box/font-replacer";
 import { ButtonMakerScreen } from "../pages/design/button-maker-screen";
@@ -34,17 +28,33 @@ import { ExporterScreen } from "../pages/tool-box/exporter";
 import { DataMapperScreen } from "../pages/tool-box/data-mapper/data-mapper-screen";
 import { TargetPlatform } from "../utils/plugin-init/init-target-platform";
 import { AboutScreen } from "../pages/about";
-import { UploadSteps } from "../components/upload-steps";
-
 // endregion screens import
+//
 
-interface TabPanelProps {
+import {
+  getWorkmodeTabLayout,
+  get_page_config,
+  WorkMode,
+  WorkScreen,
+  worspaceModeToName,
+  PrimaryWorkmodeSet,
+} from "../navigation";
+
+import {
+  WorkmodeScreenTabs,
+  PrimaryWorkmodeSelect,
+  NavigatorExpansionControlButton,
+  SecondaryWorkmodeMenu,
+} from "../components/navigation";
+import styled from "@emotion/styled";
+import { Column, Row } from "../components/style/global-style";
+
+/** The container of tab content */
+function TabPanel(props: {
   children?: React.ReactNode;
   index: number;
   value: number;
-}
-
-function TabPanel(props: TabPanelProps) {
+}) {
   const { children, value, index, ...other } = props;
 
   return (
@@ -60,341 +70,218 @@ function TabPanel(props: TabPanelProps) {
   );
 }
 
-function a11yProps(index: number) {
-  return {
-    id: `app-tab-${index}`,
-    // 'aria-controls': `tab-${mode}`,
-  };
+function DropNav() {
+  const menu = [
+    // {
+    //   id: WorkMode.code,
+    //   name: WorkMode.code,
+    // },
+    // {
+    //   id: WorkMode.design,
+    //   name: WorkMode.design,
+    // },
+    {
+      id: WorkMode.asset,
+      name: WorkMode.asset,
+    },
+    {
+      id: WorkMode.manage,
+      name: WorkMode.manage,
+    },
+    {
+      id: WorkMode.tools,
+      name: WorkMode.tools,
+    },
+    {
+      id: WorkMode.library,
+      name: WorkMode.library,
+    },
+    {
+      id: WorkMode.settings,
+      name: WorkMode.settings,
+    },
+    {
+      id: WorkMode.about,
+      name: WorkMode.about,
+    },
+  ];
+  return <SecondaryWorkmodeMenu menus={menu} onSelect={() => {}} />;
 }
 
-function workScreenToName(appMode: WorkScreen): string {
-  switch (appMode) {
+function Screen(props: { screen: WorkScreen }) {
+  switch (props.screen) {
     case WorkScreen.about:
-      return "about";
+      return <AboutScreen />;
     case WorkScreen.code:
-      return "code";
-    case WorkScreen.code_flutter:
-      return "flutter";
-    case WorkScreen.code_react:
-      return "react";
+      return <CodeScreen />;
     case WorkScreen.component:
-      return "component";
+      return <ComponentViewScreen />;
     case WorkScreen.layout:
-      return "layout";
-    case WorkScreen.dev:
-      return "tools";
+      return <LayoutViewScreen />;
     case WorkScreen.icon:
-      return "icon";
+      return <IconsScreen />;
     case WorkScreen.lint:
-      return "lint";
-    case WorkScreen.exporter:
-      return "exporter";
+      return <LintScreen />;
+    case WorkScreen.dev:
+      return <ToolboxScreen />;
     case WorkScreen.g11n:
-      return "globalization";
-    case WorkScreen.desing_button_maker:
-      return "button maker";
+      return <GlobalizationScreen />;
+    case WorkScreen.exporter:
+      return <ExporterScreen />;
+    case WorkScreen.tool_desing_button_maker:
+      return <ButtonMakerScreen />;
     case WorkScreen.tool_font_replacer:
-      return "font replacer";
+      return <FontReplacerScreen />;
     case WorkScreen.tool_meta_editor:
-      return "meta datas";
+      return <MetaEditorScreen />;
     case WorkScreen.tool_batch_meta_editor:
-      return "batch meta data";
+      return <BatchMetaEditor />;
     case WorkScreen.tool_data_mapper:
-      return "data mapper";
+      return <DataMapperScreen />;
   }
-  console.warn(`name not found for ${appMode}`);
-  return "N/A";
 }
 
-function worspaceModeToName(workspaceMode: WorkspaceMode): string {
-  switch (workspaceMode) {
-    case WorkspaceMode.code:
-      return "CODE";
-    case WorkspaceMode.design:
-      return "DESIGN";
-    case WorkspaceMode.content:
-      return "CONTENT";
-    case WorkspaceMode.settings:
-      return "ABOUT"; // change to settings after other features are implemented.
-    case WorkspaceMode.toolbox:
-      return "TOOLS";
-  }
-  console.warn(`no name found for workspace mode ${workspaceMode}`);
-  return "N/A";
+function TabsLayout(props: {
+  workmode: WorkMode;
+  tabIndex: number;
+  onChange: (index: number, tab: WorkScreen) => void;
+}) {
+  const { workmode, tabIndex, onChange } = props;
+  const tabLayout = getWorkmodeTabLayout(workmode);
+  const handleTabChange = (index: number) => {
+    const screen = tabLayout[index];
+    onChange(index, screen);
+  };
+
+  const tabs_as_page_configs = tabLayout.map((screen, index) => {
+    const _ = get_page_config(screen);
+    return {
+      id: _.id,
+      name: _.title,
+    };
+  });
+
+  return (
+    <div className="outer-ui">
+      <div className="tabs-wrapper" style={{ margin: "0 -8px" }}>
+        <WorkmodeScreenTabs
+          layout={tabs_as_page_configs}
+          tabIndex={tabIndex}
+          onSelect={handleTabChange}
+        />
+      </div>
+      {tabLayout.map((v, i) => {
+        return (
+          <TabPanel key={i} value={tabIndex} index={i}>
+            <Screen screen={v} />
+          </TabPanel>
+        );
+      })}
+    </div>
+  );
+}
+
+function TabNavigationApp() {
+  const [workmode, setWorkmode] = React.useState<WorkMode>(WorkMode.code);
+  const [workmodeSet, setWorkmodeSet] = React.useState<PrimaryWorkmodeSet>({
+    first: WorkMode.code,
+    second: WorkMode.design,
+  });
+
+  const on_workmode_select = (workmode: WorkMode) => {
+    setWorkmode(workmode);
+  };
+
+  const [tabIndex, setTabIndex] = React.useState<number>(0);
+  const [expansion, setExpansion] = React.useState<boolean>(true);
+
+  return (
+    <>
+      <Wrapper>
+        <Column style={{ width: "100%" }}>
+          <Row>
+            <PrimaryWorkmodeSelect
+              selection={workmode}
+              set={workmodeSet}
+              onSelect={on_workmode_select}
+            />
+            <NavigatorExpansionControlButton
+              action={expansion ? "close" : "expand"}
+              onClick={() => setExpansion(!expansion)}
+            />
+          </Row>
+          {!expansion && <DropNav />}
+        </Column>
+
+        {/* <WorkmodeSelect current={workmode} onSelect={(workmode) => {}} /> */}
+      </Wrapper>
+
+      {/* LEGACY */}
+      {/* <WorkmodeSelect
+        current={workmode}
+        onSelect={(selected) => {
+          // when workspace mode is updated, by default the first index 0 tab will be selected without select event.
+          // explicitly triggering the event.
+          setWorkmode(selected);
+          const newTabLayout = getWorkmodeTabLayout(selected);
+          _update_focused_screen_ev(newTabLayout[0]);
+        }}
+      /> */}
+      {expansion && (
+        <TabsLayout
+          workmode={workmode}
+          tabIndex={tabIndex}
+          onChange={(index, screen) => {
+            _update_focused_screen_ev(screen);
+            setTabIndex(index);
+          }}
+        />
+      )}
+    </>
+  );
+  //
 }
 
 export default function App(props: { platform: TargetPlatform }) {
   React.useEffect(() => {
-    // todo - dynamicallt change initial focused screen. (currently inital setup is not implemented. - initial setup is done by below line.)
-    updateFocusedScreen(WorkScreen.code_flutter);
+    // FIXME: - dynamicallt change initial focused screen. (currently inital setup is not implemented. - initial setup is done by below line.)
+    _update_focused_screen_ev(WorkScreen.code_flutter);
 
     // region init analytics
     try {
       initialize();
     } catch (e) {
-      console.warn("GA disabled", e);
+      console.warn("Analytics disabled", e);
     }
     // endregion init GA
   }, []);
 
-  const [workspaceMode, setWorkspaceMode] = React.useState<WorkspaceMode>(
-    WorkspaceMode.code
-  );
-  const [tabIndex, setTabIndex] = React.useState<number>(0);
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const [isUploading, setIsUploading] = React.useState<boolean>(false);
-
-  const handleOpenWorkspaceModeChangeClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleWorkspaceModeSelect = (e) => {
-    setAnchorEl(null);
-
-    console.log(
-      "workspace mode menu clicked e:",
-      e.target.value as WorkspaceMode
-    );
-    let selected: WorkspaceMode = e.target.value;
-    console.log("newly selected workspace mode is:", selected);
-
-    // when outside of menu is clicked, value is undefined -- so as the selected will be.
-    if (selected === undefined) {
-      selected = workspaceMode;
-    }
-
-    setWorkspaceMode(selected);
-
-    // when workspace mode is updated, by default the first index 0 tab will be selected without select event.
-    // explicitly triggering the event.
-    const newTabLayout = getWorkspaceTabLayout(selected);
-    updateFocusedScreen(newTabLayout[0]);
-  };
-
-  const handleIsUploading = () => {
-    setIsUploading(!isUploading);
-  };
-
-  const updateFocusedScreen = (screen: WorkScreen) => {
-    // notify code.ts that app mode has set.
-    parent.postMessage(
-      {
-        pluginMessage: {
-          type: EK_SET_APP_MODE,
-          data: screen,
-        },
-      },
-      "*"
-    );
-    console.log(
-      `sending back thread about changed screen (user interest) data - "${screen}"`
-    );
-  };
-
-  function makeTabLayout(workspaceMode: WorkspaceMode) {
-    const tabLayout = getWorkspaceTabLayout(workspaceMode);
-    const handleTabChange = (event, index: number) => {
-      const screen = tabLayout[index];
-      updateFocusedScreen(screen);
-      setTabIndex(index);
-    };
-
-    const tabs = (
-      <Tabs
-        value={tabIndex}
-        variant="standard"
-        scrollButtons="off"
-        onChange={handleTabChange}
-        aria-label="primary tab"
-      >
-        {tabLayout.map((v, i) => {
-          return (
-            <Tab
-              key={v}
-              label={workScreenToName(v)}
-              {...a11yProps(i)}
-              style={{ textTransform: "capitalize" }}
-            />
-          );
-        })}
-      </Tabs>
-    );
-
-    const panels = (
-      <>
-        {tabLayout.map((v, i) => {
-          switch (v) {
-            case WorkScreen.about:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <AboutScreen />
-                </TabPanel>
-              );
-            case WorkScreen.code:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <CodeScreen handleIsUploading={handleIsUploading} />
-                </TabPanel>
-              );
-            case WorkScreen.component:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <ComponentViewScreen />
-                </TabPanel>
-              );
-            case WorkScreen.layout:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <LayoutViewScreen />
-                </TabPanel>
-              );
-            case WorkScreen.icon:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <IconsScreen />
-                </TabPanel>
-              );
-            case WorkScreen.lint:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <LintScreen />
-                </TabPanel>
-              );
-            case WorkScreen.dev:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <ToolboxScreen />
-                </TabPanel>
-              );
-            case WorkScreen.g11n:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <GlobalizationScreen />
-                </TabPanel>
-              );
-            case WorkScreen.exporter:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <ExporterScreen />
-                </TabPanel>
-              );
-            case WorkScreen.desing_button_maker:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <ButtonMakerScreen />
-                </TabPanel>
-              );
-            case WorkScreen.tool_font_replacer:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <FontReplacerScreen />
-                </TabPanel>
-              );
-            case WorkScreen.tool_meta_editor:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <MetaEditorScreen />
-                </TabPanel>
-              );
-            case WorkScreen.tool_batch_meta_editor:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <BatchMetaEditor />
-                </TabPanel>
-              );
-            case WorkScreen.tool_data_mapper:
-              return (
-                <TabPanel key={i} value={tabIndex} index={i}>
-                  <DataMapperScreen />
-                </TabPanel>
-              );
-          }
-        })}
-      </>
-    );
-
-    return (
-      <div className="outer-ui">
-        <div className="tabs-wrapper" style={{ margin: "0 -8px" }}>
-          {tabs}
-        </div>
-
-        {panels}
-      </div>
-    );
-  }
-
-  function makeWorkspaceModeSelect() {
-    return (
-      <div>
-        <Button
-          endIcon={<KeyboardArrowDown />}
-          aria-controls="workspace-mode"
-          aria-haspopup="true"
-          onClick={handleOpenWorkspaceModeChangeClick}
-        >
-          {worspaceModeToName(workspaceMode)}
-        </Button>
-        <Menu
-          id="workspace-mode"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleWorkspaceModeSelect}
-          style={{ fontWeight: "bold" }}
-        >
-          <MenuItem
-            onClick={handleWorkspaceModeSelect}
-            value={WorkspaceMode.code}
-          >
-            CODE
-          </MenuItem>
-          <MenuItem
-            onClick={handleWorkspaceModeSelect}
-            value={WorkspaceMode.design}
-          >
-            DESIGN
-          </MenuItem>
-          <MenuItem
-            onClick={handleWorkspaceModeSelect}
-            value={WorkspaceMode.content}
-          >
-            CONTENT
-          </MenuItem>
-          <MenuItem
-            onClick={handleWorkspaceModeSelect}
-            value={WorkspaceMode.toolbox}
-          >
-            TOOLS
-          </MenuItem>
-          <MenuItem
-            onClick={handleWorkspaceModeSelect}
-            value={WorkspaceMode.settings}
-          >
-            ABOUT
-          </MenuItem>
-        </Menu>
-      </div>
-    );
-  }
-
-  const screenLayout = makeTabLayout(workspaceMode);
-  const workspaceModeSelectLayout = makeWorkspaceModeSelect();
-
   return (
     <PluginApp platform={props.platform}>
       <BrowserRouter>
-        {isUploading ? (
-          <UploadSteps />
-        ) : (
-          <>
-            {workspaceModeSelectLayout}
-            {screenLayout}
-          </>
-        )}
+        <TabNavigationApp />
       </BrowserRouter>
     </PluginApp>
   );
 }
+
+function _update_focused_screen_ev(screen: WorkScreen) {
+  // notify code.ts that app mode has set.
+  parent.postMessage(
+    {
+      pluginMessage: {
+        type: EK_SET_APP_MODE,
+        data: screen,
+      },
+    },
+    "*"
+  );
+  console.log(
+    `sending back thread about changed screen (user interest) data - "${screen}"`
+  );
+}
+
+const Wrapper = styled.div`
+  display: flex;
+  padding: 14px 8px;
+`;
