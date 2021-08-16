@@ -8,7 +8,6 @@ import { quickLook } from "../../quicklook";
 
 interface ICodeScreenFooter {
   app?: any;
-  handleIsUploading: () => void;
 }
 
 export function CodeScreenFooter(props: ICodeScreenFooter) {
@@ -41,7 +40,13 @@ export function CodeScreenFooter(props: ICodeScreenFooter) {
       {/* copy feature should be inside the code viewer box with copy icon button.*/}
       {/* <CopyCodeButton onClick={onCopyClicked}>copy code</CopyCodeButton> */}
 
-      <NextStepButton onClick={props.handleIsUploading}>next</NextStepButton>
+      <NextStepButton
+        onClick={() => {
+          // TODO: the button component should be passed from outer side.
+        }}
+      >
+        Next
+      </NextStepButton>
       {props.app && (
         <PreviewButton
           disabled={isLaunchingConsole}

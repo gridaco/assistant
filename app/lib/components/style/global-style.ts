@@ -45,3 +45,12 @@ export const TransparencyButton = css`
     background: rgba(255, 255, 255, 0);
   }
 `;
+
+export const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+export const Column = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
