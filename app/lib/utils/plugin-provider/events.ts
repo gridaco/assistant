@@ -28,6 +28,23 @@ export const PUGIN_SDK_EK_REQUEST_UPDATE_MAIN_COMPONENT_META =
   "assistant/tools/node-meta-editor/update/main-component";
 // endregion meta
 
+// region storage
+export const PLUGIN_SDK_NS_STORAGE = `${PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/storage`;
+export const PLUGIN_SDK_EK_REQUEST_STORAGE_SET_ITEM =
+  "assistant/storage/set-item";
+export const PLUGIN_SDK_EK_REQUEST_STORAGE_GET_ITEM =
+  "assistant/storage/get-item";
+export const PLUGIN_SDK_EK_REQUEST_STORAGE_REMOVE_ITEM =
+  "assistant/storage/remove-item";
+export const PLUGIN_SDK_EK_REQUEST_STORAGE_CLEAR = "assistant/storage/clear";
+export const PLUGIN_SDK_EK_STORAGE_ALIAS = {
+  set: PLUGIN_SDK_EK_REQUEST_STORAGE_SET_ITEM,
+  get: PLUGIN_SDK_EK_REQUEST_STORAGE_GET_ITEM,
+  remove: PLUGIN_SDK_EK_REQUEST_STORAGE_REMOVE_ITEM,
+  clear: PLUGIN_SDK_EK_REQUEST_STORAGE_CLEAR,
+};
+// endregion storage
+
 // region notify
 export const PLUGIN_SDK_NS_NOTIFY_API = `${PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/notify`;
 export const PLUGIN_SDK_EK_SIMPLE_NOTIFY = "notify";

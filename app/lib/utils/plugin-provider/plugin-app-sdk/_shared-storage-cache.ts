@@ -4,6 +4,10 @@ export class _SharedStorageCache {
 
   private __cache: Map<string, any> = new Map();
 
+  hasCache(key: string): boolean {
+    return this.__cache.has(key);
+  }
+
   setCache<T = string>(key: string, value: T) {
     this.__cache.set(key, value);
   }
