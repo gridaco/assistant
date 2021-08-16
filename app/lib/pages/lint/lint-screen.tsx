@@ -180,15 +180,15 @@ export class LintScreen extends React.Component<any, State> {
   }
 
   componentDidMount() {
-    window.addEventListener("message", (ev: MessageEvent) => {
-      const msg = ev.data.pluginMessage;
-      if (msg.type == EK_LINT_FEEDBACK) {
-        const feedbacks = msg.data as Array<ReflectLintFeedback>;
-        this.setState((state, props) => {
-          return { feedbacks: feedbacks };
-        });
-      }
-    });
+    // window.addEventListener("message", (ev: MessageEvent) => {
+    //   const msg = ev.data.pluginMessage;
+    //   if (msg.type == EK_LINT_FEEDBACK) {
+    //     const feedbacks = msg.data as Array<ReflectLintFeedback>;
+    //     this.setState((state, props) => {
+    //       return { feedbacks: feedbacks };
+    //     });
+    //   }
+    // });
   }
 
   onFeedbackTap(feedback: ReflectLintFeedback) {
