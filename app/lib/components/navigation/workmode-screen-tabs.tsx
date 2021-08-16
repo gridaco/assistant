@@ -50,11 +50,7 @@ export function WorkmodeScreenTabs(props: {
     </Tabs>
   );
 
-  return (
-    <div className="tabs-wrapper" style={{ margin: "0 -8px" }}>
-      {tabs}
-    </div>
-  );
+  return <>{tabs}</>;
 }
 
 const StyledTab = styled(Tab)`
@@ -62,6 +58,10 @@ const StyledTab = styled(Tab)`
   text-transform: capitalize !important;
 
   &.root {
+    min-width: fit-content;
+    max-width: fit-content;
+    width: fit-content;
+    padding: 16px;
     font-size: 14px;
     font-weight: 400 !important;
     line-height: 17px;
@@ -69,6 +69,10 @@ const StyledTab = styled(Tab)`
   }
 
   &.selected {
+    min-width: fit-content;
+    max-width: fit-content;
+    width: fit-content;
+    padding: 16px;
     font-size: 14px;
     font-weight: 700 !important;
     line-height: 17px;
