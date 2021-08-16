@@ -6,7 +6,7 @@ import {
   PLUGIN_SDK_EK_REQUEST_FETCH_NODE_META,
   PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META,
   PLUGIN_SDK_EK_SIMPLE_NOTIFY,
-  PLUGIN_SDK_NAMESPACE_BASE_TOKEN,
+  __PLUGIN_SDK_NAMESPACE_BASE_TOKEN,
   PLUGIN_SDK_NS_APP_REQUEST_CUSTOM_ALL,
   PLUGIN_SDK_NS_DRAG_AND_DROP,
   PLUGIN_SDK_NS_META_API,
@@ -106,7 +106,7 @@ export class PluginSdkService {
       return handleInternalEvent(event);
     }
 
-    if (!event.namespace.includes(PLUGIN_SDK_NAMESPACE_BASE_TOKEN)) {
+    if (!event.namespace.includes(__PLUGIN_SDK_NAMESPACE_BASE_TOKEN)) {
       console.warn(
         `the event is passed to PluginSdkServer, but the namespace or structure does not meet the standard interface. the givven event was - `,
         event

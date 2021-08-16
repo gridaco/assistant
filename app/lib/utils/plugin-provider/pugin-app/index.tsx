@@ -2,9 +2,8 @@ import React, { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import Axios from "axios";
 import {
-  PLC_REMOTE_API_REQ,
   PLC_REMOTE_API_RES,
-  PLUGIN_SDK_NAMESPACE_BASE_TOKEN,
+  __PLUGIN_SDK_NAMESPACE_BASE_TOKEN,
   PLUGIN_SDK_NS_GENERAL_STATE_DATA,
   PLUGIN_SDK_NS_REMOTE_API,
   TransportPluginEvent,
@@ -32,7 +31,7 @@ export function PluginApp(props: { platform: TargetPlatform; children: any }) {
         return;
       }
 
-      if (!message.namespace.includes(PLUGIN_SDK_NAMESPACE_BASE_TOKEN)) {
+      if (!message.namespace.includes(__PLUGIN_SDK_NAMESPACE_BASE_TOKEN)) {
         return;
       }
       // endregion validate
