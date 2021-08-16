@@ -1,4 +1,4 @@
-export enum LintColor {
+export enum Level {
   warn = "warn",
   error = "error",
   none = "none",

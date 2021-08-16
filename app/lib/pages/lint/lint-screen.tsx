@@ -6,7 +6,7 @@ import { LintTreeView } from "../../lint";
 import { EK_FOCUS_REQUEST } from "../../constants/ek.constant";
 import styled from "@emotion/styled";
 import { LintLevelIndicator } from "./lint-level-indicator";
-import { LintColor } from "./lint-colors";
+import { Level } from "./lint-colors";
 
 interface State {
   feedbacks: Array<ReflectLintFeedback>;
@@ -209,29 +209,35 @@ export class LintScreen extends React.Component<any, State> {
   }
 
   render() {
+    function ErrorLineItem() {
+      return (
+        <>
+          <ErrorList>
+            {feedbacks.map((item, i) => {
+              return (
+                <List key={i}>
+                  <Label>{item.node.name}</Label>
+                  <LintLevelIndicator color={Level.warn} />
+                </List>
+              );
+            })}
+          </ErrorList>
+        </>
+      );
+    }
+
     // const { feedbacks } = this.state;
     const feedbacks = TestObj;
     return (
       <>
         <Preview data={undefined} name="selected node name" />
-
-        {console.log(feedbacks)}
         <ErrorWrapper>
           <ErrorTitle>{feedbacks.length} Improvements found</ErrorTitle>
           <ErrorComent>
             Across 24 layers, there were <b>4 must-fix errors</b> and 8
             warnings.
           </ErrorComent>
-          <ErrorList>
-            {feedbacks.map((item, i) => {
-              return (
-                <List key={i}>
-                  <Label>{item.node.name}</Label>
-                  <LintLevelIndicator color={LintColor.warn} />
-                </List>
-              );
-            })}
-          </ErrorList>
+          {ErrorLineItem()}
         </ErrorWrapper>
       </>
     );
