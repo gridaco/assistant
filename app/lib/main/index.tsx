@@ -286,6 +286,8 @@ export default function App(props: { platform: TargetPlatform }) {
           {/* # endregion unique route section */}
           {/* dynamic route shall be placed at the last point, since it overwrites other routes */}
           <Route path="/:workmode" component={TabNavigationApp} />
+          <Route path="/" component={TabNavigationApp} />{" "}
+          {/* 👆 this is for preventing blank page on book up. this will be fixed and removed.*/}
         </Switch>
       </BrowserRouter>
     </PluginApp>
