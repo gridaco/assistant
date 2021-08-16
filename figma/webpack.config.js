@@ -6,7 +6,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = (env, argv) => ({
   mode: argv.mode === "production" ? "production" : "development",
-
+  stats: { warnings: false },
   // https://github.com/webpack-contrib/css-loader/issues/447#issuecomment-285598881
   node: {
     fs: "empty",

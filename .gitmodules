@@ -1,18 +1,18 @@
 [submodule "packages/lint"]
 	path = packages/lint
-	url = https://github.com/bridgedxyz/lint
+	url = https://github.com/reflect-ui/design-lint
 [submodule "packages/design-sdk"]
 	path = packages/design-sdk
-	url = https://github.com/bridgedxyz/design-sdk.git
+	url = https://github.com/gridaco/design-sdk
 [submodule "packages/base-sdk"]
 	path = packages/base-sdk
-	url = https://github.com/bridgedxyz/base-sdk-ts
+	url = https://github.com/gridaco/base-sdk
 [submodule "packages/reflect-core"]
 	path = packages/reflect-core
-	url = https://github.com/bridgedxyz/reflect-core-ts.git
+	url = https://github.com/reflect-ui/reflect-core-ts
 [submodule "packages/reflect-ui-generator"]
 	path = packages/reflect-ui-generator
-	url = https://github.com/bridgedxyz/reflect-ui-generator.git
+	url = https://github.com/reflect-ui/reflect-ui-generator
 [submodule "packages/design-to-code"]
 	path = packages/design-to-code
-	url = https://github.com/bridgedxyz/design-to-code
+	url = https://github.com/gridaco/designto-code

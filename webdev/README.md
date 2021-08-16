@@ -1,8 +1,8 @@
-# Bridged Assistant on Web (Webdev)
+# Grida Assistant on Web (Webdev)
+
 > this project is for inspecting and developing the ui package, and running the tests.
 
-
-![bridged assistant running on chrome as webdev](../docs/images/assistant-webdev-example.png)
+![grida assistant running on chrome as webdev](../docs/images/assistant-webdev-example.png)
 
 ## Available Scripts
 

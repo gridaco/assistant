@@ -1,4 +1,4 @@
-import { PluginSdk } from "../plugin-provider/plugin-app-sdk";
+import { PluginSdk } from "@plugin-sdk/app";
 
 /**
  * Target platform this ui runs on. this gloval variable will be set on initial entry on each platform's main ui import

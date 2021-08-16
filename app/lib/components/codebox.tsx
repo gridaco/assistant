@@ -3,120 +3,87 @@ import {
   default as PrismHighlight,
   defaultProps,
   Language,
+  Prism,
 } from "prism-react-renderer";
-import copy from "copy-to-clipboard";
-import "./highlight.css";
-import { assistant as analytics } from "@analytics.bridged.xyz/internal";
+// import Prism from "prism-react-renderer/prism";
+import { useEffect, useState } from "react";
+import styled from "@emotion/styled";
 
-// region custom dart support
-// https://github.com/FormidableLabs/prism-react-renderer/issues/22#issuecomment-553042928
-import Prism from "prism-react-renderer/prism";
-import dartLang from "refractor/lang/dart";
-import { quickLook } from "../quicklook";
-import { Widget } from "@bridged.xyz/flutter-builder";
-import Button from "@material-ui/core/Button";
-import { PluginSdk } from "../utils/plugin-provider/plugin-app-sdk";
-import { IconButton } from "@material-ui/core";
-import { Add } from "@material-ui/icons";
-dartLang(Prism);
-// endregion
-
-interface State {
-  isLaunchingConsole: boolean;
-}
+export type SourceInput = string | { raw: string };
 
 interface Props {
-  language: Language | any;
-  code: string;
-  app?: string;
-  widget?: Widget;
+  language: "dart" | "jsx" | string;
+  code: SourceInput;
+  app?: any;
   codeActions?: Array<JSX.Element>;
 }
 
-export default class CodeBox extends React.Component<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLaunchingConsole: false,
-    };
-  }
+export default function CodeBox(props: Props) {
+  const raw = typeof props.code == "string" ? props.code : props.code.raw;
 
-  onCopyClicked = (e) => {
-    copy(this.props.code);
-    PluginSdk.notifyCopied();
+  useEffect(() => {
+    if (props.language == "dart") {
+      // region custom dart support
+      // https://github.com/FormidableLabs/prism-react-renderer/issues/22#issuecomment-553042928
+      const dartLang = require("refractor/lang/dart");
+      dartLang(Prism);
+      // endregion
+    }
+  }, []);
 
-    // ANALYTICS
-    analytics.event_click_copy_code();
-  };
+  return (
+    <>
+      {/* <CopyCodeButton /> */}
+      <CodeWrapper>
+        {props.codeActions &&
+          props.codeActions.map((e) => {
+            return e;
+          })}
 
-  onQuickLookClicked = (e) => {
-    const setLoadingState = (loading: boolean) => {
-      this.setState((p, s) => {
-        return {
-          isLaunchingConsole: loading,
-        };
-      });
-    };
+        {typeof raw == "string" ? (
+          <PrismCodehighlight code={raw} language={props.language} />
+        ) : (
+          <>Invalid code was givven. cannot display result (this is a bug)</>
+        )}
+      </CodeWrapper>
 
-    setLoadingState(true);
-    quickLook("quicklook", this.props.app)
-      .then((r) => {
-        setLoadingState(false);
-        PluginSdk.notify("quick look ready !");
-      })
-      .catch((e) => {
-        console.error(e);
-        setLoadingState(false);
-        PluginSdk.notify("compile failed. view console for details.", 2);
-      });
-
-    // ANALYTICS
-    analytics.event_click_quicklook();
-  };
-
-  render() {
-    return (
-      <>
-        <code>
-          {this.props.codeActions &&
-            this.props.codeActions.map((e) => {
-              return e;
-            })}
-          <PrismHighlight
-            {...defaultProps}
-            Prism={Prism}
-            code={this.props.code}
-            language={this.props.language}
-          >
-            {({ className, style, tokens, getLineProps, getTokenProps }) => (
-              <pre className={className} style={style}>
-                {tokens.map((line, i) => (
-                  <div {...getLineProps({ line, key: i })}>
-                    {line.map((token, key) => (
-                      <span {...getTokenProps({ token, key })} />
-                    ))}
-                  </div>
-                ))}
-              </pre>
-            )}
-          </PrismHighlight>
-        </code>
-
-        <div className="code-info-wrapper">
-          <Button className="btn-copy-code" onClick={this.onCopyClicked}>
-            copy code
-          </Button>
-          {this.props.app && (
-            <Button
-              className="btn-quick-look"
-              disabled={this.state.isLaunchingConsole}
-              onClick={this.onQuickLookClicked}
-            >
-              {this.state.isLaunchingConsole ? "launching.." : "quick look"}
-            </Button>
-          )}
-        </div>
-      </>
-    );
-  }
+      {/* FIXME: Need to move that wrapper to parent position  */}
+    </>
+  );
 }
+
+function PrismCodehighlight(props: { code: string; language: any | Language }) {
+  return (
+    <PrismHighlight
+      {...defaultProps}
+      Prism={Prism}
+      code={props.code}
+      language={props.language}
+    >
+      {({ className, style, tokens, getLineProps, getTokenProps }) => (
+        <CodeInnerWrapper className={className} style={style}>
+          {tokens.map((line, i) => (
+            <div {...getLineProps({ line, key: i })}>
+              {line.map((token, key) => (
+                <span {...getTokenProps({ token, key })} />
+              ))}
+            </div>
+          ))}
+        </CodeInnerWrapper>
+      )}
+    </PrismHighlight>
+  );
+}
+
+const CodeWrapper = styled.code`
+  width: max-content;
+  height: auto;
+`;
+
+const CodeInnerWrapper = styled.pre`
+  width: 100%;
+  height: 408px;
+  margin: 0 -8px;
+  padding: 8px;
+  /* overflow: scroll; */
+`;

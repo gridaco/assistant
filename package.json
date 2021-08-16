@@ -1,9 +1,9 @@
 {
-	"name": "@bridged.xyz/assistant",
+	"name": "@grida.co/assistant",
 	"version": "0.1.0",
 	"private": true,
 	"license": "https://github.com/bridgedxyz/contributing-and-license",
-	"description": "Bridged assistant mono repository. for figma, sketch, zeplin.",
+	"description": "Grida assistant mono repository. for figma, sketch, zeplin.",
 	"workspaces": {
 		"packages": [
 			"app",
@@ -12,16 +12,19 @@
 			"webdev",
 			"xd",
 			"packages/*",
+			"packages/reflect-core/packages/*",
 			"packages/design-sdk/*",
 			"packages/base-sdk/*",
+			"packages/reflect-core/packages/*",
 			"packages/design-to-code/packages/designto-*",
+			"packages/design-to-code/packages/builder-config",
 			"packages/design-to-code/packages/coli/packages/*",
 			"packages/design-to-code/packages/coli-web-builder/*",
 			"packages/design-to-code/packages/reflect-detection"
 		]
 	},
-	"repository": "https://github.com/bridgedxyz/assistant",
-	"author": "bridged.xyz softmarshmallow <woojoo@softmarshmallow.com>",
+	"repository": "https://github.com/gridaco/assistant",
+	"author": "Grida.co, bridged.xyz softmarshmallow <woojoo@softmarshmallow.com>",
 	"scripts": {
 		"pull:all": "git submodule update --init --recursive",
 		"figma": "yarn workspace figma run webpack:watch",

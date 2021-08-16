@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import reportWebVitals from "./reportWebVitals";
 import App from "app/lib/main";
-import { PluginSdkService } from "app/lib/utils/plugin-provider/plugin-service";
+import { PluginSdkService } from "@plugin-sdk/service";
 import { TargetPlatform } from "app/lib/utils/plugin-init/init-target-platform";
 
 window.addEventListener("message", (rev) => {

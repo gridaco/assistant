@@ -14,9 +14,9 @@ import { withStyles, Select, MenuItem, InputBase } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
 const CONFIG_JSON_S3 =
   "https://reflect-icons.s3-us-west-1.amazonaws.com/all.json";
-import "./icons-loader.css";
 import { Draggable } from "../utils/draggable";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
+import styled from "@emotion/styled";
 
 // cached icons configs
 let CONFIGS: Map<string, IconConfig>;
@@ -130,7 +130,7 @@ function IconSearch(props: {
       },
     },
     input: {
-      fontSize: 16,
+      fontSize: 14,
     },
   }))(InputBase);
 
@@ -157,30 +157,30 @@ function IconSearch(props: {
   };
 
   return (
-    <div className="search-container">
-      <div className="search-bar">
-        <Search />
-        <input
+    <Wrapper>
+      <SearchBar>
+        <Search style={{ fontSize: "20px" }} />
+        <Input
           placeholder="Search with icon name"
           onChange={(e) => props.onChange(e.target.value.toLocaleLowerCase())}
         />
-      </div>
-      <div className="search-container-checker">
-        <div className="type-checker">
-          <Select
-            style={{ width: "100%" }}
+      </SearchBar>
+      <SearchChecker>
+        <TypeCheck>
+          <StyledSelect
+            classes={{ root: "root" }}
             value={iconProperty.variant}
             onChange={(e) => onSelectValue("variant", e.target.value)}
-            input={<BootstrapInput />}
+            input={<BootstrapInput classes={{ root: "root" }} />}
           >
             {iconPropertyList.variant.map((i) => (
               <MenuItem value={i}>{i}</MenuItem>
             ))}
-          </Select>
-        </div>
-        <div className="size-checker">
-          <Select
-            style={{ width: "100%" }}
+          </StyledSelect>
+        </TypeCheck>
+        <SizeCheck>
+          <StyledSelect
+            classes={{ root: "root" }}
             id="demo-customized-select-native"
             value={iconProperty.default_size}
             onChange={(e) => onSelectValue("size", e.target.value)}
@@ -191,10 +191,10 @@ function IconSearch(props: {
                 {i === "Size" ? "Size" : i + " x " + i}
               </MenuItem>
             ))}
-          </Select>
-        </div>
-      </div>
-    </div>
+          </StyledSelect>
+        </SizeCheck>
+      </SearchChecker>
+    </Wrapper>
   );
 }
 
@@ -233,9 +233,9 @@ function IconList(props: { icons: [string, IconConfig][] }) {
           const key = i[0];
           const config = i[1];
           return (
-            <GridListTile className="grid-item" key={key}>
+            <GridItem key={key} classes={{ tile: "tile" }}>
               <IconItem key={key} name={key} config={config} />
-            </GridListTile>
+            </GridItem>
           );
         })}
       </GridList>
@@ -274,7 +274,7 @@ function IconItem(props: { name: string; config: IconConfig }) {
 
   const onClick = () => {
     _onUserLoadIconToCanvas();
-    console.log(name, "clicked");
+    console.log("icon", name, "clicked");
     loadData().then((d) => {
       parent.postMessage(
         {
@@ -303,11 +303,7 @@ function IconItem(props: { name: string; config: IconConfig }) {
           },
         }}
       >
-        <button
-          className="icon-button"
-          onClick={onClick}
-          disabled={downloading}
-        >
+        <IconButton onClick={onClick} disabled={downloading}>
           {downloading ? (
             <CircularProgress size={24} />
           ) : (
@@ -319,8 +315,104 @@ function IconItem(props: { name: string; config: IconConfig }) {
               />
             </svg>
           )}
-        </button>
+        </IconButton>
       </Tooltip>
     </Draggable>
   );
 }
+
+const Wrapper = styled.div`
+  padding-top: 14px;
+  padding-bottom: 15px;
+  position: relative;
+`;
+
+const SearchBar = styled.div`
+  width: 100%;
+  font-size: 14px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+
+  svg {
+    margin: 10px;
+    margin-left: 8px;
+    font-size: 20px;
+  }
+`;
+
+const Input = styled.input`
+  width: 100%;
+  height: 90%;
+  border: none;
+  outline: none;
+
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  color: #adaeb2;
+`;
+
+const SearchChecker = styled.div`
+  height: 55px;
+  width: 100%;
+  display: flex;
+`;
+
+const TypeCheck = styled.div`
+  flex: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0px 16px;
+`;
+
+const StyledSelect = styled(Select)`
+  width: 100% !important;
+  &.root {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 17px;
+  }
+`;
+
+const SizeCheck = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 0px 16px;
+`;
+
+const GridItem = styled(GridListTile)`
+  height: 70px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.tile {
+    height: auto;
+  }
+`;
+
+const IconButton = styled.button`
+  background-color: #fff;
+  border: none;
+  height: 48px !important;
+  width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: #eeeeee;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.25s;
+  }
+`;

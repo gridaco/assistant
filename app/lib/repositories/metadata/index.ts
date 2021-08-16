@@ -1,10 +1,10 @@
-import { ASSISTANT_PLUGIN_NAMESPACE } from "../../constants";
+import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "../../constants";
 import { MetaDataMockDataProvider } from "../../mock";
 import {
   TargetPlatform,
   TARGET_PLATFORM,
 } from "../../utils/plugin-init/init-target-platform";
-import { PluginSdk } from "../../utils/plugin-provider/plugin-app-sdk";
+import { PluginSdk } from "@plugin-sdk/app";
 
 export class MetaDataRepositoryFactory {
   static layer(layer: string) {
@@ -28,7 +28,7 @@ export abstract class MetaDataRepository<T = any> {
       case TargetPlatform.figma:
         return await PluginSdk.fetchMetadata({
           id: this.id,
-          namespace: ASSISTANT_PLUGIN_NAMESPACE,
+          namespace: ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE,
           key: this.key,
         });
 
@@ -43,7 +43,7 @@ export abstract class MetaDataRepository<T = any> {
       case TargetPlatform.figma:
         return await PluginSdk.updateMetadata({
           id: this.id,
-          namespace: ASSISTANT_PLUGIN_NAMESPACE,
+          namespace: ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE,
           key: this.key,
           value: data,
         });
@@ -59,7 +59,11 @@ export abstract class MetaDataRepository<T = any> {
       case TargetPlatform.figma:
         const data = figma
           .getNodeById(this.id)
-          .setSharedPluginData(ASSISTANT_PLUGIN_NAMESPACE, this.key, undefined);
+          .setSharedPluginData(
+            ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE,
+            this.key,
+            undefined
+          );
       case TargetPlatform.webdev:
         console.log("data cleared (mocked)");
     }
