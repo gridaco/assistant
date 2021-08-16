@@ -4,7 +4,7 @@ import {
   TargetPlatform,
   TARGET_PLATFORM,
 } from "../../utils/plugin-init/init-target-platform";
-import { PluginSdk } from "../../utils/plugin-provider/plugin-app-sdk";
+import { PluginSdk } from "@plugin-sdk/app";
 
 export class MetaDataRepositoryFactory {
   static layer(layer: string) {
