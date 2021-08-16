@@ -3,10 +3,6 @@ import "../app.css";
 import { initialize } from "../analytics";
 
 // UI COMPS
-import Button from "@material-ui/core/Button";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
 import { EK_SET_APP_MODE } from "../constants/ek.constant";
 import { PluginApp } from "plugin-app";
 import BatchMetaEditor from "../pages/tool-box/batch-meta-editor";
