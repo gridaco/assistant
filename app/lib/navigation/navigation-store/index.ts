@@ -1,3 +1,4 @@
+import { PluginSdk } from "@plugin-sdk/app";
 import { PrimaryWorkmodeSet } from "../primary-workmode-selector";
 import { WorkMode } from "../work-mode";
 import { WorkScreen } from "../work-screen";
@@ -10,13 +11,9 @@ export interface NavigationStoreState {
 
 const __KEY = "app-navigation-full-layout";
 export async function saveLayout(state: NavigationStoreState) {
-  const payload = JSON.stringify(state);
-
-  // save payload
-  //
+  PluginSdk.setItem<NavigationStoreState>(__KEY, state);
 }
 
 export async function loadLayout(): Promise<NavigationStoreState> {
-  const payload = await localStorage.getItem(__KEY);
-  return JSON.parse(payload);
+  return PluginSdk.getItem<NavigationStoreState>(__KEY);
 }
