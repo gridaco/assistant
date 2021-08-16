@@ -1,6 +1,6 @@
-export const PLUGIN_SDK_NAMESPACE_BASE_TOKEN = "bridged";
-export const PLUGIN_SDK_NS_RESPONSE_ALL = "bridged/response/*";
-export const PLUGIN_SDK_NS_APP_REQUEST_CUSTOM_ALL = "bridged/app/request/*";
+export const PLUGIN_SDK_NAMESPACE_BASE_TOKEN = "grida";
+export const PLUGIN_SDK_NS_RESPONSE_ALL = "grida/response/*";
+export const PLUGIN_SDK_NS_APP_REQUEST_CUSTOM_ALL = "grida/app/request/*";
 export const PLC_REMOTE_API_REQ = "pugin-consumer/remote-api/request";
 export const PLC_REMOTE_API_RES = "pugin-consumer/remote-api/response";
 export const PLUGIN_SDK_NS_REMOTE_API = `${PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/remote-api`;
