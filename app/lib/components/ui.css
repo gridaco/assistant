@@ -60,12 +60,12 @@ button:focus {
 
 /* Plugin specific styles */
 
-body {
+/* body {
   font: 11px sans-serif;
   font-family: system-ui;
   margin: 0;
   overflow: hidden;
-}
+} */
 
 #create {
   box-shadow: none;

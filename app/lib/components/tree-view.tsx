@@ -1,5 +1,4 @@
 import * as React from "react";
-import "./ui.css";
 
 export function TreeView(props) {
   const { onClick } = props;
