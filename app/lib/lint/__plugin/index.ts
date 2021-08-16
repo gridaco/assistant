@@ -1,20 +1,8 @@
-// onService(main_cb);
+import { onService, D } from "./events";
 
-// // main callback
-// function main_cb(evt: _Event_DataMapper_GoodUserInputTransfer) {
-//   const datasourceNode = Figma.figma.getNodeById(
-//     evt.sourceNodeId
-//   ) as Figma.SceneNode;
-//   const targets = evt.targetNodesId.map((id) => Figma.figma.getNodeById(id));
-//   const data = extractDataFromDataSourceNode(datasourceNode);
+onService(main_cb);
 
-//   targets.forEach((target) => {
-//     if ("children" in target) {
-//       mapDataToSelection(target as Figma.SceneNode, data);
-//     } else {
-//       PluginSdk.notify(
-//         "ignoring since one of the selection is not a type of frame or group"
-//       );
-//     }
-//   });
-// }
+// main callback
+function main_cb(evt: D) {
+  // to logic
+}
