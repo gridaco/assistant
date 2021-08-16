@@ -12,6 +12,7 @@ export interface WorkmodeConfig {
 export interface PageConfig {
   id: WorkScreen;
   title: string;
+  path: string;
 }
 
 ///
@@ -21,73 +22,90 @@ export interface PageConfig {
 const page_code_preview: PageConfig = {
   id: WorkScreen.code,
   title: "Preview",
+  path: "/code/preview",
 };
 
 const page_code_layout: PageConfig = {
   id: WorkScreen.layout,
   title: "Layout",
+  path: "/code/layout",
 };
 
 const page_code_component: PageConfig = {
   id: WorkScreen.component,
   title: "Component",
+  path: "/code/component",
 };
 
 const page_code_lint: PageConfig = {
   id: WorkScreen.lint,
   title: "Lint",
+  path: "/code/lint",
 };
 
 const page_design_icon: PageConfig = {
   id: WorkScreen.icon,
   title: "Icon",
+  path: "/design/icons",
 };
 
 const page_design_layout: PageConfig = {
   id: WorkScreen.layout,
   title: "Layout",
+  path: "/design/layout",
 };
 
 const page_design_lint: PageConfig = {
   id: WorkScreen.lint,
   title: "Lint",
+  path: "/design/lint",
 };
 
 const page_content_g11n: PageConfig = {
   id: WorkScreen.g11n,
   title: "Globalize",
+  path: "/content/globalize",
 };
 
 const page_about: PageConfig = {
   id: WorkScreen.about,
   title: "About",
+  path: "/about",
 };
 
 const page_toolbox_font_replacer: PageConfig = {
   id: WorkScreen.tool_font_replacer,
-  title: "About",
+  title: "Font replacer",
+  path: "/toolbox/font-replacer",
 };
 
 const page_toolbox_desing_button_maker: PageConfig = {
   id: WorkScreen.tool_desing_button_maker,
   title: "Button Maker",
+  path: "/toolbox/button-maker",
 };
 
 const page_toolbox_meta_editor: PageConfig = {
   id: WorkScreen.tool_meta_editor,
   title: "Meta",
+  path: "/toolbox/meta-editor",
 };
 
 const page_toolbox_batch_meta_editor: PageConfig = {
   id: WorkScreen.tool_batch_meta_editor,
   title: "Batch Meta",
+  path: "/toolbox/batch-meta-editor",
 };
 
 const page_toolbox_data_mapper: PageConfig = {
   id: WorkScreen.tool_data_mapper,
   title: "Data mapper",
+  path: "/toolbox/data-mapper",
 };
 
+/**
+ * list of all pages
+ */
 const all_pages: PageConfig[] = [
   page_toolbox_data_mapper,
   page_toolbox_batch_meta_editor,

@@ -6,7 +6,14 @@ import { initialize } from "../analytics";
 import { EK_SET_APP_MODE } from "../constants/ek.constant";
 import { PluginApp } from "plugin-app";
 import BatchMetaEditor from "../pages/tool-box/batch-meta-editor";
-import { BrowserRouter } from "react-router-dom";
+import {
+  useHistory,
+  Switch,
+  Route,
+  Link,
+  BrowserRouter,
+  Redirect,
+} from "react-router-dom";
 
 //
 // region screens import
@@ -143,20 +150,24 @@ function TabsLayout(props: {
   isTabVisible: boolean;
   onChange: (index: number, tab: WorkScreen) => void;
 }) {
+  const history = useHistory();
   const { workmode, tabIndex, onChange } = props;
-  const tabLayout = getWorkmodeTabLayout(workmode);
-  const handleTabChange = (index: number) => {
-    const screen = tabLayout[index];
-    onChange(index, screen);
-  };
+  const tabs_as_page_configs = getWorkmodeTabLayout(workmode).map(
+    (screen, index) => {
+      const _ = get_page_config(screen);
+      return {
+        id: _.id,
+        name: _.title,
+        path: _.path,
+      };
+    }
+  );
 
-  const tabs_as_page_configs = tabLayout.map((screen, index) => {
-    const _ = get_page_config(screen);
-    return {
-      id: _.id,
-      name: _.title,
-    };
-  });
+  const handleTabChange = (index: number) => {
+    const screen = tabs_as_page_configs[index];
+    onChange(index, screen.id);
+    history.push(screen.path);
+  };
 
   return (
     <div className="outer-ui">
@@ -170,13 +181,17 @@ function TabsLayout(props: {
         </div>
       )}
 
-      {tabLayout.map((v, i) => {
-        return (
-          <TabPanel key={i} value={tabIndex} index={i}>
-            <Screen screen={v} />
-          </TabPanel>
-        );
-      })}
+      <Switch>
+        {/* <Route path={allTabs[2]} render={() => <div>Tab 3</div>} /> */}
+        {/* <Route path={allTabs[0]} render={() => <div>Tab 1</div>} /> */}
+        {tabs_as_page_configs.map((v, i) => {
+          return (
+            // <TabPanel key={i} value={tabIndex} index={i}>
+            <Route path={v.path} render={() => <Screen screen={v.id} />} />
+            // </TabPanel>
+          );
+        })}
+      </Switch>
     </div>
   );
 }
