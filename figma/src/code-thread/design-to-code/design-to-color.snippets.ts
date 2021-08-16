@@ -2,7 +2,7 @@
 // --------------------FLUTTER---------------------
 // ------------------------------------------------
 
-import { Color } from "@reflect-ui/core";
+import { Color, ColorFormat, convert_colors } from "@reflect-ui/core";
 
 /**
  * desired output:
@@ -11,7 +11,11 @@ import { Color } from "@reflect-ui/core";
  * 2. `new Color(0xFFFFFF)` - hex color if named color is not available
  * 3. `Theme.of(context).colorScheme.error` via extension - [reference](https://crizantlai.medium.com/flutter-how-to-extend-themedata-b5b987a95bb5)
  */
-export function makeFlutterColorSnippets() {
+export function makeFlutterColorSnippets(): string[] {
+  const _1_named_color_snippet = "";
+  const _2_hex_color_snippet = "";
+  const _3_theme_color_snippet = "";
+  return [_1_named_color_snippet, _2_hex_color_snippet, _3_theme_color_snippet];
   //
 }
 
@@ -37,7 +41,22 @@ interface FlutterExtendedColorScheme_SingleColorRepresentation {
  * ```
  *
  */
-export function makeFlutterColorschemeExtensionDeclarationSnippet() {
+export function makeFlutterColorschemeExtensionDeclarationSnippet(prop: {
+  seed: FlutterExtendedColorScheme_SingleColorRepresentation;
+}): string {
+  const { seed } = prop;
+  const color_as_hex = convert_colors.convertReflectColorToUniversal(
+    seed.color,
+    ColorFormat.hex8
+  );
+  return `///
+/// this is the extension of the color scheme. this is required to extend your theme.
+///
+extension ${seed.customColorSchemeName} on ColorScheme {
+    // ...
+    Color get ${seed.name} => const Color(0x${color_as_hex});
+    // ...
+}`;
   //
 }
 
@@ -48,8 +67,11 @@ export function makeFlutterColorschemeExtensionDeclarationSnippet() {
  * Theme.of(context).colorScheme.success
  * ```
  */
-export function makeFlutterColorschemeExtensionUsageSnippet() {
-  ///
+export function makeFlutterColorschemeExtensionUsageSnippet(props: {
+  seed: { name: string };
+}) {
+  return `Theme.of(context).colorScheme.${props.seed.name};
+`;
 }
 // ------------------------------------------------
 // --------------------FLUTTER---------------------
