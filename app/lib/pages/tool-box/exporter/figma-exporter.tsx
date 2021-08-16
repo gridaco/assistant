@@ -3,7 +3,7 @@ import * as FigmaApi from "figma-js";
 import { Button, LinearProgress, TextField, Tooltip } from "@material-ui/core";
 import { useSingleSelection } from "../../../utils/plugin-hooks";
 import { parseFileId } from "@design-sdk/figma-url";
-import { PluginSdk } from "../../../utils/plugin-provider/plugin-app-sdk";
+import { PluginSdk } from "@plugin-sdk/app";
 import { downloadFile } from "./export-utils";
 
 const _maybetoken = process.env.FIGMA_PERSONAL_ACCESS_TOKEN;

@@ -12,19 +12,27 @@ import {
   PLUGIN_SDK_NS_NOTIFY_API,
   PUGIN_SDK_EK_REQUEST_UPDATE_MAIN_COMPONENT_META,
   PUGIN_SDK_EK_REQUEST_UPDATE_NODE_META,
+  PLUGIN_SDK_NS_STORAGE,
+  PLUGIN_SDK_EK_STORAGE_ALIAS,
   TransportPluginEvent,
-} from "../events";
-import {
+  reqid,
   BatchMetaFetchRequest,
   NodeMetaFetchRequest,
   NodeMetaUpdateRequest,
-} from "../interfaces/meta/meta.requests";
-import { NotifyRequest } from "../interfaces/notify/notify.requests";
-import { DragAndDropOnCanvasRequest } from "../interfaces/dragdrop/dragdrop.requests";
+  StorageSetItemRequest,
+  StorageGetItemRequest,
+  StorageGetItemResponse,
+  NotifyRequest,
+  DragAndDropOnCanvasRequest,
+} from "@plugin-sdk/core";
 import type { ReflectSceneNode } from "@design-sdk/core/nodes";
-import { reqid } from "../_id";
-import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "../../../constants";
+import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "../../app/lib/constants";
 
+import { _SharedStorageCache } from "./_shared-storage-cache";
+
+const __main_plugin_sdk_instance_storage_cache = new _SharedStorageCache(
+  "co.grida.assistant"
+);
 export class PluginSdk {
   static window: Window;
   static initializeWindow(window: Window) {
@@ -65,8 +73,51 @@ export class PluginSdk {
     throw "not implmtd";
   }
 
-  // endregion networ api
+  // endregion network api
 
+  //
+  // region storage api
+  static setItem<T = string>(key: string, value: T) {
+    __main_plugin_sdk_instance_storage_cache.setCache(
+      key,
+      value
+    ); /* 1. set cache */
+
+    /* 2. send set request */
+    this.request({
+      namespace: PLUGIN_SDK_NS_STORAGE,
+      key: PLUGIN_SDK_EK_STORAGE_ALIAS.set,
+      data: <StorageSetItemRequest<T>>{
+        key: key,
+        value: value,
+      },
+    }).finally(() => {
+      __main_plugin_sdk_instance_storage_cache.removeCache(
+        key
+      ); /* 3. remove cache after saving complete */
+    });
+  }
+
+  static async getItem<T = string>(key: string): Promise<T> {
+    const _has_cached = __main_plugin_sdk_instance_storage_cache.hasCache(key);
+    if (_has_cached) {
+      return __main_plugin_sdk_instance_storage_cache.getCache<T>(key);
+    } else {
+      const _resp = await this.request<StorageGetItemResponse<T>>({
+        namespace: PLUGIN_SDK_NS_STORAGE,
+        key: PLUGIN_SDK_EK_STORAGE_ALIAS.get,
+        data: <StorageGetItemRequest<T>>{
+          key: key,
+        },
+      });
+      return _resp.value;
+    }
+  }
+
+  // endregion storage api
+  //
+
+  //
   // region metadata
   static updateMetadata(request: NodeMetaUpdateRequest) {
     return this.request({
@@ -77,9 +128,9 @@ export class PluginSdk {
   }
 
   /**
-   * fetches the metadata with bridged default namespace provided.
+   * fetches the metadata with grida default namespace provided.
    */
-  static async fetchMetadata_bridged<T = any>(
+  static async fetchMetadata_grida<T = any>(
     on: string,
     key: string
   ): Promise<T> {

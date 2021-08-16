@@ -2,20 +2,19 @@ import React, { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import Axios from "axios";
 import {
-  PLC_REMOTE_API_REQ,
   PLC_REMOTE_API_RES,
-  PLUGIN_SDK_NAMESPACE_BASE_TOKEN,
+  __PLUGIN_SDK_NAMESPACE_BASE_TOKEN,
   PLUGIN_SDK_NS_GENERAL_STATE_DATA,
   PLUGIN_SDK_NS_REMOTE_API,
   TransportPluginEvent,
-} from "../events";
-import { NetworkRequest } from "../interfaces/remote-api/remote-api.requests";
-import { PluginSdk } from "../plugin-app-sdk";
+} from "@plugin-sdk/core/events";
+import { NetworkRequest } from "@plugin-sdk/core";
+import { PluginSdk } from "@plugin-sdk/app";
 import { currentlySelectedPrimaryNodeId } from "./states/canvas";
 import {
   initializeTargetPlatform,
   TargetPlatform,
-} from "../../plugin-init/init-target-platform";
+} from "../../app/lib/utils/plugin-init/init-target-platform";
 
 export function PluginApp(props: { platform: TargetPlatform; children: any }) {
   useEffect(() => {
@@ -32,7 +31,7 @@ export function PluginApp(props: { platform: TargetPlatform; children: any }) {
         return;
       }
 
-      if (!message.namespace.includes(PLUGIN_SDK_NAMESPACE_BASE_TOKEN)) {
+      if (!message.namespace.includes(__PLUGIN_SDK_NAMESPACE_BASE_TOKEN)) {
         return;
       }
       // endregion validate

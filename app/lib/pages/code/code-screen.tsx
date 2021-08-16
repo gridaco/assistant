@@ -17,7 +17,7 @@ import styled from "@emotion/styled";
 import { make_empty_selection_state_text_content } from "./constants";
 import { format } from "./formatter";
 import copy from "copy-to-clipboard";
-import { PluginSdk } from "../../utils/plugin-provider/plugin-app-sdk";
+import { PluginSdk } from "@plugin-sdk/app";
 import { CodeScreenFooter } from "./code-screen-footer";
 import { WorkScreen } from "../../navigation";
 import { CodeScreenControl } from "./code-screen-control";

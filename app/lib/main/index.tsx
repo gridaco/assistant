@@ -8,7 +8,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
 import { EK_SET_APP_MODE } from "../constants/ek.constant";
-import { PluginApp } from "../utils/plugin-provider/pugin-app";
+import { PluginApp } from "plugin-app";
 import BatchMetaEditor from "../pages/tool-box/batch-meta-editor";
 import { BrowserRouter } from "react-router-dom";
 
