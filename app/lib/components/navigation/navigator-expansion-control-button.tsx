@@ -1,16 +1,24 @@
 import React from "react";
-
+import ArrowDown from "@material-ui/icons/ArrowDownward";
+import ArrowUpward from "@material-ui/icons/ArrowUpward";
 export function NavigatorExpansionControlButton(props: {
   action: "expand" | "close";
   onClick: () => void;
 }) {
-  // TODO: add icon
   const icon = () => {
     switch (props.action) {
       case "expand":
-        return <>^</>;
+        return (
+          <>
+            <ArrowUpward />
+          </>
+        );
       case "close":
-        return <>{"<"}</>;
+        return (
+          <>
+            <ArrowDown />
+          </>
+        );
     }
   };
 
