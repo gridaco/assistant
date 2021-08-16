@@ -144,6 +144,7 @@ function Screen(props: { screen: WorkScreen }) {
 function TabsLayout(props: {
   workmode: WorkMode;
   tabIndex: number;
+  isTabVisible: boolean;
   onChange: (index: number, tab: WorkScreen) => void;
 }) {
   const { workmode, tabIndex, onChange } = props;
@@ -163,13 +164,16 @@ function TabsLayout(props: {
 
   return (
     <div className="outer-ui">
-      <div className="tabs-wrapper" style={{ margin: "0 -8px" }}>
-        <WorkmodeScreenTabs
-          layout={tabs_as_page_configs}
-          tabIndex={tabIndex}
-          onSelect={handleTabChange}
-        />
-      </div>
+      {props.isTabVisible && (
+        <div className="tabs-wrapper" style={{ margin: "0 -8px" }}>
+          <WorkmodeScreenTabs
+            layout={tabs_as_page_configs}
+            tabIndex={tabIndex}
+            onSelect={handleTabChange}
+          />
+        </div>
+      )}
+
       {tabLayout.map((v, i) => {
         return (
           <TabPanel key={i} value={tabIndex} index={i}>
@@ -227,16 +231,17 @@ function TabNavigationApp() {
           _update_focused_screen_ev(newTabLayout[0]);
         }}
       /> */}
-      {expansion && (
-        <TabsLayout
-          workmode={workmode}
-          tabIndex={tabIndex}
-          onChange={(index, screen) => {
-            _update_focused_screen_ev(screen);
-            setTabIndex(index);
-          }}
-        />
-      )}
+      {/* {expansion && ( */}
+      <TabsLayout
+        workmode={workmode}
+        tabIndex={tabIndex}
+        isTabVisible={expansion}
+        onChange={(index, screen) => {
+          _update_focused_screen_ev(screen);
+          setTabIndex(index);
+        }}
+      />
+      {/* )} */}
     </>
   );
   //
