@@ -12,11 +12,14 @@ interface Props {
 }
 
 export function LintErrorIcon(props: Props) {
-  const MdiTextureIcon = require("./assets/mdi-texture.svg") as string;
+  const MdiTextureIcon =
+    require("../../../lib/components/assets/mdi-texture.svg") as string;
   const ColorErrorIcon =
-    require("./assets/missing-color-style-error.svg") as string;
-  const TextErrorIcon = require("./assets/missing-text.svg") as string;
-  const NameErrorIcon = require("./assets/name-error.svg") as string;
+    require("../../../lib/components/assets/missing-color-style-error.svg") as string;
+  const TextErrorIcon =
+    require("../../../lib/components/assets/missing-text.svg") as string;
+  const NameErrorIcon =
+    require("../../../lib/components/assets/name-error.svg") as string;
 
   switch (props.id) {
     case LintError.text:
