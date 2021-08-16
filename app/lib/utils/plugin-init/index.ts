@@ -1,2 +1,2 @@
 // DO NOT REMOVE THIS LINE
-import "../../pages/tool-box/data-mapper/__code";
+import "../../pages/tool-box/data-mapper/__plugin";
