@@ -2,7 +2,7 @@ import { Button, Typography } from "@material-ui/core";
 import { ReflectLintFeedback } from "@reflect-ui/lint/lib/feedbacks";
 import * as React from "react";
 import { Preview } from "../components/preview";
-import { TreeView } from "../components/tree-view";
+import { LintTreeView } from "../lint";
 import { EK_FOCUS_REQUEST, EK_LINT_FEEDBACK } from "../constants/ek.constant";
 
 interface State {
@@ -54,7 +54,7 @@ export class LintScreen extends React.Component<any, State> {
         <Preview data={undefined} name="selected node name" />
         <ul>
           <h1>hi</h1>
-          <TreeView
+          <LintTreeView
             ignoredErrorArray={[]}
             // activeNodeIds={props.activeNodeIds}
             // selectedListItems={props.selectedListItems}

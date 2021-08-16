@@ -1,6 +1,6 @@
 import * as React from "react";
 
-export function TreeView(props) {
+export function LintTreeView(props) {
   const { onClick } = props;
   const node = props.node;
   let childNodes = null;
@@ -22,7 +22,7 @@ export function TreeView(props) {
     let reversedArray = node.children.slice().reverse();
     childNodes = reversedArray.map(function (childNode) {
       return (
-        <TreeView
+        <LintTreeView
           ignoredErrorArray={[]}
           // activeNodeIds={props.activeNodeIds}
           // selectedListItems={props.selectedListItems}
