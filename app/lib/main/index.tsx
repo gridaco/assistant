@@ -43,7 +43,9 @@ import {
 import {
   WorkmodeScreenTabs,
   PrimaryWorkmodeSelect,
+  NavigatorExpansionControlButton,
 } from "../components/navigation";
+import styled from "@emotion/styled";
 
 /** The container of tab content */
 function TabPanel(props: {
@@ -206,14 +208,21 @@ function TabNavigationApp() {
   };
 
   const [tabIndex, setTabIndex] = React.useState<number>(0);
+  const [expansion, setExpansion] = React.useState<boolean>(true);
 
   return (
     <>
-      <PrimaryWorkmodeSelect
-        selection={workmode}
-        set={workmodeSet}
-        onSelect={on_workmode_select}
-      />
+      <Wrapper>
+        <PrimaryWorkmodeSelect
+          selection={workmode}
+          set={workmodeSet}
+          onSelect={on_workmode_select}
+        />
+        <NavigatorExpansionControlButton
+          action={expansion ? "expand" : "close"}
+          onClick={() => setExpansion(!expansion)}
+        />
+      </Wrapper>
 
       {/* LEGACY */}
       {/* <WorkmodeSelect
@@ -277,3 +286,7 @@ function _update_focused_screen_ev(screen: WorkScreen) {
     `sending back thread about changed screen (user interest) data - "${screen}"`
   );
 }
+
+const Wrapper = styled.div`
+  display: flex;
+`;

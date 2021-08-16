@@ -13,7 +13,7 @@ export function PrimaryWorkmodeSelect(props: {
   };
 
   return (
-    <Wrapper>
+    <>
       <WorkmodeButton
         name={props.set.first}
         active={_is_active(props.set.first)}
@@ -28,7 +28,7 @@ export function PrimaryWorkmodeSelect(props: {
           props.onSelect(props.set.second);
         }}
       />
-    </Wrapper>
+    </>
   );
 }
 
@@ -48,10 +48,6 @@ function WorkmodeButton(props: {
 interface Props {
   active: boolean;
 }
-
-const Wrapper = styled.div`
-  display: flex;
-`;
 
 const WorkmodeLabel = styled.h3<Props>`
   display: flex;

@@ -1,6 +1,8 @@
 import React from "react";
-import ArrowDown from "@material-ui/icons/ArrowDownward";
-import ArrowUpward from "@material-ui/icons/ArrowUpward";
+import ExpandLessIcon from "@material-ui/icons/ExpandLess";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import styled from "@emotion/styled";
+
 export function NavigatorExpansionControlButton(props: {
   action: "expand" | "close";
   onClick: () => void;
@@ -10,17 +12,24 @@ export function NavigatorExpansionControlButton(props: {
       case "expand":
         return (
           <>
-            <ArrowUpward />
+            <ExpandLessIcon />
           </>
         );
       case "close":
         return (
           <>
-            <ArrowDown />
+            <ExpandMoreIcon />
           </>
         );
     }
   };
 
-  return <div onClick={props.onClick}>{icon}</div>;
+  return <Button onClick={props.onClick}>{icon()}</Button>;
 }
+
+const Button = styled.div`
+  cursor: pointer;
+  align-items: center;
+  display: flex;
+  margin-left: auto;
+`;
