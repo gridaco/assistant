@@ -1,5 +1,5 @@
 import { PluginSdk } from "@plugin-sdk/app";
-import { PluginSdkService } from "../../../utils/plugin-provider/plugin-service";
+import { PluginSdkService } from "@plugin-sdk/service";
 
 const EVKEY = "data-mapper-custom-transport";
 export interface _Event_DataMapper_GoodUserInputTransfer {

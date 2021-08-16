@@ -1,4 +1,4 @@
-import { NS_FILE_ROOT_METADATA } from "../../../constants/ns.constant";
+import { NS_FILE_ROOT_METADATA } from "app/lib/constants/ns.constant";
 
 import {
   PLUGIN_SDK_EK_BATCH_META_UPDATE,
@@ -35,11 +35,11 @@ import {
   __syncTargetPlatformForCodeThread,
   TargetPlatform,
   TARGET_PLATFORM,
-} from "../../plugin-init/init-target-platform";
+} from "../../app/lib/utils/plugin-init/init-target-platform";
 import {
   StorageGetItemResponse,
   StorageRequest,
-} from "../../../../../packages/plugin-sdk-core/interfaces/storage";
+} from "../plugin-sdk-core/interfaces/storage";
 interface HanderProps<T = any> {
   id: string;
   key: string;

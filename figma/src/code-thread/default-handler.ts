@@ -1,6 +1,6 @@
 import { addMessageHandler } from "./message-handler";
 import { EK_FOCUS_REQUEST } from "app/lib/constants/ek.constant";
-import { PluginSdkService } from "app/lib/utils/plugin-provider/plugin-service";
+import { PluginSdkService } from "@plugin-sdk/service";
 
 const defaultMessageHandler = async (
   msg: { type: string; data: any } | any
