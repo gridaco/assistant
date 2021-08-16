@@ -322,16 +322,14 @@ function IconItem(props: { name: string; config: IconConfig }) {
 }
 
 const Wrapper = styled.div`
-  margin-top: 5px;
+  padding-top: 14px;
+  padding-bottom: 15px;
   position: relative;
 `;
 
 const SearchBar = styled.div`
   width: 100%;
-  border-top: 1px solid #dadadc;
-  border-right: 1px solid #dadadc;
   font-size: 14px;
-  border-left: 1px solid #dadadc;
   height: 55px;
   display: flex;
   align-items: center;
@@ -351,13 +349,11 @@ const Input = styled.input`
 const SearchChecker = styled.div`
   height: 55px;
   width: 100%;
-  border: 1px solid #dadadc;
   display: flex;
 `;
 
 const TypeCheck = styled.div`
   flex: 2;
-  border-right: 1px solid #dadadc;
   display: flex;
   align-items: center;
   justify-content: space-between;
