@@ -14,8 +14,6 @@ interface ICodeScreenFooter {
 export function CodeScreenFooter(props: ICodeScreenFooter) {
   const [isLaunchingConsole, setIsLaunchingConsole] = useState<boolean>(false);
 
-  const onLoading = () => {};
-
   const onQuickLookClicked = (e) => {
     const setLoadingState = (loading: boolean) => {
       setIsLaunchingConsole(loading);
