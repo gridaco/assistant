@@ -3,6 +3,7 @@ import { convert } from "@design-sdk/figma";
 import { Logger } from "app/lib/utils";
 import { light } from "@design-sdk/core/nodes";
 import { runon } from "./runon";
+import { FigmaNodeCache } from "../node-cache";
 
 export let singleFigmaNodeSelection: SceneNode;
 export let targetNodeId: string;
@@ -14,6 +15,9 @@ export function onfigmaselectionchange() {
   const rawSelections = figma.currentPage.selection;
   console.log("selection", rawSelections);
   const selectionType = analyzeSelection(rawSelections);
+  /* unique and only selection setter */ FigmaNodeCache.select(
+    ...rawSelections.map((s) => s.id)
+  ); /* unique and only selection setter */
   switch (selectionType) {
     case SelectionAnalysis.empty:
       // ignore when nothing was selected
@@ -65,8 +69,10 @@ export function onfigmaselectionchange() {
         data: light.makeReference(rnode),
       });
       // endregion
-
+      FigmaNodeCache.setConverted(rnode);
       runon(rnode);
       return;
+    default:
+      break;
   }
 }
