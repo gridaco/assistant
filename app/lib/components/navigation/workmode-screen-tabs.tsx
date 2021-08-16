@@ -1,6 +1,7 @@
 import React from "react";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import styled from "@emotion/styled";
 
 function a11yProps(index: number) {
   return {
@@ -38,11 +39,11 @@ export function WorkmodeScreenTabs(props: {
     >
       {layout.map((v, i) => {
         return (
-          <Tab
+          <StyledTab
             key={v.id}
             label={v.name}
             {...a11yProps(i)}
-            style={{ textTransform: "capitalize" }}
+            classes={{ root: "root", selected: "selected" }}
           />
         );
       })}
@@ -55,3 +56,22 @@ export function WorkmodeScreenTabs(props: {
     </div>
   );
 }
+
+const StyledTab = styled(Tab)`
+  // for reset @material-ui style
+  text-transform: capitalize !important;
+
+  &.root {
+    font-size: 14px;
+    font-weight: 400 !important;
+    line-height: 17px;
+    color: #adaeb2;
+  }
+
+  &.selected {
+    font-size: 14px;
+    font-weight: 700 !important;
+    line-height: 17px;
+    color: #151617;
+  }
+`;
