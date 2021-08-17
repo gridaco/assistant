@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
+import { startAuthentication } from "../../auth";
 function Signin() {
   return (
     <RootWrapperSignin>
@@ -18,7 +19,11 @@ function Signin() {
           </Frame141>
         </Frame142>
         <Frame143>
-          <Button>
+          <Button
+            onClick={() => {
+              startAuthentication();
+            }}
+          >
             <Label>Sign in</Label>
           </Button>
           <Button_0001>
