@@ -2,10 +2,10 @@ import { Button, Typography } from "@material-ui/core";
 import { ReflectLintFeedback } from "@reflect-ui/lint/lib/feedbacks";
 import * as React from "react";
 import { Preview } from "../../components/preview";
-import { LintTreeView } from "../../lint";
+import { LintItemRow, LintTreeView } from "../../lint";
 import { EK_FOCUS_REQUEST } from "../../constants/ek.constant";
 import styled from "@emotion/styled";
-import { LintLevelIndicator } from "./lint-level-indicator";
+import { LintLevelIndicator } from "../../lint/lint-level-indicator";
 import { Level } from "./lint-colors";
 import { _APP_EVENT_LINT_RESULT_EK } from "../../lint/__plugin/events";
 import {
@@ -14,6 +14,7 @@ import {
 } from "../../components/style/global-style";
 import { makeSummary, requestLintOnCurrentSelection } from "../../lint/actions";
 import { useSingleSelection } from "../../utils/plugin-hooks";
+import { rowDummy } from "../../lint/lint-list-view";
 
 interface State {
   feedbacks: Array<ReflectLintFeedback>;
@@ -38,7 +39,7 @@ export const LintScreen = () => {
 
   const selection = useSingleSelection();
 
-  console.log("feedbacks: ", feedbacks);
+  console.log(feedbacks.length === 0);
   // console.log("selection: ", _s);
 
   window.addEventListener("message", (ev: MessageEvent) => {
@@ -48,7 +49,12 @@ export const LintScreen = () => {
       setFeedbacks(_feedbacks);
     }
   });
-  // }
+
+  function countSelection() {
+    // FIXME: just tmp
+    // return selection.node.children.length;
+    return 3;
+  }
 
   function onFeedbackTap(feedback: ReflectLintFeedback) {
     const targetNodeId = feedback.node.id;
@@ -70,20 +76,21 @@ export const LintScreen = () => {
   function handleSelectionLayer() {
     return (
       <>
-        {feedbacks ? (
+        {feedbacks.length === 0 ? (
           <>
             <RunLintTitle>Run lint on “example”</RunLintTitle>
             <RunLintSubTitle>
-              Run lint under “example” Across {feedbacks.length} layers.
+              Run lint under “example” Across {countSelection()}
+              layers.
             </RunLintSubTitle>
           </>
         ) : (
           <>
             <ErrorTitle>{feedbacks.length} Improvements found</ErrorTitle>
             <ErrorComent>
-              {console.log(makeSummary(feedbacks))}
-              Across 24 layers, there were <b>4 must-fix errors</b> and 8
-              warnings.
+              Across 24 layers, there were <b>4 must-fix errors</b>
+              <br />
+              and 8 warnings.
             </ErrorComent>
           </>
         )}
@@ -116,13 +123,13 @@ export const LintScreen = () => {
           <>{handleSelectionLayer()}</>
         ) : (
           <>
-            <EmptyMessage>{`Select a layer / frame to run lint on :)`}</EmptyMessage>
+            <LintItemRow {...rowDummy} />
+            {/* <EmptyMessage>{`Select a layer / frame to run lint on :)`}</EmptyMessage> */}
           </>
         )}
 
         {ErrorLineItem()}
-        {/* {!!feedbacks ? ( */}
-        {!feedbacks ? (
+        {feedbacks.length === 0 ? (
           <RunLintButtton
             disabled={!selection}
             onClick={requestLintOnCurrentSelection}
@@ -154,6 +161,8 @@ const ErrorTitle = styled.h6`
 `;
 
 const ErrorComent = styled.h6`
+  margin: 0;
+  margin-top: 5px;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
@@ -209,6 +218,7 @@ const ClearButton = styled.button`
 const RunLintTitle = styled.h2`
   // Run lint on “example”
   margin: 0;
+  margin-top: 20px;
   font-weight: 500;
   font-size: 16px;
   line-height: 20px;
@@ -218,6 +228,7 @@ const RunLintTitle = styled.h2`
 
 const RunLintSubTitle = styled.h5`
   margin: 0;
+  margin-top: 5px;
   font-weight: normal;
   font-size: 12px;
   line-height: 14px;
@@ -237,6 +248,8 @@ const List = styled.li`
 `;
 
 const Label = styled.h6`
+  margin: 0;
+  margin-top: 5px;
   font-style: normal;
   font-weight: normal;
   font-size: 13px;

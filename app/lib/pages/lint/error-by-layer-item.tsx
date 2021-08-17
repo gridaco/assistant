@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 import * as React from "react";
 import { Level } from "./lint-colors";
-import { LintError, LintErrorIcon } from "./lint-error-icon";
-import { LintLevelIndicator } from "./lint-level-indicator";
+import { LintError, LintErrorIcon } from "../../lint/lint-error-icon";
+import { LintLevelIndicator } from "../../lint/lint-level-indicator";
 
 interface IErrorByLayerItem {
   icon: boolean;

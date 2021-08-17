@@ -1,25 +1,25 @@
 import * as React from "react";
 
 export enum LintError {
-  text = "missing-text-style",
-  name = "name-error",
-  mdi = "mdi_texture",
-  color = "missing-color-style-error",
+  text = "missingTextStyle",
+  name = "nameError",
+  mdi = "mdiTexture",
+  color = "missingColorStyleError",
 }
 
 interface Props {
-  id?: LintError;
+  id?: string;
 }
 
 export function LintErrorIcon(props: Props) {
   const MdiTextureIcon =
-    require("../../../lib/components/assets/mdi-texture.svg") as string;
+    require("../components/assets/mdi-texture.svg") as string;
   const ColorErrorIcon =
-    require("../../../lib/components/assets/missing-color-style-error.svg") as string;
+    require("../components/assets/missing-color-style-error.svg") as string;
   const TextErrorIcon =
-    require("../../../lib/components/assets/missing-text.svg") as string;
+    require("../components/assets/missing-text.svg") as string;
   const NameErrorIcon =
-    require("../../../lib/components/assets/name-error.svg") as string;
+    require("../components/assets/name-error.svg") as string;
 
   switch (props.id) {
     case LintError.text:
