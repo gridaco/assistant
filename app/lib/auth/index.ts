@@ -6,9 +6,11 @@ export * from "./storage";
 //#endregion export
 
 const PROXY_AUTH_REQUEST_SECRET =
-  process.env.BRIDGED_FIRST_PARTY_PROXY_AUTH_REQUEST_TOTP_SECRET;
+  process.env.GRIDA_FIRST_PARTY_PROXY_AUTH_REQUEST_TOTP_SECRET ??
+  process.env.REACT_APP_GRIDA_FIRST_PARTY_PROXY_AUTH_REQUEST_TOTP_SECRET; // for CRA
 
 export async function startAuthentication() {
+  console.log("PROXY_AUTH_REQUEST_SECRET", PROXY_AUTH_REQUEST_SECRET);
   const request = await __auth_proxy.requesetProxyAuth(
     PROXY_AUTH_REQUEST_SECRET,
     {
