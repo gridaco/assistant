@@ -23,13 +23,13 @@ export function LintErrorIcon(props: Props) {
 
   switch (props.id) {
     case LintError.text:
-      return <TextErrorIcon />;
+      return <img src={TextErrorIcon} />;
     case LintError.name:
-      return <NameErrorIcon />;
+      return <img src={NameErrorIcon} />;
     case LintError.mdi:
-      return <MdiTextureIcon />;
+      return <img src={MdiTextureIcon} />;
     case LintError.color:
-      return <ColorErrorIcon />;
+      return <img src={ColorErrorIcon} />;
     default:
       return <></>;
   }

@@ -2,6 +2,7 @@ import * as React from "react";
 import styled from "@emotion/styled";
 import { LintError, LintErrorIcon } from "../lint-error-icon";
 import { LintLevelIndicator } from "../lint-level-indicator";
+import { choiceItem } from "../lint-list-view";
 
 interface Props {
   onTap: Function;
@@ -14,35 +15,42 @@ interface Props {
     name: string;
     userMessage: string;
   };
+  children?: any;
 }
 
-interface State {}
+export function LintItemRow(props: Props) {
+  const CloseIcon = require("../../components/assets/close.svg") as string;
+  const ExpandIcon = require("../../components/assets/expand.svg") as string;
 
-export class LintItemRow extends React.Component<Props, State> {
-  constructor(props) {
-    super(props);
-  }
+  return (
+    <Wrapper>
+      <Inner>
+        <IconWrapper>
+          <LintErrorIcon id={props.icon} />
+        </IconWrapper>
 
-  CloseIcon = require("../../components/assets/close.svg") as string;
-  ExpandIcon = require("../../components/assets/expand.svg") as string;
+        <Title>{props.error.name}</Title>
+        <IndicatorWrapper>
+          <LintLevelIndicator color={"warning"} />
+        </IndicatorWrapper>
 
-  render() {
-    return (
-      <Wrapper>
-        <Inner>
-          {this.props.icon && <LintErrorIcon id={LintError.name} />}
-          <Title>{this.props.error.name}</Title>
-          <LintLevelIndicator color={this.props.level} />
-          {this.props.expand ? <this.ExpandIcon /> : <this.CloseIcon />}
-        </Inner>
-        <SubTitle>{this.props.error.userMessage}</SubTitle>
-      </Wrapper>
-    );
-  }
+        {props.expand ? <img src={ExpandIcon} /> : <img src={CloseIcon} />}
+      </Inner>
+      <SubTitle>{props.error.userMessage}</SubTitle>
+      {props.onTap([choiceItem])}
+    </Wrapper>
+  );
 }
 
 const Wrapper = styled.div`
   background: #fff;
+  height: 100px;
+  margin-bottom: 16px;
+
+  // for reset parent margin
+  margin-right: -16px;
+  margin-left: -16px;
+  padding: 16px;
 
   &:hover {
     background: #fcfcfc;
@@ -51,14 +59,26 @@ const Wrapper = styled.div`
 
 const Inner = styled.div`
   display: flex;
+  align-items: center;
 `;
+
+const IconWrapper = styled.div`
+  margin-right: 6px;
+`;
+
+const IndicatorWrapper = styled.div`
+  margin-right: 10px;
+`;
+
 const Title = styled.h6`
   margin: 0;
-
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 20px;
   margin-right: auto;
+
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+  color: #202020;
 `;
 
 const SubTitle = styled.h6`

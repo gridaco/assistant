@@ -5,24 +5,28 @@ import * as React from "react";
 interface Props {
   selected: boolean;
   placeholder?: boolean;
+  choice: {
+    title: string;
+    explanation: string;
+  };
 }
 
 export function OptionChoiceItem(props: Props) {
   const RightArrowIcon =
     require("../../../lib/components/assets/right-arrow.svg") as string;
-
+  alert("hi");
   return (
     <>
       <StyledArrow selected={props.selected}>
-        <RightArrowIcon />
+        <img src={RightArrowIcon} />
       </StyledArrow>
-      <Title>hi</Title>
-      <SubTitle>hibye</SubTitle>
+      <Title>{props.choice.title}</Title>
+      <SubTitle>{props.choice.explanation}</SubTitle>
     </>
   );
 }
 
-const StyledArrow = styled.div<Props>`
+const StyledArrow = styled.div<{ selected: boolean }>`
   cursor: pointer;
 
   ${(props) =>
