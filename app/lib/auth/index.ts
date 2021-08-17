@@ -4,6 +4,10 @@ import {
 } from "@base-sdk/auth-first-party";
 import { __HOSTS } from "@base-sdk/core";
 
+//#region export
+export * from "./storage";
+//#endregion export
+
 const PROXY_AUTH_REQUEST_SECRET =
   process.env.BRIDGED_FIRST_PARTY_PROXY_AUTH_REQUEST_TOTP_SECRET;
 
