@@ -94,6 +94,12 @@ const page_toolbox_data_mapper: PageConfig = {
   path: "/toolbox/data-mapper",
 };
 
+const page_scene_upload_steps_final: PageConfig = {
+  id: WorkScreen.scene_upload_steps_final,
+  title: "Review your scene", // not used
+  path: "/code/uploadsteps/final-upload",
+};
+
 /**
  * list of all pages
  */
@@ -103,7 +109,6 @@ const all_pages: PageConfig[] = [
   page_toolbox_meta_editor,
   page_toolbox_desing_button_maker,
   page_toolbox_font_replacer,
-  page_about,
   page_content_g11n,
   page_design_lint,
   page_design_layout,
@@ -112,6 +117,14 @@ const all_pages: PageConfig[] = [
   page_code_preview,
   page_code_component,
   page_code_lint,
+  // standalones
+  page_about,
+  page_scene_upload_steps_final,
+];
+
+export const standalone_pages: PageConfig[] = [
+  page_about,
+  page_scene_upload_steps_final,
 ];
 
 export function get_page_config(id: WorkScreen): PageConfig {
