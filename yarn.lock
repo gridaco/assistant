@@ -1235,14 +1235,6 @@
     "@babel/helper-validator-identifier" "^7.14.5"
     to-fast-properties "^2.0.0"
 
-"@base-sdk/auth-first-party@0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@base-sdk/auth-first-party/-/auth-first-party-0.1.0.tgz#50684e76f7c5280db284b60824345b4ab52c3e72"
-  integrity sha512-4ZG9zTSUe8KrxvgcKYjPkeSQwLu3E7SxWpxPjPXL0UIw4/0Ky5bqT6bmDr75CwwP7ZPGQWf4TlVTv7iYJNqy7A==
-  dependencies:
-    "@base-sdk/core" "0.1.0"
-    otplib "^12.0.1"
-
 "@base-sdk/base@0.1.0-1":
   version "0.1.0-1"
   resolved "https://registry.yarnpkg.com/@base-sdk/base/-/base-0.1.0-1.tgz#aaf84625698693f9690b85c46f453c69910ca5a3"
@@ -3021,7 +3013,16 @@
   dependencies:
     "@types/react" "^16"
 
-"@types/react-router@^5.1.16":
+"@types/react-router-dom@^5.1.8":
+  version "5.1.8"
+  resolved "https://registry.yarnpkg.com/@types/react-router-dom/-/react-router-dom-5.1.8.tgz#bf3e1c8149b3d62eaa206d58599de82df0241192"
+  integrity sha512-03xHyncBzG0PmDmf8pf3rehtjY0NpUj7TIN46FrT5n1ZWHPZvXz32gUyNboJ+xsL8cpg8bQVLcllptcQHvocrw==
+  dependencies:
+    "@types/history" "*"
+    "@types/react" "*"
+    "@types/react-router" "*"
+
+"@types/react-router@*", "@types/react-router@^5.1.16":
   version "5.1.16"
   resolved "https://registry.yarnpkg.com/@types/react-router/-/react-router-5.1.16.tgz#f3ba045fb96634e38b21531c482f9aeb37608a99"
   integrity sha512-8d7nR/fNSqlTFGHti0R3F9WwIertOaaA1UEB8/jr5l5mDMOs4CidEgvvYMw4ivqrBK+vtVLxyTj2P+Pr/dtgzg==

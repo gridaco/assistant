@@ -8,7 +8,7 @@
     "scripts": {},
     "dependencies": {
         "@analytics.bridged.xyz/internal": "^0.0.9",
-        "@base-sdk/auth-first-party": "0.1.0",
+        "@base-sdk-fp/auth": "0.1.0-2",
         "@base-sdk/base": "0.1.0-1",
         "@base-sdk/functions-code-format": "^0.0.0",
         "@bridged.xyz/base-sdk": "^0.0.2-1",
@@ -46,6 +46,7 @@
         "@types/lodash": "^4.14.172",
         "@types/react": "^17.0.3",
         "@types/react-dom": "^16.9.8",
-        "@types/react-router": "^5.1.16"
+        "@types/react-router": "^5.1.16",
+        "@types/react-router-dom": "^5.1.8"
     }
 }
