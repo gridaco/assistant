@@ -299,7 +299,7 @@ export function handleNotify(props: HanderProps<NotifyRequest>) {
   response(props.id, true);
 }
 
-function handleStorageEvent(props: HanderProps<StorageRequest>) {
+async function handleStorageEvent(props: HanderProps<StorageRequest>) {
   const _get_dedicated_storage = (): IStorage => {
     switch (TARGET_PLATFORM) {
       case TargetPlatform.webdev: {
@@ -314,14 +314,12 @@ function handleStorageEvent(props: HanderProps<StorageRequest>) {
   const _storage = _get_dedicated_storage();
   switch (props.data.type) {
     case "get-item":
-      _storage.getItem(props.data.key).then((d) => {
-        response<StorageGetItemResponse>(props.id, { value: d });
-      });
+      const d = await _storage.getItem(props.data.key);
+      response<StorageGetItemResponse>(props.id, { value: d });
       break;
     case "set-item":
-      _storage.setItem(props.data.key, props.data.value).then(() => {
-        response(props.id, true); // setting data to storage does not require response data payload (using `true`.).
-      });
+      await _storage.setItem(props.data.key, props.data.value);
+      response(props.id, true); // setting data to storage does not require response data payload (using `true`.).
       break;
   }
 }
@@ -383,10 +381,12 @@ function response<T = any>(
   };
   switch (TARGET_PLATFORM) {
     case TargetPlatform.webdev: {
-      window.postMessage(msg, undefined);
+      window.postMessage({ pluginMessage: msg }, undefined);
+      break;
     }
     case TargetPlatform.figma: {
       figma.ui.postMessage(msg);
+      break;
     }
   }
 

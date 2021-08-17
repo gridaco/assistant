@@ -34,9 +34,12 @@ const __main_plugin_sdk_instance_storage_cache = new _SharedStorageCache(
   "co.grida.assistant"
 );
 export class PluginSdk {
-  static window: Window;
+  private static _window: Window;
+  static get window(): Window {
+    return this._window;
+  }
   static initializeWindow(window: Window) {
-    this.window = window;
+    this._window = window;
   }
 
   // region general canvas api
@@ -88,6 +91,7 @@ export class PluginSdk {
       namespace: PLUGIN_SDK_NS_STORAGE,
       key: PLUGIN_SDK_EK_STORAGE_ALIAS.set,
       data: <StorageSetItemRequest<T>>{
+        type: "set-item",
         key: key,
         value: value,
       },
@@ -107,6 +111,7 @@ export class PluginSdk {
         namespace: PLUGIN_SDK_NS_STORAGE,
         key: PLUGIN_SDK_EK_STORAGE_ALIAS.get,
         data: <StorageGetItemRequest<T>>{
+          type: "get-item",
           key: key,
         },
       });
