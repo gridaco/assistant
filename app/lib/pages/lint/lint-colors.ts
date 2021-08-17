@@ -1,5 +1,5 @@
 export enum Level {
-  warn = "warn",
+  warn = "warning",
   error = "error",
   none = "none",
   ignore = "ignore",

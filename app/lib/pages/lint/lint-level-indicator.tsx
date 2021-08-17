@@ -4,7 +4,7 @@ import * as React from "react";
 import { Level } from "./lint-colors";
 
 interface ILintLevelIndicator {
-  color: Level;
+  color: string;
 }
 
 export function LintLevelIndicator(props: ILintLevelIndicator) {
@@ -12,7 +12,7 @@ export function LintLevelIndicator(props: ILintLevelIndicator) {
 }
 
 interface IIndicator {
-  color: Level;
+  color: string;
 }
 
 const Indicator = styled.div<IIndicator>`
