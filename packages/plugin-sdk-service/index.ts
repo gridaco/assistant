@@ -104,6 +104,10 @@ export class PluginSdkService {
     }
 
     if (event.namespace == "__INTERNAL__") {
+      // console.log(
+      //   'handling internal ivent with event ns - "__INTERNAL__"',
+      //   event
+      // );
       return handleInternalEvent(event);
     }
 
@@ -185,7 +189,7 @@ export class PluginSdkService {
 
 function handleInternalEvent(event: HanderProps) {
   if (event.key == "sync-target-platform") {
-    return __syncTargetPlatformForCodeThread(event.data);
+    return response(event.id, __syncTargetPlatformForCodeThread(event.data));
   }
   return response(event.id, true);
 }

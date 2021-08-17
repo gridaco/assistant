@@ -240,6 +240,7 @@ export class PluginSdk {
   // endregion canvas
 
   static postMessage(event: TransportPluginEvent) {
+    // console.log("::plugin-sdk post message", event);
     PluginSdk.window.postMessage(
       {
         pluginMessage: event,

@@ -19,6 +19,7 @@ import {
 export function PluginApp(props: { platform: TargetPlatform; children: any }) {
   const [booting, setBooting] = useState(true);
   useEffect(() => {
+    // console.log("start initializing plugin app...");
     PluginSdk.initializeWindow(parent);
     window.addEventListener("message", (ev: MessageEvent) => {
       const message: TransportPluginEvent = ev.data.pluginMessage;
@@ -52,7 +53,17 @@ export function PluginApp(props: { platform: TargetPlatform; children: any }) {
   }, []);
 
   if (booting) {
-    return null;
+    return (
+      <div
+        style={{
+          alignItems: "center",
+          alignContent: "center",
+          textAlign: "center",
+        }}
+      >
+        Loading..
+      </div>
+    );
   }
 
   return <>{props.children}</>;

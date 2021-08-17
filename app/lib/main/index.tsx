@@ -275,7 +275,7 @@ function Home() {
 }
 
 export default function App(props: { platform: TargetPlatform }) {
-  React.useEffect(() => {
+  useEffect(() => {
     // FIXME: - dynamicallt change initial focused screen. (currently inital setup is not implemented. - initial setup is done by below line.)
     _update_focused_screen_ev(WorkScreen.code_flutter);
 
