@@ -185,7 +185,11 @@ function TabsLayout(props: {
       <Switch>
         {tabs_as_page_configs.map((v, i) => {
           return (
-            <Route path={v.path} render={() => <Screen screen={v.id} />} />
+            <Route
+              key={v.id}
+              path={v.path}
+              render={() => <Screen screen={v.id} />}
+            />
           );
         })}
       </Switch>
@@ -241,6 +245,20 @@ function TabNavigationApp(props?: { savedLayout: NavigationStoreState }) {
   //
 }
 
+function RouterTabNavigationApp(props) {
+  const [savedLayout, setSavedLayout] = useState<NavigationStoreState>();
+  useEffect(() => {
+    loadLayout().then((l) => setSavedLayout(l));
+  }, []);
+
+  const params = props.match.params;
+  const workmode = params.workmode;
+  const work = params.work;
+  // TODO: make new layout based on saved one and givven param.
+
+  return <>{savedLayout && <TabNavigationApp savedLayout={savedLayout} />}</>;
+}
+
 function Home() {
   const [savedLayout, setSavedLayout] =
     useState<NavigationStoreState>(undefined);
@@ -289,7 +307,7 @@ export default function App(props: { platform: TargetPlatform }) {
           })}
           {/* # endregion unique route section */}
           {/* dynamic route shall be placed at the last point, since it overwrites other routes */}
-          <Route path="/:workmode" component={TabNavigationApp} />
+          <Route path="/:workmode/:work" component={RouterTabNavigationApp} />
           <Route path="/" component={Home} />
           {/* 👆 this is for preventing blank page on book up. this will be fixed and removed.*/}
         </Switch>
