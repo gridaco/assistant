@@ -2,6 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import * as about from "../../about";
 import { __auth_proxy, ProxyAuthenticationMode } from "@base-sdk-fp/auth";
+import { useHistory } from "react-router-dom";
 
 const URLS = {
   logo_256:
@@ -28,6 +29,7 @@ const URLS = {
 };
 
 export function AboutScreen() {
+  const history = useHistory();
   const linkTo = (url: string) => {
     return () => {
       open(url);
@@ -35,17 +37,7 @@ export function AboutScreen() {
   };
 
   const signIntoAssistant = () => {
-    __auth_proxy.requesetProxyAuth(
-      process.env.BRIDGED_FIRST_PARTY_PROXY_AUTH_REQUEST_TOTP_SECRET,
-      {
-        appId: "co.grida.assistant",
-        clientId: "", // todo
-        mode: ProxyAuthenticationMode.ws,
-      },
-      {
-        autoOpen: true,
-      }
-    );
+    history.push("/signin");
   };
 
   return (
