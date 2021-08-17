@@ -123,8 +123,8 @@ export const LintScreen = () => {
           <>{handleSelectionLayer()}</>
         ) : (
           <>
-            <LintItemRow {...rowDummy} />
-            {/* <EmptyMessage>{`Select a layer / frame to run lint on :)`}</EmptyMessage> */}
+            {/* <LintItemRow {...rowDummy} /> */}
+            <EmptyMessage>{`Select a layer / frame to run lint on :)`}</EmptyMessage>
           </>
         )}
 
