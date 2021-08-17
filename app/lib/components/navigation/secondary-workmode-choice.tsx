@@ -25,6 +25,7 @@ const Title = styled.h6`
   text-transform: capitalize;
   margin: 0; // for reset h6 inital margin
   margin-right: 10px;
+  user-select: none;
 
   /* &:nth-child(3n) {
     margin-right: 0;

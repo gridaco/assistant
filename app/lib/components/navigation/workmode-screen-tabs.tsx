@@ -34,6 +34,7 @@ export function WorkmodeScreenTabs(props: {
       TabIndicatorProps={{
         style: {
           display: "none",
+          userSelect: "none",
         },
       }}
     >
