@@ -24,8 +24,6 @@ export function PluginApp(props: {
 }) {
   const [booting, setBooting] = useState(true);
   useEffect(() => {
-    const warmup_procs: Promise<any>[] = [];
-
     // console.log("start initializing plugin app...");
     PluginSdk.initializeWindow(parent);
     window.addEventListener("message", (ev: MessageEvent) => {
@@ -51,14 +49,16 @@ export function PluginApp(props: {
     });
 
     // init platform
-    warmup_procs.push(initializeTargetPlatform(props.platform));
+    initializeTargetPlatform(props.platform).then(() => {
+      const warmup_procs: Promise<any>[] = [];
 
-    // make client id
-    warmup_procs.push(cid_initialize());
+      // make client id
+      warmup_procs.push(cid_initialize());
 
-    Promise.all(warmup_procs).finally(() => {
-      console.info("PluginApp initiallized", "cid", client_id);
-      setBooting(false);
+      Promise.all(warmup_procs).finally(() => {
+        console.info("PluginApp initiallized", "cid", client_id);
+        setBooting(false);
+      });
     });
   }, []);
 
