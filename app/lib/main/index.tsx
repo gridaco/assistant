@@ -6,14 +6,7 @@ import { initialize } from "../analytics";
 import { EK_SET_APP_MODE } from "../constants/ek.constant";
 import { PluginApp } from "plugin-app";
 import BatchMetaEditor from "../pages/tool-box/batch-meta-editor";
-import {
-  useHistory,
-  Switch,
-  Route,
-  Link,
-  MemoryRouter,
-  BrowserRouter,
-} from "react-router-dom";
+import { useHistory, Switch, Route } from "react-router-dom";
 
 //
 // region screens import
@@ -35,6 +28,7 @@ import { AboutScreen } from "../pages/about";
 //
 
 import {
+  getDedicatedRouter,
   getWorkmodeTabLayout,
   get_page_config,
   WorkMode,
@@ -273,7 +267,7 @@ export default function App(props: { platform: TargetPlatform }) {
     // endregion init GA
   }, []);
 
-  const Router = _is_in_iframe() ? MemoryRouter : BrowserRouter;
+  const Router = getDedicatedRouter();
 
   return (
     <PluginApp platform={props.platform}>
@@ -294,11 +288,6 @@ export default function App(props: { platform: TargetPlatform }) {
       </Router>
     </PluginApp>
   );
-}
-
-function _is_in_iframe() {
-  // The page is in an iframe
-  return window.location !== window.parent.location;
 }
 
 function _update_focused_screen_ev(screen: WorkScreen) {
