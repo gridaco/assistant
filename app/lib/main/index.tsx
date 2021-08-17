@@ -289,9 +289,9 @@ export default function App(props: { platform: TargetPlatform }) {
   }, []);
 
   const Router = getDedicatedRouter();
-
   return (
     <PluginApp platform={props.platform}>
+      {/* @ts-ignore */}
       <Router>
         <Switch>
           {/* # region unique route section */}
