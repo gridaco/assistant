@@ -1,5 +1,6 @@
 export enum WorkScreen {
   about = "about",
+  /** todo: rename to code/preview */
   code = "code",
   /** @deprecated only used for sendig event */
   code_flutter = "code/flutter",

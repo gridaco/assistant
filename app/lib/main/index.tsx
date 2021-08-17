@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import "../app.css";
 import { initialize } from "../analytics";
 
@@ -35,6 +35,8 @@ import {
   WorkScreen,
   standalone_pages,
   PrimaryWorkmodeSet,
+  loadLayout,
+  NavigationStoreState,
 } from "../navigation";
 
 import {
@@ -181,13 +183,9 @@ function TabsLayout(props: {
       )}
 
       <Switch>
-        {/* <Route path={allTabs[2]} render={() => <div>Tab 3</div>} /> */}
-        {/* <Route path={allTabs[0]} render={() => <div>Tab 1</div>} /> */}
         {tabs_as_page_configs.map((v, i) => {
           return (
-            // <TabPanel key={i} value={tabIndex} index={i}>
             <Route path={v.path} render={() => <Screen screen={v.id} />} />
-            // </TabPanel>
           );
         })}
       </Switch>
@@ -195,19 +193,18 @@ function TabsLayout(props: {
   );
 }
 
-function TabNavigationApp() {
-  const [workmode, setWorkmode] = React.useState<WorkMode>(WorkMode.code);
-  const [workmodeSet, setWorkmodeSet] = React.useState<PrimaryWorkmodeSet>({
-    first: WorkMode.code,
-    second: WorkMode.design,
-  });
+function TabNavigationApp(props?: { savedLayout: NavigationStoreState }) {
+  const [workmode, setWorkmode] = useState<WorkMode>(WorkMode.code);
+  const [workmodeSet, setWorkmodeSet] = useState<PrimaryWorkmodeSet>(
+    props?.savedLayout?.workmodeSet
+  );
 
   const on_workmode_select = (workmode: WorkMode) => {
     setWorkmode(workmode);
   };
 
-  const [tabIndex, setTabIndex] = React.useState<number>(0);
-  const [expansion, setExpansion] = React.useState<boolean>(true);
+  const [tabIndex, setTabIndex] = useState<number>(0);
+  const [expansion, setExpansion] = useState<boolean>(true);
 
   return (
     <>
@@ -226,21 +223,8 @@ function TabNavigationApp() {
           </Row>
           {!expansion && <DropNav />}
         </Column>
-
-        {/* <WorkmodeSelect current={workmode} onSelect={(workmode) => {}} /> */}
       </Wrapper>
 
-      {/* LEGACY */}
-      {/* <WorkmodeSelect
-        current={workmode}
-        onSelect={(selected) => {
-          // when workspace mode is updated, by default the first index 0 tab will be selected without select event.
-          // explicitly triggering the event.
-          setWorkmode(selected);
-          const newTabLayout = getWorkmodeTabLayout(selected);
-          _update_focused_screen_ev(newTabLayout[0]);
-        }}
-      /> */}
       {/* {expansion && ( */}
       <TabsLayout
         workmode={workmode}
@@ -255,6 +239,21 @@ function TabNavigationApp() {
     </>
   );
   //
+}
+
+function Home() {
+  const [savedLayout, setSavedLayout] =
+    useState<NavigationStoreState>(undefined);
+
+  useEffect(() => {
+    loadLayout()
+      .then((d) => {
+        setSavedLayout(d);
+      })
+      .finally(() => {});
+  }, []);
+
+  return <>{savedLayout && <TabNavigationApp savedLayout={savedLayout} />}</>;
 }
 
 export default function App(props: { platform: TargetPlatform }) {
@@ -291,7 +290,7 @@ export default function App(props: { platform: TargetPlatform }) {
           {/* # endregion unique route section */}
           {/* dynamic route shall be placed at the last point, since it overwrites other routes */}
           <Route path="/:workmode" component={TabNavigationApp} />
-          <Route path="/" component={TabNavigationApp} />
+          <Route path="/" component={Home} />
           {/* 👆 this is for preventing blank page on book up. this will be fixed and removed.*/}
         </Switch>
       </Router>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import Axios from "axios";
 import {
@@ -17,6 +17,7 @@ import {
 } from "../../app/lib/utils/plugin-init/init-target-platform";
 
 export function PluginApp(props: { platform: TargetPlatform; children: any }) {
+  const [booting, setBooting] = useState(true);
   useEffect(() => {
     PluginSdk.initializeWindow(parent);
     window.addEventListener("message", (ev: MessageEvent) => {
@@ -42,12 +43,19 @@ export function PluginApp(props: { platform: TargetPlatform; children: any }) {
     });
 
     // init platform
-    initializeTargetPlatform(props.platform).then(() => {
-      console.info("PluginApp initiallized");
-    });
+    initializeTargetPlatform(props.platform)
+      .then(() => {})
+      .finally(() => {
+        console.info("PluginApp initiallized");
+        setBooting(false);
+      });
   }, []);
 
-  return <div>{props.children}</div>;
+  if (booting) {
+    return null;
+  }
+
+  return <>{props.children}</>;
 }
 
 function registerPluginSdkHandler(message: TransportPluginEvent) {

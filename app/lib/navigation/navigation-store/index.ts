@@ -9,11 +9,25 @@ export interface NavigationStoreState {
   currentWork: WorkScreen;
 }
 
+const _default_state: NavigationStoreState = {
+  workmodeSet: {
+    first: WorkMode.code,
+    second: WorkMode.design,
+  },
+  currentWorkmode: WorkMode.code,
+  currentWork: WorkScreen.code,
+};
+
 const __KEY = "app-navigation-full-layout";
 export async function saveLayout(state: NavigationStoreState) {
   PluginSdk.setItem<NavigationStoreState>(__KEY, state);
 }
 
 export async function loadLayout(): Promise<NavigationStoreState> {
-  return PluginSdk.getItem<NavigationStoreState>(__KEY);
+  const saved = await PluginSdk.getItem<NavigationStoreState>(__KEY);
+  console.log("saved", saved);
+  if (saved) {
+    return saved;
+  }
+  return _default_state;
 }
