@@ -16,7 +16,7 @@ export async function startAuthentication() {
     {
       appId: "co.grida.assistant",
       clientId: "", // todo
-      mode: ProxyAuthenticationMode.ws,
+      mode: ProxyAuthenticationMode.long_polling,
     },
     {
       autoOpen: true,
