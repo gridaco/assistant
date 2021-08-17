@@ -33,7 +33,7 @@ import {
   get_page_config,
   WorkMode,
   WorkScreen,
-  worspaceModeToName,
+  standalone_pages,
   PrimaryWorkmodeSet,
 } from "../navigation";
 
@@ -136,6 +136,10 @@ function Screen(props: { screen: WorkScreen }) {
       return <BatchMetaEditor />;
     case WorkScreen.tool_data_mapper:
       return <DataMapperScreen />;
+    case WorkScreen.scene_upload_steps_final:
+      return <UploadSteps />;
+    default:
+      return <div>Not found</div>;
   }
 }
 
@@ -272,17 +276,22 @@ export default function App(props: { platform: TargetPlatform }) {
   return (
     <PluginApp platform={props.platform}>
       <Router>
-        {/* # region unique route section */}
         <Switch>
-          <Route
-            path="/code/uploadsteps/final-upload"
-            component={UploadSteps}
-          />
-          <Route path="/about" component={AboutScreen} />
+          {/* # region unique route section */}
+          {standalone_pages.map((p) => {
+            return (
+              <Route
+                path={p.path}
+                render={() => {
+                  return <Screen screen={p.id} />;
+                }}
+              />
+            );
+          })}
           {/* # endregion unique route section */}
           {/* dynamic route shall be placed at the last point, since it overwrites other routes */}
           <Route path="/:workmode" component={TabNavigationApp} />
-          <Route path="/" component={TabNavigationApp} />{" "}
+          <Route path="/" component={TabNavigationApp} />
           {/* 👆 this is for preventing blank page on book up. this will be fixed and removed.*/}
         </Switch>
       </Router>
