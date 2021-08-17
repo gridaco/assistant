@@ -11,8 +11,8 @@ import {
   Switch,
   Route,
   Link,
+  MemoryRouter,
   BrowserRouter,
-  Redirect,
 } from "react-router-dom";
 
 //
@@ -273,9 +273,11 @@ export default function App(props: { platform: TargetPlatform }) {
     // endregion init GA
   }, []);
 
+  const Router = _is_in_iframe() ? MemoryRouter : BrowserRouter;
+
   return (
     <PluginApp platform={props.platform}>
-      <BrowserRouter>
+      <Router>
         {/* # region unique route section */}
         <Switch>
           <Route
@@ -289,9 +291,14 @@ export default function App(props: { platform: TargetPlatform }) {
           <Route path="/" component={TabNavigationApp} />{" "}
           {/* 👆 this is for preventing blank page on book up. this will be fixed and removed.*/}
         </Switch>
-      </BrowserRouter>
+      </Router>
     </PluginApp>
   );
+}
+
+function _is_in_iframe() {
+  // The page is in an iframe
+  return window.location !== window.parent.location;
 }
 
 function _update_focused_screen_ev(screen: WorkScreen) {
