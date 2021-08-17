@@ -15,6 +15,7 @@
 			"packages/reflect-core/packages/*",
 			"packages/design-sdk/*",
 			"packages/base-sdk/*",
+			"packages/base-sdk/_firstparty/*",
 			"packages/reflect-core/packages/*",
 			"packages/design-to-code/packages/designto-*",
 			"packages/design-to-code/packages/builder-config",

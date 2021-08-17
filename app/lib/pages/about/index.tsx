@@ -1,10 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import * as about from "../../about";
-import {
-  __auth_proxy,
-  ProxyAuthenticationMode,
-} from "@base-sdk/auth-first-party";
+import { __auth_proxy, ProxyAuthenticationMode } from "@base-sdk-fp/auth";
 
 const URLS = {
   logo_256:
@@ -41,7 +38,7 @@ export function AboutScreen() {
     __auth_proxy.requesetProxyAuth(
       process.env.BRIDGED_FIRST_PARTY_PROXY_AUTH_REQUEST_TOTP_SECRET,
       {
-        appId: "xyz.bridged.assistant",
+        appId: "co.grida.assistant",
         clientId: "", // todo
         mode: ProxyAuthenticationMode.ws,
       },
