@@ -100,6 +100,12 @@ const page_scene_upload_steps_final: PageConfig = {
   path: "/code/uploadsteps/final-upload",
 };
 
+const page_signup: PageConfig = {
+  id: WorkScreen.signin,
+  title: "Signin",
+  path: "/signin",
+};
+
 /**
  * list of all pages
  */
@@ -118,11 +124,13 @@ const all_pages: PageConfig[] = [
   page_code_component,
   page_code_lint,
   // standalones
+  page_signup,
   page_about,
   page_scene_upload_steps_final,
 ];
 
 export const standalone_pages: PageConfig[] = [
+  page_signup,
   page_about,
   page_scene_upload_steps_final,
 ];
