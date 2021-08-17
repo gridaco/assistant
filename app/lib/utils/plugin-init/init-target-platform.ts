@@ -11,6 +11,10 @@ export let TARGET_PLATFORM: TargetPlatform;
  */
 export async function initializeTargetPlatform(platform: TargetPlatform) {
   TARGET_PLATFORM = platform;
+  if (platform == TargetPlatform.webdev) {
+    return true;
+  }
+
   // sync this to code side.
   await PluginSdk.request({
     namespace: "__INTERNAL__",
