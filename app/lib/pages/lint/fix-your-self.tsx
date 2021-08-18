@@ -1,15 +1,21 @@
 import styled from "@emotion/styled";
 import React from "react";
+import { useHistory } from "react-router";
 import { BlackButton } from "../../components/style/global-style";
 import { LintItemRow } from "../../lint";
 import { rowDummy } from "../../lint/lint-list-view";
 import { LintProcessPaginator } from "../../lint/lint-process-paginator";
 
 export function FixYourSelf() {
+  const history = useHistory();
   const LeftArrow = require("../../components/assets/left-arrow.svg");
   return (
     <Wrapper>
-      <BackIcon>
+      <BackIcon
+        onClick={() => {
+          history.goBack();
+        }}
+      >
         <img src={LeftArrow} />
       </BackIcon>
 

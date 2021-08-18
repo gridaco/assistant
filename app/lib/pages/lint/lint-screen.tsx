@@ -15,6 +15,7 @@ import { makeSummary, requestLintOnCurrentSelection } from "../../lint/actions";
 import { useSingleSelection } from "../../utils/plugin-hooks";
 import { rowDummy } from "../../lint/lint-list-view";
 import { FixYourSelf } from "./fix-your-self";
+import { useHistory } from "react-router";
 
 interface State {
   feedbacks: Array<ReflectLintFeedback>;
@@ -22,19 +23,7 @@ interface State {
 }
 
 export const LintScreen = () => {
-  // constructor(props) {
-  //   super(props);
-
-  //   this.state = {
-  //     feedbacks: [],
-  //     selection: useSelection(),
-  //   };
-  // }
-
-  // componentDidMount() {
-  // console.log(_selection);
-  // this.setState({ selection: _selection });
-
+  const histoy = useHistory();
   const [feedbacks, setFeedbacks] = React.useState<ReflectLintFeedback[]>([]);
 
   const selection = useSingleSelection();
@@ -78,9 +67,12 @@ export const LintScreen = () => {
       <>
         {feedbacks.length === 0 ? (
           <>
-            <RunLintTitle>Run lint on “example”</RunLintTitle>
+            <RunLintTitle>
+              Run lint on “{_makeshortname(selection.node.name)}”
+            </RunLintTitle>
             <RunLintSubTitle>
-              Run lint under “example” Across {countSelection()}
+              Run lint under “{_makeshortname(selection.node.name)}” Across{" "}
+              {countSelection()}
               layers.
             </RunLintSubTitle>
           </>
@@ -137,14 +129,30 @@ export const LintScreen = () => {
           </RunLintButtton>
         ) : (
           <UnderBtnWrapper>
-            <FirstErrorButton>Jump to first error</FirstErrorButton>
-            <ClearButton>Clear</ClearButton>
+            <FirstErrorButton
+              onClick={() => {
+                histoy.push("/lint/by-layer/any-error/fix-yourself");
+              }}
+            >
+              Jump to first error
+            </FirstErrorButton>
+            <ClearButton
+              onClick={() => {
+                setFeedbacks([]);
+              }}
+            >
+              Clear
+            </ClearButton>
           </UnderBtnWrapper>
         )}
       </ErrorWrapper>
     </>
   );
 };
+
+function _makeshortname(origin: string): string {
+  return origin;
+}
 
 const ErrorWrapper = styled.div`
   margin: 0 8px;
