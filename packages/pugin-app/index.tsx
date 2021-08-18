@@ -19,7 +19,9 @@ import {
 export function PluginApp(props: { platform: TargetPlatform; children: any }) {
   const [booting, setBooting] = useState(true);
   useEffect(() => {
-    // console.log("start initializing plugin app...");
+    console.log("start initializing plugin app...");
+    parent.postMessage("starting plugin-app", "*");
+
     PluginSdk.initializeWindow(parent);
     window.addEventListener("message", (ev: MessageEvent) => {
       const message: TransportPluginEvent = ev.data.pluginMessage;
@@ -61,7 +63,7 @@ export function PluginApp(props: { platform: TargetPlatform; children: any }) {
           textAlign: "center",
         }}
       >
-        Loading..
+        Loading.. {props.platform} App
       </div>
     );
   }
@@ -117,7 +119,7 @@ function networkResponseToCodeThread(
   error: any = undefined
 ) {
   if (error) {
-    window.postMessage(
+    parent.postMessage(
       {
         pluginData: {
           type: PLC_REMOTE_API_RES,
@@ -132,7 +134,7 @@ function networkResponseToCodeThread(
     return;
   }
 
-  window.postMessage(
+  parent.postMessage(
     {
       pluginData: {
         type: PLC_REMOTE_API_RES,

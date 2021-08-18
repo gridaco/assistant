@@ -4,6 +4,8 @@ export const getDedicatedRouter = () =>
   _is_in_iframe() ? MemoryRouter : BrowserRouter;
 
 function _is_in_iframe() {
-  // The page is in an iframe
-  return window.location !== window.parent.location;
+  if (process.browser) {
+    // The page is in an iframe
+    return window.location !== window.parent.location;
+  }
 }
