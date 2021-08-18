@@ -13,13 +13,27 @@ interface Props {
 }
 
 export function OptionChoiceItem(props: Props) {
-  const RightArrowIcon =
-    require("../../../lib/components/assets/right-arrow.svg") as string;
+  function RightArrowIcon() {
+    return (
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M12 4L10.59 5.41L16.17 11H4V13H16.17L10.59 18.59L12 20L20 12L12 4Z"
+          fill="black"
+        />
+      </svg>
+    );
+  }
   return (
     <Wrapper>
       <Row>
         <StyledArrow selected={props.selected}>
-          <Icon src={RightArrowIcon} />
+          <RightArrowIcon />
         </StyledArrow>
         <Column>
           <Title>{props.choice.title}</Title>
@@ -33,7 +47,7 @@ export function OptionChoiceItem(props: Props) {
 const Wrapper = styled.div`
   cursor: pointer;
   &:hover {
-    img {
+    svg {
       fill: #8b8b8b;
     }
     h6 {

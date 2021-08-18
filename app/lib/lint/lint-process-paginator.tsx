@@ -5,8 +5,34 @@ interface Props {
   index: number;
   total: number;
 }
-const LeftArrow = require("../components/assets/prev-before-paginator.svg");
-const RightArrow = require("../components/assets/prev-next-paginator.svg");
+
+function LeftArrow() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M15.41 16.59L10.83 12L15.41 7.41L14 6L8 12L14 18L15.41 16.59Z" />
+    </svg>
+  );
+}
+
+function RightArrow() {
+  return (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M10 6L8.59003 7.41L13.17 12L8.59003 16.59L10 18L16 12L10 6Z" />
+    </svg>
+  );
+}
 
 export function LintProcessPaginator(props?: Props) {
   return (
@@ -14,8 +40,12 @@ export function LintProcessPaginator(props?: Props) {
       <Paginator>
         {!props ? "--" : `${props.index} of ${props.total}`}
       </Paginator>
-      <NextArrow src={LeftArrow} disable={props.index === 1} />
-      <BeforeArrow src={RightArrow} disable={props.index === props.total} />
+      <NextArrow disable={props.index === 1}>
+        <LeftArrow />
+      </NextArrow>
+      <BeforeArrow disable={props.index === props.total}>
+        <RightArrow />
+      </BeforeArrow>
     </Wrapper>
   );
 }
@@ -32,10 +62,16 @@ const Paginator = styled.p`
   line-height: 17px;
 `;
 
-const NextArrow = styled.img<{ disable: boolean }>`
-  fill: ${(props) => (props.disable ? "#808080" : "#000")};
+const NextArrow = styled.div<{ disable: boolean }>`
+  cursor: pointer;
+  svg {
+    fill: ${(props) => (props.disable ? "#808080" : "#000")};
+  }
 `;
 
-const BeforeArrow = styled.img<{ disable: boolean }>`
-  fill: ${(props) => (props.disable ? "#808080" : "#000")};
+const BeforeArrow = styled.div<{ disable: boolean }>`
+  cursor: pointer;
+  svg {
+    fill: ${(props) => (props.disable ? "#808080" : "#000")};
+  }
 `;

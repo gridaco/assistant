@@ -220,6 +220,7 @@ const FirstErrorButton = styled.button`
 const ClearButton = styled.button`
   ${TransparencyButton}
   width: 33.3333%;
+  background: #fff;
 `;
 
 const RunLintTitle = styled.h2`
