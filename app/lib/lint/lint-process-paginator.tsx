@@ -22,9 +22,10 @@ export function LintProcessPaginator(props?: Props) {
 
 const Wrapper = styled.div`
   display: flex;
+  align-items: center;
 `;
 
-const Paginator = styled.span`
+const Paginator = styled.p`
   font-size: 14px;
   font-style: normal;
   font-weight: 400;

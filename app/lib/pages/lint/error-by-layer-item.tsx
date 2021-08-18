@@ -55,6 +55,7 @@ const Title = styled.h6`
 
 const SubTitle = styled.h6`
   margin: 0;
+  font-weight: 400;
   font-size: 12px;
   line-height: 14px;
   margin-top: 4px;
