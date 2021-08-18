@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { BlackButton } from "../../components/style/global-style";
 import { LintItemRow } from "../../lint";
@@ -8,6 +8,7 @@ import { LintProcessPaginator } from "../../lint/lint-process-paginator";
 
 export function FixYourSelf() {
   const history = useHistory();
+  const [isDropVisible, setIsDropVisible] = useState(-1);
 
   function LeftArrow() {
     return (
@@ -35,7 +36,22 @@ export function FixYourSelf() {
         <LeftArrow />
       </BackIcon>
 
-      <LintItemRow {...rowDummy} />
+      {["hi"].map((item, i) => {
+        return (
+          <LintItemRow
+            {...rowDummy}
+            expand={isDropVisible === i}
+            onTap={() => {
+              if (isDropVisible === i) {
+                setIsDropVisible(-1);
+              } else {
+                setIsDropVisible(i);
+              }
+            }}
+          />
+        );
+      })}
+
       <Pagination>
         <LintProcessPaginator index={10} total={10} />
       </Pagination>
