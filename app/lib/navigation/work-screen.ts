@@ -10,6 +10,7 @@ export enum WorkScreen {
   layout = "layout",
   icon = "icon",
   lint = "lint",
+  lint_fix_yourself = "lint_fix_yourself",
   g11n = "g11n",
   dev = "dev",
   slot = "slot",

@@ -106,6 +106,12 @@ const page_signup: PageConfig = {
   path: "/signin",
 };
 
+const page_lint_fix_yourself: PageConfig = {
+  id: WorkScreen.lint_fix_yourself,
+  title: "Resovlve design errors", // not used
+  path: "/lint/by-layer/any-error/fix-yourself",
+};
+
 /**
  * list of all pages
  */
@@ -127,12 +133,14 @@ const all_pages: PageConfig[] = [
   page_signup,
   page_about,
   page_scene_upload_steps_final,
+  page_lint_fix_yourself,
 ];
 
 export const standalone_pages: PageConfig[] = [
   page_signup,
   page_about,
   page_scene_upload_steps_final,
+  page_lint_fix_yourself,
 ];
 
 export function get_page_config(id: WorkScreen): PageConfig {
