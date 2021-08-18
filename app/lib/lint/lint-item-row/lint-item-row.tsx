@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { LintError, LintErrorIcon } from "../lint-error-icon";
 import { LintLevelIndicator } from "../lint-level-indicator";
 import { choiceItem } from "../lint-list-view";
+import { OptionChoiceItem } from "../../pages/lint/lint-option-choice-item";
 
 interface Props {
   onTap: Function;
@@ -18,26 +19,41 @@ interface Props {
   children?: any;
 }
 
+function Options(children: any[]) {
+  return (
+    <>
+      {children.map((item, i) => {
+        return <OptionChoiceItem key={i} {...item} />;
+      })}
+    </>
+  );
+}
+
 export function LintItemRow(props: Props) {
   const CloseIcon = require("../../components/assets/close.svg") as string;
   const ExpandIcon = require("../../components/assets/expand.svg") as string;
 
   return (
     <Wrapper>
-      <Inner>
-        <IconWrapper>
-          <LintErrorIcon id={props.icon} />
-        </IconWrapper>
+      <Outer onClick={() => props.onTap()}>
+        <Inner>
+          <IconWrapper>
+            <LintErrorIcon id={props.icon} />
+          </IconWrapper>
 
-        <Title>{props.error.name}</Title>
-        <IndicatorWrapper>
-          <LintLevelIndicator color={"warning"} />
-        </IndicatorWrapper>
+          <Title>{props.error.name}</Title>
+          <IndicatorWrapper>
+            <LintLevelIndicator color={props.level} />
+          </IndicatorWrapper>
 
-        {props.expand ? <img src={ExpandIcon} /> : <img src={CloseIcon} />}
-      </Inner>
-      <SubTitle>{props.error.userMessage}</SubTitle>
-      {props.onTap([choiceItem])}
+          {props.expand ? <img src={CloseIcon} /> : <img src={ExpandIcon} />}
+        </Inner>
+        <SubTitle>{props.error.userMessage}</SubTitle>
+      </Outer>
+
+      <ChoiceWrapper display={props.expand}>
+        {Options([choiceItem])}
+      </ChoiceWrapper>
     </Wrapper>
   );
 }
@@ -51,10 +67,15 @@ const Wrapper = styled.div`
   margin-right: -16px;
   margin-left: -16px;
   padding: 16px;
+  padding-bottom: 32px;
 
   &:hover {
     background: #fcfcfc;
   }
+`;
+
+const Outer = styled.div`
+  padding-bottom: 32px;
 `;
 
 const Inner = styled.div`
@@ -89,4 +110,14 @@ const SubTitle = styled.h6`
   max-width: 262px;
 
   color: #666666;
+`;
+
+const ChoiceWrapper = styled.div<{ display: boolean }>`
+  margin-bottom: 5px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  display: ${(props) => (props.display ? "block" : "none")};
 `;

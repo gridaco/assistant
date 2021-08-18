@@ -2,7 +2,6 @@
 
 import React from "react";
 import { OptionChoiceItem } from "../../pages/lint/lint-option-choice-item";
-import { LintErrorIcon } from "../lint-error-icon";
 
 /** @deprecated this is dummy. replace me */
 export const dummy = "dummy";
@@ -16,14 +15,12 @@ export const choiceItem = {
 };
 
 export const rowDummy = {
-  onTap: function T(children: any[]) {
-    children.map((item, i) => {
-      return <OptionChoiceItem key={i} {...item} />;
-    });
+  onTap: function T() {
+    // FIXME: here is setState
   },
   name: "hi",
   icon: "missingTextStyle",
-  expand: false,
+  expand: false, // FIXME: here is state
   level: "warning",
   error: {
     id: "id",
