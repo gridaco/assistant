@@ -76,6 +76,7 @@ const Wrapper = styled.div`
 
 const Outer = styled.div`
   padding-bottom: 32px;
+  cursor: pointer;
 `;
 
 const Inner = styled.div`

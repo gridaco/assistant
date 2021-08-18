@@ -6,7 +6,6 @@ import { LintItemRow, LintTreeView } from "../../lint";
 import { EK_FOCUS_REQUEST } from "../../constants/ek.constant";
 import styled from "@emotion/styled";
 import { LintLevelIndicator } from "../../lint/lint-level-indicator";
-import { Level } from "./lint-colors";
 import { _APP_EVENT_LINT_RESULT_EK } from "../../lint/__plugin/events";
 import {
   BlackButton,
@@ -15,6 +14,7 @@ import {
 import { makeSummary, requestLintOnCurrentSelection } from "../../lint/actions";
 import { useSingleSelection } from "../../utils/plugin-hooks";
 import { rowDummy } from "../../lint/lint-list-view";
+import { FixYourSelf } from "./fix-your-self";
 
 interface State {
   feedbacks: Array<ReflectLintFeedback>;
@@ -123,7 +123,6 @@ export const LintScreen = () => {
           <>{handleSelectionLayer()}</>
         ) : (
           <>
-            {/* <LintItemRow {...rowDummy} /> */}
             <EmptyMessage>{`Select a layer / frame to run lint on :)`}</EmptyMessage>
           </>
         )}

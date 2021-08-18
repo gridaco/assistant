@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import * as React from "react";
-import { Level } from "./lint-colors";
+import { Level } from "../../lint/lint-colors";
 import { LintError, LintErrorIcon } from "../../lint/lint-error-icon";
 import { LintLevelIndicator } from "../../lint/lint-level-indicator";
 

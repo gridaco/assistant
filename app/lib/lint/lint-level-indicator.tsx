@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import * as React from "react";
-import { Level } from "../pages/lint/lint-colors";
+import { Level } from "./lint-colors";
 
 interface ILintLevelIndicator {
   color: string;

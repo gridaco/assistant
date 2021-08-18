@@ -1,8 +1,3 @@
-// TODO:
-
-import React from "react";
-import { OptionChoiceItem } from "../../pages/lint/lint-option-choice-item";
-
 /** @deprecated this is dummy. replace me */
 export const dummy = "dummy";
 
