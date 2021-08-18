@@ -2,197 +2,50 @@ import { Button, Typography } from "@material-ui/core";
 import { ReflectLintFeedback } from "@reflect-ui/lint/lib/feedbacks";
 import * as React from "react";
 import { Preview } from "../../components/preview";
-import { LintTreeView } from "../../lint";
+import { LintItemRow, LintTreeView } from "../../lint";
 import { EK_FOCUS_REQUEST } from "../../constants/ek.constant";
 import styled from "@emotion/styled";
-import { LintLevelIndicator } from "./lint-level-indicator";
-import { Level } from "./lint-colors";
+import { LintLevelIndicator } from "../../lint/lint-level-indicator";
 import { _APP_EVENT_LINT_RESULT_EK } from "../../lint/__plugin/events";
+import {
+  BlackButton,
+  TransparencyButton,
+} from "../../components/style/global-style";
+import { makeSummary, requestLintOnCurrentSelection } from "../../lint/actions";
+import { useSingleSelection } from "../../utils/plugin-hooks";
+import { rowDummy } from "../../lint/lint-list-view";
+import { FixYourSelf } from "./fix-your-self";
+import { useHistory } from "react-router";
 
 interface State {
   feedbacks: Array<ReflectLintFeedback>;
+  selection: any;
 }
 
-const TestObj = [
-  {
-    name: "MissingTextStyleWarning",
-    userMessage:
-      'missing text style on text node "“iPhone XS - 3” is not a valid component name"',
-    node: {
-      name: "“iPhone XS - 3” is not a valid component name",
-      type: "TEXT",
-      origin: "TEXT",
-      id: "I2787:3460;2787:3435;61:171",
-      parentReference: {
-        name: "(base) error-line-item",
-        type: "FRAME",
-        origin: "INSTANCE",
-        id: "I2787:3460;2787:3435",
-        children: [
-          {
-            name: "“iPhone XS - 3” is not a valid component name",
-            type: "TEXT",
-            origin: "TEXT",
-            id: "I2787:3460;2787:3435;61:171",
-          },
-          {
-            name: "lint-level-indicator",
-            type: "FRAME",
-            origin: "INSTANCE",
-            id: "I2787:3460;2787:3435;2831:11867",
-          },
-        ],
-      },
-    },
-  },
-  {
-    name: "MissingTextStyleWarning",
-    userMessage:
-      'missing text style on text node "“iPhone XS - 3” is not a valid component name"',
-    node: {
-      name: "“iPhone XS - 3” is not a valid component name",
-      type: "TEXT",
-      origin: "TEXT",
-      id: "I2787:3465;2787:3435;61:171",
-      parentReference: {
-        name: "(base) error-line-item",
-        type: "FRAME",
-        origin: "INSTANCE",
-        id: "I2787:3465;2787:3435",
-        children: [
-          {
-            name: "“iPhone XS - 3” is not a valid component name",
-            type: "TEXT",
-            origin: "TEXT",
-            id: "I2787:3465;2787:3435;61:171",
-          },
-          {
-            name: "lint-level-indicator",
-            type: "FRAME",
-            origin: "INSTANCE",
-            id: "I2787:3465;2787:3435;2831:11867",
-          },
-        ],
-      },
-    },
-  },
-  {
-    name: "MissingTextStyleWarning",
-    userMessage:
-      'missing text style on text node "“iPhone XS - 3” is not a valid component name"',
-    node: {
-      name: "“iPhone XS - 3” is not a valid component name",
-      type: "TEXT",
-      origin: "TEXT",
-      id: "I2787:3470;2787:3435;61:171",
-      parentReference: {
-        name: "(base) error-line-item",
-        type: "FRAME",
-        origin: "INSTANCE",
-        id: "I2787:3470;2787:3435",
-        children: [
-          {
-            name: "“iPhone XS - 3” is not a valid component name",
-            type: "TEXT",
-            origin: "TEXT",
-            id: "I2787:3470;2787:3435;61:171",
-          },
-          {
-            name: "lint-level-indicator",
-            type: "FRAME",
-            origin: "INSTANCE",
-            id: "I2787:3470;2787:3435;2831:11867",
-          },
-        ],
-      },
-    },
-  },
-  {
-    name: "MissingTextStyleWarning",
-    userMessage:
-      'missing text style on text node "“iPhone XS - 3” is not a valid component name"',
-    node: {
-      name: "“iPhone XS - 3” is not a valid component name",
-      type: "TEXT",
-      origin: "TEXT",
-      id: "I2787:3475;2787:3435;61:171",
-      parentReference: {
-        name: "(base) error-line-item",
-        type: "FRAME",
-        origin: "INSTANCE",
-        id: "I2787:3475;2787:3435",
-        children: [
-          {
-            name: "“iPhone XS - 3” is not a valid component name",
-            type: "TEXT",
-            origin: "TEXT",
-            id: "I2787:3475;2787:3435;61:171",
-          },
-          {
-            name: "lint-level-indicator",
-            type: "FRAME",
-            origin: "INSTANCE",
-            id: "I2787:3475;2787:3435;2831:11867",
-          },
-        ],
-      },
-    },
-  },
-  {
-    name: "MissingTextStyleWarning",
-    userMessage:
-      'missing text style on text node "“iPhone XS - 3” is not a valid component name"',
-    node: {
-      name: "“iPhone XS - 3” is not a valid component name",
-      type: "TEXT",
-      origin: "TEXT",
-      id: "I2787:3695;2787:3435;61:171",
-      parentReference: {
-        name: "(base) error-line-item",
-        type: "FRAME",
-        origin: "INSTANCE",
-        id: "I2787:3695;2787:3435",
-        children: [
-          {
-            name: "“iPhone XS - 3” is not a valid component name",
-            type: "TEXT",
-            origin: "TEXT",
-            id: "I2787:3695;2787:3435;61:171",
-          },
-          {
-            name: "lint-level-indicator",
-            type: "FRAME",
-            origin: "INSTANCE",
-            id: "I2787:3695;2787:3435;2831:11867",
-          },
-        ],
-      },
-    },
-  },
-];
+export const LintScreen = () => {
+  const histoy = useHistory();
+  const [feedbacks, setFeedbacks] = React.useState<ReflectLintFeedback[]>([]);
 
-export class LintScreen extends React.Component<any, State> {
-  constructor(props) {
-    super(props);
+  const selection = useSingleSelection();
 
-    this.state = {
-      feedbacks: [],
-    };
+  console.log(feedbacks.length === 0);
+  // console.log("selection: ", _s);
+
+  window.addEventListener("message", (ev: MessageEvent) => {
+    const msg = ev.data.pluginMessage;
+    if (msg.type == _APP_EVENT_LINT_RESULT_EK) {
+      const _feedbacks = msg.data as Array<ReflectLintFeedback>;
+      setFeedbacks(_feedbacks);
+    }
+  });
+
+  function countSelection() {
+    // FIXME: just tmp
+    // return selection.node.children.length;
+    return 3;
   }
 
-  componentDidMount() {
-    window.addEventListener("message", (ev: MessageEvent) => {
-      const msg = ev.data.pluginMessage;
-      if (msg.type == _APP_EVENT_LINT_RESULT_EK) {
-        const feedbacks = msg.data as Array<ReflectLintFeedback>;
-        this.setState((state, props) => {
-          return { feedbacks: feedbacks };
-        });
-      }
-    });
-  }
-
-  onFeedbackTap(feedback: ReflectLintFeedback) {
+  function onFeedbackTap(feedback: ReflectLintFeedback) {
     const targetNodeId = feedback.node.id;
     console.log(targetNodeId);
     // move to target element
@@ -209,40 +62,96 @@ export class LintScreen extends React.Component<any, State> {
     );
   }
 
-  render() {
-    function ErrorLineItem() {
-      return (
-        <>
-          <ErrorList>
-            {feedbacks.map((item, i) => {
-              return (
-                <List key={i}>
-                  <Label>{item.node.name}</Label>
-                  <LintLevelIndicator color={Level.warn} />
-                </List>
-              );
-            })}
-          </ErrorList>
-        </>
-      );
-    }
-
-    // const { feedbacks } = this.state;
-    const feedbacks = TestObj;
+  function handleSelectionLayer() {
     return (
       <>
-        <Preview data={undefined} name="selected node name" />
-        <ErrorWrapper>
-          <ErrorTitle>{feedbacks.length} Improvements found</ErrorTitle>
-          <ErrorComent>
-            Across 24 layers, there were <b>4 must-fix errors</b> and 8
-            warnings.
-          </ErrorComent>
-          {ErrorLineItem()}
-        </ErrorWrapper>
+        {feedbacks.length === 0 ? (
+          <>
+            <RunLintTitle>
+              Run lint on “{_makeshortname(selection.node.name)}”
+            </RunLintTitle>
+            <RunLintSubTitle>
+              Run lint under “{_makeshortname(selection.node.name)}” Across{" "}
+              {countSelection()}
+              layers.
+            </RunLintSubTitle>
+          </>
+        ) : (
+          <>
+            <ErrorTitle>{feedbacks.length} Improvements found</ErrorTitle>
+            <ErrorComent>
+              Across 24 layers, there were <b>4 must-fix errors</b>
+              <br />
+              and 8 warnings.
+            </ErrorComent>
+          </>
+        )}
       </>
     );
   }
+
+  function ErrorLineItem() {
+    return (
+      <>
+        <ErrorList>
+          {feedbacks.map((item, i) => {
+            return (
+              <List key={i} onClick={() => onFeedbackTap(item)}>
+                <Label>{item.userMessage}</Label>
+                <LintLevelIndicator color={item.level} />
+              </List>
+            );
+          })}
+        </ErrorList>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Preview data={undefined} name="selected node name" />
+      <ErrorWrapper>
+        {!!selection ? (
+          <>{handleSelectionLayer()}</>
+        ) : (
+          <>
+            <EmptyMessage>{`Select a layer / frame to run lint on :)`}</EmptyMessage>
+          </>
+        )}
+
+        {ErrorLineItem()}
+        {feedbacks.length === 0 ? (
+          <RunLintButtton
+            disabled={!selection}
+            onClick={requestLintOnCurrentSelection}
+          >
+            Run lint
+          </RunLintButtton>
+        ) : (
+          <UnderBtnWrapper>
+            <FirstErrorButton
+              onClick={() => {
+                histoy.push("/lint/by-layer/any-error/fix-yourself");
+              }}
+            >
+              Jump to first error
+            </FirstErrorButton>
+            <ClearButton
+              onClick={() => {
+                setFeedbacks([]);
+              }}
+            >
+              Clear
+            </ClearButton>
+          </UnderBtnWrapper>
+        )}
+      </ErrorWrapper>
+    </>
+  );
+};
+
+function _makeshortname(origin: string): string {
+  return origin;
 }
 
 const ErrorWrapper = styled.div`
@@ -259,6 +168,8 @@ const ErrorTitle = styled.h6`
 `;
 
 const ErrorComent = styled.h6`
+  margin: 0;
+  margin-top: 5px;
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
@@ -272,21 +183,80 @@ const ErrorComent = styled.h6`
   }
 `;
 
+const EmptyMessage = styled.div`
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 14px;
+  text-align: center;
+
+  color: #8d8d8d;
+`;
+
 const ErrorList = styled.ul`
   padding: 0;
+`;
+
+const UnderBtnWrapper = styled.div`
+  width: calc(100% - 32px);
+  display: flex;
+  position: absolute;
+  bottom: 16px;
+`;
+
+const RunLintButtton = styled.button`
+  ${BlackButton}
+  width: calc(100% - 32px);
+  position: absolute;
+  bottom: 16px;
+`;
+
+const FirstErrorButton = styled.button`
+  ${BlackButton}
+  width: 66.6666%;
+  margin-right: 8px;
+`;
+
+const ClearButton = styled.button`
+  ${TransparencyButton}
+  width: 33.3333%;
+`;
+
+const RunLintTitle = styled.h2`
+  // Run lint on “example”
+  margin: 0;
+  margin-top: 20px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 20px;
+
+  color: #000000;
+`;
+
+const RunLintSubTitle = styled.h5`
+  margin: 0;
+  margin-top: 5px;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 14px;
+
+  color: #959595;
 `;
 
 const List = styled.li`
   display: flex;
   align-items: center;
-
+  cursor: pointer;
   margin-bottom: 12px;
+
   &:last-child {
     margin-bottom: 0;
   }
 `;
 
 const Label = styled.h6`
+  margin: 0;
+  margin-top: 5px;
   font-style: normal;
   font-weight: normal;
   font-size: 13px;

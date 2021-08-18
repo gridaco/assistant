@@ -11,6 +11,7 @@ export const ButtonStyle = css`
   box-sizing: border-box;
   padding-top: 16px;
   padding-bottom: 16px;
+  cursor: pointer;
 
   // FIXME: CHEKC IS RIGHT capitalize?
   text-transform: capitalize;
@@ -28,6 +29,12 @@ export const BlackButton = css`
     color: #fff;
     background: #17181a;
   }
+
+  &:disabled {
+    background: #949494;
+    color: #bbb;
+    border: 1px solid #949494;
+  }
 `;
 
 export const WhtieButton = css`
@@ -39,10 +46,12 @@ export const WhtieButton = css`
 
 export const TransparencyButton = css`
   ${ButtonStyle}
-  color: #C1C1C1;
+  color: #c1c1c1;
+  border: 0;
+  background: rgba(255, 255, 255, 0);
 
   &:hover {
-    background: rgba(255, 255, 255, 0);
+    background: rgba(255, 255, 255, 0.3);
   }
 `;
 
