@@ -301,6 +301,7 @@ export default function App(props: { platform: TargetPlatform }) {
           {standalone_pages.map((p) => {
             return (
               <Route
+                key={p.id}
                 path={p.path}
                 render={() => {
                   return <Screen screen={p.id} />;
