@@ -42,5 +42,8 @@
 		"type": "opencollective",
 		"url": "https://opencollective.com/bridged",
 		"logo": "https://opencollective.com/bridged/logo.txt"
+	},
+	"engines": {
+		"node": ">=12.0.0"
 	}
 }
