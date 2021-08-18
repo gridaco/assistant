@@ -1,16 +1,12 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import "../app.css";
 import { initialize } from "../analytics";
 
 // UI COMPS
-import Button from "@material-ui/core/Button";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
 import { EK_SET_APP_MODE } from "../constants/ek.constant";
 import { PluginApp } from "plugin-app";
 import BatchMetaEditor from "../pages/tool-box/batch-meta-editor";
-import { BrowserRouter } from "react-router-dom";
+import { useHistory, Switch, Route } from "react-router-dom";
 
 //
 // region screens import
@@ -32,12 +28,15 @@ import { AboutScreen } from "../pages/about";
 //
 
 import {
+  getDedicatedRouter,
   getWorkmodeTabLayout,
   get_page_config,
   WorkMode,
   WorkScreen,
-  worspaceModeToName,
+  standalone_pages,
   PrimaryWorkmodeSet,
+  loadLayout,
+  NavigationStoreState,
 } from "../navigation";
 
 import {
@@ -48,6 +47,7 @@ import {
 } from "../components/navigation";
 import styled from "@emotion/styled";
 import { Column, Row } from "../components/style/global-style";
+import { UploadSteps } from "../components/upload-steps";
 
 /** The container of tab content */
 function TabPanel(props: {
@@ -138,62 +138,77 @@ function Screen(props: { screen: WorkScreen }) {
       return <BatchMetaEditor />;
     case WorkScreen.tool_data_mapper:
       return <DataMapperScreen />;
+    case WorkScreen.scene_upload_steps_final:
+      return <UploadSteps />;
+    default:
+      return <div>Not found</div>;
   }
 }
 
 function TabsLayout(props: {
   workmode: WorkMode;
   tabIndex: number;
+  isTabVisible: boolean;
   onChange: (index: number, tab: WorkScreen) => void;
 }) {
+  const history = useHistory();
   const { workmode, tabIndex, onChange } = props;
-  const tabLayout = getWorkmodeTabLayout(workmode);
-  const handleTabChange = (index: number) => {
-    const screen = tabLayout[index];
-    onChange(index, screen);
-  };
+  const tabs_as_page_configs = getWorkmodeTabLayout(workmode).map(
+    (screen, index) => {
+      const _ = get_page_config(screen);
+      return {
+        id: _.id,
+        name: _.title,
+        path: _.path,
+      };
+    }
+  );
 
-  const tabs_as_page_configs = tabLayout.map((screen, index) => {
-    const _ = get_page_config(screen);
-    return {
-      id: _.id,
-      name: _.title,
-    };
-  });
+  const handleTabChange = (index: number) => {
+    const screen = tabs_as_page_configs[index];
+    onChange(index, screen.id);
+    history.replace(screen.path); // since it is a movement between tabs, we don't use push. we use replace to avoid the history stack to be too long.
+  };
 
   return (
     <div className="outer-ui">
-      <div className="tabs-wrapper" style={{ margin: "0 -8px" }}>
-        <WorkmodeScreenTabs
-          layout={tabs_as_page_configs}
-          tabIndex={tabIndex}
-          onSelect={handleTabChange}
-        />
-      </div>
-      {tabLayout.map((v, i) => {
-        return (
-          <TabPanel key={i} value={tabIndex} index={i}>
-            <Screen screen={v} />
-          </TabPanel>
-        );
-      })}
+      {props.isTabVisible && (
+        <div className="tabs-wrapper" style={{ margin: "0 -8px" }}>
+          <WorkmodeScreenTabs
+            layout={tabs_as_page_configs}
+            tabIndex={tabIndex}
+            onSelect={handleTabChange}
+          />
+        </div>
+      )}
+
+      <Switch>
+        {tabs_as_page_configs.map((v, i) => {
+          return (
+            <Route
+              key={v.id}
+              path={v.path}
+              render={() => <Screen screen={v.id} />}
+            />
+          );
+        })}
+      </Switch>
     </div>
   );
 }
 
-function TabNavigationApp() {
-  const [workmode, setWorkmode] = React.useState<WorkMode>(WorkMode.code);
-  const [workmodeSet, setWorkmodeSet] = React.useState<PrimaryWorkmodeSet>({
-    first: WorkMode.code,
-    second: WorkMode.design,
-  });
+function TabNavigationApp(props?: { savedLayout: NavigationStoreState }) {
+  const [workmode, setWorkmode] = useState<WorkMode>(WorkMode.code);
+  const [workmodeSet, setWorkmodeSet] = useState<PrimaryWorkmodeSet>(
+    props?.savedLayout?.workmodeSet
+  );
 
   const on_workmode_select = (workmode: WorkMode) => {
     setWorkmode(workmode);
   };
 
-  const [tabIndex, setTabIndex] = React.useState<number>(0);
-  const [expansion, setExpansion] = React.useState<boolean>(true);
+  const [tabIndex, setTabIndex] = useState<number>(0);
+  const [expansion, setExpansion] = useState<boolean>(true);
 
   return (
     <>
@@ -212,38 +227,55 @@ function TabNavigationApp() {
           </Row>
           {!expansion && <DropNav />}
         </Column>
-
-        {/* <WorkmodeSelect current={workmode} onSelect={(workmode) => {}} /> */}
       </Wrapper>
 
-      {/* LEGACY */}
-      {/* <WorkmodeSelect
-        current={workmode}
-        onSelect={(selected) => {
-          // when workspace mode is updated, by default the first index 0 tab will be selected without select event.
-          // explicitly triggering the event.
-          setWorkmode(selected);
-          const newTabLayout = getWorkmodeTabLayout(selected);
-          _update_focused_screen_ev(newTabLayout[0]);
+      {/* {expansion && ( */}
+      <TabsLayout
+        workmode={workmode}
+        tabIndex={tabIndex}
+        isTabVisible={expansion}
+        onChange={(index, screen) => {
+          _update_focused_screen_ev(screen);
+          setTabIndex(index);
         }}
-      /> */}
-      {expansion && (
-        <TabsLayout
-          workmode={workmode}
-          tabIndex={tabIndex}
-          onChange={(index, screen) => {
-            _update_focused_screen_ev(screen);
-            setTabIndex(index);
-          }}
-        />
-      )}
+      />
+      {/* )} */}
     </>
   );
   //
 }
 
+function RouterTabNavigationApp(props) {
+  const [savedLayout, setSavedLayout] = useState<NavigationStoreState>();
+  useEffect(() => {
+    loadLayout().then((l) => setSavedLayout(l));
+  }, []);
+
+  const params = props.match.params;
+  const workmode = params.workmode;
+  const work = params.work;
+  // TODO: make new layout based on saved one and givven param.
+
+  return <>{savedLayout && <TabNavigationApp savedLayout={savedLayout} />}</>;
+}
+
+function Home() {
+  const [savedLayout, setSavedLayout] =
+    useState<NavigationStoreState>(undefined);
+
+  useEffect(() => {
+    loadLayout()
+      .then((d) => {
+        setSavedLayout(d);
+      })
+      .finally(() => {});
+  }, []);
+
+  return <>{savedLayout && <TabNavigationApp savedLayout={savedLayout} />}</>;
+}
+
 export default function App(props: { platform: TargetPlatform }) {
-  React.useEffect(() => {
+  useEffect(() => {
     // FIXME: - dynamicallt change initial focused screen. (currently inital setup is not implemented. - initial setup is done by below line.)
     _update_focused_screen_ev(WorkScreen.code_flutter);
 
@@ -256,11 +288,30 @@ export default function App(props: { platform: TargetPlatform }) {
     // endregion init GA
   }, []);
 
+  const Router = getDedicatedRouter();
+
   return (
     <PluginApp platform={props.platform}>
-      <BrowserRouter>
-        <TabNavigationApp />
-      </BrowserRouter>
+      <Router>
+        <Switch>
+          {/* # region unique route section */}
+          {standalone_pages.map((p) => {
+            return (
+              <Route
+                path={p.path}
+                render={() => {
+                  return <Screen screen={p.id} />;
+                }}
+              />
+            );
+          })}
+          {/* # endregion unique route section */}
+          {/* dynamic route shall be placed at the last point, since it overwrites other routes */}
+          <Route path="/:workmode/:work" component={RouterTabNavigationApp} />
+          <Route path="/" component={Home} />
+          {/* 👆 this is for preventing blank page on book up. this will be fixed and removed.*/}
+        </Switch>
+      </Router>
     </PluginApp>
   );
 }

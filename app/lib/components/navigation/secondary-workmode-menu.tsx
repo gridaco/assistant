@@ -12,7 +12,7 @@ export function SecondaryWorkmodeMenu(props: {
 }) {
   return (
     <Wrapper>
-      <Column>
+      <Column style={{ marginTop: "4px" }}>
         <Row style={{ marginBottom: "4px" }}>
           {props.menus.map((menu, index) => {
             if (index < 3) {
