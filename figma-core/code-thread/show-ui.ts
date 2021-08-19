@@ -5,7 +5,7 @@ export async function showUI() {
   // load plugin with confugured w/h
   // restore previous size
 
-  let size: { w: number; h: number } = { w: 375, h: 812 };
+  let size: { w: number; h: number } = { w: 414, h: 896 };
   try {
     const savedsize: {
       w: number;
