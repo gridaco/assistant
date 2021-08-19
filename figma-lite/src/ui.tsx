@@ -48,15 +48,19 @@ function LiteHostedAppConnector() {
   // <AppSkeleton/>
 
   return (
-    <iframe
-      ref={frame}
-      // style={{ zoom: "80%" }}
-      width="100%"
-      height="100%"
-      sandbox="allow-scripts allow-same-origin"
-      frameBorder="0"
-      allowFullScreen
-      src={`${_host}/?platform=figma`}
-    ></iframe>
+    <>
+      {!initialized && <AppSkeleton />}
+      <iframe
+        ref={frame}
+        style={{ opacity: `${initialized ? 1 : 0}` }}
+        // style={{ zoom: "80%" }}
+        width="100%"
+        height="100%"
+        sandbox="allow-scripts allow-same-origin"
+        frameBorder="0"
+        allowFullScreen
+        src={`${_host}/?platform=figma`}
+      ></iframe>
+    </>
   );
 }
