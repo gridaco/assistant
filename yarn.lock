@@ -1250,15 +1250,6 @@
     "@babel/helper-validator-identifier" "^7.14.5"
     to-fast-properties "^2.0.0"
 
-"@base-sdk-fp/auth@0.1.0-2":
-  version "0.1.0-2"
-  resolved "https://registry.yarnpkg.com/@base-sdk-fp/auth/-/auth-0.1.0-2.tgz#9932e76d4aa7b88c8eed23cfdf0e949b581d16d4"
-  integrity sha512-1cnAftih+EOfE+h7QqiMDCNZfSiRfVTKQPDPeSyCIxlJVKuKDJPCuGJOJfRlQ165u3pU61saeC7ni6Q8ARuWOA==
-  dependencies:
-    "@base-sdk/core" "0.1.0-1"
-    axios-retry "^3.1.9"
-    otplib "^12.0.1"
-
 "@base-sdk/base@0.1.0-1":
   version "0.1.0-1"
   resolved "https://registry.yarnpkg.com/@base-sdk/base/-/base-0.1.0-1.tgz#aaf84625698693f9690b85c46f453c69910ca5a3"
@@ -2979,6 +2970,15 @@
   version "16.14.13"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.14.13.tgz#14f77c75ea581fa632907440dfda23b3c6ab24c9"
   integrity sha512-KznsRYfqPmbcA5pMxc4mYQ7UgsJa2tAgKE2YwEmY5xKaTVZXLAY/ImBohyQHnEoIjxIJR+Um4FmaEYDr3q3zlg==
+  dependencies:
+    "@types/prop-types" "*"
+    "@types/scheduler" "*"
+    csstype "^3.0.2"
+
+"@types/react@^17.0.14":
+  version "17.0.19"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.19.tgz#8f2a85e8180a43b57966b237d26a29481dacc991"
+  integrity sha512-sX1HisdB1/ZESixMTGnMxH9TDe8Sk709734fEQZzCV/4lSu9kJCPbo2PbTRoZM+53Pp0P10hYVyReUueGwUi4A==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
