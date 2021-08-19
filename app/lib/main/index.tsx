@@ -216,7 +216,13 @@ function TabNavigationApp(props?: { savedLayout: NavigationStoreState }) {
   return (
     <>
       <Wrapper>
-        <Column style={{ width: "100%" }}>
+        <Column
+          style={{
+            width: "100%",
+            justifyItems: "center",
+            // marginBottom: "-8px",
+          }}
+        >
           <Row>
             <PrimaryWorkmodeSelect
               selection={workmode}
@@ -338,5 +344,6 @@ function _update_focused_screen_ev(screen: WorkScreen) {
 
 const Wrapper = styled.div`
   display: flex;
-  padding: 14px 8px;
+  padding: 0 8px;
+  /* margin-bottom: -8px; */
 `;

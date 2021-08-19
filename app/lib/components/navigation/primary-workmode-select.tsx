@@ -59,7 +59,7 @@ const WorkmodeLabel = styled.h3<Props>`
 
   // reset for h3 init style
   margin: 0;
-  margin-top: 8px;
+  margin-top: 14px;
 
   &:first-child {
     margin-right: 12px;
