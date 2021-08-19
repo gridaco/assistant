@@ -13,8 +13,6 @@ interface ICodeScreenFooter {
 export function CodeScreenFooter(props: ICodeScreenFooter) {
   const [isLaunchingConsole, setIsLaunchingConsole] = useState<boolean>(false);
 
-  const onLoading = () => {};
-
   const onQuickLookClicked = (e) => {
     const setLoadingState = (loading: boolean) => {
       setIsLaunchingConsole(loading);
@@ -37,9 +35,6 @@ export function CodeScreenFooter(props: ICodeScreenFooter) {
   };
   return (
     <CodeFooterCtaWrapper>
-      {/* copy feature should be inside the code viewer box with copy icon button.*/}
-      {/* <CopyCodeButton onClick={onCopyClicked}>copy code</CopyCodeButton> */}
-
       <NextStepButton
         onClick={() => {
           // TODO: the button component should be passed from outer side.
@@ -60,11 +55,11 @@ export function CodeScreenFooter(props: ICodeScreenFooter) {
 }
 
 const CodeFooterCtaWrapper = styled.footer`
-  /* margin: 0 -8px; */
   padding: 12px 8px;
   display: flex;
   background: #fff;
   position: absolute;
+  /* 16 is body's padding */
   width: calc(100% - 16px);
   left: 0;
   bottom: 0;
@@ -78,6 +73,7 @@ const CodeFooterCtaWrapper = styled.footer`
 
 const NextStepButton = styled.button`
   ${BlackButton}
+  /* 2/3 size. 12 is wrapper padding  */
   width: calc(66.666% - 12px);
 
   &:hover {
@@ -88,5 +84,6 @@ const NextStepButton = styled.button`
 
 const PreviewButton = styled.button`
   ${WhtieButton}
+  /* 1/3 size. 12 is wrapper padding */
   width: calc(33.333% - 12px);
 `;

@@ -188,7 +188,6 @@ export function CodeScreen(props: ICodeScreen) {
       </CodeWrapper>
 
       <CodeScreenFooter app={app} />
-      {/* <UploadSteps /> */}
     </div>
   );
 }
@@ -220,7 +219,7 @@ const CopyCodeButton = styled.div`
 `;
 
 const CodeWrapper = styled.div`
-  /* width: 100%; */
+  /* 374 is preview and navigation height*/
   height: calc(100vh - 374px);
   background: rgb(42, 39, 52);
   margin: 0 -8px;
