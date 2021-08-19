@@ -15,8 +15,13 @@ import {
   initializeTargetPlatform,
   TargetPlatform,
 } from "../../app/lib/utils/plugin-init/init-target-platform";
+import { initialize as cid_initialize, client_id } from "./client-id";
 
-export function PluginApp(props: { platform: TargetPlatform; children: any }) {
+export function PluginApp(props: {
+  platform: TargetPlatform;
+  children: any;
+  loading?: any;
+}) {
   const [booting, setBooting] = useState(true);
   useEffect(() => {
     console.log("start initializing plugin app...");
@@ -46,25 +51,36 @@ export function PluginApp(props: { platform: TargetPlatform; children: any }) {
     });
 
     // init platform
-    initializeTargetPlatform(props.platform)
-      .then(() => {})
-      .finally(() => {
-        console.info("PluginApp initiallized");
+    initializeTargetPlatform(props.platform).then(() => {
+      const warmup_procs: Promise<any>[] = [];
+
+      // make client id
+      warmup_procs.push(cid_initialize());
+
+      Promise.all(warmup_procs).finally(() => {
+        console.info("PluginApp initiallized", "cid", client_id);
         setBooting(false);
       });
+    });
   }, []);
 
   if (booting) {
     return (
-      <div
-        style={{
-          alignItems: "center",
-          alignContent: "center",
-          textAlign: "center",
-        }}
-      >
-        Loading.. {props.platform} App
-      </div>
+      <>
+        {props.loading ? (
+          props.loading
+        ) : (
+          <div
+            style={{
+              alignItems: "center",
+              alignContent: "center",
+              textAlign: "center",
+            }}
+          >
+            Loading.. {props.platform} App
+          </div>
+        )}
+      </>
     );
   }
 

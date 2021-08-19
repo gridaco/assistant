@@ -25,7 +25,6 @@ export async function saveLayout(state: NavigationStoreState) {
 
 export async function loadLayout(): Promise<NavigationStoreState> {
   const saved = await PluginSdk.getItem<NavigationStoreState>(__KEY);
-  console.log("saved", saved);
   if (saved) {
     return saved;
   }

@@ -21,4 +21,5 @@ export enum WorkScreen {
   tool_batch_meta_editor = "tool_batch_meta_editor",
   tool_data_mapper = "tool_data_mapper",
   scene_upload_steps_final = "scene_upload_steps_final",
+  signin = "signin",
 }
