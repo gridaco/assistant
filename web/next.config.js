@@ -32,6 +32,9 @@ const withTM = require("next-transpile-modules")([
   "@base-sdk/build",
   "@base-sdk/resources",
 
+  // baes sdk fp
+  "@base-sdk-fp/auth",
+
   // region coli
   "coli",
   "@coli.codes/escape-string",
