@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import * as ReactDOM from "react-dom";
+import { AppSkeleton } from "@ui/skeleton";
 
 ReactDOM.render(
   <LiteHostedAppConnector />,
@@ -34,6 +35,10 @@ function LiteHostedAppConnector() {
   }, [frame]);
 
   const _host = "http://localhost:3000";
+
+  // use opacity
+  // <AppSkeleton/>
+
   return (
     <iframe
       ref={frame}
