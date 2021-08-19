@@ -40,10 +40,17 @@ const _TEXT_LEADING_MARGIN = 1;
 ```
  * 
 */
-export function make_empty_selection_state_text_content(p: {
-  platform: string;
-  lang: "jsx" | "tsx" | "dart";
-}) {
+export function make_empty_selection_state_text_content(
+  p:
+    | {
+        platform: string;
+        lang: "jsx" | "tsx" | "dart";
+      }
+    | "empty"
+) {
+  if (p == "empty") {
+    return "";
+  }
   const _margin =
     _TEXT_LEADING_MARGIN > 0 ? " ".repeat(_TEXT_LEADING_MARGIN) : "";
   const docstring_profile = comment_profile[p.lang].docstring;

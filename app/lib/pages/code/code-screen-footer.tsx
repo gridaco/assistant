@@ -59,33 +59,30 @@ export function CodeScreenFooter(props: ICodeScreenFooter) {
   );
 }
 
-const CodeFooterCtaWrapper = styled.div`
+const CodeFooterCtaWrapper = styled.footer`
   /* margin: 0 -8px; */
-  padding: 10px 10px 0 10px;
+  padding: 12px 8px;
   display: flex;
   background: #fff;
 
   button {
-    margin-right: 8px;
-
-    &:last-child() {
-      margin-right: 0;
+    &:first-child {
+      margin-right: 8px;
     }
   }
 `;
 
-const NextStepButton = styled(Button)`
+const NextStepButton = styled.button`
   ${BlackButton}
-  width: 66.666666%;
+  width: calc(66.666% - 12px);
 
-  // for reset material-ui button style
   &:hover {
     color: #fff;
     background: #17181a;
   }
 `;
 
-const PreviewButton = styled(Button)`
+const PreviewButton = styled.button`
   ${WhtieButton}
-  width: 33.333333%;
+  width: calc(33.333% - 12px);
 `;

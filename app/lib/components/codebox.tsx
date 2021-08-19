@@ -82,8 +82,9 @@ const CodeWrapper = styled.code`
 
 const CodeInnerWrapper = styled.pre`
   width: 100%;
-  height: 408px;
-  margin: 0 -8px;
+  /* height: 408px; */
+  margin: 0 8px;
+  /* margin: 0 -8px; */
   padding: 8px;
   /* overflow: scroll; */
 `;
