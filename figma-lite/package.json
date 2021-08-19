@@ -1,0 +1,11 @@
+{
+    "name": "figma-lite",
+    "description": "A web hosted version of figma plugin.",
+    "authors": "Grida.co",
+    "version": "0.0.0",
+    "private": false,
+    "dependencies": {},
+    "scripts": {
+        "build": "webpack -p --mode=production"
+    }
+}

@@ -1,6 +1,6 @@
 import { onService, _Lint_Event, _APP_EVENT_LINT_RESULT_EK } from "./events";
 import { runLints } from "@designto/clean";
-import { FigmaNodeCache } from "figma/src/node-cache";
+import { FigmaNodeCache } from "figma-core/node-cache";
 
 onService(main_cb);
 
