@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { css } from "@emotion/react";
-import { Skeleton } from "@material-ui/lab";
+import Skeleton from "@material-ui/lab/Skeleton";
 
 export function AppSkeleton() {
   return (
