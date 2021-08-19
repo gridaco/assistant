@@ -55,7 +55,8 @@ function LiteHostedAppConnector() {
         style={{ opacity: `${initialized ? 1 : 0}` }}
         // style={{ zoom: "80%" }}
         width="100%"
-        height="100%"
+        height={`${initialized ? "100%" : "0px"}`}
+        // height="100%"
         sandbox="allow-scripts allow-same-origin"
         frameBorder="0"
         allowFullScreen

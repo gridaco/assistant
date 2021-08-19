@@ -25,9 +25,7 @@ export function AppSkeleton() {
         <Contents />
         <Contents />
       </ContentsWrapper>
-      {/* <Skeleton> */}
       <ButtonWrapper />
-      {/* </Skeleton> */}
     </Wrapper>
   );
 }
