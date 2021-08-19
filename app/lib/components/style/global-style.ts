@@ -12,6 +12,7 @@ export const ButtonStyle = css`
   padding-top: 16px;
   padding-bottom: 16px;
   cursor: pointer;
+  outline: none;
 
   // FIXME: CHEKC IS RIGHT capitalize?
   text-transform: capitalize;

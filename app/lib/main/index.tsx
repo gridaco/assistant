@@ -24,6 +24,7 @@ import { ExporterScreen } from "../pages/tool-box/exporter";
 import { DataMapperScreen } from "../pages/tool-box/data-mapper/data-mapper-screen";
 import { TargetPlatform } from "../utils/plugin-init/init-target-platform";
 import { AboutScreen } from "../pages/about";
+import Signin from "../pages/signin";
 // endregion screens import
 //
 
@@ -141,6 +142,8 @@ function Screen(props: { screen: WorkScreen }) {
       return <DataMapperScreen />;
     case WorkScreen.scene_upload_steps_final:
       return <UploadSteps />;
+    case WorkScreen.signin:
+      return <Signin />;
     case WorkScreen.lint_fix_yourself:
       return <FixYourSelf />;
     default:
@@ -292,9 +295,9 @@ export default function App(props: { platform: TargetPlatform }) {
   }, []);
 
   const Router = getDedicatedRouter();
-
   return (
     <PluginApp platform={props.platform}>
+      {/* @ts-ignore */}
       <Router>
         <Switch>
           {/* # region unique route section */}

@@ -28,9 +28,6 @@ export const LintScreen = () => {
 
   const selection = useSingleSelection();
 
-  console.log(feedbacks.length === 0);
-  // console.log("selection: ", _s);
-
   window.addEventListener("message", (ev: MessageEvent) => {
     const msg = ev.data.pluginMessage;
     if (msg.type == _APP_EVENT_LINT_RESULT_EK) {
@@ -47,8 +44,6 @@ export const LintScreen = () => {
 
   function onFeedbackTap(feedback: ReflectLintFeedback) {
     const targetNodeId = feedback.node.id;
-    console.log(targetNodeId);
-    // move to target element
     parent.postMessage(
       {
         pluginMessage: {
@@ -63,6 +58,8 @@ export const LintScreen = () => {
   }
 
   function handleSelectionLayer() {
+    const summary = makeSummary(feedbacks);
+
     return (
       <>
         {feedbacks.length === 0 ? (
@@ -71,7 +68,8 @@ export const LintScreen = () => {
               Run lint on “{_makeshortname(selection.node.name)}”
             </RunLintTitle>
             <RunLintSubTitle>
-              Run lint under “{_makeshortname(selection.node.name)}” Across{" "}
+              Run lint under “{_makeshortname(selection.node.name)}” Across
+              {"  "}
               {countSelection()}
               layers.
             </RunLintSubTitle>
@@ -80,9 +78,10 @@ export const LintScreen = () => {
           <>
             <ErrorTitle>{feedbacks.length} Improvements found</ErrorTitle>
             <ErrorComent>
-              Across 24 layers, there were <b>4 must-fix errors</b>
+              Across {summary.layers} layers, there were{" "}
+              <b>{summary.errors} must-fix errors</b>
               <br />
-              and 8 warnings.
+              and {summary.warnings} warnings.
             </ErrorComent>
           </>
         )}
@@ -98,7 +97,9 @@ export const LintScreen = () => {
             return (
               <List key={i} onClick={() => onFeedbackTap(item)}>
                 <Label>{item.userMessage}</Label>
-                <LintLevelIndicator color={item.level} />
+                <IndicatorBox>
+                  <LintLevelIndicator color={item.level} />
+                </IndicatorBox>
               </List>
             );
           })}
@@ -220,6 +221,7 @@ const FirstErrorButton = styled.button`
 const ClearButton = styled.button`
   ${TransparencyButton}
   width: 33.3333%;
+  background: #fff;
 `;
 
 const RunLintTitle = styled.h2`
@@ -256,6 +258,7 @@ const List = styled.li`
 
 const Label = styled.h6`
   margin: 0;
+  max-width: calc(100% - 18px);
   margin-top: 5px;
   font-style: normal;
   font-weight: normal;
@@ -264,6 +267,9 @@ const Label = styled.h6`
   list-style-type: none;
   color: #242424;
 
-  margin: 0;
   margin-right: auto;
+`;
+
+const IndicatorBox = styled.div`
+  margin-left: 10px;
 `;

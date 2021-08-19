@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "@emotion/styled";
 import * as about from "../../about";
+import { __auth_proxy, ProxyAuthenticationMode } from "@base-sdk-fp/auth";
+import { useHistory } from "react-router-dom";
 
 const URLS = {
   logo_256:
@@ -27,10 +29,15 @@ const URLS = {
 };
 
 export function AboutScreen() {
+  const history = useHistory();
   const linkTo = (url: string) => {
     return () => {
       open(url);
     };
+  };
+
+  const signIntoAssistant = () => {
+    history.push("/signin");
   };
 
   return (
@@ -53,7 +60,7 @@ export function AboutScreen() {
         </MenuSection>
         <MenuSection>
           <MenuSectionTitleItem>More from Bridged</MenuSectionTitleItem>
-          <MenuItem onClick={linkTo(URLS.signup)}>Signup</MenuItem>
+          <MenuItem onClick={signIntoAssistant}>Signup / Signin</MenuItem>
           <MenuItem onClick={linkTo(URLS.blog)}>Medium</MenuItem>
           <MenuItem onClick={linkTo(URLS.homepage_bridged)}>Homepage</MenuItem>
         </MenuSection>

@@ -7,6 +7,7 @@ import { TargetPlatform } from "app/lib/utils/plugin-init/init-target-platform";
 
 window.addEventListener("message", (rev) => {
   if (rev.data.pluginMessage) {
+    // console.log(rev);
     PluginSdkService.handle(rev.data.pluginMessage);
   }
 });
