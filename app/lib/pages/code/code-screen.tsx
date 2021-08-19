@@ -221,7 +221,7 @@ const CopyCodeButton = styled.div`
 
 const CodeWrapper = styled.div`
   /* width: 100%; */
-  height: 484px;
+  height: calc(100vh - 374px);
   background: rgb(42, 39, 52);
   margin: 0 -8px;
   overflow-y: scroll;

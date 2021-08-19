@@ -64,6 +64,10 @@ const CodeFooterCtaWrapper = styled.footer`
   padding: 12px 8px;
   display: flex;
   background: #fff;
+  position: absolute;
+  width: calc(100% - 16px);
+  left: 0;
+  bottom: 0;
 
   button {
     &:first-child {
