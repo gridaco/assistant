@@ -59,9 +59,9 @@ export function CodeScreenFooter(props: ICodeScreenFooter) {
   );
 }
 
-const CodeFooterCtaWrapper = styled.div`
+const CodeFooterCtaWrapper = styled.footer`
   /* margin: 0 -8px; */
-  padding: 10px 0;
+  padding: 12px 8px;
   display: flex;
   background: #fff;
 
