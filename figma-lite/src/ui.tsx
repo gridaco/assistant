@@ -1,5 +1,6 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import * as ReactDOM from "react-dom";
+import { AppSkeleton } from "@ui/skeleton";
 
 ReactDOM.render(
   <LiteHostedAppConnector />,
@@ -9,10 +10,16 @@ ReactDOM.render(
 function LiteHostedAppConnector() {
   const frame = useRef<HTMLIFrameElement>();
 
+  const [initialized, setInitialized] = useState(false);
+
   useEffect(() => {
     if (frame) {
       window.addEventListener("message", (event) => {
         console.log("event recievd from lite-fima-app", event.data);
+        if (event.data == "plugin-app-initialized") {
+          setInitialized(true);
+        }
+
         if ("pluginMessage" in event.data) {
           if (
             "pluginId" in event.data ||
@@ -34,6 +41,12 @@ function LiteHostedAppConnector() {
   }, [frame]);
 
   const _host = "http://localhost:3000";
+
+  // use opacity
+  // if (initialized) => show iframe only
+  // eles, show iframe with opacity 0 & enable AppSkeleton
+  // <AppSkeleton/>
+
   return (
     <iframe
       ref={frame}

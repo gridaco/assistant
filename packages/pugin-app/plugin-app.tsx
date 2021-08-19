@@ -21,11 +21,11 @@ export function PluginApp(props: {
   platform: TargetPlatform;
   children: any;
   loading?: any;
+  onInitialized?: () => void;
 }) {
   const [booting, setBooting] = useState(true);
   useEffect(() => {
     console.log("start initializing plugin app...");
-    parent.postMessage("starting plugin-app", "*");
 
     PluginSdk.initializeWindow(parent);
     window.addEventListener("message", (ev: MessageEvent) => {
@@ -59,6 +59,8 @@ export function PluginApp(props: {
 
       Promise.all(warmup_procs).finally(() => {
         console.info("PluginApp initiallized", "cid", client_id);
+        parent.postMessage("plugin-app-initialized", "*");
+        props.onInitialized?.();
         setBooting(false);
       });
     });
