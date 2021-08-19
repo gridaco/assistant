@@ -72,10 +72,7 @@ export function CodeScreen(props: ICodeScreen) {
   }, [useroption.framework]);
 
   const _make_placeholder = () => {
-    return make_empty_selection_state_text_content({
-      platform: "figma",
-      lang: useroption.language,
-    });
+    return make_empty_selection_state_text_content("empty");
   };
 
   const _make_source = (): SourceInput => {
@@ -224,7 +221,7 @@ const CopyCodeButton = styled.div`
 
 const CodeWrapper = styled.div`
   /* width: 100%; */
-  /* height: 408px; */
+  height: 484px;
   background: rgb(42, 39, 52);
   margin: 0 -8px;
   overflow-y: scroll;

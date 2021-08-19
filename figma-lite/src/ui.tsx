@@ -37,6 +37,7 @@ function LiteHostedAppConnector() {
   return (
     <iframe
       ref={frame}
+      // style={{ zoom: "80%" }}
       width="100%"
       height="100%"
       sandbox="allow-scripts allow-same-origin"
