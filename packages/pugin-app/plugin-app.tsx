@@ -21,6 +21,7 @@ export function PluginApp(props: {
   platform: TargetPlatform;
   children: any;
   loading?: any;
+  onInitialized?: () => void;
 }) {
   const [booting, setBooting] = useState(true);
   useEffect(() => {
@@ -59,6 +60,7 @@ export function PluginApp(props: {
 
       Promise.all(warmup_procs).finally(() => {
         console.info("PluginApp initiallized", "cid", client_id);
+        props.onInitialized?.();
         setBooting(false);
       });
     });
