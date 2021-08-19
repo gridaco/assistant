@@ -62,7 +62,7 @@ const StyledTab = styled(Tab)`
     min-width: fit-content;
     max-width: fit-content;
     width: fit-content;
-    padding: 16px;
+    padding: 18px 16px;
     font-size: 14px;
     font-weight: 400 !important;
     line-height: 17px;
@@ -73,7 +73,7 @@ const StyledTab = styled(Tab)`
     min-width: fit-content;
     max-width: fit-content;
     width: fit-content;
-    padding: 16px;
+    padding: 18px 16px;
     font-size: 14px;
     font-weight: 700 !important;
     line-height: 17px;
