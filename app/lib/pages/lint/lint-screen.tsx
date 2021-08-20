@@ -197,7 +197,7 @@ const ErrorList = styled.ul`
   padding: 0;
 
   /* 158 is Navigation (140px) +  ErrorTitle (44px) + ErrorComent (34px) +  UnderBtnWrapper (48px)  */
-  max-height: calc(100vh - 298px);
+  height: calc(100vh - 298px);
   overflow-y: scroll;
 `;
 

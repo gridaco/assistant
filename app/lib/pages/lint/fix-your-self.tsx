@@ -58,30 +58,32 @@ export function FixYourSelf(props: {
         <BackArrowIcon />
       </BackIcon>
 
-      {layerlint &&
-        layerlint.feedbacks.map((item, i) => {
-          return (
-            <LintItemRow
-              name={item.name}
-              error={item}
-              level={item.level}
-              key={i}
-              expand={isDropVisible === i}
-              onTap={() => {
-                // focus to the layer again. (even if it's already focused.)
-                const f = feedbacks[layerIndex].node.id; // TODO: use actual id
-                PluginSdk.focus(f);
+      <LayerWrapper>
+        {layerlint &&
+          layerlint.feedbacks.map((item, i) => {
+            return (
+              <LintItemRow
+                name={item.name}
+                error={item}
+                level={item.level}
+                key={i}
+                expand={isDropVisible === i}
+                onTap={() => {
+                  // focus to the layer again. (even if it's already focused.)
+                  const f = feedbacks[layerIndex].node.id; // TODO: use actual id
+                  PluginSdk.focus(f);
 
-                // handle expansion
-                if (isDropVisible === i) {
-                  setIsDropVisible(-1);
-                } else {
-                  setIsDropVisible(i);
-                }
-              }}
-            />
-          );
-        })}
+                  // handle expansion
+                  if (isDropVisible === i) {
+                    setIsDropVisible(-1);
+                  } else {
+                    setIsDropVisible(i);
+                  }
+                }}
+              />
+            );
+          })}
+      </LayerWrapper>
 
       <Pagination>
         <LintProcessPaginator
@@ -130,6 +132,12 @@ const Wrapper = styled.div`
 
 const BackIcon = styled.div`
   margin-bottom: 24px;
+`;
+
+const LayerWrapper = styled.div`
+  // 200 is NextLayerBtn + Pagination + BackIcon
+  height: calc(100vh - 200px);
+  overflow-y: scroll;
 `;
 
 const Pagination = styled.div`
