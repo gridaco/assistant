@@ -5,7 +5,7 @@ import {
   TARGET_PLATFORM,
 } from "../../utils/plugin-init/init-target-platform";
 import { PluginSdk } from "@plugin-sdk/app";
-
+import { figma } from "@design-sdk/figma";
 export class MetaDataRepositoryFactory {
   static layer(layer: string) {
     throw "not implemented";

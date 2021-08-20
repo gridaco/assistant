@@ -1,5 +1,6 @@
 import { IStorage } from "./istorage";
 import { encode, decode } from "./payload-handle";
+import { figma } from "@design-sdk/figma";
 /**
  * storage on figma platform using `figma.clientStorage`
  */
