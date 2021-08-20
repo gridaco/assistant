@@ -4,7 +4,9 @@ import CaretLeftIcon from "@assistant/icons/caret-left";
 import CaretRightIcon from "@assistant/icons/caret-right";
 
 interface Props {
+  /** starts from 0 */
   index: number;
+  /** length of data */
   total: number;
   onChange?: (index: number, prev?: number, diff?: number) => void;
   onNext?: () => void;
@@ -23,24 +25,26 @@ export function LintProcessPaginator(props?: Props) {
   return (
     <Wrapper>
       <Paginator>
-        {!props ? "--" : `${props.index} of ${props.total}`}
+        {!props ? "--" : `${props.index + 1} of ${props.total}`}
       </Paginator>
-      <NextArrow
-        onClick={() => {
-          emmit_change(+1);
-        }}
-        disable={props.index === 1}
-      >
-        <CaretLeftIcon />
-      </NextArrow>
-      <BeforeArrow
+      <Cursor
         onClick={() => {
           emmit_change(-1);
         }}
-        disable={props.index === props.total}
+        disabled={props.index <= 0}
+        disable={props.index <= 0} /* style FIXME:@You-J*/
+      >
+        <CaretLeftIcon />
+      </Cursor>
+      <Cursor
+        onClick={() => {
+          emmit_change(+1);
+        }}
+        disabled={props.index >= props.total - 1}
+        disable={props.index >= props.total - 1} /* style FIXME:@You-J*/
       >
         <CaretRightIcon />
-      </BeforeArrow>
+      </Cursor>
     </Wrapper>
   );
 }
@@ -57,14 +61,10 @@ const Paginator = styled.p`
   line-height: 17px;
 `;
 
-const NextArrow = styled.div<{ disable: boolean }>`
-  cursor: pointer;
-  svg {
-    fill: ${(props) => (props.disable ? "#808080" : "#000")};
-  }
-`;
-
-const BeforeArrow = styled.div<{ disable: boolean }>`
+const Cursor = styled.button<{ disable: boolean }>`
+  outline: none;
+  border: none;
+  background: none;
   cursor: pointer;
   svg {
     fill: ${(props) => (props.disable ? "#808080" : "#000")};
