@@ -185,10 +185,20 @@ const EmptyMessage = styled.div`
   text-align: center;
 
   color: #8d8d8d;
+
+  /* use only make center */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 const ErrorList = styled.ul`
   padding: 0;
+
+  /* 158 is Navigation (140px) +  ErrorTitle (44px) + ErrorComent (34px) +  UnderBtnWrapper (48px)  */
+  max-height: calc(100vh - 298px);
+  overflow-y: scroll;
 `;
 
 const UnderBtnWrapper = styled.div`
