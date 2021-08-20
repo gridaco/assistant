@@ -1,4 +1,3 @@
-import { Button, Typography } from "@material-ui/core";
 import { ReflectLintFeedback } from "@reflect-ui/lint/lib/feedbacks";
 import * as React from "react";
 import { Preview } from "../../components/preview";
@@ -13,14 +12,8 @@ import {
 } from "../../components/style/global-style";
 import { makeSummary, requestLintOnCurrentSelection } from "../../lint/actions";
 import { useSingleSelection } from "../../utils/plugin-hooks";
-import { rowDummy } from "../../lint/lint-list-view";
-import { FixYourSelf } from "./fix-your-self";
 import { useHistory } from "react-router";
-
-interface State {
-  feedbacks: Array<ReflectLintFeedback>;
-  selection: any;
-}
+import { mapGrandchildren } from "@design-sdk/core/utils";
 
 export const LintScreen = () => {
   const histoy = useHistory();
@@ -37,9 +30,9 @@ export const LintScreen = () => {
   });
 
   function countSelection() {
-    // FIXME: just tmp
-    // return selection.node.children.length;
-    return 3;
+    return mapGrandchildren(selection.node, null, {
+      includeThis: true,
+    }).length;
   }
 
   function onFeedbackTap(feedback: ReflectLintFeedback) {
@@ -71,6 +64,7 @@ export const LintScreen = () => {
               Run lint under “{_makeshortname(selection.node.name)}” Across
               {"  "}
               {countSelection()}
+              {"  "}
               layers.
             </RunLintSubTitle>
           </>
