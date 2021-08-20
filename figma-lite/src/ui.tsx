@@ -52,7 +52,6 @@ function LiteHostedAppConnector() {
 
   return (
     <div style={{ overflowY: "clip" }}>
-      {!initialized && <AppSkeleton />}
       <iframe
         ref={frame}
         style={{ opacity: `${initialized ? 1 : 0}` }}
@@ -64,6 +63,7 @@ function LiteHostedAppConnector() {
         allowFullScreen
         src={`${_host}/?platform=figma`}
       />
+      <AppSkeleton mount={!initialized} />
     </div>
   );
 }

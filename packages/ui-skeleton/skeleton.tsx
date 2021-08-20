@@ -1,46 +1,84 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
 import Skeleton from "@material-ui/lab/Skeleton";
 import { motion } from "framer-motion";
-export function AppSkeleton() {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{
-        opacity: 1,
-      }}
-      transition={{
-        duration: 0.5,
-        ease: "easeInOut",
-      }}
-    >
-      <Wrapper>
-        <NavigationWrapper>
-          <Navigation />
-          <Navigation />
-        </NavigationWrapper>
-        <TabWrapper>
-          <Tab />
-          <Tab />
-          <Tab />
-          <Tab />
-        </TabWrapper>
-        <Skeleton>
-          <Preview />
-        </Skeleton>
 
-        <ContentsWrapper>
-          <Contents />
-          <Contents />
-          <Contents />
-        </ContentsWrapper>
-        <ButtonWrapper />
-      </Wrapper>
-    </motion.div>
+const variants = {
+  visible: {
+    opacity: 1,
+  },
+  hidden: {
+    opacity: 0,
+  },
+};
+
+export function AppSkeleton(props: { mount: boolean }) {
+  const _should_show = props.mount;
+  const _should_unmount = !_should_show;
+  const [unmounted, setUnmounted] = useState(false);
+
+  const show = (() => {
+    if (_should_show) {
+      return true;
+    } else {
+      if (unmounted) {
+        return false;
+      }
+    }
+    return true;
+  })();
+
+  return (
+    <>
+      {show && (
+        <motion.div
+          variants={variants}
+          onAnimationComplete={(anim) => {
+            if (anim === "hidden") {
+              setUnmounted(true);
+            }
+          }}
+          initial={_should_unmount ? "visible" : "hidden"}
+          animate={_should_unmount ? "hidden" : "visible"}
+          transition={{
+            duration: 0.5,
+            ease: "easeInOut",
+          }}
+        >
+          <Wrapper>
+            <NavigationWrapper>
+              <Navigation />
+              <Navigation />
+            </NavigationWrapper>
+            <TabWrapper>
+              <Tab />
+              <Tab />
+              <Tab />
+              <Tab />
+            </TabWrapper>
+            <Skeleton>
+              <Preview />
+            </Skeleton>
+
+            <ContentsWrapper>
+              <Contents />
+              <Contents />
+              <Contents />
+            </ContentsWrapper>
+            <ButtonWrapper />
+          </Wrapper>
+        </motion.div>
+      )}
+    </>
   );
 }
 
 const Wrapper = styled.div`
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+
   max-height: 100%;
   margin: 22px 16px;
 `;
@@ -100,7 +138,7 @@ const Contents = styled(Skeleton)`
 const ButtonWrapper = styled(Skeleton)`
   width: calc(100vw - 32px);
   height: 48px !important;
-  position: absolute;
+  position: fixed;
   bottom: 12px;
   left: 16px;
 `;
