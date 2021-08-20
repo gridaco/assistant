@@ -1,5 +1,6 @@
 import * as React from "react";
 import styled from "@emotion/styled";
+import type { ReflectLintFeedbackLevel } from "@reflect-ui/lint/lib/feedbacks";
 import { LintError, LintErrorIcon } from "../lint-error-icon";
 import { LintLevelIndicator } from "../lint-level-indicator";
 import { choiceItem } from "../lint-list-view";
@@ -10,9 +11,8 @@ interface Props {
   name: string;
   icon?: any;
   expand: boolean;
-  level: string;
+  level: ReflectLintFeedbackLevel;
   error: {
-    id: string;
     name: string;
     userMessage: string;
   };

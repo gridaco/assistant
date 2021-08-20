@@ -1,9 +1,9 @@
+import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
-import React, { useState } from "react";
+import { PluginSdk } from "@plugin-sdk/app";
 import { ReflectLintFeedback } from "../../../../packages/lint/lib/feedbacks";
 import { BlackButton } from "../../components/style/global-style";
 import { LintItemRow } from "../../lint";
-import { rowDummy } from "../../lint/lint-list-view";
 import { LintProcessPaginator } from "../../lint/lint-process-paginator";
 import { _APP_EVENT_LINT_RESULT_EK } from "../../lint/__plugin/events";
 import BackArrowIcon from "@assistant/icons/back-arrow";
@@ -15,6 +15,7 @@ export function FixYourSelfPage(props: {
   throw "not implemented";
 }
 
+type LayerLintMap = Map<string, LayerLint>;
 interface LayerLint {
   node: { id: string; name: string };
   feedbacks: ReflectLintFeedback[];
@@ -28,15 +29,28 @@ export function FixYourSelf(props: {
   onClose: () => void;
   feedbacks: ReflectLintFeedback[];
 }) {
+  const _key_at_index = (i) => {
+    return Array.from(layerlintMap.keys())[i];
+  };
+
   const [isDropVisible, setIsDropVisible] = useState(-1);
   const { feedbacks } = props;
   const [layerIndex, setLayerIndex] = useState(0);
-  const layerlints: LayerLint[] = [undefined, undefined]; // TODO: convert feedbacks to array of lints by layer.
+  const layerlintMap: LayerLintMap = mapLintsByLayer(feedbacks);
+  const [layerlint, setLayerLint] = useState<LayerLint>(null);
+
+  useEffect(() => {
+    chaange_layer_index(0);
+  }, []);
 
   const chaange_layer_index = (i) => {
     setLayerIndex(i);
-    // TODO: set current errors
+    const _target = layerlintMap.get(_key_at_index(i));
+    setLayerLint(_target);
+    PluginSdk.focus(_target.node.id);
   };
+
+  const _page_size = layerlintMap.size;
 
   return (
     <Wrapper>
@@ -44,48 +58,70 @@ export function FixYourSelf(props: {
         <BackArrowIcon />
       </BackIcon>
 
-      {feedbacks.map((item, i) => {
-        console.log(item);
-        return (
-          <LintItemRow
-            {...rowDummy}
-            expand={isDropVisible === i}
-            onTap={() => {
-              // focus to the layer again.
-              // - TODO:
+      {layerlint &&
+        layerlint.feedbacks.map((item, i) => {
+          return (
+            <LintItemRow
+              name={item.name}
+              error={item}
+              level={item.level}
+              key={i}
+              expand={isDropVisible === i}
+              onTap={() => {
+                // focus to the layer again. (even if it's already focused.)
+                const f = feedbacks[layerIndex].node.id; // TODO: use actual id
+                PluginSdk.focus(f);
 
-              // handle expansion
-              if (isDropVisible === i) {
-                setIsDropVisible(-1);
-              } else {
-                setIsDropVisible(i);
-              }
-            }}
-          />
-        );
-      })}
+                // handle expansion
+                if (isDropVisible === i) {
+                  setIsDropVisible(-1);
+                } else {
+                  setIsDropVisible(i);
+                }
+              }}
+            />
+          );
+        })}
 
       <Pagination>
         <LintProcessPaginator
           onChange={chaange_layer_index}
           index={layerIndex}
-          total={layerlints.length}
+          total={_page_size}
         />
       </Pagination>
 
       <NextLayerBtn
         onClick={() => {
-          if (layerIndex === layerlints.length - 1) {
+          if (layerIndex === _page_size - 1) {
             props.onClose();
             return;
           }
           chaange_layer_index(layerIndex + 1);
         }}
       >
-        {layerIndex < layerlints.length - 1 ? "Next Layer" : "Complete"}
+        {layerIndex < _page_size - 1 ? "Next Layer" : "Complete"}
       </NextLayerBtn>
     </Wrapper>
   );
+}
+
+function mapLintsByLayer(feedbacks: ReflectLintFeedback[]): LayerLintMap {
+  const layerlintsMap: LayerLintMap = new Map();
+
+  feedbacks.forEach((item) => {
+    if (layerlintsMap.has(item.node.id)) {
+      // add to existing layer
+      layerlintsMap.get(item.node.id).feedbacks.push(item);
+    } else {
+      layerlintsMap.set(item.node.id, {
+        node: { ...item.node },
+        feedbacks: [item],
+      });
+    }
+  });
+
+  return layerlintsMap;
 }
 
 const Wrapper = styled.div`
