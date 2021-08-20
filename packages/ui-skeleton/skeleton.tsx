@@ -41,8 +41,8 @@ export function AppSkeleton() {
 }
 
 const Wrapper = styled.div`
-  height: 100%;
-  padding: 22px 16px;
+  max-height: 100%;
+  margin: 22px 16px;
 `;
 
 const Row = styled.div`
