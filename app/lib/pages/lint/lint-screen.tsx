@@ -1,5 +1,5 @@
 import { ReflectLintFeedback } from "@reflect-ui/lint/lib/feedbacks";
-import * as React from "react";
+import React, { useState } from "react";
 import { Preview } from "../../components/preview";
 import { LintItemRow, LintTreeView } from "../../lint";
 import { EK_FOCUS_REQUEST } from "../../constants/ek.constant";
@@ -12,13 +12,13 @@ import {
 } from "../../components/style/global-style";
 import { makeSummary, requestLintOnCurrentSelection } from "../../lint/actions";
 import { useSingleSelection } from "../../utils/plugin-hooks";
-import { useHistory } from "react-router";
 import { mapGrandchildren } from "@design-sdk/core/utils";
+import { FixYourSelf } from "./fix-your-self";
+import Dialog from "@material-ui/core/Dialog";
 
 export const LintScreen = () => {
-  const histoy = useHistory();
-  const [feedbacks, setFeedbacks] = React.useState<ReflectLintFeedback[]>([]);
-
+  const [feedbacks, setFeedbacks] = useState<ReflectLintFeedback[]>([]);
+  const [isFixingMode, setIsFixingMode] = useState<boolean>(false);
   const selection = useSingleSelection();
 
   window.addEventListener("message", (ev: MessageEvent) => {
@@ -104,7 +104,7 @@ export const LintScreen = () => {
 
   return (
     <>
-      <Preview data={undefined} name="selected node name" />
+      {/* <Preview data={undefined} name="selected node name" /> */}
       <ErrorWrapper>
         {!!selection ? (
           <>{handleSelectionLayer()}</>
@@ -126,14 +126,14 @@ export const LintScreen = () => {
           <UnderBtnWrapper>
             <FirstErrorButton
               onClick={() => {
-                histoy.push("/lint/by-layer/any-error/fix-yourself");
+                setIsFixingMode(true);
               }}
             >
               Jump to first error
             </FirstErrorButton>
             <ClearButton
               onClick={() => {
-                setFeedbacks([]);
+                setFeedbacks([]); // clear feedbacks
               }}
             >
               Clear
@@ -141,6 +141,14 @@ export const LintScreen = () => {
           </UnderBtnWrapper>
         )}
       </ErrorWrapper>
+      <Dialog open={isFixingMode} fullScreen>
+        <FixYourSelf
+          feedbacks={feedbacks}
+          onClose={() => {
+            setIsFixingMode(false);
+          }}
+        />
+      </Dialog>
     </>
   );
 };

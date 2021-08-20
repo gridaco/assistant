@@ -49,7 +49,6 @@ import {
 import styled from "@emotion/styled";
 import { Column, Row } from "../components/style/global-style";
 import { UploadSteps } from "../components/upload-steps";
-import { FixYourSelf } from "../pages/lint/fix-your-self";
 
 /** The container of tab content */
 function TabPanel(props: {
@@ -144,8 +143,6 @@ function Screen(props: { screen: WorkScreen }) {
       return <UploadSteps />;
     case WorkScreen.signin:
       return <Signin />;
-    case WorkScreen.lint_fix_yourself:
-      return <FixYourSelf />;
     default:
       return <div>Not found</div>;
   }
