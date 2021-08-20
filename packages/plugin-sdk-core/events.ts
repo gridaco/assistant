@@ -49,8 +49,12 @@ export const PLUGIN_SDK_EK_STORAGE_ALIAS = {
 export const PLUGIN_SDK_NS_NOTIFY_API = `${__PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/notify`;
 export const PLUGIN_SDK_EK_SIMPLE_NOTIFY = "notify";
 export const PLUGIN_SDK_EK_NOTIFY_COPIED = "notify-copied";
-
 // endregion notify
+
+// region focus
+export const PLUGIN_SDK_NS_FOCUS_API = `${__PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/focus`;
+export const PLUGIN_SDK_EK_SIMPLE_FOCUS = "focus";
+// endregion focus
 
 // region canvas
 export const PLUGIN_SDK_NS_DRAG_AND_DROP = `${__PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/drag-and-drop`;
