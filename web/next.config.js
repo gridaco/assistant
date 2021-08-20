@@ -1,4 +1,6 @@
 const withTM = require("next-transpile-modules")([
+  "@assistant/icons",
+
   "app",
   "@plugin-sdk/app",
   "@plugin-sdk/core",
