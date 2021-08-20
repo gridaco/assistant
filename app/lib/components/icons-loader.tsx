@@ -78,7 +78,10 @@ export function IconsLoader() {
       return acc;
     }, []);
 
-    const icons = sort_icon(defaultIcons).slice(0, iconLoadLimit);
+    const icons = sort_icon(defaultIcons as [string, any]).slice(
+      0,
+      iconLoadLimit
+    );
     list = <IconList icons={icons} />;
   } else {
     list = <LinearProgress />;
