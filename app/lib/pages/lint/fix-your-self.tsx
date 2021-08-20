@@ -31,7 +31,12 @@ export function FixYourSelf(props: {
   const [isDropVisible, setIsDropVisible] = useState(-1);
   const { feedbacks } = props;
   const [layerIndex, setLayerIndex] = useState(0);
-  const layerlints: LayerLint[] = []; // TODO: convert feedbacks to array of lints by layer.
+  const layerlints: LayerLint[] = [undefined, undefined]; // TODO: convert feedbacks to array of lints by layer.
+
+  const chaange_layer_index = (i) => {
+    setLayerIndex(i);
+    // TODO: set current errors
+  };
 
   return (
     <Wrapper>
@@ -46,6 +51,10 @@ export function FixYourSelf(props: {
             {...rowDummy}
             expand={isDropVisible === i}
             onTap={() => {
+              // focus to the layer again.
+              // - TODO:
+
+              // handle expansion
               if (isDropVisible === i) {
                 setIsDropVisible(-1);
               } else {
@@ -58,18 +67,22 @@ export function FixYourSelf(props: {
 
       <Pagination>
         <LintProcessPaginator
-          onChange={setLayerIndex}
+          onChange={chaange_layer_index}
           index={layerIndex}
-          total={10}
+          total={layerlints.length}
         />
       </Pagination>
 
       <NextLayerBtn
         onClick={() => {
-          setLayerIndex(layerIndex + 1);
+          if (layerIndex === layerlints.length - 1) {
+            props.onClose();
+            return;
+          }
+          chaange_layer_index(layerIndex + 1);
         }}
       >
-        Next Layer
+        {layerIndex < layerlints.length - 1 ? "Next Layer" : "Complete"}
       </NextLayerBtn>
     </Wrapper>
   );

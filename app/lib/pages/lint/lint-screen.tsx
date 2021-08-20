@@ -1,9 +1,9 @@
-import { ReflectLintFeedback } from "@reflect-ui/lint/lib/feedbacks";
 import React, { useState } from "react";
+import styled from "@emotion/styled";
+import { PluginSdk } from "@plugin-sdk/app";
+import { ReflectLintFeedback } from "@reflect-ui/lint/lib/feedbacks";
 import { Preview } from "../../components/preview";
 import { LintItemRow, LintTreeView } from "../../lint";
-import { EK_FOCUS_REQUEST } from "../../constants/ek.constant";
-import styled from "@emotion/styled";
 import { LintLevelIndicator } from "../../lint/lint-level-indicator";
 import { _APP_EVENT_LINT_RESULT_EK } from "../../lint/__plugin/events";
 import {
@@ -37,17 +37,7 @@ export const LintScreen = () => {
 
   function onFeedbackTap(feedback: ReflectLintFeedback) {
     const targetNodeId = feedback.node.id;
-    parent.postMessage(
-      {
-        pluginMessage: {
-          type: EK_FOCUS_REQUEST,
-          data: {
-            id: targetNodeId,
-          },
-        },
-      },
-      "*"
-    );
+    PluginSdk.focus(targetNodeId);
   }
 
   function handleSelectionLayer() {
