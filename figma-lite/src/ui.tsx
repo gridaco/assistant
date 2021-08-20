@@ -40,7 +40,10 @@ function LiteHostedAppConnector() {
     }
   }, [frame]);
 
-  const _host = "http://localhost:3000";
+  const _host =
+    process.env.NODE_ENV === "production"
+      ? "https://assistant-serve.grida.co"
+      : "http://localhost:3000";
 
   // use opacity
   // if (initialized) => show iframe only
@@ -48,20 +51,19 @@ function LiteHostedAppConnector() {
   // <AppSkeleton/>
 
   return (
-    <>
+    <div style={{ overflowY: "clip" }}>
       {!initialized && <AppSkeleton />}
       <iframe
         ref={frame}
         style={{ opacity: `${initialized ? 1 : 0}` }}
-        // style={{ zoom: "80%" }}
+        // style={{ zoom: "80%" }} // use this to zoom inner content
         width="100%"
         height={`${initialized ? "100%" : "0px"}`}
-        // height="100%"
         sandbox="allow-scripts allow-same-origin"
         frameBorder="0"
         allowFullScreen
         src={`${_host}/?platform=figma`}
-      ></iframe>
-    </>
+      />
+    </div>
   );
 }

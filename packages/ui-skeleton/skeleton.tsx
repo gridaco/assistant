@@ -1,38 +1,48 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { css } from "@emotion/react";
 import Skeleton from "@material-ui/lab/Skeleton";
-
+import { motion } from "framer-motion";
 export function AppSkeleton() {
   return (
-    <Wrapper>
-      <NavigationWrapper>
-        <Navigation />
-        <Navigation />
-      </NavigationWrapper>
-      <TabWrapper>
-        <Tab />
-        <Tab />
-        <Tab />
-        <Tab />
-      </TabWrapper>
-      <Skeleton>
-        <Preview />
-      </Skeleton>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{
+        opacity: 1,
+      }}
+      transition={{
+        duration: 0.5,
+        ease: "easeInOut",
+      }}
+    >
+      <Wrapper>
+        <NavigationWrapper>
+          <Navigation />
+          <Navigation />
+        </NavigationWrapper>
+        <TabWrapper>
+          <Tab />
+          <Tab />
+          <Tab />
+          <Tab />
+        </TabWrapper>
+        <Skeleton>
+          <Preview />
+        </Skeleton>
 
-      <ContentsWrapper>
-        <Contents />
-        <Contents />
-        <Contents />
-      </ContentsWrapper>
-      <ButtonWrapper />
-    </Wrapper>
+        <ContentsWrapper>
+          <Contents />
+          <Contents />
+          <Contents />
+        </ContentsWrapper>
+        <ButtonWrapper />
+      </Wrapper>
+    </motion.div>
   );
 }
 
 const Wrapper = styled.div`
-  height: 100%;
-  padding: 22px 16px;
+  max-height: 100%;
+  margin: 22px 16px;
 `;
 
 const Row = styled.div`
