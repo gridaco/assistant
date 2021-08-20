@@ -61,7 +61,7 @@ export const LintScreen = () => {
               Run lint on “{_makeshortname(selection.node.name)}”
             </RunLintTitle>
             <RunLintSubTitle>
-              Run lint under “{_makeshortname(selection.node.name)}” Across
+              Run lint under “{_makeshortname(selection.node.name, 80)}” Across
               {"  "}
               {countSelection()}
               {"  "}
@@ -145,8 +145,9 @@ export const LintScreen = () => {
   );
 };
 
-function _makeshortname(origin: string): string {
-  return origin;
+function _makeshortname(origin: string, cut?: number): string {
+  const _cut = cut || 48;
+  return _cut < origin.length ? origin.substring(0, _cut) + "..." : origin;
 }
 
 const ErrorWrapper = styled.div`
@@ -220,6 +221,10 @@ const ClearButton = styled.button`
 
 const RunLintTitle = styled.h2`
   // Run lint on “example”
+  word-wrap: break-word;
+  max-lines: 3;
+  text-overflow: ellipsis;
+
   margin: 0;
   margin-top: 20px;
   font-weight: 500;
@@ -230,6 +235,10 @@ const RunLintTitle = styled.h2`
 `;
 
 const RunLintSubTitle = styled.h5`
+  word-wrap: break-word;
+  max-lines: 3;
+  text-overflow: ellipsis;
+
   margin: 0;
   margin-top: 5px;
   font-weight: normal;
