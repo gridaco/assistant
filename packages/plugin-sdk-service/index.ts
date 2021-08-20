@@ -34,6 +34,8 @@ import { WebStorage, FigmaStorage, IStorage } from "./storage";
 
 // TODO - make it universal
 import { Figma, figma } from "@design-sdk/figma";
+import type { SceneNode } from "@design-sdk/figma";
+
 import {
   __syncTargetPlatformForCodeThread,
   TargetPlatform,
