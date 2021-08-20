@@ -78,7 +78,8 @@ export function IconsLoader() {
       return acc;
     }, []);
 
-    list = <IconList icons={defaultIcons.sort().slice(0, iconLoadLimit)} />;
+    const icons = sort_icon(defaultIcons).slice(0, iconLoadLimit);
+    list = <IconList icons={icons} />;
   } else {
     list = <LinearProgress />;
   }
@@ -319,6 +320,39 @@ function IconItem(props: { name: string; config: IconConfig }) {
       </Tooltip>
     </Draggable>
   );
+}
+
+/**
+ * sorts icons with below logic
+ * 1. sort a-z first
+ * 2. sort number later
+ *
+ * e.g. ["a", "b", "1", "2", "1a", "a1"]
+ * -> ["a", "a1", "b", "1", "1a", "2"]
+ */
+function sort_icon(icons: [string, any]) {
+  const _contains_number_char = (c) => {
+    return "0123456789".includes(c[0] ?? "");
+  };
+  return icons.sort((_i, _i2) => {
+    const i = _i[0];
+    const i2 = _i2[0];
+    if (_contains_number_char(i) && _contains_number_char(i2)) {
+      return Number(i) - Number(i2);
+    } else if (_contains_number_char(i) && !_contains_number_char(i2)) {
+      return 1;
+    } else if (!_contains_number_char(i) && _contains_number_char(i2)) {
+      return -1;
+    } else if (!_contains_number_char(i) && !_contains_number_char(i2)) {
+      if (i < i2) {
+        return -1;
+      }
+      if (i > i2) {
+        return 1;
+      }
+      return 0;
+    }
+  });
 }
 
 const Wrapper = styled.div`
