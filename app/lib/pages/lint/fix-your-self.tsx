@@ -30,6 +30,7 @@ export function FixYourSelf(props: {
 }) {
   const [isDropVisible, setIsDropVisible] = useState(-1);
   const { feedbacks } = props;
+  const [layerIndex, setLayerIndex] = useState(0);
   const layerlints: LayerLint[] = []; // TODO: convert feedbacks to array of lints by layer.
 
   return (
@@ -57,15 +58,19 @@ export function FixYourSelf(props: {
 
       <Pagination>
         <LintProcessPaginator
-          onChange={() => {
-            //
-          }}
-          index={10}
+          onChange={setLayerIndex}
+          index={layerIndex}
           total={10}
         />
       </Pagination>
 
-      <NextLayerBtn>Next Layer</NextLayerBtn>
+      <NextLayerBtn
+        onClick={() => {
+          setLayerIndex(layerIndex + 1);
+        }}
+      >
+        Next Layer
+      </NextLayerBtn>
     </Wrapper>
   );
 }
