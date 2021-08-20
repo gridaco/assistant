@@ -15,16 +15,26 @@ const variants = {
 export function AppSkeleton(props: { mount: boolean }) {
   const _should_show = props.mount;
   const _should_unmount = !_should_show;
-  const [unmounted, setUnmounted] = useState(_should_unmount);
+  const [unmounted, setUnmounted] = useState(false);
+
+  const show = (() => {
+    if (_should_show) {
+      return true;
+    } else {
+      if (unmounted) {
+        return false;
+      }
+    }
+    return true;
+  })();
 
   return (
     <>
-      {(_should_show || !unmounted) && (
+      {show && (
         <motion.div
           variants={variants}
           onAnimationComplete={(anim) => {
-            //@ts-ignore
-            if (anim.opacity === 0) {
+            if (anim === "hidden") {
               setUnmounted(true);
             }
           }}
