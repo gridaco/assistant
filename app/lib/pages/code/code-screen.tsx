@@ -32,6 +32,7 @@ export function CodeScreen(props: ICodeScreen) {
   const [source, setSource] = useState<SourceInput>();
   const selection = useSingleSelection();
 
+  /** register event listener for events from code thread. */
   useEffect(() => {
     window.addEventListener("message", onMessage);
     return function cleaup() {
@@ -39,8 +40,11 @@ export function CodeScreen(props: ICodeScreen) {
     };
   }, [useroption.language]);
 
+  /** post to code thread about target framework change */
   useEffect(() => {
-    // post to code thread about target framework change
+    // 1. clear previous result.
+    setSource(undefined);
+    // 2. request new code gen.
     fromApp({
       type: "code-gen-request",
       option: useroption,
