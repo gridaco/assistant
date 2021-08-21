@@ -4,7 +4,7 @@ export function encode<T = string>(payload: T): string {
 
 export function decode<T>(payload: string): T {
   try {
-    if (payload === null || payload === undefined) {
+    if (payload !== null && payload !== undefined) {
       return JSON.parse(payload) as T;
     }
     return null;

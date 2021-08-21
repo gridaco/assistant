@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../app.css";
+import "../app.css"; /** TODO: remove raw css usage. */
 import { initialize } from "../analytics";
 
 // UI COMPS
@@ -36,8 +36,11 @@ import {
   WorkScreen,
   standalone_pages,
   PrimaryWorkmodeSet,
-  loadLayout,
   NavigationStoreState,
+  loadLayout,
+  saveLayout,
+  updateLayout,
+  get_page_config_by_path,
 } from "../navigation";
 
 import {
@@ -50,63 +53,62 @@ import styled from "@emotion/styled";
 import { Column, Row } from "../components/style/global-style";
 import { UploadSteps } from "../components/upload-steps";
 
-/** The container of tab content */
-function TabPanel(props: {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`app-tab-${index}`}
-      // aria-labelledby={`tab-${type}`}
-      {...other}
-    >
-      {value === index && <>{props.children}</>}
-    </div>
-  );
-}
-
-function DropNav() {
+function MoreMenus() {
+  const history = useHistory();
   const menu = [
-    // {
-    //   id: WorkMode.code,
-    //   name: WorkMode.code,
-    // },
-    // {
-    //   id: WorkMode.design,
-    //   name: WorkMode.design,
-    // },
     {
       id: WorkMode.asset,
       name: WorkMode.asset,
+      stage: "development",
+      onSelect: () => {},
     },
     {
       id: WorkMode.manage,
       name: WorkMode.manage,
+      stage: "development",
+      onSelect: () => {},
     },
     {
       id: WorkMode.tools,
       name: WorkMode.tools,
+      stage: "development",
+      onSelect: () => {},
     },
     {
       id: WorkMode.library,
       name: WorkMode.library,
+      stage: "development",
+      onSelect: () => {},
     },
     {
       id: WorkMode.settings,
       name: WorkMode.settings,
+      stage: "development",
+      onSelect: () => {},
     },
     {
       id: WorkMode.about,
       name: WorkMode.about,
+      stage: "production",
+      onSelect: () => {
+        history.push("/about");
+      },
     },
-  ];
-  return <SecondaryWorkmodeMenu menus={menu} onSelect={() => {}} />;
+  ].filter((m) => {
+    if (process.env.NODE_ENV == "production") {
+      return m.stage === "production";
+    }
+    return true; /** if not production, return all available menus */
+  });
+  return (
+    <SecondaryWorkmodeMenu<WorkMode>
+      menus={menu}
+      onSelect={(id) => {
+        console.log("id", id);
+        menu.find((m) => m.id === id)?.onSelect();
+      }}
+    />
+  );
 }
 
 function Screen(props: { screen: WorkScreen }) {
@@ -167,6 +169,10 @@ function TabsLayout(props: {
     }
   );
 
+  useEffect(() => {
+    handleTabChange(tabIndex);
+  }, []);
+
   const handleTabChange = (index: number) => {
     const screen = tabs_as_page_configs[index];
     onChange(index, screen.id);
@@ -200,14 +206,26 @@ function TabsLayout(props: {
   );
 }
 
-function TabNavigationApp(props?: { savedLayout: NavigationStoreState }) {
-  const [workmode, setWorkmode] = useState<WorkMode>(WorkMode.code);
+function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
+  const [workmode, setWorkmode] = useState<WorkMode>(
+    props.savedLayout.currentWorkmode
+  );
   const [workmodeSet, setWorkmodeSet] = useState<PrimaryWorkmodeSet>(
-    props?.savedLayout?.workmodeSet
+    props.savedLayout.workmodeSet
   );
 
   const on_workmode_select = (workmode: WorkMode) => {
     setWorkmode(workmode);
+    setTabIndex(0);
+  };
+
+  const on_work_select = (index, screen) => {
+    _update_focused_screen_ev(screen);
+    setTabIndex(index);
+    updateLayout({
+      workmode: workmode,
+      work: screen,
+    });
   };
 
   const [tabIndex, setTabIndex] = useState<number>(0);
@@ -234,19 +252,17 @@ function TabNavigationApp(props?: { savedLayout: NavigationStoreState }) {
               onClick={() => setExpansion(!expansion)}
             />
           </Row>
-          {!expansion && <DropNav />}
+          {!expansion && <MoreMenus />}
         </Column>
       </Wrapper>
 
       {/* {expansion && ( */}
       <TabsLayout
+        key={workmode}
         workmode={workmode}
         tabIndex={tabIndex}
         isTabVisible={expansion}
-        onChange={(index, screen) => {
-          _update_focused_screen_ev(screen);
-          setTabIndex(index);
-        }}
+        onChange={on_work_select}
       />
       {/* )} */}
     </>
@@ -256,19 +272,26 @@ function TabNavigationApp(props?: { savedLayout: NavigationStoreState }) {
 
 function RouterTabNavigationApp(props) {
   const [savedLayout, setSavedLayout] = useState<NavigationStoreState>();
+  const workmode = props.match.params.workmode;
+  const work = props.match.params.work;
+  const path = "/" + workmode + "/" + work;
   useEffect(() => {
-    loadLayout().then((l) => setSavedLayout(l));
-  }, []);
+    const _page_config = get_page_config_by_path(path);
 
-  const params = props.match.params;
-  const workmode = params.workmode;
-  const work = params.work;
-  // TODO: make new layout based on saved one and givven param.
+    loadLayout().then((l) =>
+      setSavedLayout({
+        ...l,
+        currentWorkmode: workmode,
+        currentWork: _page_config.id,
+      })
+    );
+  }, []);
 
   return <>{savedLayout && <TabNavigationApp savedLayout={savedLayout} />}</>;
 }
 
 function Home() {
+  const history = useHistory();
   const [savedLayout, setSavedLayout] =
     useState<NavigationStoreState>(undefined);
 
@@ -280,7 +303,12 @@ function Home() {
       .finally(() => {});
   }, []);
 
-  return <>{savedLayout && <TabNavigationApp savedLayout={savedLayout} />}</>;
+  if (savedLayout) {
+    const p = get_page_config(savedLayout.currentWork).path;
+    history.replace(p);
+  }
+
+  return <></>;
 }
 
 export default function App(props: { platform: TargetPlatform }) {
