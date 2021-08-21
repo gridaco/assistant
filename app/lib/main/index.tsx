@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../app.css";
+import "../app.css"; /** TODO: remove raw css usage. */
 import { initialize } from "../analytics";
 
 // UI COMPS
@@ -167,6 +167,10 @@ function TabsLayout(props: {
     }
   );
 
+  useEffect(() => {
+    handleTabChange(tabIndex);
+  }, []);
+
   const handleTabChange = (index: number) => {
     const screen = tabs_as_page_configs[index];
     onChange(index, screen.id);
@@ -208,6 +212,7 @@ function TabNavigationApp(props?: { savedLayout: NavigationStoreState }) {
 
   const on_workmode_select = (workmode: WorkMode) => {
     setWorkmode(workmode);
+    setTabIndex(0);
   };
 
   const [tabIndex, setTabIndex] = useState<number>(0);
@@ -240,6 +245,7 @@ function TabNavigationApp(props?: { savedLayout: NavigationStoreState }) {
 
       {/* {expansion && ( */}
       <TabsLayout
+        key={workmode}
         workmode={workmode}
         tabIndex={tabIndex}
         isTabVisible={expansion}
@@ -269,6 +275,7 @@ function RouterTabNavigationApp(props) {
 }
 
 function Home() {
+  const history = useHistory();
   const [savedLayout, setSavedLayout] =
     useState<NavigationStoreState>(undefined);
 
@@ -280,7 +287,12 @@ function Home() {
       .finally(() => {});
   }, []);
 
-  return <>{savedLayout && <TabNavigationApp savedLayout={savedLayout} />}</>;
+  if (savedLayout) {
+    const p = get_page_config(savedLayout.currentWork).path;
+    history.replace(p);
+  }
+
+  return <></>;
 }
 
 export default function App(props: { platform: TargetPlatform }) {

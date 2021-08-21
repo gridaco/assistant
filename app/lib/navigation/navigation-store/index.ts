@@ -2,6 +2,7 @@ import { PluginSdk } from "@plugin-sdk/app";
 import { PrimaryWorkmodeSet } from "../primary-workmode-selector";
 import { WorkMode } from "../work-mode";
 import { WorkScreen } from "../work-screen";
+import { saved_work_by_workmode } from "./save-workmode-work";
 
 export interface NavigationStoreState {
   workmodeSet: PrimaryWorkmodeSet;
