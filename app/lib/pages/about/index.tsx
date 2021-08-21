@@ -4,7 +4,7 @@ import * as about from "../../about";
 import { __auth_proxy, ProxyAuthenticationMode } from "@base-sdk-fp/auth";
 import { useHistory } from "react-router-dom";
 import BackArrowIcon from "@assistant/icons/back-arrow";
-
+import { PluginSdk } from "@plugin-sdk/app";
 const URLS = {
   logo_256:
     "https://bridged-service-static.s3-us-west-1.amazonaws.com/branding/logo/256.png",
@@ -33,7 +33,7 @@ export function AboutScreen() {
   const history = useHistory();
   const linkTo = (url: string) => {
     return () => {
-      open(url);
+      PluginSdk.openUri(url);
     };
   };
 

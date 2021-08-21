@@ -9,17 +9,19 @@ import { useRouter } from "next/router";
 function WebApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
-  useEffect(() => {
-    window.addEventListener("message", (rev) => {
-      if (rev.data.pluginMessage) {
-        PluginSdkService.handle(rev.data.pluginMessage);
-      }
-    });
-  }, []);
-
   const platform = _get_target_platform_from_query(
     router.query["platform"] as string
   );
+
+  useEffect(() => {
+    window.addEventListener("message", (rev) => {
+      if (platform == TargetPlatform.webdev) {
+        if (rev.data.pluginMessage) {
+          PluginSdkService.handle(rev.data.pluginMessage);
+        }
+      }
+    });
+  }, []);
 
   if (!router.query["platform"]) {
     return <></>;
