@@ -74,7 +74,7 @@ function LiteHostedAppConnector() {
         sandbox="allow-scripts allow-same-origin"
         frameBorder="0"
         allowFullScreen
-        src={`${_host}/?platform=figma`}
+        src={`${_host}/init-figma`} //?platform=figma
       />
       <AppSkeleton mount={!initialized} />
     </div>
