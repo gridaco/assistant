@@ -5,6 +5,8 @@ import { LintError, LintErrorIcon } from "../lint-error-icon";
 import { LintLevelIndicator } from "../lint-level-indicator";
 import { choiceItem } from "../lint-list-view";
 import { OptionChoiceItem } from "../../pages/lint/lint-option-choice-item";
+import { default as CloseIcon } from "@assistant/icons/caret-up";
+import { default as ExpandIcon } from "@assistant/icons/caret-down";
 
 interface Props {
   onTap: Function;
@@ -17,6 +19,8 @@ interface Props {
     userMessage: string;
   };
   children?: any;
+  /** true by default */
+  expandable?: boolean;
 }
 
 function Options(children: any[]) {
@@ -29,45 +33,48 @@ function Options(children: any[]) {
   );
 }
 
-export function LintItemRow(props: Props) {
-  const CloseIcon = require("../../components/assets/close.svg") as string;
-  const ExpandIcon = require("../../components/assets/expand.svg") as string;
-
+export function LintItemRow({
+  onTap,
+  icon,
+  error,
+  level,
+  expand,
+  expandable = true,
+}: Props) {
   return (
     <Wrapper>
-      <Outer onClick={() => props.onTap()}>
+      <Outer onClick={() => onTap()}>
         <Inner>
           <IconWrapper>
-            <LintErrorIcon id={props.icon} />
+            <LintErrorIcon id={icon} />
           </IconWrapper>
 
-          <Title>{props.error.name}</Title>
+          <Title>{error.name}</Title>
           <IndicatorWrapper>
-            <LintLevelIndicator color={props.level} />
+            <LintLevelIndicator color={level} />
           </IndicatorWrapper>
 
-          {props.expand ? <img src={CloseIcon} /> : <img src={ExpandIcon} />}
+          {expandable && <>{expand ? <CloseIcon /> : <ExpandIcon />}</>}
         </Inner>
-        <SubTitle>{props.error.userMessage}</SubTitle>
+        <SubTitle>{error.userMessage}</SubTitle>
       </Outer>
-
-      <ChoiceWrapper display={props.expand}>
-        {Options([choiceItem])}
-      </ChoiceWrapper>
+      {expandable && expand && (
+        <ChoiceWrapper>{Options([choiceItem])}</ChoiceWrapper>
+      )}
     </Wrapper>
   );
 }
 
 const Wrapper = styled.div`
   background: #fff;
-  height: 100px;
+  height: auto;
   margin-bottom: 16px;
 
   // for reset parent margin
   margin-right: -16px;
   margin-left: -16px;
   padding: 16px;
-  padding-bottom: 32px;
+  padding-bottom: 16px;
 
   &:hover {
     background: #fcfcfc;
@@ -109,16 +116,16 @@ const SubTitle = styled.h6`
   line-height: 14px;
   margin-top: 4px;
   max-width: 262px;
+  margin-left: 6px;
 
   color: #666666;
 `;
 
-const ChoiceWrapper = styled.div<{ display: boolean }>`
+const ChoiceWrapper = styled.div`
   margin-bottom: 5px;
+  display: block;
 
   &:last-child {
     margin-bottom: 0;
   }
-
-  display: ${(props) => (props.display ? "block" : "none")};
 `;

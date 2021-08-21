@@ -67,6 +67,9 @@ export function FixYourSelf(props: {
                 error={item}
                 level={item.level}
                 key={i}
+                expandable={
+                  false
+                } /* TODO: provide options with expansion, since there is no handy actions available to provide, we are blocking this expansion feature. */
                 expand={isDropVisible === i}
                 onTap={() => {
                   // focus to the layer again. (even if it's already focused.)
