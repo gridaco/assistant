@@ -32,7 +32,7 @@
 	"scripts": {
 		"pull:all": "git submodule update --init --recursive",
 		"figma": "yarn workspace figma run webpack:watch",
-		"figma-lite": "yarn workspace figma-lite run build & yarn web",
+		"figma-lite": "yarn workspace figma-lite run build:dev && yarn web",
 		"sketch": "yarn workspace sketch run render",
 		"web": "yarn workspace web run dev",
 		"webdev": "yarn workspace webdev run start",

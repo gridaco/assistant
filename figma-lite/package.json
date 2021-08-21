@@ -9,6 +9,7 @@
     },
     "scripts": {
         "build": "webpack -p --mode=production",
+        "build:dev": "webpack -p --mode=development",
         "watch": "webpack --watch"
     }
 }
