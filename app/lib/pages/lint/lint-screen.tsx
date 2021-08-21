@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { PluginSdk } from "@plugin-sdk/app";
 import { ReflectLintFeedback } from "@reflect-ui/lint/lib/feedbacks";
-import { Preview } from "../../components/preview";
-import { LintItemRow, LintTreeView } from "../../lint";
+/* non used (planned. do not remove) */ import {
+  LintItemRow,
+  LintTreeView,
+} from "../../lint";
 import { LintLevelIndicator } from "../../lint/lint-level-indicator";
 import { _APP_EVENT_LINT_RESULT_EK } from "../../lint/__plugin/events";
 import {
@@ -113,7 +115,7 @@ export const LintScreen = () => {
             Run lint
           </RunLintButtton>
         ) : (
-          <UnderBtnWrapper>
+          <FooterActionsWrapper>
             <FirstErrorButton
               onClick={() => {
                 setIsFixingMode(true);
@@ -128,7 +130,7 @@ export const LintScreen = () => {
             >
               Clear
             </ClearButton>
-          </UnderBtnWrapper>
+          </FooterActionsWrapper>
         )}
       </ErrorWrapper>
       <Dialog open={isFixingMode} fullScreen>
@@ -196,12 +198,14 @@ const EmptyMessage = styled.div`
 const ErrorList = styled.ul`
   padding: 0;
 
+  // FIXME:
   /* 158 is Navigation (140px) +  ErrorTitle (44px) + ErrorComent (34px) +  UnderBtnWrapper (48px)  */
   height: calc(100vh - 298px);
   overflow-y: scroll;
 `;
 
-const UnderBtnWrapper = styled.div`
+const FooterActionsWrapper = styled.div`
+  // FIXME:
   width: calc(100% - 32px);
   display: flex;
   position: absolute;
@@ -210,7 +214,7 @@ const UnderBtnWrapper = styled.div`
 
 const RunLintButtton = styled.button`
   ${BlackButton}
-  width: calc(100% - 32px);
+  width: calc(100% - 32px); // FIXME:
   position: absolute;
   bottom: 16px;
 `;
@@ -269,7 +273,7 @@ const List = styled.li`
 
 const Label = styled.h6`
   margin: 0;
-  max-width: calc(100% - 18px);
+  max-width: calc(100% - 18px); // FIXME:
   margin-top: 5px;
   font-style: normal;
   font-weight: normal;
