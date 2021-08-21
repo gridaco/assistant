@@ -1,10 +1,11 @@
-import { Button, Typography } from "@material-ui/core";
-import { ReflectLintFeedback } from "@reflect-ui/lint/lib/feedbacks";
-import * as React from "react";
-import { Preview } from "../../components/preview";
-import { LintItemRow, LintTreeView } from "../../lint";
-import { EK_FOCUS_REQUEST } from "../../constants/ek.constant";
+import React, { useState } from "react";
 import styled from "@emotion/styled";
+import { PluginSdk } from "@plugin-sdk/app";
+import { ReflectLintFeedback } from "@reflect-ui/lint/lib/feedbacks";
+/* non used (planned. do not remove) */ import {
+  LintItemRow,
+  LintTreeView,
+} from "../../lint";
 import { LintLevelIndicator } from "../../lint/lint-level-indicator";
 import { _APP_EVENT_LINT_RESULT_EK } from "../../lint/__plugin/events";
 import {
@@ -13,19 +14,13 @@ import {
 } from "../../components/style/global-style";
 import { makeSummary, requestLintOnCurrentSelection } from "../../lint/actions";
 import { useSingleSelection } from "../../utils/plugin-hooks";
-import { rowDummy } from "../../lint/lint-list-view";
+import { mapGrandchildren } from "@design-sdk/core/utils";
 import { FixYourSelf } from "./fix-your-self";
-import { useHistory } from "react-router";
-
-interface State {
-  feedbacks: Array<ReflectLintFeedback>;
-  selection: any;
-}
+import Dialog from "@material-ui/core/Dialog";
 
 export const LintScreen = () => {
-  const histoy = useHistory();
-  const [feedbacks, setFeedbacks] = React.useState<ReflectLintFeedback[]>([]);
-
+  const [feedbacks, setFeedbacks] = useState<ReflectLintFeedback[]>([]);
+  const [isFixingMode, setIsFixingMode] = useState<boolean>(false);
   const selection = useSingleSelection();
 
   window.addEventListener("message", (ev: MessageEvent) => {
@@ -37,24 +32,14 @@ export const LintScreen = () => {
   });
 
   function countSelection() {
-    // FIXME: just tmp
-    // return selection.node.children.length;
-    return 3;
+    return mapGrandchildren(selection.node, null, {
+      includeThis: true,
+    }).length;
   }
 
   function onFeedbackTap(feedback: ReflectLintFeedback) {
     const targetNodeId = feedback.node.id;
-    parent.postMessage(
-      {
-        pluginMessage: {
-          type: EK_FOCUS_REQUEST,
-          data: {
-            id: targetNodeId,
-          },
-        },
-      },
-      "*"
-    );
+    PluginSdk.focus(targetNodeId);
   }
 
   function handleSelectionLayer() {
@@ -68,9 +53,10 @@ export const LintScreen = () => {
               Run lint on “{_makeshortname(selection.node.name)}”
             </RunLintTitle>
             <RunLintSubTitle>
-              Run lint under “{_makeshortname(selection.node.name)}” Across
+              Run lint under “{_makeshortname(selection.node.name, 80)}” Across
               {"  "}
               {countSelection()}
+              {"  "}
               layers.
             </RunLintSubTitle>
           </>
@@ -110,7 +96,7 @@ export const LintScreen = () => {
 
   return (
     <>
-      <Preview data={undefined} name="selected node name" />
+      {/* <Preview data={undefined} name="selected node name" /> */}
       <ErrorWrapper>
         {!!selection ? (
           <>{handleSelectionLayer()}</>
@@ -129,30 +115,39 @@ export const LintScreen = () => {
             Run lint
           </RunLintButtton>
         ) : (
-          <UnderBtnWrapper>
+          <FooterActionsWrapper>
             <FirstErrorButton
               onClick={() => {
-                histoy.push("/lint/by-layer/any-error/fix-yourself");
+                setIsFixingMode(true);
               }}
             >
               Jump to first error
             </FirstErrorButton>
             <ClearButton
               onClick={() => {
-                setFeedbacks([]);
+                setFeedbacks([]); // clear feedbacks
               }}
             >
               Clear
             </ClearButton>
-          </UnderBtnWrapper>
+          </FooterActionsWrapper>
         )}
       </ErrorWrapper>
+      <Dialog open={isFixingMode} fullScreen>
+        <FixYourSelf
+          feedbacks={feedbacks}
+          onClose={() => {
+            setIsFixingMode(false);
+          }}
+        />
+      </Dialog>
     </>
   );
 };
 
-function _makeshortname(origin: string): string {
-  return origin;
+function _makeshortname(origin: string, cut?: number): string {
+  const _cut = cut || 48;
+  return _cut < origin.length ? origin.substring(0, _cut) + "..." : origin;
 }
 
 const ErrorWrapper = styled.div`
@@ -192,13 +187,25 @@ const EmptyMessage = styled.div`
   text-align: center;
 
   color: #8d8d8d;
+
+  /* use only make center */
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 const ErrorList = styled.ul`
   padding: 0;
+
+  // FIXME:
+  /* 158 is Navigation (140px) +  ErrorTitle (44px) + ErrorComent (34px) +  UnderBtnWrapper (48px)  */
+  height: calc(100vh - 298px);
+  overflow-y: scroll;
 `;
 
-const UnderBtnWrapper = styled.div`
+const FooterActionsWrapper = styled.div`
+  // FIXME:
   width: calc(100% - 32px);
   display: flex;
   position: absolute;
@@ -207,7 +214,7 @@ const UnderBtnWrapper = styled.div`
 
 const RunLintButtton = styled.button`
   ${BlackButton}
-  width: calc(100% - 32px);
+  width: calc(100% - 32px); // FIXME:
   position: absolute;
   bottom: 16px;
 `;
@@ -226,6 +233,10 @@ const ClearButton = styled.button`
 
 const RunLintTitle = styled.h2`
   // Run lint on “example”
+  word-wrap: break-word;
+  max-lines: 3;
+  text-overflow: ellipsis;
+
   margin: 0;
   margin-top: 20px;
   font-weight: 500;
@@ -236,6 +247,10 @@ const RunLintTitle = styled.h2`
 `;
 
 const RunLintSubTitle = styled.h5`
+  word-wrap: break-word;
+  max-lines: 3;
+  text-overflow: ellipsis;
+
   margin: 0;
   margin-top: 5px;
   font-weight: normal;
@@ -258,7 +273,7 @@ const List = styled.li`
 
 const Label = styled.h6`
   margin: 0;
-  max-width: calc(100% - 18px);
+  max-width: calc(100% - 18px); // FIXME:
   margin-top: 5px;
   font-style: normal;
   font-weight: normal;

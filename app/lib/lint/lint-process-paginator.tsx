@@ -1,51 +1,50 @@
 import styled from "@emotion/styled";
 import * as React from "react";
+import CaretLeftIcon from "@assistant/icons/caret-left";
+import CaretRightIcon from "@assistant/icons/caret-right";
 
 interface Props {
+  /** starts from 0 */
   index: number;
+  /** length of data */
   total: number;
-}
-
-function LeftArrow() {
-  return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path d="M15.41 16.59L10.83 12L15.41 7.41L14 6L8 12L14 18L15.41 16.59Z" />
-    </svg>
-  );
-}
-
-function RightArrow() {
-  return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path d="M10 6L8.59003 7.41L13.17 12L8.59003 16.59L10 18L16 12L10 6Z" />
-    </svg>
-  );
+  onChange?: (index: number, prev?: number, diff?: number) => void;
+  onNext?: () => void;
+  onPrev?: () => void;
 }
 
 export function LintProcessPaginator(props?: Props) {
+  const emmit_change = (diff: number) => {
+    props.onChange?.(props.index + diff);
+    if (diff > 0) {
+      props.onNext?.();
+    } else if (diff < 0) {
+      props.onPrev?.();
+    }
+  };
   return (
     <Wrapper>
       <Paginator>
-        {!props ? "--" : `${props.index} of ${props.total}`}
+        {!props ? "--" : `${props.index + 1} of ${props.total}`}
       </Paginator>
-      <NextArrow disable={props.index === 1}>
-        <LeftArrow />
-      </NextArrow>
-      <BeforeArrow disable={props.index === props.total}>
-        <RightArrow />
-      </BeforeArrow>
+      <Cursor
+        onClick={() => {
+          emmit_change(-1);
+        }}
+        disabled={props.index <= 0}
+        disable={props.index <= 0} /* style FIXME:@You-J*/
+      >
+        <CaretLeftIcon />
+      </Cursor>
+      <Cursor
+        onClick={() => {
+          emmit_change(+1);
+        }}
+        disabled={props.index >= props.total - 1}
+        disable={props.index >= props.total - 1} /* style FIXME:@You-J*/
+      >
+        <CaretRightIcon />
+      </Cursor>
     </Wrapper>
   );
 }
@@ -62,14 +61,10 @@ const Paginator = styled.p`
   line-height: 17px;
 `;
 
-const NextArrow = styled.div<{ disable: boolean }>`
-  cursor: pointer;
-  svg {
-    fill: ${(props) => (props.disable ? "#808080" : "#000")};
-  }
-`;
-
-const BeforeArrow = styled.div<{ disable: boolean }>`
+const Cursor = styled.button<{ disable: boolean }>`
+  outline: none;
+  border: none;
+  background: none;
   cursor: pointer;
   svg {
     fill: ${(props) => (props.disable ? "#808080" : "#000")};

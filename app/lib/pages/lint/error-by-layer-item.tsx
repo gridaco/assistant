@@ -3,6 +3,8 @@ import * as React from "react";
 import { Level } from "../../lint/lint-colors";
 import { LintError, LintErrorIcon } from "../../lint/lint-error-icon";
 import { LintLevelIndicator } from "../../lint/lint-level-indicator";
+import { default as CloseIcon } from "@assistant/icons/caret-up";
+import { default as ExpandIcon } from "@assistant/icons/caret-down";
 
 interface IErrorByLayerItem {
   icon: boolean;
@@ -14,10 +16,6 @@ interface IErrorByLayerItem {
     userMessage: string;
   };
 }
-
-const CloseIcon = require("../../../lib/components/assets/close.svg") as string;
-const ExpandIcon =
-  require("../../../lib/components/assets/expand.svg") as string;
 
 export function ErrorByLayerItem(props: IErrorByLayerItem) {
   return (

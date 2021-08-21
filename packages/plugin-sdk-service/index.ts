@@ -15,6 +15,7 @@ import {
   PLUGIN_SDK_NS_REMOTE_API,
   PLUGIN_SDK_NS_RESPONSE_ALL,
   PLUGIN_SDK_NS_STORAGE,
+  PLUGIN_SDK_NS_FOCUS_API,
   PUGIN_SDK_EK_REQUEST_UPDATE_MAIN_COMPONENT_META,
   PUGIN_SDK_EK_REQUEST_UPDATE_NODE_META,
   TransportPluginEvent,
@@ -25,12 +26,16 @@ import {
   NodeMetaFetchRequest,
   NodeMetaUpdateRequest,
   NotifyRequest,
+  FocusRequest,
+  PLUGIN_SDK_EK_SIMPLE_FOCUS,
 } from "@plugin-sdk/core";
 
 import { WebStorage, FigmaStorage, IStorage } from "./storage";
 
 // TODO - make it universal
 import { Figma, figma } from "@design-sdk/figma";
+import type { SceneNode } from "@design-sdk/figma";
+
 import {
   __syncTargetPlatformForCodeThread,
   TargetPlatform,
@@ -145,6 +150,12 @@ export class PluginSdkService {
     // notify
     else if (event.namespace == PLUGIN_SDK_NS_NOTIFY_API) {
       handleNotify(handerProps);
+      return true;
+    }
+
+    // focus to target layer
+    else if (event.namespace == PLUGIN_SDK_NS_FOCUS_API) {
+      handleFocus(handerProps);
       return true;
     }
 
@@ -287,7 +298,7 @@ function getMaincomponentLike(nodeID: string): Figma.SceneNode {
 
 function handleRemoteApiEvent(props: HanderProps) {}
 
-export function handleNotify(props: HanderProps<NotifyRequest>) {
+function handleNotify(props: HanderProps<NotifyRequest>) {
   if (props.key == PLUGIN_SDK_EK_SIMPLE_NOTIFY) {
     switch (TARGET_PLATFORM) {
       case TargetPlatform.webdev: {
@@ -301,6 +312,25 @@ export function handleNotify(props: HanderProps<NotifyRequest>) {
     }
   }
   response(props.id, true);
+}
+
+function handleFocus(props: HanderProps<FocusRequest>) {
+  if (props.key == PLUGIN_SDK_EK_SIMPLE_FOCUS) {
+    switch (TARGET_PLATFORM) {
+      case TargetPlatform.webdev: {
+        // none
+        console.log("mock focus event from webdev", props);
+      }
+      case TargetPlatform.figma: {
+        const target = figma.getNodeById(props.data.target) as SceneNode;
+        //@ts-ignore TODO: remove ts-ignore
+        figma.currentPage.selection = [target];
+        // TODO: add zoom usage
+        //@ts-ignore
+        figma.viewport.scrollAndZoomIntoView([target]);
+      }
+    }
+  }
 }
 
 async function handleStorageEvent(props: HanderProps<StorageRequest>) {

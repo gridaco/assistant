@@ -24,6 +24,9 @@ import {
   StorageGetItemResponse,
   NotifyRequest,
   DragAndDropOnCanvasRequest,
+  PLUGIN_SDK_NS_FOCUS_API,
+  PLUGIN_SDK_EK_SIMPLE_FOCUS,
+  FocusRequest,
 } from "@plugin-sdk/core";
 import type { ReflectSceneNode } from "@design-sdk/core/nodes";
 import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "../../app/lib/constants";
@@ -227,6 +230,18 @@ export class PluginSdk {
   static notifyCopied() {
     this.notify("Copied to clipboard", 1);
   }
+
+  static focus(target: string, zoom?: number) {
+    this.request({
+      namespace: PLUGIN_SDK_NS_FOCUS_API,
+      key: PLUGIN_SDK_EK_SIMPLE_FOCUS,
+      data: <FocusRequest>{
+        target: target,
+        zoom: zoom,
+      },
+    });
+  }
+
   // endregion user feedbacks
 
   // region canvas
