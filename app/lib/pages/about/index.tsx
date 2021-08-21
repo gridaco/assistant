@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import * as about from "../../about";
 import { __auth_proxy, ProxyAuthenticationMode } from "@base-sdk-fp/auth";
 import { useHistory } from "react-router-dom";
+import BackArrowIcon from "@assistant/icons/back-arrow";
 
 const URLS = {
   logo_256:
@@ -42,6 +43,9 @@ export function AboutScreen() {
 
   return (
     <>
+      <BackIcon onClick={history.goBack}>
+        <BackArrowIcon />
+      </BackIcon>
       <AboutTitleSection>
         <Logo src={URLS.logo_256} />
         <About_TextGroup>
@@ -121,6 +125,10 @@ function _social_icon(
     `${name}.${_format}`
   );
 }
+
+const BackIcon = styled.div`
+  margin-bottom: 24px;
+`;
 
 const AboutTitleSection = styled.div`
   display: flex;

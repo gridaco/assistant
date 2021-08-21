@@ -6,12 +6,7 @@ export function SecondaryWorkmodeChoice(props: {
   disabled?: boolean;
   onClick: () => void;
 }) {
-  return <Title>{props.name}</Title>;
-}
-
-// not used
-interface Props {
-  disabled: boolean;
+  return <Title onClick={props.onClick}>{props.name}</Title>;
 }
 
 const Title = styled.h6`

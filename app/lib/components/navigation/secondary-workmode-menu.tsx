@@ -2,13 +2,13 @@ import styled from "@emotion/styled";
 import React from "react";
 import { Column, Row } from "../style/global-style";
 import { SecondaryWorkmodeChoice } from "./secondary-workmode-choice";
-export function SecondaryWorkmodeMenu(props: {
+export function SecondaryWorkmodeMenu<T extends string>(props: {
   menus: {
-    id: string;
+    id: T;
     name: string;
     disabled?: boolean;
   }[];
-  onSelect: () => void;
+  onSelect: (id: T) => void;
 }) {
   return (
     <Wrapper>
@@ -21,7 +21,9 @@ export function SecondaryWorkmodeMenu(props: {
                   key={menu.id}
                   name={menu.name}
                   disabled={menu.disabled}
-                  onClick={props.onSelect}
+                  onClick={() => {
+                    props.onSelect(menu.id);
+                  }}
                 />
               );
             }
@@ -35,7 +37,9 @@ export function SecondaryWorkmodeMenu(props: {
                   key={menu.id}
                   name={menu.name}
                   disabled={menu.disabled}
-                  onClick={props.onSelect}
+                  onClick={() => {
+                    props.onSelect(menu.id);
+                  }}
                 />
               );
             }

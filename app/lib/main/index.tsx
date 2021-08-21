@@ -71,42 +71,62 @@ function TabPanel(props: {
   );
 }
 
-function DropNav() {
+function MoreMenus() {
+  const history = useHistory();
   const menu = [
-    // {
-    //   id: WorkMode.code,
-    //   name: WorkMode.code,
-    // },
-    // {
-    //   id: WorkMode.design,
-    //   name: WorkMode.design,
-    // },
     {
       id: WorkMode.asset,
       name: WorkMode.asset,
+      stage: "development",
+      onSelect: () => {},
     },
     {
       id: WorkMode.manage,
       name: WorkMode.manage,
+      stage: "development",
+      onSelect: () => {},
     },
     {
       id: WorkMode.tools,
       name: WorkMode.tools,
+      stage: "development",
+      onSelect: () => {},
     },
     {
       id: WorkMode.library,
       name: WorkMode.library,
+      stage: "development",
+      onSelect: () => {},
     },
     {
       id: WorkMode.settings,
       name: WorkMode.settings,
+      stage: "development",
+      onSelect: () => {},
     },
     {
       id: WorkMode.about,
       name: WorkMode.about,
+      stage: "production",
+      onSelect: () => {
+        history.push("/about");
+      },
     },
-  ];
-  return <SecondaryWorkmodeMenu menus={menu} onSelect={() => {}} />;
+  ].filter((m) => {
+    if (process.env.NODE_ENV == "production") {
+      return m.stage === "production";
+    }
+    return true; /** if not production, return all available menus */
+  });
+  return (
+    <SecondaryWorkmodeMenu<WorkMode>
+      menus={menu}
+      onSelect={(id) => {
+        console.log("id", id);
+        menu.find((m) => m.id === id)?.onSelect();
+      }}
+    />
+  );
 }
 
 function Screen(props: { screen: WorkScreen }) {
@@ -239,7 +259,7 @@ function TabNavigationApp(props?: { savedLayout: NavigationStoreState }) {
               onClick={() => setExpansion(!expansion)}
             />
           </Row>
-          {!expansion && <DropNav />}
+          {!expansion && <MoreMenus />}
         </Column>
       </Wrapper>
 
