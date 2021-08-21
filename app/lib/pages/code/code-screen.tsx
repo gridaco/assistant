@@ -4,12 +4,10 @@ import { Preview } from "../../components/preview";
 import {
   EK_GENERATED_CODE_PLAIN,
   EK_IMAGE_ASSET_REPOSITORY_MAP,
-  EK_SET_APP_MODE,
 } from "../../constants/ek.constant";
 import { repo_assets } from "@design-sdk/core";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import {
-  Framework,
   FrameworkOption,
   all_preset_options_map__prod,
 } from "./framework-option";
@@ -19,8 +17,9 @@ import { format } from "./formatter";
 import copy from "copy-to-clipboard";
 import { PluginSdk } from "@plugin-sdk/app";
 import { CodeScreenFooter } from "./code-screen-footer";
-import { WorkScreen } from "../../navigation";
-import { CodeScreenControl } from "./code-screen-control";
+import { CodeOptionsControl } from "./code-options-control";
+import { fromApp, CodeGenRequest } from "./__plugin/events";
+import { useSingleSelection } from "../../utils/plugin-hooks";
 
 type DesigntoCodeUserOptions = FrameworkOption;
 interface ICodeScreen {}
@@ -31,6 +30,7 @@ export function CodeScreen(props: ICodeScreen) {
     all_preset_options_map__prod.flutter_default
   );
   const [source, setSource] = useState<SourceInput>();
+  const selection = useSingleSelection();
 
   useEffect(() => {
     window.addEventListener("message", onMessage);
@@ -39,37 +39,13 @@ export function CodeScreen(props: ICodeScreen) {
     };
   }, [useroption.language]);
 
-  // post to code thread about target framework change
   useEffect(() => {
-    /**
-     * region DIRTY CODE FIXME: !!!
-     */
-    // region get workscreen name (FOR PREV VER)
-    let _frameworknameforeventtransport: WorkScreen;
-    switch (useroption.framework) {
-      case Framework.flutter:
-        _frameworknameforeventtransport = WorkScreen.code_flutter;
-        break;
-      case Framework.react:
-        _frameworknameforeventtransport = WorkScreen.code_react;
-        break;
-    }
-
-    // endregion get workscreen name
-    parent.postMessage(
-      {
-        pluginMessage: {
-          type: EK_SET_APP_MODE,
-          // TODO: provide other options INCLUDING framework info, currently we only provide framework info for last version compatibility.
-          data: _frameworknameforeventtransport,
-        },
-      },
-      "*"
-    );
-    /**
-     * endregion DIRTY CODE FIXME: !!!
-     */
-  }, [useroption.framework]);
+    // post to code thread about target framework change
+    fromApp({
+      type: "code-gen-request",
+      option: useroption,
+    });
+  }, [useroption.framework, selection]);
 
   const _make_placeholder = () => {
     return make_empty_selection_state_text_content("empty");
@@ -175,7 +151,7 @@ export function CodeScreen(props: ICodeScreen) {
         </svg>
       </CopyCodeButton>
       <CodeWrapper>
-        <CodeScreenControl
+        <CodeOptionsControl
           // key={JSON.stringify(useroption)} // FIXME: do not uncomment me
           // initialPreset="react_default" // FIXME: do not uncomment me
           onUseroptionChange={onOptionChange}
