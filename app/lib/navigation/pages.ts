@@ -142,6 +142,11 @@ export function get_page_config(id: WorkScreen): PageConfig {
   }
   throw `${id} is not found from registered page configs`;
 }
+
+export function get_page_config_by_path(path: string) {
+  return all_pages.find((p) => p.path === path);
+}
+
 ///
 /// endregion page declarations
 ///

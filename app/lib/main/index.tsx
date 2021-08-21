@@ -36,8 +36,11 @@ import {
   WorkScreen,
   standalone_pages,
   PrimaryWorkmodeSet,
-  loadLayout,
   NavigationStoreState,
+  loadLayout,
+  saveLayout,
+  updateLayout,
+  get_page_config_by_path,
 } from "../navigation";
 
 import {
@@ -49,27 +52,6 @@ import {
 import styled from "@emotion/styled";
 import { Column, Row } from "../components/style/global-style";
 import { UploadSteps } from "../components/upload-steps";
-
-/** The container of tab content */
-function TabPanel(props: {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`app-tab-${index}`}
-      // aria-labelledby={`tab-${type}`}
-      {...other}
-    >
-      {value === index && <>{props.children}</>}
-    </div>
-  );
-}
 
 function MoreMenus() {
   const history = useHistory();
@@ -224,15 +206,26 @@ function TabsLayout(props: {
   );
 }
 
-function TabNavigationApp(props?: { savedLayout: NavigationStoreState }) {
-  const [workmode, setWorkmode] = useState<WorkMode>(WorkMode.code);
+function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
+  const [workmode, setWorkmode] = useState<WorkMode>(
+    props.savedLayout.currentWorkmode
+  );
   const [workmodeSet, setWorkmodeSet] = useState<PrimaryWorkmodeSet>(
-    props?.savedLayout?.workmodeSet
+    props.savedLayout.workmodeSet
   );
 
   const on_workmode_select = (workmode: WorkMode) => {
     setWorkmode(workmode);
     setTabIndex(0);
+  };
+
+  const on_work_select = (index, screen) => {
+    _update_focused_screen_ev(screen);
+    setTabIndex(index);
+    updateLayout({
+      workmode: workmode,
+      work: screen,
+    });
   };
 
   const [tabIndex, setTabIndex] = useState<number>(0);
@@ -269,10 +262,7 @@ function TabNavigationApp(props?: { savedLayout: NavigationStoreState }) {
         workmode={workmode}
         tabIndex={tabIndex}
         isTabVisible={expansion}
-        onChange={(index, screen) => {
-          _update_focused_screen_ev(screen);
-          setTabIndex(index);
-        }}
+        onChange={on_work_select}
       />
       {/* )} */}
     </>
@@ -282,14 +272,20 @@ function TabNavigationApp(props?: { savedLayout: NavigationStoreState }) {
 
 function RouterTabNavigationApp(props) {
   const [savedLayout, setSavedLayout] = useState<NavigationStoreState>();
+  const workmode = props.match.params.workmode;
+  const work = props.match.params.work;
+  const path = "/" + workmode + "/" + work;
   useEffect(() => {
-    loadLayout().then((l) => setSavedLayout(l));
-  }, []);
+    const _page_config = get_page_config_by_path(path);
 
-  const params = props.match.params;
-  const workmode = params.workmode;
-  const work = params.work;
-  // TODO: make new layout based on saved one and givven param.
+    loadLayout().then((l) =>
+      setSavedLayout({
+        ...l,
+        currentWorkmode: workmode,
+        currentWork: _page_config.id,
+      })
+    );
+  }, []);
 
   return <>{savedLayout && <TabNavigationApp savedLayout={savedLayout} />}</>;
 }
