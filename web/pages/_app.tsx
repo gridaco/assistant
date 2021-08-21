@@ -23,10 +23,6 @@ function WebApp({ Component, pageProps }: AppProps) {
     });
   }, []);
 
-  if (!router.query["platform"]) {
-    return <></>;
-  }
-
   return <App platform={platform} />;
 }
 export default WebApp;
