@@ -18,12 +18,12 @@ import styled from "@emotion/styled";
 export type DesigntoCodeUserOptions = FrameworkOption;
 
 // FIXME: get useroption as props from parent. userprops & preset (optional) should be managed on its parent
-interface CodeScreenProps {
+interface CodeOptionsControlProps {
   initialPreset?: string;
   onUseroptionChange: (op: DesigntoCodeUserOptions) => void;
 }
 
-export function CodeScreenControl(props: CodeScreenProps) {
+export function CodeOptionsControl(props: CodeOptionsControlProps) {
   const __preetname = props.initialPreset ?? "flutter_default";
   const [presetname, setPresetname] = React.useState<string>(__preetname);
   const [useroption, setUseroption] = React.useState<DesigntoCodeUserOptions>(

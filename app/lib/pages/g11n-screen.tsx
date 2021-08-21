@@ -1,3 +1,4 @@
+import React from "react";
 import {
   SceneStoreService,
   StorableLayerType,
@@ -8,8 +9,7 @@ import { repo_assets } from "@design-sdk/core";
 import Button from "@material-ui/core/Button";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { ImageManifest } from "@reflect-ui/core/lib";
-import React from "react";
-
+import { PluginSdk } from "@plugin-sdk/app";
 import {
   EK_COMPUTE_STARTED,
   EK_IMAGE_ASSET_REPOSITORY_MAP,
@@ -103,7 +103,9 @@ export class GlobalizationScreen extends React.Component<any, State> {
     const sceneId = serviceuploaded.data.id;
 
     // remote
-    open(`https://console.bridged.xyz/globalization/?scene=${sceneId}`);
+    PluginSdk.openUri(
+      `https://console.bridged.xyz/globalization/?scene=${sceneId}`
+    );
     // local
     // open(`http://localhost:3000/globalization/?scene=${sceneId}`);
   }

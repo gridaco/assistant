@@ -1,5 +1,6 @@
+import React from "react";
 import Button from "@material-ui/core/Button";
-import * as React from "react";
+import { PluginSdk } from "@plugin-sdk/app";
 
 export class ToolboxScreen extends React.Component {
   constructor(props) {
@@ -32,7 +33,7 @@ export class ToolboxScreen extends React.Component {
   }
 
   onClickOpenConsole(e) {
-    open("https://bridged.xyz/");
+    PluginSdk.openUri("https://console.grida.co/");
   }
   render() {
     return (

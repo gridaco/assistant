@@ -27,6 +27,8 @@ import {
   PLUGIN_SDK_NS_FOCUS_API,
   PLUGIN_SDK_EK_SIMPLE_FOCUS,
   FocusRequest,
+  PLUGIN_SDK_NS_BROWSER_API,
+  PLUGIN_SDK_EK_BROWSER_OPEN_URI,
 } from "@plugin-sdk/core";
 import type { ReflectSceneNode } from "@design-sdk/core/nodes";
 import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "../../app/lib/constants";
@@ -214,6 +216,21 @@ export class PluginSdk {
   }
 
   // endregion metadata
+
+  // inner iframe blocked js functions
+  static openUri(uri: string) {
+    if (process.env.HOSTED) {
+      this.request({
+        namespace: PLUGIN_SDK_NS_BROWSER_API,
+        key: PLUGIN_SDK_EK_BROWSER_OPEN_URI,
+        data: {
+          uri: uri,
+        },
+      });
+    } else {
+      open(uri);
+    }
+  }
 
   // region user feedbacks
   static notify(message: string, duration?: number) {

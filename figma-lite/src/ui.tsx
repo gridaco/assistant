@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import * as ReactDOM from "react-dom";
 import { AppSkeleton } from "@ui/skeleton";
+import { handle } from "./handle-proxy-requests";
 
 ReactDOM.render(
   <LiteHostedAppConnector />,
@@ -21,6 +22,10 @@ function LiteHostedAppConnector() {
         }
 
         if ("pluginMessage" in event.data) {
+          if (event.data.pluginMessage.__proxy_request_from_hosted_plugin) {
+            handle(event.data.pluginMessage);
+            return;
+          }
           if (
             "pluginId" in event.data ||
             event.data.pluginMessage.type === "response"

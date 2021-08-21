@@ -45,6 +45,11 @@ export const PLUGIN_SDK_EK_STORAGE_ALIAS = {
 };
 // endregion storage
 
+// region browser api override
+export const PLUGIN_SDK_NS_BROWSER_API = `${__PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/browser-api`;
+export const PLUGIN_SDK_EK_BROWSER_OPEN_URI = "assistant/browser-api/open-uri";
+// endregion browser api override
+
 // region notify
 export const PLUGIN_SDK_NS_NOTIFY_API = `${__PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/notify`;
 export const PLUGIN_SDK_EK_SIMPLE_NOTIFY = "notify";

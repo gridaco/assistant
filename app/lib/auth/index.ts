@@ -1,6 +1,6 @@
 import { __HOSTS } from "@base-sdk/core";
 import { __auth_proxy, ProxyAuthenticationMode } from "@base-sdk-fp/auth";
-
+import { PluginSdk } from "@plugin-sdk/app";
 //#region export
 export * from "./storage";
 //#endregion export
@@ -24,5 +24,5 @@ export async function startAuthentication() {
   );
 
   // todo - build full url using method in base sdk
-  open(__HOSTS.INTERNAL_SECURE_ACCOUNTS_SERVICE_HOST);
+  PluginSdk.openUri(__HOSTS.INTERNAL_SECURE_ACCOUNTS_SERVICE_HOST);
 }

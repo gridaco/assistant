@@ -28,6 +28,8 @@ import {
   NotifyRequest,
   FocusRequest,
   PLUGIN_SDK_EK_SIMPLE_FOCUS,
+  PLUGIN_SDK_NS_BROWSER_API,
+  PLUGIN_SDK_EK_BROWSER_OPEN_URI,
 } from "@plugin-sdk/core";
 
 import { WebStorage, FigmaStorage, IStorage } from "./storage";
@@ -140,6 +142,13 @@ export class PluginSdkService {
       handleStorageEvent(handerProps);
       return true;
     }
+
+    // browser api
+    if (event.namespace == PLUGIN_SDK_NS_BROWSER_API) {
+      handleBrowserApiEvent(event);
+      return true;
+    }
+    //
 
     // remote api call
     else if (event.namespace == PLUGIN_SDK_NS_REMOTE_API) {
@@ -358,6 +367,12 @@ async function handleStorageEvent(props: HanderProps<StorageRequest>) {
   }
 }
 
+async function handleBrowserApiEvent(props: TransportPluginEvent) {
+  if (props.key == PLUGIN_SDK_EK_BROWSER_OPEN_URI) {
+    requestToHost(props);
+  }
+}
+
 function handleDragDropped(props: HanderProps<DragAndDropOnCanvasRequest>) {
   console.log("handling drop event", props.data);
   const { dropPosition, windowSize, offset, itemSize, eventKey, customData } =
@@ -426,6 +441,27 @@ function response<T = any>(
   }
 
   return true;
+}
+
+/** this is used to proxy a request from inner iframe to host iframe. */
+function requestToHost(req) {
+  console.log("requesting host to handle requests from hosted app.", req);
+  switch (TARGET_PLATFORM) {
+    case TargetPlatform.webdev: {
+      window.postMessage(
+        { pluginMessage: { __proxy_request_from_hosted_plugin: true, ...req } },
+        undefined
+      );
+      break;
+    }
+    case TargetPlatform.figma: {
+      figma.ui.postMessage({
+        __proxy_request_from_hosted_plugin: true,
+        ...req,
+      });
+      break;
+    }
+  }
 }
 
 /**
