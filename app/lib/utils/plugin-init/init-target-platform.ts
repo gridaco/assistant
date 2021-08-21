@@ -1,4 +1,4 @@
-import { PluginSdk } from "../plugin-provider/plugin-app-sdk";
+import { PluginSdk } from "@plugin-sdk/app";
 
 /**
  * Target platform this ui runs on. this gloval variable will be set on initial entry on each platform's main ui import
@@ -11,6 +11,10 @@ export let TARGET_PLATFORM: TargetPlatform;
  */
 export async function initializeTargetPlatform(platform: TargetPlatform) {
   TARGET_PLATFORM = platform;
+  if (platform == TargetPlatform.webdev) {
+    return true;
+  }
+
   // sync this to code side.
   await PluginSdk.request({
     namespace: "__INTERNAL__",

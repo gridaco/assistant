@@ -1,7 +1,10 @@
 import React from "react";
 import styled from "@emotion/styled";
 import * as about from "../../about";
-
+import { __auth_proxy, ProxyAuthenticationMode } from "@base-sdk-fp/auth";
+import { useHistory } from "react-router-dom";
+import BackArrowIcon from "@assistant/icons/back-arrow";
+import { PluginSdk } from "@plugin-sdk/app";
 const URLS = {
   logo_256:
     "https://bridged-service-static.s3-us-west-1.amazonaws.com/branding/logo/256.png",
@@ -27,14 +30,22 @@ const URLS = {
 };
 
 export function AboutScreen() {
+  const history = useHistory();
   const linkTo = (url: string) => {
     return () => {
-      open(url);
+      PluginSdk.openUri(url);
     };
+  };
+
+  const signIntoAssistant = () => {
+    history.push("/signin");
   };
 
   return (
     <>
+      <BackIcon onClick={history.goBack}>
+        <BackArrowIcon />
+      </BackIcon>
       <AboutTitleSection>
         <Logo src={URLS.logo_256} />
         <About_TextGroup>
@@ -53,7 +64,7 @@ export function AboutScreen() {
         </MenuSection>
         <MenuSection>
           <MenuSectionTitleItem>More from Bridged</MenuSectionTitleItem>
-          <MenuItem onClick={linkTo(URLS.signup)}>Signup</MenuItem>
+          <MenuItem onClick={signIntoAssistant}>Signup / Signin</MenuItem>
           <MenuItem onClick={linkTo(URLS.blog)}>Medium</MenuItem>
           <MenuItem onClick={linkTo(URLS.homepage_bridged)}>Homepage</MenuItem>
         </MenuSection>
@@ -114,6 +125,10 @@ function _social_icon(
     `${name}.${_format}`
   );
 }
+
+const BackIcon = styled.div`
+  margin-bottom: 24px;
+`;
 
 const AboutTitleSection = styled.div`
   display: flex;

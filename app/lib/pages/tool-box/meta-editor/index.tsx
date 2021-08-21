@@ -9,6 +9,8 @@ import {
   MetaDataRepositoryFactory,
 } from "../../../repositories/metadata";
 import { useSingleSelection } from "../../../utils/plugin-hooks";
+import { PluginSdk } from "@plugin-sdk/app";
+
 interface MetaDataFieldDef {
   name: string;
   type: MetaDataFieldType;
@@ -197,7 +199,11 @@ function MetaDataDisplayField(props: {
         return <Typography variant="caption">{props.value}</Typography>;
 
       case "url":
-        return <Button onClick={() => open(props.value)}>{props.value}</Button>;
+        return (
+          <Button onClick={() => PluginSdk.openUri(props.value)}>
+            {props.value}
+          </Button>
+        );
     }
   }
 

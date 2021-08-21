@@ -1,0 +1,7 @@
+{
+    "name": "@assistant/lint-icons",
+    "description": "Icons used for lint",
+    "authors": "Grida.co",
+    "version": "0.0.0",
+    "dependencies": {}
+}

@@ -8,13 +8,17 @@
 		"packages": [
 			"app",
 			"figma",
+			"figma-core",
+			"figma-lite",
 			"sketch",
+			"web",
 			"webdev",
 			"xd",
 			"packages/*",
 			"packages/reflect-core/packages/*",
 			"packages/design-sdk/*",
 			"packages/base-sdk/*",
+			"packages/base-sdk/_firstparty/*",
 			"packages/reflect-core/packages/*",
 			"packages/design-to-code/packages/designto-*",
 			"packages/design-to-code/packages/builder-config",
@@ -28,7 +32,9 @@
 	"scripts": {
 		"pull:all": "git submodule update --init --recursive",
 		"figma": "yarn workspace figma run webpack:watch",
+		"figma-lite": "yarn workspace figma-lite run build:dev && yarn web",
 		"sketch": "yarn workspace sketch run render",
+		"web": "yarn workspace web run dev",
 		"webdev": "yarn workspace webdev run start",
 		"xd": "yarn workspace xd run build",
 		"test": "cd figma && yarn build"
@@ -37,5 +43,8 @@
 		"type": "opencollective",
 		"url": "https://opencollective.com/bridged",
 		"logo": "https://opencollective.com/bridged/logo.txt"
+	},
+	"engines": {
+		"node": ">=12.0.0"
 	}
 }

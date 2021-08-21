@@ -5,7 +5,7 @@ import {
   useRangeSelection,
 } from "../../../utils/plugin-hooks";
 import { findDatasourceNodeAndOthers } from "./data-source-node";
-import { fromApp } from "./events";
+import { fromApp } from "./__plugin/events";
 
 export function DataMapperScreen() {
   const pairSelections = useRangeSelection(2, 5);

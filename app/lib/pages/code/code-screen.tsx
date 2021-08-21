@@ -4,31 +4,25 @@ import { Preview } from "../../components/preview";
 import {
   EK_GENERATED_CODE_PLAIN,
   EK_IMAGE_ASSET_REPOSITORY_MAP,
-  EK_SET_APP_MODE,
 } from "../../constants/ek.constant";
 import { repo_assets } from "@design-sdk/core";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import {
-  Framework,
   FrameworkOption,
   all_preset_options_map__prod,
 } from "./framework-option";
-import { CodeScreenControl } from "./code-screen-control";
-import { WorkScreen } from "../../states/app-state";
-import { Button } from "@material-ui/core";
 import styled from "@emotion/styled";
 import { make_empty_selection_state_text_content } from "./constants";
-import { ButtonStyle } from "../../components/style/global-style";
-import { UploadSteps } from "../../components/upload-steps";
 import { format } from "./formatter";
 import copy from "copy-to-clipboard";
-import { PluginSdk } from "../../utils/plugin-provider/plugin-app-sdk";
+import { PluginSdk } from "@plugin-sdk/app";
 import { CodeScreenFooter } from "./code-screen-footer";
+import { CodeOptionsControl } from "./code-options-control";
+import { fromApp, CodeGenRequest } from "./__plugin/events";
+import { useSingleSelection } from "../../utils/plugin-hooks";
 
 type DesigntoCodeUserOptions = FrameworkOption;
-interface ICodeScreen {
-  handleIsUploading: () => void;
-}
+interface ICodeScreen {}
 
 export function CodeScreen(props: ICodeScreen) {
   const [app, setApp] = useState<string>();
@@ -36,7 +30,9 @@ export function CodeScreen(props: ICodeScreen) {
     all_preset_options_map__prod.flutter_default
   );
   const [source, setSource] = useState<SourceInput>();
+  const selection = useSingleSelection();
 
+  /** register event listener for events from code thread. */
   useEffect(() => {
     window.addEventListener("message", onMessage);
     return function cleaup() {
@@ -44,43 +40,19 @@ export function CodeScreen(props: ICodeScreen) {
     };
   }, [useroption.language]);
 
-  // post to code thread about target framework change
+  /** post to code thread about target framework change */
   useEffect(() => {
-    /**
-     * region DIRTY CODE FIXME: !!!
-     */
-    // region get workscreen name (FOR PREV VER)
-    let _frameworknameforeventtransport: WorkScreen;
-    switch (useroption.framework) {
-      case Framework.flutter:
-        _frameworknameforeventtransport = WorkScreen.code_flutter;
-        break;
-      case Framework.react:
-        _frameworknameforeventtransport = WorkScreen.code_react;
-        break;
-    }
-
-    // endregion get workscreen name
-    parent.postMessage(
-      {
-        pluginMessage: {
-          type: EK_SET_APP_MODE,
-          // TODO: provide other options INCLUDING framework info, currently we only provide framework info for last version compatibility.
-          data: _frameworknameforeventtransport,
-        },
-      },
-      "*"
-    );
-    /**
-     * endregion DIRTY CODE FIXME: !!!
-     */
-  }, [useroption.framework]);
+    // 1. clear previous result.
+    setSource(undefined);
+    // 2. request new code gen.
+    fromApp({
+      type: "code-gen-request",
+      option: useroption,
+    });
+  }, [useroption.framework, selection]);
 
   const _make_placeholder = () => {
-    return make_empty_selection_state_text_content({
-      platform: "figma",
-      lang: useroption.language,
-    });
+    return make_empty_selection_state_text_content("empty");
   };
 
   const _make_source = (): SourceInput => {
@@ -183,7 +155,7 @@ export function CodeScreen(props: ICodeScreen) {
         </svg>
       </CopyCodeButton>
       <CodeWrapper>
-        <CodeScreenControl
+        <CodeOptionsControl
           // key={JSON.stringify(useroption)} // FIXME: do not uncomment me
           // initialPreset="react_default" // FIXME: do not uncomment me
           onUseroptionChange={onOptionChange}
@@ -195,8 +167,7 @@ export function CodeScreen(props: ICodeScreen) {
         />
       </CodeWrapper>
 
-      <CodeScreenFooter app={app} handleIsUploading={props.handleIsUploading} />
-      {/* <UploadSteps /> */}
+      <CodeScreenFooter app={app} />
     </div>
   );
 }
@@ -228,8 +199,8 @@ const CopyCodeButton = styled.div`
 `;
 
 const CodeWrapper = styled.div`
-  /* width: 100%; */
-  /* height: 408px; */
+  /* 374 is preview and navigation height*/
+  height: calc(100vh - 374px);
   background: rgb(42, 39, 52);
   margin: 0 -8px;
   overflow-y: scroll;

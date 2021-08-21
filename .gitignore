@@ -4,3 +4,7 @@ dist
 .idea
 package.lock
 webdev/.eslintcache
+
+
+# we use yarn
+package-lock.json

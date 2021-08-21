@@ -1,14 +1,12 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { Button } from "@material-ui/core";
 import { BlackButton, WhtieButton } from "../../components/style/global-style";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
-import { PluginSdk } from "../../utils/plugin-provider/plugin-app-sdk";
+import { PluginSdk } from "@plugin-sdk/app";
 import { quickLook } from "../../quicklook";
 
 interface ICodeScreenFooter {
   app?: any;
-  handleIsUploading: () => void;
 }
 
 export function CodeScreenFooter(props: ICodeScreenFooter) {
@@ -36,10 +34,13 @@ export function CodeScreenFooter(props: ICodeScreenFooter) {
   };
   return (
     <CodeFooterCtaWrapper>
-      {/* copy feature should be inside the code viewer box with copy icon button.*/}
-      {/* <CopyCodeButton onClick={onCopyClicked}>copy code</CopyCodeButton> */}
-
-      <NextStepButton onClick={props.handleIsUploading}>next</NextStepButton>
+      <NextStepButton
+        onClick={() => {
+          // TODO: the button component should be passed from outer side.
+        }}
+      >
+        Next
+      </NextStepButton>
       {props.app && (
         <PreviewButton
           disabled={isLaunchingConsole}
@@ -52,33 +53,36 @@ export function CodeScreenFooter(props: ICodeScreenFooter) {
   );
 }
 
-const CodeFooterCtaWrapper = styled.div`
-  /* margin: 0 -8px; */
-  padding: 10px 10px 0 10px;
+const CodeFooterCtaWrapper = styled.footer`
+  padding: 12px 8px;
   display: flex;
   background: #fff;
+  position: absolute;
+  /* 16 is body's padding */
+  width: calc(100% - 16px);
+  left: 0;
+  bottom: 0;
 
   button {
-    margin-right: 8px;
-
-    &:last-child() {
-      margin-right: 0;
+    &:first-child {
+      margin-right: 8px;
     }
   }
 `;
 
-const NextStepButton = styled(Button)`
+const NextStepButton = styled.button`
   ${BlackButton}
-  width: 66.666666%;
+  /* 2/3 size. 12 is wrapper padding  */
+  width: calc(66.666% - 12px);
 
-  // for reset material-ui button style
   &:hover {
     color: #fff;
     background: #17181a;
   }
 `;
 
-const PreviewButton = styled(Button)`
+const PreviewButton = styled.button`
   ${WhtieButton}
-  width: 33.333333%;
+  /* 1/3 size. 12 is wrapper padding */
+  width: calc(33.333% - 12px);
 `;

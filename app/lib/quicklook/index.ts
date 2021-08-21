@@ -2,6 +2,7 @@ import { composeAppWithHome } from "@bridged.xyz/flutter-builder";
 import { Widget } from "@bridged.xyz/flutter-builder";
 import { features, hosting, types } from "@base-sdk/base";
 import { repo_assets } from "@design-sdk/core";
+import { PluginSdk } from "@plugin-sdk/app";
 
 export async function quickLook(id: string, app: Widget | string) {
   console.log("quicklook starting..");
@@ -40,6 +41,6 @@ export async function quickLook(id: string, app: Widget | string) {
     language: types.AppLanguage.dart,
     url: url,
   });
-  open(quicklookUrl);
-  // console.log('launched!')
+  PluginSdk.openUri(quicklookUrl);
+  console.log("launched!", quicklookUrl);
 }
