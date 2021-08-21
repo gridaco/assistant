@@ -31,8 +31,7 @@ function _get_target_platform_from_query(platform: string) {
   switch (platform) {
     case "figma":
       return TargetPlatform.figma;
-    default:
-      // if non passed, it's an access from browser as development mode
+    case "webdev":
       return TargetPlatform.webdev;
   }
 }
