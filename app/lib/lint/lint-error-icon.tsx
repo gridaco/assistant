@@ -1,9 +1,11 @@
 import * as React from "react";
+import ColorErrorIcon from "@assistant/lint-icons/error-missing-color-style";
+import TextStyleErrorIcon from "@assistant/lint-icons/error-missing-text-style";
+import NamingErrorIcon from "@assistant/lint-icons/error-missing-text-style";
 
 export enum LintError {
   text = "missingTextStyle",
   name = "nameError",
-  mdi = "mdiTexture",
   color = "missingColorStyleError",
 }
 
@@ -12,24 +14,13 @@ interface Props {
 }
 
 export function LintErrorIcon(props: Props) {
-  const MdiTextureIcon =
-    require("../components/assets/mdi-texture.svg") as string;
-  const ColorErrorIcon =
-    require("../components/assets/missing-color-style-error.svg") as string;
-  const TextErrorIcon =
-    require("../components/assets/missing-text.svg") as string;
-  const NameErrorIcon =
-    require("../components/assets/name-error.svg") as string;
-
   switch (props.id) {
     case LintError.text:
-      return <img src={TextErrorIcon} />;
+      return <TextStyleErrorIcon />;
     case LintError.name:
-      return <img src={NameErrorIcon} />;
-    case LintError.mdi:
-      return <img src={MdiTextureIcon} />;
+      return <NamingErrorIcon />;
     case LintError.color:
-      return <img src={ColorErrorIcon} />;
+      return <ColorErrorIcon />;
     default:
       return <></>;
   }
