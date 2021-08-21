@@ -13,7 +13,8 @@ interface CreateIconProps {
 function createIcon(
   data: CreateIconProps,
   placement: IconPlacement = "center",
-  zoom: boolean = true
+  zoom: boolean = true,
+  focus: boolean = true
 ) {
   console.log("creating icon with data", data);
   const icon_key = data.key;
@@ -28,6 +29,9 @@ function createIcon(
   if (zoom) {
     figma.viewport.scrollAndZoomIntoView([inserted]);
   }
+  if (focus) {
+    figma.currentPage.selection = [inserted];
+  }
 }
 
 PluginSdkService.registerDragAndDropHandler(
@@ -39,6 +43,7 @@ PluginSdkService.registerDragAndDropHandler(
         x: pos.x,
         y: pos.y,
       },
+      false,
       false
     );
     return;

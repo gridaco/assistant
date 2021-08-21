@@ -373,6 +373,7 @@ function handleDragDropped(props: HanderProps<DragAndDropOnCanvasRequest>) {
   // The calculations would be slightly different, depending on whether the UI is shown.
   // So to determine if the UI is shown, we'll be comparing the bounds to the window's width.
   // Math.round is used here because sometimes bounds.width * zoom may return a floating point number very close but not exactly the window width.
+  // This also applies when chrome developer tool is open on thr right side (not floating). currently, we cannot handle this issue. (PLEASE NOTE THAT YOU'LL NEED TO USE FLOATING DEVELOPER TOOLS WHEN DEVELOPING DnD!)
   const hasUI = Math.round(bounds.width * zoom) !== windowSize.width;
 
   // Since the left pane is resizable, we need to get its width by subtracting the right pane and the canvas width from the window width.
