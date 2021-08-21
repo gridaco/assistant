@@ -51,8 +51,16 @@ function LiteHostedAppConnector() {
   // <AppSkeleton/>
 
   return (
-    <div style={{ overflowY: "clip" }}>
+    <div
+      id="frame-host"
+      style={{
+        width: "100%",
+        height: "100%",
+        overflowY: "clip",
+      }}
+    >
       <iframe
+        id="remote-host"
         ref={frame}
         style={{ opacity: `${initialized ? 1 : 0}` }}
         // style={{ zoom: "80%" }} // use this to zoom inner content
