@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { startAuthentication } from "../../auth";
+import {
+  startAuthenticationWithSession,
+  startAuthenticationSession,
+} from "../../auth";
 import {
   BlackButton,
   ButtonStyle,
@@ -20,6 +23,7 @@ import {
   Title,
   Wrapper,
 } from "./style";
+import { AuthProxySessionStartResult } from "@base-sdk-fp/auth";
 
 // onClick={() => {
 //   startAuthentication();
@@ -42,7 +46,7 @@ function LeftArrow() {
   );
 }
 
-function InitContents() {
+function InitialStateContent() {
   return (
     <>
       <Title>Sign in to Grida</Title>
@@ -55,7 +59,7 @@ function InitContents() {
   );
 }
 
-function LoadingContents() {
+function LoadingContents(props: { authUrl: string; onCheckAuth: () => void }) {
   return (
     <>
       <Title>
@@ -74,18 +78,20 @@ function LoadingContents() {
         <LinkContents>
           👉 Let me in, I’ve completed all steps on the browser.
         </LinkContents>
-        <LinkContents>👉 Open the sign-in page again</LinkContents>
+        <LinkContents href={props.authUrl} target="_blank">
+          👉 Open the sign-in page again
+        </LinkContents>
       </LinkWrapper>
     </>
   );
 }
 
-function FinishCheckingAuth(userName: string) {
+function FinishCheckingAuth(props: { username: string }) {
   return (
     <>
       <Title>
         Welcome <br />
-        {`${userName} :)`}
+        {`${props.username} :)`}
       </Title>
       <Contents>
         Ready to build world-shaking
@@ -99,6 +105,7 @@ function FinishCheckingAuth(userName: string) {
 function Signin() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAuthToken, setIsAuthToken] = useState<boolean>(false);
+  const [sessionInfo, setSessionInfo] = useState<AuthProxySessionStartResult>();
   const history = useHistory();
 
   return (
@@ -109,12 +116,15 @@ function Signin() {
       <Inner>
         {!isAuthToken ? (
           !isLoading ? (
-            InitContents()
+            <InitialStateContent />
           ) : (
-            LoadingContents()
+            <LoadingContents
+              authUrl={sessionInfo.authUrl}
+              onCheckAuth={() => {}}
+            /> // TODO: provide callback state check & browser url.
           )
         ) : (
-          <>{FinishCheckingAuth("Universe")}</>
+          <FinishCheckingAuth username="Universe" /> // TODO: change with authenticated user name
         )}
         <BtnWrapper>
           {isAuthToken ? (
@@ -126,13 +136,24 @@ function Signin() {
               <SignInBtn
                 disabled={isLoading}
                 onClick={() => {
-                  startAuthentication();
+                  startAuthenticationSession().then((s) => {
+                    setSessionInfo(s);
+                    startAuthenticationWithSession(s);
+                  });
                   setIsLoading(true);
                 }}
               >
                 {!isLoading ? "Sign in" : "Sign in ..."}
               </SignInBtn>
-              <SignUpBtn>Sign Up</SignUpBtn>
+              <SignUpBtn
+                onClick={() => {
+                  open("https://accounts.grida.co/signup");
+                  // clear states
+                  setIsLoading(false);
+                }}
+              >
+                Sign Up
+              </SignUpBtn>
             </>
           )}
         </BtnWrapper>

@@ -1,5 +1,10 @@
 import { __HOSTS } from "@base-sdk/core";
-import { __auth_proxy, ProxyAuthenticationMode } from "@base-sdk-fp/auth";
+import {
+  __auth_proxy,
+  ProxyAuthenticationMode,
+  AuthProxySessionStartRequest,
+  AuthProxySessionStartResult,
+} from "@base-sdk-fp/auth";
 import { PluginSdk } from "@plugin-sdk/app";
 //#region export
 export * from "./storage";
@@ -9,20 +14,37 @@ const PROXY_AUTH_REQUEST_SECRET =
   process.env.GRIDA_FIRST_PARTY_PROXY_AUTH_REQUEST_TOTP_SECRET ??
   process.env.NEXT_PUBLIC_GRIDA_FIRST_PARTY_PROXY_AUTH_REQUEST_TOTP_SECRET;
 
-export async function startAuthentication() {
-  const request = await __auth_proxy.requesetProxyAuth(
-    PROXY_AUTH_REQUEST_SECRET,
-    {
-      appId: "co.grida.assistant",
-      clientId: "", // todo
-      mode: ProxyAuthenticationMode.long_polling,
-    },
-    {
-      autoOpen: true,
-      openner: PluginSdk.openUri,
-    }
-  );
+function _make_request(): AuthProxySessionStartRequest {
+  return {
+    appId: "co.grida.assistant",
+    clientId: "", // todo
+    mode: ProxyAuthenticationMode.long_polling,
+  };
+}
 
-  // todo - build full url using method in base sdk
-  // PluginSdk.openUri(__HOSTS.INTERNAL_SECURE_ACCOUNTS_SERVICE_HOST);
+export async function startAuthenticationSession(): Promise<AuthProxySessionStartResult> {
+  return __auth_proxy.openProxyAuthSession(
+    PROXY_AUTH_REQUEST_SECRET,
+    _make_request()
+  );
+}
+
+export async function startAuthenticationWithSession(
+  session: AuthProxySessionStartResult
+) {
+  const result = await __auth_proxy.requesetProxyAuthWithSession(
+    PROXY_AUTH_REQUEST_SECRET,
+    session,
+    _make_request()
+  );
+  return result;
+}
+
+export async function startAuthentication() {
+  const session = await startAuthenticationSession();
+  return await startAuthenticationWithSession(session);
+}
+
+export async function checkAuthSession() {
+  //
 }
