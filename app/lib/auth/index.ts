@@ -5,10 +5,8 @@ import {
   AuthProxySessionStartRequest,
   AuthProxySessionStartResult,
 } from "@base-sdk-fp/auth";
-import { PluginSdk } from "@plugin-sdk/app";
-//#region export
-export * from "./storage";
-//#endregion export
+import { client_id } from "plugin-app";
+import { AuthStorage } from "./storage";
 
 const PROXY_AUTH_REQUEST_SECRET =
   process.env.GRIDA_FIRST_PARTY_PROXY_AUTH_REQUEST_TOTP_SECRET ??
@@ -17,8 +15,9 @@ const PROXY_AUTH_REQUEST_SECRET =
 function _make_request(): AuthProxySessionStartRequest {
   return {
     appId: "co.grida.assistant",
-    clientId: "", // todo
+    clientId: client_id,
     mode: ProxyAuthenticationMode.long_polling,
+    redirect_uri: "figma://", // TODO: change this scheme based on target platform.
   };
 }
 
@@ -37,6 +36,10 @@ export async function startAuthenticationWithSession(
     session,
     _make_request()
   );
+
+  AuthStorage.save(result.access_token);
+  // save result
+
   return result;
 }
 
@@ -45,6 +48,20 @@ export async function startAuthentication() {
   return await startAuthenticationWithSession(session);
 }
 
-export async function checkAuthSession() {
-  //
+export async function isAuthenticated() {
+  return (await AuthStorage.get())?.length > 1; // using 1 (same as != undefined.)
+}
+
+export async function checkAuthSession(session: string): Promise<boolean> {
+  // TODO:
+  const res = await __auth_proxy.checkProxyAuthResult(
+    PROXY_AUTH_REQUEST_SECRET,
+    session
+  );
+
+  const success = res.success && res.access_token !== undefined;
+  if (success) {
+    AuthStorage.save(res.access_token);
+  }
+  return success;
 }
