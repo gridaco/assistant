@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { BlackButton, WhtieButton } from "../../components/style/global-style";
 import { useHistory } from "react-router";
 import { startAuthentication } from "../../auth";
+import BackArrowIcon from "@assistant/icons/back-arrow";
 import {
   BackIcon,
   BtnWrapper,
@@ -15,30 +16,13 @@ import {
   Wrapper,
 } from "./style";
 
-function LeftArrow() {
-  return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M20 11H7.83L13.42 5.41L12 4L4 12L12 20L13.41 18.59L7.83 13H20V11Z"
-        fill="black"
-      />
-    </svg>
-  );
-}
-
 function SigninPrompts() {
   const history = useHistory();
 
   return (
     <Wrapper>
       <BackIcon onClick={() => history.goBack()}>
-        <LeftArrow />
+        <BackArrowIcon />
       </BackIcon>
       <Inner>
         <Title>
