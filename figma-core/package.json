@@ -1,0 +1,15 @@
+{
+    "name": "figma-core",
+    "description": "Figma code thread shared package",
+    "authors": "Grida.co",
+    "version": "0.0.0",
+    "private": false,
+    "main": "index.ts",
+    "dependencies": {
+        "@plugin-sdk/service": "0.0.0"
+    },
+    "devDependencies": {
+        "@figma/plugin-typings": "^1.19.3",
+        "typescript": "^4.0.5"
+    }
+}

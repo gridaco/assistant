@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { ASSISTANT_PLUGIN_NAMESPACE } from "../../constants";
+import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "../../constants";
 import { useSingleSelection } from "../../utils/plugin-hooks";
-import { PluginSdk } from "../../utils/plugin-provider/plugin-app-sdk";
+import { PluginSdk } from "@plugin-sdk/app";
 import {
   SingleLayerPropertyDefinition,
   ISingleLayerProperty,
@@ -112,7 +112,7 @@ function _Mode_SingleLayerProperty(props: {
     // this update logic shall be applied to master node's corresponding layer
     PluginSdk.updateMetadata({
       id: id,
-      namespace: ASSISTANT_PLUGIN_NAMESPACE,
+      namespace: ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE,
       key: "layer-property-data",
       value: data,
     });
@@ -121,7 +121,7 @@ function _Mode_SingleLayerProperty(props: {
   useEffect(() => {
     PluginSdk.fetchMetadata({
       id: id,
-      namespace: ASSISTANT_PLUGIN_NAMESPACE,
+      namespace: ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE,
       key: "layer-property-data",
     }).then((d) => {
       if (d) {
@@ -190,7 +190,7 @@ function _Mode_Component(props: { node: nodes.light.IReflectNodeReference }) {
   useEffect(() => {
     Promise.all(
       grandchilds.map((c) => {
-        return PluginSdk.fetchMetadata_bridged<ISingleLayerProperty>(
+        return PluginSdk.fetchMetadata_grida<ISingleLayerProperty>(
           c.id,
           "layer-property-data"
         );

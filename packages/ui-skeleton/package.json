@@ -1,0 +1,11 @@
+{
+  "name": "@ui/skeleton",
+  "description": "",
+  "authors": "Grida.co",
+  "version": "0.0.0",
+  "dependencies": {
+    "@emotion/react": "^11.4.1",
+    "@emotion/styled": "^11.3.0",
+    "@material-ui/lab": "^4.0.0-alpha.60"
+  }
+}

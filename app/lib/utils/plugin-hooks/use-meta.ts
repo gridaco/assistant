@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { ASSISTANT_PLUGIN_NAMESPACE } from "../../constants";
-import { PluginSdk } from "../plugin-provider/plugin-app-sdk";
+import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "../../constants";
+import { PluginSdk } from "@plugin-sdk/app";
 
 export function useMeta() {}
 
@@ -24,7 +24,7 @@ export function useMainComponentMeta(
   useEffect(() => {
     PluginSdk.fetchMainComponentMetadata({
       id: id,
-      namespace: ASSISTANT_PLUGIN_NAMESPACE,
+      namespace: ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE,
       key: "component-meta-data",
     }).then((d) => {
       setData(d);

@@ -1,6 +1,7 @@
 import { Typography, CircularProgress, Fade } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import { EK_PREVIEW_SOURCE } from "../constants/ek.constant";
+import EmptyIndicatorIcon from "@assistant/icons/empty-indicator-icon";
 import "./preview.css";
 
 interface Props {
@@ -34,8 +35,6 @@ export function Preview(props: Props) {
     }
   }
 
-  const unselectedLogo = require("./assets/preview-unselected.svg") as string;
-
   let render = data ? (
     <img
       className="render"
@@ -47,7 +46,7 @@ export function Preview(props: Props) {
   ) : (
     <div className="render">
       <div className="inner-render">
-        <img src={unselectedLogo} alt="unSelected-logo" />
+        <EmptyIndicatorIcon />
         <Typography className="rendering-notify">
           Nothing is selected
         </Typography>

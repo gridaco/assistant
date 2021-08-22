@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import type { IReflectNodeReference } from "@design-sdk/core/nodes/lignt";
+import { ReflectSceneNodeType } from "@design-sdk/core/nodes";
+import { detectIf } from "@reflect-ui/detection";
 export enum SelectionType {
   "single", // updated with single selection
   "multi", // updated with multi selection
@@ -44,8 +46,6 @@ export function useSelection(): SelectionData | undefined {
       const message = ev.data.pluginMessage;
       if (message?.type == "selectionchange") {
         const nodes = message.data;
-        console.log("use-selection:nodes", nodes);
-
         handleSelectionChange(nodes);
       }
     }
@@ -122,9 +122,8 @@ export function usePairSelection(): _PairSelectionEvent {
  * @returns
  */
 export function useRangeSelection(min: number, max: number) {
-  const [rangedSelections, setRangedSelections] = useState<MultiSelectionData>(
-    null
-  );
+  const [rangedSelections, setRangedSelections] =
+    useState<MultiSelectionData>(null);
   const selection = useSelection();
   useEffect(() => {
     if (selection) {
@@ -136,4 +135,80 @@ export function useRangeSelection(min: number, max: number) {
     }
   });
   return rangedSelections;
+}
+
+type ScaffoldMetaNodeType =
+  | "unknown"
+  | "screen"
+  | "frame"
+  | "text"
+  | "shape"
+  | "image"
+  | "component-like"
+  | "vector"
+  | "group";
+interface SelectionNodeMeta {
+  meta: {
+    type: ScaffoldMetaNodeType;
+  };
+  type: SelectionType.single;
+  node: IReflectNodeReference;
+  id: string;
+}
+
+/** Advanced version of use-single-selection */
+export function useSingleSelectionWithMeta() {
+  const selection = useSingleSelection();
+  const { node } = selection;
+
+  let type_in_meta: ScaffoldMetaNodeType =
+    _reflect_scene_node_type__to__scaffold_meta_node_type(node);
+
+  return <SelectionNodeMeta>{
+    meta: { type: type_in_meta },
+    ...selection,
+  };
+}
+
+function _reflect_scene_node_type__to__scaffold_meta_node_type(
+  node: IReflectNodeReference
+): ScaffoldMetaNodeType {
+  switch (node.type) {
+    case ReflectSceneNodeType.text:
+      return "text";
+    //
+    case ReflectSceneNodeType.line:
+    case ReflectSceneNodeType.ellipse:
+    case ReflectSceneNodeType.rectangle:
+      return "shape";
+    case ReflectSceneNodeType.vector:
+      return "vector";
+    //
+    case ReflectSceneNodeType.image:
+      return "image";
+    //
+    case ReflectSceneNodeType.component:
+    case ReflectSceneNodeType.instance:
+      return "component-like";
+    case ReflectSceneNodeType.frame:
+      const _detection_result_if_screen = detectIf.screen(
+        node as any
+      ).result; /** TODO: remove `as any` */
+
+      if (_detection_result_if_screen) {
+        return "screen";
+        //
+      } else {
+        return "frame";
+      }
+
+    case ReflectSceneNodeType.group:
+      return "group";
+    //
+    case ReflectSceneNodeType.unknown:
+      return "unknown";
+    default:
+      return "unknown";
+    //
+  }
 }

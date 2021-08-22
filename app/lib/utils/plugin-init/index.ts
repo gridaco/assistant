@@ -1,2 +1,4 @@
 // DO NOT REMOVE THIS LINE
-import "../../screens/tool-box/data-mapper/code";
+import "../../pages/code/__plugin";
+import "../../pages/tool-box/data-mapper/__plugin";
+import "../../lint/__plugin";
