@@ -145,10 +145,14 @@ function Signin() {
                       startAuthenticationWithSession(s);
                     })
                     .catch((_) => {
+                      console.log(
+                        "error occured while requesting proxy auth session start",
+                        _
+                      );
                       PluginSdk.notify(
                         "please try again. (check your internet connection)"
                       );
-                      setIsLoading(true);
+                      setIsLoading(false);
                     });
                 }}
               >
