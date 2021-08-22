@@ -5,7 +5,8 @@ import {
   AuthProxySessionStartRequest,
   AuthProxySessionStartResult,
 } from "@base-sdk-fp/auth";
-import { PluginSdk } from "@plugin-sdk/app";
+import { client_id } from "plugin-app";
+
 //#region export
 export * from "./storage";
 //#endregion export
@@ -17,8 +18,9 @@ const PROXY_AUTH_REQUEST_SECRET =
 function _make_request(): AuthProxySessionStartRequest {
   return {
     appId: "co.grida.assistant",
-    clientId: "", // todo
+    clientId: client_id,
     mode: ProxyAuthenticationMode.long_polling,
+    redirect_uri: "figma://", // TODO: change this scheme based on target platform.
   };
 }
 
@@ -46,5 +48,5 @@ export async function startAuthentication() {
 }
 
 export async function checkAuthSession() {
-  //
+  // TODO:
 }

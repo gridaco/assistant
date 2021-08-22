@@ -24,6 +24,7 @@ import {
   Wrapper,
 } from "./style";
 import { AuthProxySessionStartResult } from "@base-sdk-fp/auth";
+import { PluginSdk } from "@plugin-sdk/app";
 
 // onClick={() => {
 //   startAuthentication();
@@ -119,7 +120,7 @@ function Signin() {
             <InitialStateContent />
           ) : (
             <LoadingContents
-              authUrl={sessionInfo.authUrl}
+              authUrl={sessionInfo?.authUrl}
               onCheckAuth={() => {}}
             /> // TODO: provide callback state check & browser url.
           )
@@ -136,11 +137,19 @@ function Signin() {
               <SignInBtn
                 disabled={isLoading}
                 onClick={() => {
-                  startAuthenticationSession().then((s) => {
-                    setSessionInfo(s);
-                    startAuthenticationWithSession(s);
-                  });
                   setIsLoading(true);
+                  startAuthenticationSession()
+                    .then((s) => {
+                      open(s.authUrl); // open browser initially.
+                      setSessionInfo(s);
+                      startAuthenticationWithSession(s);
+                    })
+                    .catch((_) => {
+                      PluginSdk.notify(
+                        "please try again. (check your internet connection)"
+                      );
+                      setIsLoading(true);
+                    });
                 }}
               >
                 {!isLoading ? "Sign in" : "Sign in ..."}
