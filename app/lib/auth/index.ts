@@ -6,10 +6,7 @@ import {
   AuthProxySessionStartResult,
 } from "@base-sdk-fp/auth";
 import { client_id } from "plugin-app";
-
-//#region export
-export * from "./storage";
-//#endregion export
+import { AuthStorage } from "./storage";
 
 const PROXY_AUTH_REQUEST_SECRET =
   process.env.GRIDA_FIRST_PARTY_PROXY_AUTH_REQUEST_TOTP_SECRET ??
@@ -39,12 +36,20 @@ export async function startAuthenticationWithSession(
     session,
     _make_request()
   );
+
+  AuthStorage.save(result.access_token);
+  // save result
+
   return result;
 }
 
 export async function startAuthentication() {
   const session = await startAuthenticationSession();
   return await startAuthenticationWithSession(session);
+}
+
+export async function isAuthenticated() {
+  return (await AuthStorage.get())?.length > 1; // using 1 (same as != undefined.)
 }
 
 export async function checkAuthSession() {

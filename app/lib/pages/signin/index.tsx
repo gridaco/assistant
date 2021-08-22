@@ -105,7 +105,7 @@ function FinishCheckingAuth(props: { username: string }) {
 
 function Signin() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isAuthToken, setIsAuthToken] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [sessionInfo, setSessionInfo] = useState<AuthProxySessionStartResult>();
   const history = useHistory();
 
@@ -115,7 +115,7 @@ function Signin() {
         <LeftArrow />
       </BackIcon>
       <Inner>
-        {!isAuthToken ? (
+        {!isAuthenticated ? (
           !isLoading ? (
             <InitialStateContent />
           ) : (
@@ -128,7 +128,7 @@ function Signin() {
           <FinishCheckingAuth username="Universe" /> // TODO: change with authenticated user name
         )}
         <BtnWrapper>
-          {isAuthToken ? (
+          {isAuthenticated ? (
             <>
               <StyledButton>Aaaallll Right !</StyledButton>
             </>
@@ -142,7 +142,9 @@ function Signin() {
                     .then((s) => {
                       open(s.authUrl); // open browser initially.
                       setSessionInfo(s);
-                      startAuthenticationWithSession(s);
+                      startAuthenticationWithSession(s).then((d) => {
+                        setIsAuthenticated(true);
+                      });
                     })
                     .catch((_) => {
                       console.log(
