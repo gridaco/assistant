@@ -217,9 +217,16 @@ export class PluginSdk {
 
   // endregion metadata
 
-  // inner iframe blocked js functions
+  /**
+   * inner iframe blocked js functions
+   * this is designed to be used inside iframe that has no popup permission, so that calling open() in inner iframe won't work.
+   * But we can simply allow popups for inner iframe, so we don't have to use this function.
+   * this function does not check if this is being called inside a popup-blocked iframe.
+   *
+   * @deprecated use allow-popup & open instead.
+   **/
   static openUri(uri: string) {
-    if (process.env.HOSTED) {
+    if (process.env.HOSTED ?? process.env.NEXT_PUBLIC_HOSTED) {
       this.request({
         namespace: PLUGIN_SDK_NS_BROWSER_API,
         key: PLUGIN_SDK_EK_BROWSER_OPEN_URI,
