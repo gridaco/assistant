@@ -3,7 +3,9 @@ import styled from "@emotion/styled";
 import {
   startAuthenticationWithSession,
   startAuthenticationSession,
+  checkAuthSession,
 } from "../../auth";
+import { AuthProxySessionStartResult } from "@base-sdk-fp/auth";
 import {
   BlackButton,
   ButtonStyle,
@@ -23,7 +25,6 @@ import {
   Title,
   Wrapper,
 } from "./style";
-import { AuthProxySessionStartResult } from "@base-sdk-fp/auth";
 import { PluginSdk } from "@plugin-sdk/app";
 
 // onClick={() => {
@@ -60,7 +61,11 @@ function InitialStateContent() {
   );
 }
 
-function LoadingContents(props: { authUrl: string; onCheckAuth: () => void }) {
+function LoadingContents(props: {
+  authUrl: string;
+  onCheckAuth: () => void;
+  showUserOptions: boolean;
+}) {
   return (
     <>
       <Title>
@@ -76,12 +81,16 @@ function LoadingContents(props: { authUrl: string; onCheckAuth: () => void }) {
         link below.
       </Contents>
       <LinkWrapper>
-        <LinkContents>
-          👉 Let me in, I’ve completed all steps on the browser.
-        </LinkContents>
-        <LinkContents href={props.authUrl} target="_blank">
-          👉 Open the sign-in page again
-        </LinkContents>
+        {props.showUserOptions && (
+          <>
+            <LinkContents>
+              👉 Let me in, I’ve completed all steps on the browser.
+            </LinkContents>
+            <LinkContents href={props.authUrl} target="_blank">
+              👉 Open the sign-in page again
+            </LinkContents>
+          </>
+        )}
       </LinkWrapper>
     </>
   );
@@ -107,11 +116,16 @@ function Signin() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [sessionInfo, setSessionInfo] = useState<AuthProxySessionStartResult>();
+  const [sessionStarted, setSessionStarted] = useState<boolean>(false);
   const history = useHistory();
+
+  const close = () => {
+    history.goBack();
+  };
 
   return (
     <Wrapper>
-      <BackIcon onClick={() => history.goBack()}>
+      <BackIcon onClick={close}>
         <LeftArrow />
       </BackIcon>
       <Inner>
@@ -121,8 +135,19 @@ function Signin() {
           ) : (
             <LoadingContents
               authUrl={sessionInfo?.authUrl}
-              onCheckAuth={() => {}}
-            /> // TODO: provide callback state check & browser url.
+              showUserOptions={sessionStarted}
+              onCheckAuth={() => {
+                PluginSdk.notify(
+                  "Checking if you signed in via browser..",
+                  1.5
+                );
+                checkAuthSession(sessionInfo.id).then((authenticated) => {
+                  if (authenticated) {
+                    setIsAuthenticated(true);
+                  }
+                });
+              }}
+            />
           )
         ) : (
           <FinishCheckingAuth username="Universe" /> // TODO: change with authenticated user name
@@ -130,16 +155,18 @@ function Signin() {
         <BtnWrapper>
           {isAuthenticated ? (
             <>
-              <StyledButton>Aaaallll Right !</StyledButton>
+              <StyledButton onClick={close}>Aaaallll Right !</StyledButton>
             </>
           ) : (
             <>
               <SignInBtn
                 disabled={isLoading}
                 onClick={() => {
+                  setSessionStarted(false); // session is not yet started. (session start triggered.)
                   setIsLoading(true);
                   startAuthenticationSession()
                     .then((s) => {
+                      setSessionStarted(true);
                       open(s.authUrl); // open browser initially.
                       setSessionInfo(s);
                       startAuthenticationWithSession(s).then((d) => {
@@ -175,6 +202,17 @@ function Signin() {
       </Inner>
     </Wrapper>
   );
+}
+
+/**
+ * TODO: migrate this under base-sdk
+ */
+function fetchUserProfile(): {
+  id: string;
+  username: string;
+  email: string;
+} {
+  return;
 }
 
 const StyledButton = styled.button`
