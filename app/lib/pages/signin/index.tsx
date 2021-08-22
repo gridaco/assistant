@@ -150,7 +150,7 @@ function Signin() {
             />
           )
         ) : (
-          <FinishCheckingAuth username="Universe" /> // TODO: change with authenticated user name
+          <FinishCheckingAuth username="" /> // TODO: change with authenticated user name (use fetch user profile)
         )}
         <BtnWrapper>
           {isAuthenticated ? (
