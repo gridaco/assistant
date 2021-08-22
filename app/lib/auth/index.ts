@@ -7,10 +7,9 @@ export * from "./storage";
 
 const PROXY_AUTH_REQUEST_SECRET =
   process.env.GRIDA_FIRST_PARTY_PROXY_AUTH_REQUEST_TOTP_SECRET ??
-  process.env.REACT_APP_GRIDA_FIRST_PARTY_PROXY_AUTH_REQUEST_TOTP_SECRET; // for CRA
+  process.env.NEXT_PUBLIC_GRIDA_FIRST_PARTY_PROXY_AUTH_REQUEST_TOTP_SECRET;
 
 export async function startAuthentication() {
-  console.log("PROXY_AUTH_REQUEST_SECRET", PROXY_AUTH_REQUEST_SECRET);
   const request = await __auth_proxy.requesetProxyAuth(
     PROXY_AUTH_REQUEST_SECRET,
     {
@@ -20,9 +19,10 @@ export async function startAuthentication() {
     },
     {
       autoOpen: true,
+      openner: PluginSdk.openUri,
     }
   );
 
   // todo - build full url using method in base sdk
-  PluginSdk.openUri(__HOSTS.INTERNAL_SECURE_ACCOUNTS_SERVICE_HOST);
+  // PluginSdk.openUri(__HOSTS.INTERNAL_SECURE_ACCOUNTS_SERVICE_HOST);
 }

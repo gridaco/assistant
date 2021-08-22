@@ -51,8 +51,4 @@ const withTM = require("next-transpile-modules")([
   // endregion coli
 ]);
 
-module.exports = withTM({
-  env: {
-    HOSTED: true,
-  },
-});
+module.exports = withTM();

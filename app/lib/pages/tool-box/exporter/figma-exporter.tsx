@@ -6,15 +6,16 @@ import { parseFileId } from "@design-sdk/figma-url";
 import { PluginSdk } from "@plugin-sdk/app";
 import { downloadFile } from "./export-utils";
 
-const _maybetoken = process.env.FIGMA_PERSONAL_ACCESS_TOKEN;
+const _maybetoken =
+  process.env.FIGMA_PERSONAL_ACCESS_TOKEN ??
+  process.env.NEXT_PUBLIC_FIGMA_PERSONAL_ACCESS_TOKEN;
 function makeClient(token?: string): FigmaApi.ClientInterface {
   if (!token) {
-    const maybePersonalAccessToken = process.env.FIGMA_PERSONAL_ACCESS_TOKEN;
-    if (maybePersonalAccessToken) {
+    if (_maybetoken) {
     } else {
       throw "no personal access token provided";
     }
-    token = maybePersonalAccessToken;
+    token = _maybetoken;
   }
 
   return FigmaApi.Client({

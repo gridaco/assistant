@@ -57,6 +57,14 @@ function MoreMenus() {
   const history = useHistory();
   const menu = [
     {
+      id: WorkScreen.signin,
+      name: WorkScreen.signin,
+      stage: "production",
+      onSelect: () => {
+        history.push("/signin");
+      },
+    },
+    {
       id: WorkMode.asset,
       name: WorkMode.asset,
       stage: "development",
@@ -101,10 +109,9 @@ function MoreMenus() {
     return true; /** if not production, return all available menus */
   });
   return (
-    <SecondaryWorkmodeMenu<WorkMode>
+    <SecondaryWorkmodeMenu<WorkMode | WorkScreen>
       menus={menu}
       onSelect={(id) => {
-        console.log("id", id);
         menu.find((m) => m.id === id)?.onSelect();
       }}
     />

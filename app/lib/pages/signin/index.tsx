@@ -72,9 +72,7 @@ function LoadingContents() {
       </Contents>
       <LinkWrapper>
         <LinkContents>
-          👉 Let me in, I’ve completed all steps on the
-          <br />
-          browser.
+          👉 Let me in, I’ve completed all steps on the browser.
         </LinkContents>
         <LinkContents>👉 Open the sign-in page again</LinkContents>
       </LinkWrapper>
