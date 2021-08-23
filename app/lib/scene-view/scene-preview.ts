@@ -4,7 +4,7 @@ import { features, hosting, types } from "@base-sdk/base";
 import { repo_assets } from "@design-sdk/core";
 import { PluginSdk } from "@plugin-sdk/app";
 
-export async function quickLook(id: string, app: Widget | string) {
+export async function preview(id: string, app: Widget | string) {
   console.log("quicklook starting..");
 
   console.log(
