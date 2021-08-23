@@ -34,7 +34,7 @@ export async function quickLook(id: string, app: Widget | string) {
   console.log("uploaded!");
   // const compiled = await compileComplete(dartSource)
   // const uploaded = await upload(`${id}.js`, new Blob([compiled.result]))
-  const quicklookUrl = features.quicklook.buildConsoleQuicklookUrl({
+  const quicklookUrl = features.scene_preview.buildScenePreviewUrl({
     id: id,
     name: "flutter-example",
     framework: types.AppFramework.flutter,
