@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { startAuthentication } from "../../auth";
+import {
+  startAuthenticationWithSession,
+  startAuthenticationSession,
+  checkAuthSession,
+} from "../../auth";
+import { AuthProxySessionStartResult } from "@base-sdk-fp/auth";
 import {
   BlackButton,
   ButtonStyle,
@@ -20,6 +25,7 @@ import {
   Title,
   Wrapper,
 } from "./style";
+import { PluginSdk } from "@plugin-sdk/app";
 
 // onClick={() => {
 //   startAuthentication();
@@ -42,7 +48,7 @@ function LeftArrow() {
   );
 }
 
-function InitContents() {
+function InitialStateContent() {
   return (
     <>
       <Title>Sign in to Grida</Title>
@@ -55,7 +61,11 @@ function InitContents() {
   );
 }
 
-function LoadingContents() {
+function LoadingContents(props: {
+  authUrl: string;
+  onCheckAuth: () => void;
+  showUserOptions: boolean;
+}) {
   return (
     <>
       <Title>
@@ -71,23 +81,27 @@ function LoadingContents() {
         link below.
       </Contents>
       <LinkWrapper>
-        <LinkContents>
-          👉 Let me in, I’ve completed all steps on the
-          <br />
-          browser.
-        </LinkContents>
-        <LinkContents>👉 Open the sign-in page again</LinkContents>
+        {props.showUserOptions && (
+          <>
+            <LinkContents>
+              👉 Let me in, I’ve completed all steps on the browser.
+            </LinkContents>
+            <LinkContents href={props.authUrl} target="_blank">
+              👉 Open the sign-in page again
+            </LinkContents>
+          </>
+        )}
       </LinkWrapper>
     </>
   );
 }
 
-function FinishCheckingAuth(userName: string) {
+function FinishCheckingAuth(props: { username: string }) {
   return (
     <>
       <Title>
         Welcome <br />
-        {`${userName} :)`}
+        {`${props.username} :)`}
       </Title>
       <Contents>
         Ready to build world-shaking
@@ -100,41 +114,88 @@ function FinishCheckingAuth(userName: string) {
 
 function Signin() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isAuthToken, setIsAuthToken] = useState<boolean>(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [sessionInfo, setSessionInfo] = useState<AuthProxySessionStartResult>();
+  const [sessionStarted, setSessionStarted] = useState<boolean>(false);
   const history = useHistory();
+
+  const close = () => {
+    history.goBack();
+  };
 
   return (
     <Wrapper>
-      <BackIcon onClick={() => history.goBack()}>
+      <BackIcon onClick={close}>
         <LeftArrow />
       </BackIcon>
       <Inner>
-        {!isAuthToken ? (
+        {!isAuthenticated ? (
           !isLoading ? (
-            InitContents()
+            <InitialStateContent />
           ) : (
-            LoadingContents()
+            <LoadingContents
+              authUrl={sessionInfo?.authUrl}
+              showUserOptions={sessionStarted}
+              onCheckAuth={() => {
+                PluginSdk.notify(
+                  "Checking if you signed in via browser..",
+                  1.5
+                );
+                checkAuthSession(sessionInfo.id).then((authenticated) => {
+                  if (authenticated) {
+                    setIsAuthenticated(true);
+                  }
+                });
+              }}
+            />
           )
         ) : (
-          <>{FinishCheckingAuth("Universe")}</>
+          <FinishCheckingAuth username="" /> // TODO: change with authenticated user name (use fetch user profile)
         )}
         <BtnWrapper>
-          {isAuthToken ? (
+          {isAuthenticated ? (
             <>
-              <StyledButton>Aaaallll Right !</StyledButton>
+              <StyledButton onClick={close}>Aaaallll Right !</StyledButton>
             </>
           ) : (
             <>
               <SignInBtn
                 disabled={isLoading}
                 onClick={() => {
-                  startAuthentication();
+                  setSessionStarted(false); // session is not yet started. (session start triggered.)
                   setIsLoading(true);
+                  startAuthenticationSession()
+                    .then((s) => {
+                      setSessionStarted(true);
+                      open(s.authUrl); // open browser initially.
+                      setSessionInfo(s);
+                      startAuthenticationWithSession(s).then((d) => {
+                        setIsAuthenticated(true);
+                      });
+                    })
+                    .catch((_) => {
+                      console.log(
+                        "error occured while requesting proxy auth session start",
+                        _
+                      );
+                      PluginSdk.notify(
+                        "please try again. (check your internet connection)"
+                      );
+                      setIsLoading(false);
+                    });
                 }}
               >
                 {!isLoading ? "Sign in" : "Sign in ..."}
               </SignInBtn>
-              <SignUpBtn>Sign Up</SignUpBtn>
+              <SignUpBtn
+                onClick={() => {
+                  open("https://accounts.grida.co/signup");
+                  // clear states
+                  setIsLoading(false);
+                }}
+              >
+                Sign Up
+              </SignUpBtn>
             </>
           )}
         </BtnWrapper>
@@ -143,15 +204,28 @@ function Signin() {
   );
 }
 
+/**
+ * TODO: migrate this under base-sdk
+ */
+function fetchUserProfile(): {
+  id: string;
+  username: string;
+  email: string;
+} {
+  return;
+}
+
 const StyledButton = styled.button`
   ${ButtonStyle}
-  width: calc(100vw - 54px);
+  /* 58 is body margin 8*2 + parent padding 21*2 */
+  width: calc(100vw - 58px);
   font-weight: bold;
   font-size: 14px;
   line-height: 17px;
   color: #ffffff;
   background: #2562ff;
   margin-bottom: 53px;
+  border: 0;
 `;
 
 export default Signin;
