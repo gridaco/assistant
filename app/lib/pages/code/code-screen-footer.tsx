@@ -35,6 +35,7 @@ export function CodeScreenFooter(props: ICodeScreenFooter) {
   return (
     <CodeFooterCtaWrapper>
       <NextStepButton
+        disabled={!props.app}
         onClick={() => {
           // TODO: the button component should be passed from outer side.
         }}
@@ -54,12 +55,12 @@ export function CodeScreenFooter(props: ICodeScreenFooter) {
 }
 
 const CodeFooterCtaWrapper = styled.footer`
-  padding: 12px 8px;
+  /* 16 is body's padding */
+  width: calc(100% - 16px);
+  padding: 12px 16px;
   display: flex;
   background: #fff;
   position: absolute;
-  /* 16 is body's padding */
-  width: calc(100% - 16px);
   left: 0;
   bottom: 0;
 
@@ -78,6 +79,10 @@ const NextStepButton = styled.button`
   &:hover {
     color: #fff;
     background: #17181a;
+  }
+  &:disabled {
+    color: #bbbbbb;
+    background: #949494;
   }
 `;
 
