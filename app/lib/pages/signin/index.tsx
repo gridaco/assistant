@@ -217,13 +217,15 @@ function fetchUserProfile(): {
 
 const StyledButton = styled.button`
   ${ButtonStyle}
-  width: calc(100vw - 54px);
+  // 58 is body margin 8*2 + parent padding 21*2
+  width: calc(100vw - 58px);
   font-weight: bold;
   font-size: 14px;
   line-height: 17px;
   color: #ffffff;
   background: #2562ff;
   margin-bottom: 53px;
+  border: 0;
 `;
 
 export default Signin;
