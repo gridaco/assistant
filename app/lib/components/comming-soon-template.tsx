@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import React, { ReactNode } from "react";
-import { BlackButton } from "../../components/style/global-style";
+import { BlackButton } from "./style/global-style";
 
 interface Props {
   coverImage?: string;
