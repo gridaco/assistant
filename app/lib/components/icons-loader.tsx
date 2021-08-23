@@ -388,6 +388,10 @@ const Input = styled.input`
   font-weight: 400;
   line-height: 17px;
   color: #adaeb2;
+
+  &::placeholder {
+    color: #adaeb2;
+  }
 `;
 
 const SearchChecker = styled.div`
