@@ -220,10 +220,13 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
   const [workmodeSet, setWorkmodeSet] = useState<PrimaryWorkmodeSet>(
     props.savedLayout.workmodeSet
   );
+  const [tabIndex, setTabIndex] = useState<number>(0);
+  const [expansion, setExpansion] = useState<boolean>(true);
 
   const on_workmode_select = (workmode: WorkMode) => {
     setWorkmode(workmode);
     setTabIndex(0);
+    setExpansion(true);
   };
 
   const on_work_select = (index, screen) => {
@@ -234,9 +237,6 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
       work: screen,
     });
   };
-
-  const [tabIndex, setTabIndex] = useState<number>(0);
-  const [expansion, setExpansion] = useState<boolean>(true);
 
   return (
     <>
