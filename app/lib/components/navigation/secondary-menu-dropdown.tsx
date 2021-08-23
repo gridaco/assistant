@@ -3,17 +3,39 @@ import { useHistory } from "react-router-dom";
 import { WorkMode, WorkScreen } from "../../navigation";
 import { SecondaryWorkmodeMenu } from "./secondary-workmode-menu";
 
+type Stage = "production" | "development" | string;
+interface Menu {
+  id: WorkMode | WorkScreen | string;
+  name: string;
+  stage: Stage;
+  onSelect: () => void;
+}
+
+export function signinOrLibraryMenu(): Menu {
+  const history = useHistory();
+  return {
+    id: WorkScreen.signin,
+    name: WorkScreen.signin,
+    stage: "production",
+    onSelect: () => {
+      history.push("/signin");
+    },
+  };
+
+  //
+  // TODO: return library menu when signed in.
+  return {
+    id: WorkMode.library,
+    name: WorkMode.library,
+    stage: "development",
+    onSelect: () => {},
+  };
+}
+
 export function SecondaryMenuDropdown() {
   const history = useHistory();
-  const menu = [
-    {
-      id: WorkScreen.signin,
-      name: WorkScreen.signin,
-      stage: "production",
-      onSelect: () => {
-        history.push("/signin");
-      },
-    },
+  const menu: Menu[] = [
+    signinOrLibraryMenu(),
     {
       id: WorkMode.asset,
       name: WorkMode.asset,
@@ -33,16 +55,18 @@ export function SecondaryMenuDropdown() {
       onSelect: () => {},
     },
     {
-      id: WorkMode.library,
-      name: WorkMode.library,
-      stage: "development",
-      onSelect: () => {},
-    },
-    {
       id: WorkMode.settings,
       name: WorkMode.settings,
       stage: "development",
       onSelect: () => {},
+    },
+    {
+      id: "feedback-toggle",
+      name: "Feedback",
+      stage: "production",
+      onSelect: () => {
+        open("https://github.com/gridaco/assistant/issues/new/choose");
+      },
     },
     {
       id: WorkMode.about,
@@ -58,8 +82,9 @@ export function SecondaryMenuDropdown() {
     }
     return true; /** if not production, return all available menus */
   });
+
   return (
-    <SecondaryWorkmodeMenu<WorkMode | WorkScreen>
+    <SecondaryWorkmodeMenu<WorkMode | WorkScreen | string>
       menus={menu}
       onSelect={(id) => {
         menu.find((m) => m.id === id)?.onSelect();
