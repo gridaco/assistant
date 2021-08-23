@@ -1,16 +1,14 @@
-import { addEventHandler } from "./message-handler";
-
 export async function showUI() {
   // communicates with ui.html
   // load plugin with confugured w/h
   // restore previous size
 
-  let size: { w: number; h: number } = { w: 414, h: 896 };
+  let size: { w: number; h: number } = { w: 375, h: 667 };
   try {
     const savedsize: {
       w: number;
       h: number;
-    } = await figma.clientStorage.getAsync("size");
+    } = await figma.clientStorage.getAsync("figma-plugin-ui-size");
     savedsize && (size = savedsize);
   } catch (_) {}
 

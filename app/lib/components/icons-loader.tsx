@@ -84,7 +84,7 @@ export function IconsLoader() {
     );
     list = <IconList icons={icons} />;
   } else {
-    list = <LinearProgress />;
+    list = <StyledLinearProgress />;
   }
 
   const handleScroll = () => {
@@ -388,6 +388,10 @@ const Input = styled.input`
   font-weight: 400;
   line-height: 17px;
   color: #adaeb2;
+
+  &::placeholder {
+    color: #adaeb2;
+  }
 `;
 
 const SearchChecker = styled.div`
@@ -422,6 +426,20 @@ const SizeCheck = styled.div`
   justify-content: space-between;
   cursor: pointer;
   padding: 0px 16px;
+`;
+
+const StyledLinearProgress = styled(LinearProgress)`
+  /* for reset body margin */
+  margin: 0 -8px;
+
+  /* reset material-ui style */
+  &.color-primary {
+    background-color: #ecf1ff;
+  }
+
+  &.barColorPrimary {
+    background-color: #2562ff;
+  }
 `;
 
 const GridItem = styled(GridListTile)`

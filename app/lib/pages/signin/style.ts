@@ -20,7 +20,11 @@ export const BackIcon = styled.div`
 `;
 
 export const Inner = styled.div`
-  margin-top: 120px;
+  margin-top: 60px;
+
+  @media (min-height: 800px) {
+    margin-top: 120px;
+  }
 `;
 
 export const Title = styled.h2`
@@ -33,9 +37,13 @@ export const Title = styled.h2`
 `;
 
 export const BtnWrapper = styled.div`
-  margin-top: 391px;
+  /* margin-top: 391px; */
   position: absolute;
-  bottom: 120px;
+  bottom: 60px;
+
+  @media (min-height: 800px) {
+    bottom: 120px;
+  }
 `;
 
 export const SignInBtn = styled.button`
@@ -71,7 +79,10 @@ export const Contents = styled.h6`
 `;
 
 export const LinkWrapper = styled(Column)`
-  margin-top: 90px;
+  margin-top: 45px;
+  @media (min-height: 800px) {
+    margin-top: 90px;
+  }
 `;
 
 export const LinkContents = styled.a`
