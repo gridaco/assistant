@@ -30,11 +30,13 @@ import {
   PLUGIN_SDK_EK_SIMPLE_FOCUS,
   PLUGIN_SDK_NS_BROWSER_API,
   PLUGIN_SDK_EK_BROWSER_OPEN_URI,
-  PLUGIN_SDL_EK_REQUEST_EXPORT_AS_IMAGE,
+  PLUGIN_SDK_EK_REQUEST_EXPORT_AS_IMAGE,
   PLUGIN_SDK_NS_EXPORT_AS_IMAGE,
   ImageExportResponse,
   _ImageExportOption_to_FigmaCompat,
   ImageExportRequest,
+  PLUGIN_SDK_EK_REQUEST_GET_NODE_BY_ID,
+  PLUGIN_SDK_NS_GET_NODE,
 } from "@plugin-sdk/core";
 
 import { WebStorage, FigmaStorage, IStorage } from "./storage";
@@ -145,6 +147,11 @@ export class PluginSdkService {
     // image export
     else if (event.namespace == PLUGIN_SDK_NS_EXPORT_AS_IMAGE) {
       handleExportEvent(handerProps);
+    }
+
+    // get node
+    else if (event.namespace == PLUGIN_SDK_NS_GET_NODE) {
+      handleGetNodeEvent(handerProps);
     }
 
     // storage
@@ -333,6 +340,27 @@ function handleNotify(props: HanderProps<NotifyRequest>) {
   response(props.id, true);
 }
 
+function handleGetNodeEvent(props: HanderProps<{ id: string }>) {
+  if (props.key == PLUGIN_SDK_EK_REQUEST_GET_NODE_BY_ID) {
+    switch (TARGET_PLATFORM) {
+      case TargetPlatform.webdev: {
+      }
+      case TargetPlatform.figma: {
+        const node = figma?.getNodeById(props.data.id) as SceneNode;
+        response(props.id, {
+          id: node?.id,
+          name: node?.name,
+          x: node?.x,
+          y: node?.y,
+          width: node?.width,
+          height: node?.height,
+          ...node,
+        });
+      }
+    }
+  }
+}
+
 function handleFocus(props: HanderProps<FocusRequest>) {
   if (props.key == PLUGIN_SDK_EK_SIMPLE_FOCUS) {
     switch (TARGET_PLATFORM) {
@@ -353,7 +381,7 @@ function handleFocus(props: HanderProps<FocusRequest>) {
 }
 
 async function handleExportEvent(event: HanderProps<ImageExportRequest>) {
-  if (event.key === PLUGIN_SDL_EK_REQUEST_EXPORT_AS_IMAGE) {
+  if (event.key === PLUGIN_SDK_EK_REQUEST_EXPORT_AS_IMAGE) {
     switch (TARGET_PLATFORM) {
       case TargetPlatform.webdev: {
         console.log(

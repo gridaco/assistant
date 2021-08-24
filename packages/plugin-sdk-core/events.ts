@@ -30,9 +30,14 @@ export const PUGIN_SDK_EK_REQUEST_UPDATE_MAIN_COMPONENT_META =
 
 // region export (image)
 export const PLUGIN_SDK_NS_EXPORT_AS_IMAGE = `${__PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/export`;
-export const PLUGIN_SDL_EK_REQUEST_EXPORT_AS_IMAGE =
+export const PLUGIN_SDK_EK_REQUEST_EXPORT_AS_IMAGE =
   "assistant/export-node-as-image";
 // endregion export (image)
+
+// region node read
+export const PLUGIN_SDK_NS_GET_NODE = `${__PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/get-node`;
+export const PLUGIN_SDK_EK_REQUEST_GET_NODE_BY_ID = "assistant/node/get/by-id";
+// endregion node read
 
 // region storage
 export const PLUGIN_SDK_NS_STORAGE = `${__PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/storage`;

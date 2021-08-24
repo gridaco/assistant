@@ -3,17 +3,16 @@ import styled from "@emotion/styled";
 import { BlackButton } from "../../../components/style/global-style";
 import { registerScene } from "../../../scene-view";
 import { PluginSdk } from "@plugin-sdk/app";
-import type { ReflectSceneNode } from "@design-sdk/core/nodes";
+import type { IReflectNodeReference } from "@design-sdk/core/nodes/lignt";
 
 export function NextUploadButton(props: {
-  scene?: ReflectSceneNode;
+  scene?: IReflectNodeReference;
   app?: any;
 }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const register = async () => {
     setIsLoading(true);
-    console.log("registering");
     const imageRes = await PluginSdk.getNodeImage({
       id: props.scene.id,
       opt: {
@@ -21,11 +20,16 @@ export function NextUploadButton(props: {
         contentsOnly: true,
       },
     });
-    console.log("image res", imageRes);
+
+    const rawNode = await PluginSdk.getNode(props.scene.id);
+    console.log("rawNode", rawNode);
 
     // register with all data
     return await registerScene({
       ...props.scene,
+      raw: rawNode,
+      width: rawNode.width,
+      height: rawNode.height,
       preview: imageRes.data,
       code: {
         flutter: {

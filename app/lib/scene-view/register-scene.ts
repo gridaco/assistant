@@ -12,6 +12,7 @@ export async function registerScene(scene: {
   width: number;
   height: number;
   name: string;
+  raw: object;
   code?: {
     flutter: {
       raw: string;
@@ -45,9 +46,7 @@ export async function registerScene(scene: {
     initialTags: [],
     sceneType: __S_StorableSceneType.ANYNODE,
     from: __S_DesignOrigin.FIGMA_DESKTOP,
-    raw: {
-      id: scene.id,
-    }, // TODO: add raw node data
+    raw: scene.raw ?? {}, // TODO: add raw node data
   });
 
   return registeredScene;
