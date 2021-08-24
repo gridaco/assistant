@@ -28,6 +28,12 @@ export const PUGIN_SDK_EK_REQUEST_UPDATE_MAIN_COMPONENT_META =
   "assistant/tools/node-meta-editor/update/main-component";
 // endregion meta
 
+// region export (image)
+export const PLUGIN_SDK_NS_EXPORT_AS_IMAGE = `${__PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/export`;
+export const PLUGIN_SDL_EK_REQUEST_EXPORT_AS_IMAGE =
+  "assistant/export-node-as-image";
+// endregion export (image)
+
 // region storage
 export const PLUGIN_SDK_NS_STORAGE = `${__PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/storage`;
 export const PLUGIN_SDK_EK_REQUEST_STORAGE_SET_ITEM =

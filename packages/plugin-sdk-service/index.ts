@@ -30,6 +30,11 @@ import {
   PLUGIN_SDK_EK_SIMPLE_FOCUS,
   PLUGIN_SDK_NS_BROWSER_API,
   PLUGIN_SDK_EK_BROWSER_OPEN_URI,
+  PLUGIN_SDL_EK_REQUEST_EXPORT_AS_IMAGE,
+  PLUGIN_SDK_NS_EXPORT_AS_IMAGE,
+  ImageExportResponse,
+  _ImageExportOption_to_FigmaCompat,
+  ImageExportRequest,
 } from "@plugin-sdk/core";
 
 import { WebStorage, FigmaStorage, IStorage } from "./storage";
@@ -137,14 +142,19 @@ export class PluginSdkService {
       return true;
     }
 
+    // image export
+    else if (event.namespace == PLUGIN_SDK_NS_EXPORT_AS_IMAGE) {
+      handleExportEvent(handerProps);
+    }
+
     // storage
-    if (event.namespace == PLUGIN_SDK_NS_STORAGE) {
+    else if (event.namespace == PLUGIN_SDK_NS_STORAGE) {
       handleStorageEvent(handerProps);
       return true;
     }
 
     // browser api
-    if (event.namespace == PLUGIN_SDK_NS_BROWSER_API) {
+    else if (event.namespace == PLUGIN_SDK_NS_BROWSER_API) {
       handleBrowserApiEvent(event);
       return true;
     }
@@ -337,6 +347,32 @@ function handleFocus(props: HanderProps<FocusRequest>) {
         // TODO: add zoom usage
         //@ts-ignore
         figma.viewport.scrollAndZoomIntoView([target]);
+      }
+    }
+  }
+}
+
+async function handleExportEvent(event: HanderProps<ImageExportRequest>) {
+  if (event.key === PLUGIN_SDL_EK_REQUEST_EXPORT_AS_IMAGE) {
+    switch (TARGET_PLATFORM) {
+      case TargetPlatform.webdev: {
+        console.log(
+          "webdev cannot perform image export request. ignoring this."
+        );
+        return undefined;
+      }
+      case TargetPlatform.figma: {
+        const r = await (
+          figma.getNodeById(event.data.id) as SceneNode
+        ).exportAsync({
+          ..._ImageExportOption_to_FigmaCompat(event.data.opt),
+        });
+
+        return <ImageExportResponse>{
+          id: event.data.id,
+          data: r,
+          opt: event.data.opt,
+        };
       }
     }
   }
