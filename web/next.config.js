@@ -33,6 +33,7 @@ const withTM = require("next-transpile-modules")([
   "@base-sdk/url",
   "@base-sdk/hosting",
   "@base-sdk/build",
+  "@base-sdk/scene-store",
   "@base-sdk/resources",
 
   // baes sdk fp
@@ -51,18 +52,4 @@ const withTM = require("next-transpile-modules")([
   // endregion coli
 ]);
 
-module.exports = withTM({
-  env: {
-    HOSTED: true,
-  },
-  target: "serverless",
-  async rewrites() {
-    return [
-      // Rewrite everything to `pages/index`
-      {
-        source: "/:any*",
-        destination: "/",
-      },
-    ];
-  },
-});
+module.exports = withTM();

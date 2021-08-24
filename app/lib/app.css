@@ -1,3 +1,7 @@
+* {
+  font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
+}
+
 #create {
   box-shadow: none;
   background: #18a0fb;
@@ -6,17 +10,6 @@
 
 #create:focus {
   box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.3);
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-sub,
-p {
-  font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
 }
 
 .jss3 {

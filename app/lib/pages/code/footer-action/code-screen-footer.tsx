@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { Button } from "@material-ui/core";
-import { BlackButton, WhtieButton } from "../../components/style/global-style";
+import { WhtieButton } from "../../../components/style/global-style";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import { PluginSdk } from "@plugin-sdk/app";
-import { quickLook } from "../../quicklook";
+import { preview } from "../../../scene-view";
+import { NextUploadButton } from "./next-upload-button";
+import type { ReflectSceneNode } from "@design-sdk/core/nodes";
+import { Framework } from "../framework-option";
 
 interface ICodeScreenFooter {
+  framework: Framework;
   app?: any;
+  scene?: ReflectSceneNode;
 }
 
 export function CodeScreenFooter(props: ICodeScreenFooter) {
@@ -19,7 +23,7 @@ export function CodeScreenFooter(props: ICodeScreenFooter) {
     };
 
     setLoadingState(true);
-    quickLook("quicklook", props.app)
+    preview("quicklook", props.app)
       .then((r) => {
         setLoadingState(false);
         PluginSdk.notify("quick look ready !");
@@ -33,34 +37,37 @@ export function CodeScreenFooter(props: ICodeScreenFooter) {
     // ANALYTICS
     analytics.event_click_quicklook();
   };
+
+  /** currently we only support uploading & preview for flutter */
+  const _can_enable_next = props.framework == Framework.flutter && !!props.app;
+  const _can_show_preview = props.framework == Framework.flutter && !!props.app;
+
   return (
     <CodeFooterCtaWrapper>
-      <NextStepButton
-        onClick={() => {
-          // TODO: the button component should be passed from outer side.
-        }}
-      >
-        Next
-      </NextStepButton>
-      {props.app && (
-        <PreviewButton
-          disabled={isLaunchingConsole}
-          onClick={onQuickLookClicked}
-        >
-          {isLaunchingConsole ? "launching.." : "preview"}
-        </PreviewButton>
-      )}
+      {
+        <>
+          <NextUploadButton disabled={!_can_enable_next} {...props} />
+          {_can_show_preview && (
+            <PreviewButton
+              disabled={isLaunchingConsole}
+              onClick={onQuickLookClicked}
+            >
+              {isLaunchingConsole ? "launching.." : "preview"}
+            </PreviewButton>
+          )}
+        </>
+      }
     </CodeFooterCtaWrapper>
   );
 }
 
 const CodeFooterCtaWrapper = styled.footer`
-  padding: 12px 8px;
+  /* 16 is body's padding */
+  width: calc(100% - 16px);
+  padding: 12px 16px;
   display: flex;
   background: #fff;
   position: absolute;
-  /* 16 is body's padding */
-  width: calc(100% - 16px);
   left: 0;
   bottom: 0;
 
@@ -70,18 +77,6 @@ const CodeFooterCtaWrapper = styled.footer`
     }
   }
 `;
-
-const NextStepButton = styled.button`
-  ${BlackButton}
-  /* 2/3 size. 12 is wrapper padding  */
-  width: calc(66.666% - 12px);
-
-  &:hover {
-    color: #fff;
-    background: #17181a;
-  }
-`;
-
 const PreviewButton = styled.button`
   ${WhtieButton}
   /* 1/3 size. 12 is wrapper padding */

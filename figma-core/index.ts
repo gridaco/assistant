@@ -22,6 +22,12 @@ figma.on("selectionchange", () => {
   onfigmaselectionchange();
 });
 figma.ui.onmessage = async (msg) => {
+  // region root level custom handler
+  if (msg.type == "trigger-selectionchange") {
+    onfigmaselectionchange();
+    return;
+  }
+  // endregion root level custom handler
   onfigmamessage(msg);
 };
 figma.on("close", () => {

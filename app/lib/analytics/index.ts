@@ -7,7 +7,9 @@ export function initialize() {
     // const client_id = nanoid();
     // with proxy
     analytics.initWithProxy(
-      process.env.BRIDGED_FIRST_PARTY_ANALYTICS_PROXY_SERVICE_TOTP_SECRET
+      process.env.BRIDGED_FIRST_PARTY_ANALYTICS_PROXY_SERVICE_TOTP_SECRET ??
+        process.env
+          .NEXT_PUBLIC_BRIDGED_FIRST_PARTY_ANALYTICS_PROXY_SERVICE_TOTP_SECRET
     );
 
     analytics.initWithCors();

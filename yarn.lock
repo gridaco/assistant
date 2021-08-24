@@ -1250,27 +1250,6 @@
     "@babel/helper-validator-identifier" "^7.14.5"
     to-fast-properties "^2.0.0"
 
-"@base-sdk/base@0.1.0-1":
-  version "0.1.0-1"
-  resolved "https://registry.yarnpkg.com/@base-sdk/base/-/base-0.1.0-1.tgz#aaf84625698693f9690b85c46f453c69910ca5a3"
-  integrity sha512-NOIzgg8kDMQ3xeWFWEZmJyI3ty+xDqF7AUqtiWMDFfCYL0ybENCovyURc/LqGaeBCOzjPdDGWmWdhZE4qu12XQ==
-  dependencies:
-    "@base-sdk/build" "0.1.0-2"
-    "@base-sdk/core" "0.1.0"
-    "@base-sdk/hosting" "0.1.0"
-    "@base-sdk/resources" "0.1.0"
-    "@base-sdk/url" "0.1.0"
-
-"@base-sdk/build@0.1.0-2":
-  version "0.1.0-2"
-  resolved "https://registry.yarnpkg.com/@base-sdk/build/-/build-0.1.0-2.tgz#5a3432de3fccfe6ca34eafcb889e85a35cab86ee"
-  integrity sha512-F8fwscQKx1MTyBtIrRaYNA6mDhflIgwKJaq+MY2PZcgcDXgfQKZYRpVlTn6gW1hPbUvSBhwuV2Guk1Z8d4Qm5g==
-  dependencies:
-    "@base-sdk/core" "0.1.0"
-    "@base-sdk/hosting" "0.1.0"
-    "@base-sdk/url" "0.1.0"
-    dart-services "^0.2.3"
-
 "@base-sdk/core@0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@base-sdk/core/-/core-0.1.0.tgz#865eb7373b77d367dd57dc7660452a889d6bb139"
@@ -1286,14 +1265,6 @@
   dependencies:
     "@base-sdk/core" "0.1.0"
     axios "^0.21.1"
-
-"@base-sdk/hosting@0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@base-sdk/hosting/-/hosting-0.1.0.tgz#ecf5aa91f51125ccad1d7821ff48eef74521cb5b"
-  integrity sha512-6u200fa6XJjZSR+dgeONPnhkt8wZCL0pF7TXl62MQ+zqTH/axx6t4T8gEOVM8Llpm0X3jdAbVGRuza+SnS9/Uw==
-  dependencies:
-    "@base-sdk/core" "0.1.0"
-    form-data "^3.0.0"
 
 "@base-sdk/url@0.1.0":
   version "0.1.0"

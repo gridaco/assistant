@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import * as ReactDOM from "react-dom";
 import { AppSkeleton } from "@ui/skeleton";
+import { handle } from "./handle-proxy-requests";
 
 ReactDOM.render(
   <LiteHostedAppConnector />,
@@ -15,12 +16,16 @@ function LiteHostedAppConnector() {
   useEffect(() => {
     if (frame) {
       window.addEventListener("message", (event) => {
-        console.log("event recievd from lite-fima-app", event.data);
+        // console.log("event recievd from lite-fima-app", event.data);
         if (event.data == "plugin-app-initialized") {
           setInitialized(true);
         }
 
         if ("pluginMessage" in event.data) {
+          if (event.data.pluginMessage.__proxy_request_from_hosted_plugin) {
+            handle(event.data.pluginMessage);
+            return;
+          }
           if (
             "pluginId" in event.data ||
             event.data.pluginMessage.type === "response"
@@ -66,10 +71,10 @@ function LiteHostedAppConnector() {
         // style={{ zoom: "80%" }} // use this to zoom inner content
         width="100%"
         height={`${initialized ? "100%" : "0px"}`}
-        sandbox="allow-scripts allow-same-origin"
+        sandbox="allow-scripts allow-same-origin allow-popups"
         frameBorder="0"
         allowFullScreen
-        src={`${_host}/?platform=figma`}
+        src={`${_host}/init-figma`} //?platform=figma
       />
       <AppSkeleton mount={!initialized} />
     </div>

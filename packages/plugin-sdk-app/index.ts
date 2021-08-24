@@ -27,6 +27,14 @@ import {
   PLUGIN_SDK_NS_FOCUS_API,
   PLUGIN_SDK_EK_SIMPLE_FOCUS,
   FocusRequest,
+  PLUGIN_SDK_NS_BROWSER_API,
+  PLUGIN_SDK_EK_BROWSER_OPEN_URI,
+  PLUGIN_SDK_NS_EXPORT_AS_IMAGE,
+  PLUGIN_SDK_EK_REQUEST_EXPORT_AS_IMAGE,
+  ImageExportRequest,
+  ImageExportResponse,
+  PLUGIN_SDK_NS_GET_NODE,
+  PLUGIN_SDK_EK_REQUEST_GET_NODE_BY_ID,
 } from "@plugin-sdk/core";
 import type { ReflectSceneNode } from "@design-sdk/core/nodes";
 import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "../../app/lib/constants";
@@ -66,6 +74,32 @@ export class PluginSdk {
     // TODO
     throw "not implemented";
     return undefined;
+  }
+
+  static async getNode(id: string): Promise<{
+    id: string;
+    name: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  }> {
+    return await this.request({
+      namespace: PLUGIN_SDK_NS_GET_NODE,
+      key: PLUGIN_SDK_EK_REQUEST_GET_NODE_BY_ID,
+      data: { id: id },
+    });
+    //
+  }
+
+  static async getNodeImage(
+    req: ImageExportRequest
+  ): Promise<ImageExportResponse> {
+    return await this.request<ImageExportResponse>({
+      namespace: PLUGIN_SDK_NS_EXPORT_AS_IMAGE,
+      key: PLUGIN_SDK_EK_REQUEST_EXPORT_AS_IMAGE,
+      data: req,
+    });
   }
 
   // enderegion general canvas api
@@ -214,6 +248,28 @@ export class PluginSdk {
   }
 
   // endregion metadata
+
+  /**
+   * inner iframe blocked js functions
+   * this is designed to be used inside iframe that has no popup permission, so that calling open() in inner iframe won't work.
+   * But we can simply allow popups for inner iframe, so we don't have to use this function.
+   * this function does not check if this is being called inside a popup-blocked iframe.
+   *
+   * @deprecated use allow-popup & open instead.
+   **/
+  static openUri(uri: string) {
+    if (process.env.HOSTED ?? process.env.NEXT_PUBLIC_HOSTED) {
+      this.request({
+        namespace: PLUGIN_SDK_NS_BROWSER_API,
+        key: PLUGIN_SDK_EK_BROWSER_OPEN_URI,
+        data: {
+          uri: uri,
+        },
+      });
+    } else {
+      open(uri);
+    }
+  }
 
   // region user feedbacks
   static notify(message: string, duration?: number) {

@@ -47,69 +47,11 @@ import {
   WorkmodeScreenTabs,
   PrimaryWorkmodeSelect,
   NavigatorExpansionControlButton,
-  SecondaryWorkmodeMenu,
+  SecondaryMenuDropdown,
 } from "../components/navigation";
 import styled from "@emotion/styled";
 import { Column, Row } from "../components/style/global-style";
 import { UploadSteps } from "../components/upload-steps";
-
-function MoreMenus() {
-  const history = useHistory();
-  const menu = [
-    {
-      id: WorkMode.asset,
-      name: WorkMode.asset,
-      stage: "development",
-      onSelect: () => {},
-    },
-    {
-      id: WorkMode.manage,
-      name: WorkMode.manage,
-      stage: "development",
-      onSelect: () => {},
-    },
-    {
-      id: WorkMode.tools,
-      name: WorkMode.tools,
-      stage: "development",
-      onSelect: () => {},
-    },
-    {
-      id: WorkMode.library,
-      name: WorkMode.library,
-      stage: "development",
-      onSelect: () => {},
-    },
-    {
-      id: WorkMode.settings,
-      name: WorkMode.settings,
-      stage: "development",
-      onSelect: () => {},
-    },
-    {
-      id: WorkMode.about,
-      name: WorkMode.about,
-      stage: "production",
-      onSelect: () => {
-        history.push("/about");
-      },
-    },
-  ].filter((m) => {
-    if (process.env.NODE_ENV == "production") {
-      return m.stage === "production";
-    }
-    return true; /** if not production, return all available menus */
-  });
-  return (
-    <SecondaryWorkmodeMenu<WorkMode>
-      menus={menu}
-      onSelect={(id) => {
-        console.log("id", id);
-        menu.find((m) => m.id === id)?.onSelect();
-      }}
-    />
-  );
-}
 
 function Screen(props: { screen: WorkScreen }) {
   switch (props.screen) {
@@ -213,10 +155,13 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
   const [workmodeSet, setWorkmodeSet] = useState<PrimaryWorkmodeSet>(
     props.savedLayout.workmodeSet
   );
+  const [tabIndex, setTabIndex] = useState<number>(0);
+  const [expansion, setExpansion] = useState<boolean>(true);
 
   const on_workmode_select = (workmode: WorkMode) => {
     setWorkmode(workmode);
     setTabIndex(0);
+    setExpansion(true);
   };
 
   const on_work_select = (index, screen) => {
@@ -227,9 +172,6 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
       work: screen,
     });
   };
-
-  const [tabIndex, setTabIndex] = useState<number>(0);
-  const [expansion, setExpansion] = useState<boolean>(true);
 
   return (
     <>
@@ -252,7 +194,7 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
               onClick={() => setExpansion(!expansion)}
             />
           </Row>
-          {!expansion && <MoreMenus />}
+          {!expansion && <SecondaryMenuDropdown />}
         </Column>
       </Wrapper>
 
