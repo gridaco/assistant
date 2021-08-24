@@ -4,6 +4,8 @@ import { BlackButton } from "../../../components/style/global-style";
 import { registerScene } from "../../../scene-view";
 import { PluginSdk } from "@plugin-sdk/app";
 import type { IReflectNodeReference } from "@design-sdk/core/nodes/lignt";
+import { isAuthenticated } from "../../../auth";
+import { useHistory } from "react-router-dom";
 
 export function NextUploadButton(props: {
   disabled?: boolean;
@@ -11,6 +13,7 @@ export function NextUploadButton(props: {
   app?: any;
 }) {
   const [isLoading, setIsLoading] = useState(false);
+  const history = useHistory();
 
   const register = async () => {
     setIsLoading(true);
@@ -38,27 +41,36 @@ export function NextUploadButton(props: {
       },
     });
   };
+
+  const onNextClick = async () => {
+    const authenticated = await isAuthenticated();
+    if (!authenticated) {
+      PluginSdk.notify("Let's Sign in first");
+      history.push("/signin");
+      return;
+    }
+
+    // if authenticated, we can procceed to next step finally. ;)
+    register()
+      .then((d) => {
+        open(buildOpenUrlForRegisteredScene(d.id));
+      })
+      .catch((e) => {
+        console.error("error while registering scene", e);
+        PluginSdk.notify(
+          "Oops. something went wrong. pplease try again. ;)",
+          3
+        );
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   return (
     <NextStepButton
       disabled={props.disabled || isLoading}
-      onClick={() => {
-        register()
-          .then((d) => {
-            open(buildOpenUrlForRegisteredScene(d.id));
-          })
-          .catch((e) => {
-            console.error("error while registering scene", e);
-            PluginSdk.notify(
-              "Oops. something went wrong. pplease try again. ;)",
-              3
-            );
-          })
-          .finally(() => {
-            setIsLoading(false);
-          });
-        // upload
-        // TODO: the button component should be passed from outer side.
-      }}
+      onClick={onNextClick}
     >
       Next
     </NextStepButton>
@@ -72,7 +84,7 @@ function buildOpenUrlForRegisteredScene(sceneId: string) {
 const NextStepButton = styled.button`
   ${BlackButton}
   /* 2/3 size. 12 is wrapper padding  */
-  width: calc(66.666% - 12px);
+  width: calc(66.666% - 12px); /* FIXME: stupid! */
 
   &:hover {
     color: #fff;
