@@ -55,11 +55,17 @@ export function onfigmaselectionchange() {
       singleFigmaNodeSelection = target;
       targetNodeId = singleFigmaNodeSelection.id;
 
-      // todo - add memoization
-      const rnode = convert.intoReflectNode(
-        singleFigmaNodeSelection as any,
-        singleFigmaNodeSelection.parent as any
-      );
+      // TODO: this will not trigger unless user deselects and re select the same node. currently node cache does not have expiry control.
+      let rnode;
+      const _cached = FigmaNodeCache.getLastConverted();
+      if (_cached) {
+        rnode = _cached;
+      } else {
+        rnode = convert.intoReflectNode(
+          singleFigmaNodeSelection as any,
+          singleFigmaNodeSelection.parent as any
+        );
+      }
 
       Logger.debug("reflect-converted-selection", rnode);
 
