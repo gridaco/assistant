@@ -11,7 +11,7 @@
         "@assistant/lint-icons": "0.0.0",
         "@analytics.bridged.xyz/internal": "^0.0.9",
         "@base-sdk-fp/auth": "0.1.0-2",
-        "@base-sdk/base": "0.1.0-1",
+        "@base-sdk/base": "0.1.0-5",
         "@base-sdk/functions-code-format": "^0.0.0",
         "@bridged.xyz/base-sdk": "^0.0.2-1",
         "@code-ui/docstring": "^0.0.9",
