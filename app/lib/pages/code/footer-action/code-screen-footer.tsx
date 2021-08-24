@@ -37,17 +37,19 @@ export function CodeScreenFooter(props: ICodeScreenFooter) {
   };
   return (
     <CodeFooterCtaWrapper>
-      {props.app && (
+      {
         <>
           <NextUploadButton {...props} />
-          <PreviewButton
-            disabled={isLaunchingConsole}
-            onClick={onQuickLookClicked}
-          >
-            {isLaunchingConsole ? "launching.." : "preview"}
-          </PreviewButton>
+          {props.app && (
+            <PreviewButton
+              disabled={isLaunchingConsole}
+              onClick={onQuickLookClicked}
+            >
+              {isLaunchingConsole ? "launching.." : "preview"}
+            </PreviewButton>
+          )}
         </>
-      )}
+      }
     </CodeFooterCtaWrapper>
   );
 }
