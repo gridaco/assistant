@@ -34,14 +34,12 @@ export function ComponentViewScreen() {
     // 2. check if selected layer is a component or an instance.
     // TODO
 
-    console.log("ComponentViewScreen's target node id", selection.id);
     // 3. find if data to display exists on a master component.
     PluginSdk.fetchMainComponentMetadata({
       id: selection.id,
       namespace: ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE,
       key: "component-meta-data",
     }).then((d) => {
-      console.log(`component-meta-data is`, d);
       setData(d);
     });
   }

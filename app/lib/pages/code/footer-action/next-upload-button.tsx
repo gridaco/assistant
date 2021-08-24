@@ -23,7 +23,6 @@ export function NextUploadButton(props: {
     });
 
     const rawNode = await PluginSdk.getNode(props.scene.id);
-    console.log("rawNode", rawNode);
 
     // register with all data
     return await registerScene({

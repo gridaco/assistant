@@ -6,12 +6,7 @@ export async function wrap_with_hosting__flutter(
   id: string,
   scene: Widget | string
 ) {
-  console.log(
-    "imageRepostory",
-    repo_assets.ImageHostingRepository.imageRepostory
-  );
   const imagesMaps = await repo_assets.ImageHostingRepository.hostImages();
-  console.log("imagesMaps", imagesMaps);
   const dartSource = composeAppWithHome(scene, {
     withReplacements: imagesMaps,
   });

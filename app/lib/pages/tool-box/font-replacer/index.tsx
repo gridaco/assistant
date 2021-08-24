@@ -4,8 +4,6 @@ import { EK_REPLACE_FONT } from "../../../constants/ek.constant";
 
 export function FontReplacerScreen() {
   function onReplaceFontClick() {
-    console.log("onReplaceFontClick");
-
     parent.postMessage(
       {
         pluginMessage: {

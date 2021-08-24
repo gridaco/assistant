@@ -49,7 +49,6 @@ export abstract class MetaDataRepository<T = any> {
         });
         return data;
       case TargetPlatform.webdev:
-        console.log("data updated (mocked)");
         return data;
     }
   }
@@ -64,8 +63,10 @@ export abstract class MetaDataRepository<T = any> {
             this.key,
             undefined
           );
+        return;
       case TargetPlatform.webdev:
         console.log("data cleared (mocked)");
+        return;
     }
   }
 }

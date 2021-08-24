@@ -307,9 +307,6 @@ function _update_focused_screen_ev(screen: WorkScreen) {
     },
     "*"
   );
-  console.log(
-    `sending back thread about changed screen (user interest) data - "${screen}"`
-  );
 }
 
 const Wrapper = styled.div`

@@ -67,7 +67,7 @@ export function onfigmaselectionchange() {
         );
       }
 
-      Logger.debug("reflect-converted-selection", rnode);
+      // Logger.debug("reflect-converted-selection", rnode);
 
       // region sync selection event (search "selectionchange" for references)
       figma.ui.postMessage({

@@ -64,7 +64,6 @@ export class GlobalizationScreen extends React.Component<any, State> {
 
   async startCloud() {
     const hosted = await repo_assets.ImageHostingRepository.hostImages();
-    console.log(hosted);
 
     const scene = this.state.vanilla.scene;
     const transport = this.state.vanilla;

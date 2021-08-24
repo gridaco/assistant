@@ -27,7 +27,10 @@ export function addEventHandler<T = any>(
   type: string,
   handler: FigmaMessageHandler<T>
 ) {
-  console.log("adding event handler", type);
+  if (process.env.NODE_ENV == "development") {
+    console.log("adding event handler", type);
+  }
+
   messageHandlers.push((msg) => {
     if (msg.type == type) {
       handler?.(msg);
