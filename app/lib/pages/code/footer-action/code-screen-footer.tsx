@@ -6,8 +6,10 @@ import { PluginSdk } from "@plugin-sdk/app";
 import { preview } from "../../../scene-view";
 import { NextUploadButton } from "./next-upload-button";
 import type { ReflectSceneNode } from "@design-sdk/core/nodes";
+import { Framework } from "../framework-option";
 
 interface ICodeScreenFooter {
+  framework: Framework;
   app?: any;
   scene?: ReflectSceneNode;
 }
@@ -35,12 +37,17 @@ export function CodeScreenFooter(props: ICodeScreenFooter) {
     // ANALYTICS
     analytics.event_click_quicklook();
   };
+
+  /** currently we only support uploading & preview for flutter */
+  const _can_enable_next = props.framework == Framework.flutter && !!props.app;
+  const _can_show_preview = props.framework == Framework.flutter && !!props.app;
+
   return (
     <CodeFooterCtaWrapper>
       {
         <>
-          <NextUploadButton {...props} />
-          {props.app && (
+          <NextUploadButton disabled={!_can_enable_next} {...props} />
+          {_can_show_preview && (
             <PreviewButton
               disabled={isLaunchingConsole}
               onClick={onQuickLookClicked}

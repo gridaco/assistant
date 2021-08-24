@@ -6,6 +6,7 @@ import { PluginSdk } from "@plugin-sdk/app";
 import type { IReflectNodeReference } from "@design-sdk/core/nodes/lignt";
 
 export function NextUploadButton(props: {
+  disabled?: boolean;
   scene?: IReflectNodeReference;
   app?: any;
 }) {
@@ -40,7 +41,7 @@ export function NextUploadButton(props: {
   };
   return (
     <NextStepButton
-      disabled={!props.app || isLoading}
+      disabled={props.disabled || isLoading}
       onClick={() => {
         register()
           .then((d) => {

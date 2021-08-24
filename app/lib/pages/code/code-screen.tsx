@@ -166,7 +166,11 @@ export function CodeScreen() {
         />
       </CodeWrapper>
 
-      <CodeScreenFooter app={app} scene={selection?.node as any} />
+      <CodeScreenFooter
+        framework={useroption.framework}
+        app={app}
+        scene={selection?.node as any}
+      />
     </div>
   );
 }
