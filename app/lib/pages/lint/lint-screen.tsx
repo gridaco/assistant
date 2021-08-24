@@ -27,7 +27,11 @@ export const LintScreen = () => {
     const msg = ev.data.pluginMessage;
     if (msg.type == _APP_EVENT_LINT_RESULT_EK) {
       const _feedbacks = msg.data as Array<ReflectLintFeedback>;
-      setFeedbacks(_feedbacks);
+      if (_feedbacks.length === 0) {
+        PluginSdk.notify("🤩 Neat and clean (nothing to clean)", 2);
+      } else {
+        setFeedbacks(_feedbacks);
+      }
     }
   });
 
