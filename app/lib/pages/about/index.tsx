@@ -8,25 +8,25 @@ import { PluginSdk } from "@plugin-sdk/app";
 const URLS = {
   logo_256:
     "https://bridged-service-static.s3-us-west-1.amazonaws.com/branding/logo/256.png",
-  github_assitant: "https://github.com/bridgedxyz/assistant",
-  github_bridged: "https://github.com/bridgedxyz",
-  homepage_bridged: "https://bridged.xyz/",
+  github_assitant: "https://github.com/gridaco/assistant",
+  github_grida: "https://github.com/gridaco",
+  homepage_grida: "https://grida.co/",
   /**
    * @todo
    */
   homepage_assitant: "N/A",
   report_issue:
-    "https://github.com/bridgedxyz/assistant/issues/new?assignees=&labels=&template=bug_report.md&title=%5BBug%5D",
+    "https://github.com/gridaco/assistant/issues/new?assignees=&labels=&template=bug_report.md&title=%5BBug%5D",
   feature_request:
-    "https://github.com/bridgedxyz/assistant/issues/new?assignees=&labels=&template=feature_request.md&title=FeatureRequest",
-  signup: "https://accounts.bridged.xyz/signup",
-  blog: "https://blog.bridged.xyz",
-  twitter: "https://twitter.com/bridgedxyz",
-  facebook: "https://www.facebook.com/bridged.xyz/",
+    "https://github.com/gridaco/assistant/issues/new?assignees=&labels=&template=feature_request.md&title=FeatureRequest",
+  signup: "https://accounts.grida.co/signup",
+  blog: "https://blog.grida.co",
+  twitter: "https://twitter.com/grida_co",
+  facebook: "https://www.facebook.com/grida.co/",
   youtube: "https://www.youtube.com/channel/UCgJO5apXl_pXRfTxNrkbEBw",
   slack:
-    "https://join.slack.com/t/bridgedxyz/shared_invite/zt-nmf59381-prFEqq032K~aWe_zOekUmQ",
-  instagram: "https://www.instagram.com/bridged.xyz/",
+    "https://join.slack.com/t/gridaco/shared_invite/zt-nmf59381-prFEqq032K~aWe_zOekUmQ",
+  instagram: "https://www.instagram.com/grida.co/",
 };
 
 export function AboutScreen() {
@@ -63,42 +63,42 @@ export function AboutScreen() {
           </MenuItem>
         </MenuSection>
         <MenuSection>
-          <MenuSectionTitleItem>More from Bridged</MenuSectionTitleItem>
+          <MenuSectionTitleItem>More from Grida</MenuSectionTitleItem>
           <MenuItem onClick={signIntoAssistant}>Signup / Signin</MenuItem>
           <MenuItem onClick={linkTo(URLS.blog)}>Medium</MenuItem>
-          <MenuItem onClick={linkTo(URLS.homepage_bridged)}>Homepage</MenuItem>
+          <MenuItem onClick={linkTo(URLS.homepage_grida)}>Homepage</MenuItem>
         </MenuSection>
       </MenuContainer>
       <FooterSocialContainer>
         <SocialIconButton
           src={_social_icon("antd-twitter-outlined")}
-          alt="bridged on twitter"
+          alt="Grida on twitter"
           onClick={linkTo(URLS.twitter)}
         />
         <SocialIconButton
           src={_social_icon("antd-youtube-default")}
-          alt="bridged on youtube"
+          alt="Grida on youtube"
           onClick={linkTo(URLS.youtube)}
         />
         <SocialIconButton
           src={_social_icon("antd-slack-circle-default")}
-          alt="bridged on slack"
+          alt="Grida on slack"
           onClick={linkTo(URLS.slack)}
         />
         <SocialIconButton
           src={_social_icon("mdi_facebook")}
-          alt="bridged on facebook"
+          alt="Grida on facebook"
           onClick={linkTo(URLS.facebook)}
         />
         <SocialIconButton
           src={_social_icon("antd-instagram-default")}
-          alt="bridged on instagram"
+          alt="Grida on instagram"
           onClick={linkTo(URLS.instagram)}
         />
         <SocialIconButton
           src={_social_icon("antd-github-default")}
-          alt="bridged on github"
-          onClick={linkTo(URLS.github_bridged)}
+          alt="Grida on github"
+          onClick={linkTo(URLS.github_grida)}
         />
       </FooterSocialContainer>
     </>
