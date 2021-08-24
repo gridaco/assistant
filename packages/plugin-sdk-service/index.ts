@@ -368,11 +368,11 @@ async function handleExportEvent(event: HanderProps<ImageExportRequest>) {
           ..._ImageExportOption_to_FigmaCompat(event.data.opt),
         });
 
-        return <ImageExportResponse>{
+        return response<ImageExportResponse>(event.id, {
           id: event.data.id,
           data: r,
           opt: event.data.opt,
-        };
+        });
       }
     }
   }
