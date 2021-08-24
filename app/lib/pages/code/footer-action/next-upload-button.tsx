@@ -9,7 +9,11 @@ export function NextUploadButton(props: {
   scene?: ReflectSceneNode;
   app?: any;
 }) {
+  const [isLoading, setIsLoading] = useState(false);
+
   const register = async () => {
+    setIsLoading(true);
+    console.log("registering");
     const imageRes = await PluginSdk.getNodeImage({
       id: props.scene.id,
       opt: {
@@ -17,6 +21,7 @@ export function NextUploadButton(props: {
         contentsOnly: true,
       },
     });
+    console.log("image res", imageRes);
 
     // register with all data
     return await registerScene({
@@ -31,17 +36,21 @@ export function NextUploadButton(props: {
   };
   return (
     <NextStepButton
-      disabled={!props.app}
+      disabled={!props.app || isLoading}
       onClick={() => {
         register()
           .then((d) => {
             open(buildOpenUrlForRegisteredScene(d.id));
           })
           .catch((e) => {
+            console.error("error while registering scene", e);
             PluginSdk.notify(
               "Oops. something went wrong. pplease try again. ;)",
-              2
+              3
             );
+          })
+          .finally(() => {
+            setIsLoading(false);
           });
         // upload
         // TODO: the button component should be passed from outer side.

@@ -1,7 +1,7 @@
 export interface ImageExportOptions {
   format: "png" | "jpeg" | "webp" | "pdf" | "svg";
   contentsOnly: boolean;
-  constraint: {
+  constraint?: {
     type: "height" | "width" | "scale";
     value: number;
   };
@@ -24,11 +24,13 @@ export function _ImageExportOption_to_FigmaCompat(
   return {
     format: _format_map[data.format],
     contentsOnly: data.contentsOnly,
-    constraint: {
-      // @ts-ignore
-      type: _constraint_type_map[data.constraint.type],
-      value: data.constraint.value,
-    },
+    constraint: data.constraint
+      ? <_FigmaExportSettingsConstraints>{
+          // @ts-ignore
+          type: _constraint_type_map[data.constraint?.type],
+          value: data.constraint?.value,
+        }
+      : undefined,
   };
 }
 
