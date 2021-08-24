@@ -58,6 +58,15 @@ export function useSelection(): SelectionData | undefined {
         });
       } else {
         if (node) {
+          if (
+            // do not trigger selection change when same node is selected.
+            // to trigger selection change on same node, user should unselect and select again.
+            selectednode &&
+            selectednode.type == SelectionType.single &&
+            node.id == selectednode.id
+          ) {
+            return;
+          }
           setselectednode({
             type: SelectionType.single,
             node: node,
@@ -71,12 +80,25 @@ export function useSelection(): SelectionData | undefined {
       }
     }
 
+    // add event listener for future user interaction
     window.addEventListener("message", evl);
 
     return () => {
       window.removeEventListener("message", evl);
     };
   });
+
+  useEffect(() => {
+    // trigger once to get current selection if possible.
+    parent.postMessage(
+      {
+        pluginMessage: {
+          type: "trigger-selectionchange",
+        },
+      },
+      "*"
+    );
+  }, []);
 
   return selectednode;
 }

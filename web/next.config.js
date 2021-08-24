@@ -33,6 +33,7 @@ const withTM = require("next-transpile-modules")([
   "@base-sdk/url",
   "@base-sdk/hosting",
   "@base-sdk/build",
+  "@base-sdk/scene-store",
   "@base-sdk/resources",
 
   // baes sdk fp

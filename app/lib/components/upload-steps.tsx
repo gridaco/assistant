@@ -6,6 +6,7 @@ import { ProgressBar } from "./animation/progress-bar";
 import { AnimatedCheckIcon } from "./animation/animated-check-icon";
 import { motion } from "framer-motion";
 import { Preview } from ".";
+import { CheckIcon } from "./Icon/check-icon";
 
 const step = [
   "converting design to universal format",
@@ -15,17 +16,6 @@ const step = [
   "making builds (flutter, react, ..)",
   "running tests",
 ];
-
-const loadingVariants = {
-  "make-active": {
-    // display: "none",
-    // opacity: 1,
-    // transitionEnd: {
-    //   display: "none",
-    // },
-    transition: { duration: 1 },
-  },
-};
 
 const fieldVariants = {
   "make-active": {
@@ -40,38 +30,26 @@ const itemVariants = {
   },
 };
 
-const finishVariants = {
-  "make-active": {
-    display: "none",
-    transition: { display: "block" },
-  },
-};
-
 export function UploadSteps() {
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    console.log(isLoading);
-  }, [isLoading]);
+  function animateHandle() {
+    setIsLoading(!isLoading);
+  }
+
   return (
     <>
       <Preview auto />
+      {isLoading && <ProgressBar contorl={animateHandle} />}
       <InnerWrapper variants={fieldVariants} animate="make-active">
         {isLoading ? (
-          <Loading variants={loadingVariants} animate="make-active">
-            <ProgressBar />
+          <Loading>
             <Title>
               Uploading your design
               <br />
               “button”
             </Title>
-            <StepsWrapper
-              variants={fieldVariants}
-              animate="make-active"
-              onTransitionEnd={() => {
-                setIsLoading(!isLoading);
-              }}
-            >
+            <StepsWrapper variants={fieldVariants} animate="make-active">
               {step.map((item, i) => (
                 <Field key={`Upload-Step-${item}-${i}`} variants={itemVariants}>
                   <Icon />
@@ -84,9 +62,12 @@ export function UploadSteps() {
           </Loading>
         ) : (
           <>
-            <Finish variants={finishVariants} initial={{ display: "none" }}>
+            <Finish>
               <Field>
-                <Icon></Icon>
+                <IconBox>
+                  <CheckIcon />
+                </IconBox>
+
                 <Title>Your design is ready</Title>
               </Field>
               <Item>
@@ -113,11 +94,11 @@ const InnerWrapper = styled(motion.div)`
   /* display: none; */
 `;
 
-const Loading = styled(motion.div)`
+const Loading = styled.div`
   /* display: none; */
 `;
 
-const Finish = styled(motion.div)`
+const Finish = styled.div`
   /* display: none; */
 `;
 
@@ -143,9 +124,6 @@ const Field = styled(motion.div)`
   }
 `;
 const Icon = styled(AnimatedCheckIcon)`
-  /* width: 16px;
-  height: 16px;
-  line-height: 19px; */
   margin-right: 9px;
 `;
 
@@ -163,6 +141,10 @@ const FooterButtonWrapper = styled.div`
   position: absolute;
   bottom: 8px;
   width: calc(100% - 40px);
+`;
+const IconBox = styled.div`
+  fill: #6cd470;
+  margin-right: 9px;
 `;
 
 const CheckButton = styled(Button)`

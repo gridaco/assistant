@@ -29,6 +29,12 @@ import {
   FocusRequest,
   PLUGIN_SDK_NS_BROWSER_API,
   PLUGIN_SDK_EK_BROWSER_OPEN_URI,
+  PLUGIN_SDK_NS_EXPORT_AS_IMAGE,
+  PLUGIN_SDK_EK_REQUEST_EXPORT_AS_IMAGE,
+  ImageExportRequest,
+  ImageExportResponse,
+  PLUGIN_SDK_NS_GET_NODE,
+  PLUGIN_SDK_EK_REQUEST_GET_NODE_BY_ID,
 } from "@plugin-sdk/core";
 import type { ReflectSceneNode } from "@design-sdk/core/nodes";
 import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "../../app/lib/constants";
@@ -68,6 +74,32 @@ export class PluginSdk {
     // TODO
     throw "not implemented";
     return undefined;
+  }
+
+  static async getNode(id: string): Promise<{
+    id: string;
+    name: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  }> {
+    return await this.request({
+      namespace: PLUGIN_SDK_NS_GET_NODE,
+      key: PLUGIN_SDK_EK_REQUEST_GET_NODE_BY_ID,
+      data: { id: id },
+    });
+    //
+  }
+
+  static async getNodeImage(
+    req: ImageExportRequest
+  ): Promise<ImageExportResponse> {
+    return await this.request<ImageExportResponse>({
+      namespace: PLUGIN_SDK_NS_EXPORT_AS_IMAGE,
+      key: PLUGIN_SDK_EK_REQUEST_EXPORT_AS_IMAGE,
+      data: req,
+    });
   }
 
   // enderegion general canvas api

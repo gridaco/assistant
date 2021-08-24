@@ -16,7 +16,7 @@ function LiteHostedAppConnector() {
   useEffect(() => {
     if (frame) {
       window.addEventListener("message", (event) => {
-        console.log("event recievd from lite-fima-app", event.data);
+        // console.log("event recievd from lite-fima-app", event.data);
         if (event.data == "plugin-app-initialized") {
           setInitialized(true);
         }

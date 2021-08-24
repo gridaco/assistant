@@ -16,15 +16,14 @@ import { make_empty_selection_state_text_content } from "./constants";
 import { format } from "./formatter";
 import copy from "copy-to-clipboard";
 import { PluginSdk } from "@plugin-sdk/app";
-import { CodeScreenFooter } from "./code-screen-footer";
+import { CodeScreenFooter } from "./footer-action/code-screen-footer";
 import { CodeOptionsControl } from "./code-options-control";
 import { fromApp, CodeGenRequest } from "./__plugin/events";
 import { useSingleSelection } from "../../utils/plugin-hooks";
 
 type DesigntoCodeUserOptions = FrameworkOption;
-interface ICodeScreen {}
 
-export function CodeScreen(props: ICodeScreen) {
+export function CodeScreen() {
   const [app, setApp] = useState<string>();
   const [useroption, setUseroption] = React.useState<DesigntoCodeUserOptions>(
     all_preset_options_map__prod.flutter_default
@@ -167,7 +166,11 @@ export function CodeScreen(props: ICodeScreen) {
         />
       </CodeWrapper>
 
-      <CodeScreenFooter app={app} />
+      <CodeScreenFooter
+        framework={useroption.framework}
+        app={app}
+        scene={selection?.node as any}
+      />
     </div>
   );
 }
