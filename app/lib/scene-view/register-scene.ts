@@ -5,6 +5,7 @@ import {
 } from "@base-sdk/scene-store/__api/server-types";
 import { getAccessToken } from "../auth";
 import { upload } from "@base-sdk/hosting";
+import { nanoid } from "nanoid/non-secure";
 
 export async function registerScene(scene: {
   preview: Uint8Array;
@@ -33,9 +34,16 @@ export async function registerScene(scene: {
     name: `scene-preview-${scene.name}/${scene.id}-w${scene.width}-h${scene.height}.png`,
   });
 
+  /**
+   * FIXME:
+   * 1. file checksum for figma is not ready
+   * 2. fileid2nodeid unique constraints is not resolved on server side (put api is not ready)
+   * 3. so , based on 1 & 2 we are using file id as some thing unique for now. this will cause loss of data after put api & file checksum is ready.
+   *
+   */
   const registeredScene = await service.register({
     preview: previewImageUploaded.url,
-    fileId: "", // TODO: get fileid
+    fileId: nanoid(), // TODO: get fileid
     nodeId: scene.id,
     rawname: scene.name,
     width: scene.width,
