@@ -62,8 +62,8 @@ export function CodeScreenFooter(props: ICodeScreenFooter) {
 }
 
 const CodeFooterCtaWrapper = styled.footer`
-  /* 16 is body's padding */
-  width: calc(100% - 16px);
+  /* 32 is padding */
+  width: calc(100% - 32px);
   padding: 12px 16px;
   display: flex;
   background: #fff;
