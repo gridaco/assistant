@@ -6,6 +6,7 @@ import {
 import { getAccessToken } from "../auth";
 import { upload } from "@base-sdk/hosting";
 import { nanoid } from "nanoid/non-secure";
+import { wrap_with_hosting__flutter } from "./_wrapping-for-hosting";
 
 export async function registerScene(scene: {
   preview: Uint8Array;
@@ -20,6 +21,7 @@ export async function registerScene(scene: {
     };
   };
 }) {
+  const _id = nanoid();
   const token = await getAccessToken();
   const service = new SceneStoreService({
     type: "token",
@@ -33,6 +35,11 @@ export async function registerScene(scene: {
     }),
     name: `scene-preview-${scene.name}/${scene.id}-w${scene.width}-h${scene.height}.png`,
   });
+
+  const flutter_hosted = await wrap_with_hosting__flutter(
+    _id,
+    scene.code.flutter.raw
+  );
 
   /**
    * FIXME:
@@ -49,7 +56,18 @@ export async function registerScene(scene: {
     width: scene.width,
     height: scene.height,
     customdata_1p: {
-      code: scene.code,
+      code: {
+        flutter: {
+          widget: {
+            url: flutter_hosted.url,
+            raw: scene.code.flutter.raw,
+          },
+          executable: {
+            url: flutter_hosted.url,
+            raw: flutter_hosted.executable,
+          },
+        },
+      },
     },
     initialTags: [],
     sceneType: __S_StorableSceneType.ANYNODE,
