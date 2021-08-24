@@ -22,9 +22,8 @@ import { fromApp, CodeGenRequest } from "./__plugin/events";
 import { useSingleSelection } from "../../utils/plugin-hooks";
 
 type DesigntoCodeUserOptions = FrameworkOption;
-interface ICodeScreen {}
 
-export function CodeScreen(props: ICodeScreen) {
+export function CodeScreen() {
   const [app, setApp] = useState<string>();
   const [useroption, setUseroption] = React.useState<DesigntoCodeUserOptions>(
     all_preset_options_map__prod.flutter_default
