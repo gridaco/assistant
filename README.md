@@ -50,7 +50,8 @@ yarn figma
 yarn sketch
 
 # [OPTIONAL 3 & Contributors only] run plugin ui in webdev mode
-yarn webdev
+yarn web
+# visit http://localhost:3000/init-webdev to work on browser
 ```
 
 _soon as the subpackages are released as stable, we will remove git submodule dependency for ease of use. until then, this will be the primary repository and all the edits and PRs will be caused by this project._ - [Learn more here](https://github.com/bridgedxyz/.github/blob/main/contributing/working-with-submodules.md)

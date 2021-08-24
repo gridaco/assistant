@@ -223,7 +223,7 @@ function filterIcons(
       return [k, item];
     })
     .filter((k) => k !== undefined);
-  console.log("default icons", defaultIcons.length);
+  console.log("default icons loaded", defaultIcons.length);
   return defaultIcons;
 }
 
@@ -278,7 +278,6 @@ function IconItem(props: { name: string; config: IconConfig }) {
 
   const onClick = () => {
     _onUserLoadIconToCanvas();
-    console.log("icon", name, "clicked");
     loadData().then((d) => {
       parent.postMessage(
         {

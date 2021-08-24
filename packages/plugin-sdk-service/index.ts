@@ -30,6 +30,13 @@ import {
   PLUGIN_SDK_EK_SIMPLE_FOCUS,
   PLUGIN_SDK_NS_BROWSER_API,
   PLUGIN_SDK_EK_BROWSER_OPEN_URI,
+  PLUGIN_SDK_EK_REQUEST_EXPORT_AS_IMAGE,
+  PLUGIN_SDK_NS_EXPORT_AS_IMAGE,
+  ImageExportResponse,
+  _ImageExportOption_to_FigmaCompat,
+  ImageExportRequest,
+  PLUGIN_SDK_EK_REQUEST_GET_NODE_BY_ID,
+  PLUGIN_SDK_NS_GET_NODE,
 } from "@plugin-sdk/core";
 
 import { WebStorage, FigmaStorage, IStorage } from "./storage";
@@ -137,14 +144,24 @@ export class PluginSdkService {
       return true;
     }
 
+    // image export
+    else if (event.namespace == PLUGIN_SDK_NS_EXPORT_AS_IMAGE) {
+      handleExportEvent(handerProps);
+    }
+
+    // get node
+    else if (event.namespace == PLUGIN_SDK_NS_GET_NODE) {
+      handleGetNodeEvent(handerProps);
+    }
+
     // storage
-    if (event.namespace == PLUGIN_SDK_NS_STORAGE) {
+    else if (event.namespace == PLUGIN_SDK_NS_STORAGE) {
       handleStorageEvent(handerProps);
       return true;
     }
 
     // browser api
-    if (event.namespace == PLUGIN_SDK_NS_BROWSER_API) {
+    else if (event.namespace == PLUGIN_SDK_NS_BROWSER_API) {
       handleBrowserApiEvent(event);
       return true;
     }
@@ -323,6 +340,27 @@ function handleNotify(props: HanderProps<NotifyRequest>) {
   response(props.id, true);
 }
 
+function handleGetNodeEvent(props: HanderProps<{ id: string }>) {
+  if (props.key == PLUGIN_SDK_EK_REQUEST_GET_NODE_BY_ID) {
+    switch (TARGET_PLATFORM) {
+      case TargetPlatform.webdev: {
+      }
+      case TargetPlatform.figma: {
+        const node = figma?.getNodeById(props.data.id) as SceneNode;
+        response(props.id, {
+          id: node?.id,
+          name: node?.name,
+          x: node?.x,
+          y: node?.y,
+          width: node?.width,
+          height: node?.height,
+          ...node,
+        });
+      }
+    }
+  }
+}
+
 function handleFocus(props: HanderProps<FocusRequest>) {
   if (props.key == PLUGIN_SDK_EK_SIMPLE_FOCUS) {
     switch (TARGET_PLATFORM) {
@@ -337,6 +375,32 @@ function handleFocus(props: HanderProps<FocusRequest>) {
         // TODO: add zoom usage
         //@ts-ignore
         figma.viewport.scrollAndZoomIntoView([target]);
+      }
+    }
+  }
+}
+
+async function handleExportEvent(event: HanderProps<ImageExportRequest>) {
+  if (event.key === PLUGIN_SDK_EK_REQUEST_EXPORT_AS_IMAGE) {
+    switch (TARGET_PLATFORM) {
+      case TargetPlatform.webdev: {
+        console.log(
+          "webdev cannot perform image export request. ignoring this."
+        );
+        return undefined;
+      }
+      case TargetPlatform.figma: {
+        const r = await (
+          figma.getNodeById(event.data.id) as SceneNode
+        ).exportAsync({
+          ..._ImageExportOption_to_FigmaCompat(event.data.opt),
+        });
+
+        return response<ImageExportResponse>(event.id, {
+          id: event.data.id,
+          data: r,
+          opt: event.data.opt,
+        });
       }
     }
   }

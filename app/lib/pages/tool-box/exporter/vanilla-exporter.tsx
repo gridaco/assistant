@@ -46,7 +46,6 @@ export class VanillaExporter extends React.Component<any, State> {
             vanilla: msg.data as VanillaSceneTransport,
           };
         });
-        console.log("vanilla transport receiced from view", msg.data);
         break;
 
       case EK_IMAGE_ASSET_REPOSITORY_MAP:

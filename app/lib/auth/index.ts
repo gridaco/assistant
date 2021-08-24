@@ -52,6 +52,10 @@ export async function isAuthenticated() {
   return (await AuthStorage.get())?.length > 1; // using 1 (same as != undefined.)
 }
 
+export async function getAccessToken(): Promise<string> {
+  return await AuthStorage.get();
+}
+
 export async function checkAuthSession(session: string): Promise<boolean> {
   // TODO:
   const res = await __auth_proxy.checkProxyAuthResult(

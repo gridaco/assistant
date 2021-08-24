@@ -10,9 +10,9 @@ import { broadcastSelectionPreview } from "./broadcast-selection-preview";
 import { singleFigmaNodeSelection } from "./selection";
 
 export async function runon(rnode: ReflectSceneNode) {
-  console.log(
-    `handling main runon function targetting to user interest - "${user_interest}"`
-  );
+  // console.log(
+  //   `handling main runon function targetting to user interest - "${user_interest}"`
+  // );
 
   // region
   // notify ui that the computing process has been started.

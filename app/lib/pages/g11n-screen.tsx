@@ -1,8 +1,7 @@
 import React from "react";
 import {
-  SceneStoreService,
   StorableLayerType,
-  StorableSceneType,
+  legacy_scene,
   VanillaSceneTransport,
 } from "@base-sdk/base";
 import { repo_assets } from "@design-sdk/core";
@@ -65,7 +64,6 @@ export class GlobalizationScreen extends React.Component<any, State> {
 
   async startCloud() {
     const hosted = await repo_assets.ImageHostingRepository.hostImages();
-    console.log(hosted);
 
     const scene = this.state.vanilla.scene;
     const transport = this.state.vanilla;
@@ -79,33 +77,35 @@ export class GlobalizationScreen extends React.Component<any, State> {
       }
     });
 
-    const service = new SceneStoreService("", "");
-    const serviceuploaded = await service.registerNewScene({
-      nodeId: scene.nodeId,
-      width: scene.width,
-      height: scene.height,
-      name: scene.name,
-      tags: scene.tags,
-      description: scene.description,
-      projectId: "temp",
-      layers: scene.layers,
-      // todo
-      cachedPreview: "",
-      sceneType: StorableSceneType.screen,
-      // todo
-      fileId: "",
-      // todo
-      preview: "",
-      backgroundColor: scene.backgroundColor,
-    });
-    console.log("serviceuploaded", serviceuploaded);
+    // FIXME: legacy api disabled. use new scene-store service & new g11n server (need development)
 
-    const sceneId = serviceuploaded.data.id;
+    // const service = new SceneStoreService("", "");
+    // const serviceuploaded = await service.registerNewScene({
+    //   nodeId: scene.nodeId,
+    //   width: scene.width,
+    //   height: scene.height,
+    //   name: scene.name,
+    //   tags: scene.tags,
+    //   description: scene.description,
+    //   projectId: "temp",
+    //   layers: scene.layers,
+    //   // todo
+    //   cachedPreview: "",
+    //   sceneType: legacy_scene.StorableSceneType.screen,
+    //   // todo
+    //   fileId: "",
+    //   // todo
+    //   preview: "",
+    //   backgroundColor: scene.backgroundColor,
+    // });
+    // console.log("serviceuploaded", serviceuploaded);
+
+    // const sceneId = serviceuploaded.data.id;
 
     // remote
-    PluginSdk.openUri(
-      `https://console.bridged.xyz/globalization/?scene=${sceneId}`
-    );
+    // PluginSdk.openUri(
+    //   `https://console.bridged.xyz/globalization/?scene=${sceneId}`
+    // );
     // local
     // open(`http://localhost:3000/globalization/?scene=${sceneId}`);
   }

@@ -133,7 +133,6 @@ function MetaDataDisplayForm(props: {
   const handleSaveClick = () => {
     repo.update(data);
     setData(data);
-    console.log("value updated", data);
   };
 
   const schema = DefaultComponentMetaDataSchema;

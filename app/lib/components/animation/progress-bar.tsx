@@ -3,7 +3,11 @@ import styled from "@emotion/styled";
 
 import { AnimatePresence, motion } from "framer-motion";
 
-export function ProgressBar() {
+interface IProgressBar {
+  contorl?: () => void;
+}
+
+export function ProgressBar(props: IProgressBar) {
   return (
     <Background>
       <AnimatePresence>
@@ -15,6 +19,7 @@ export function ProgressBar() {
             duration: 10,
             delay: 2,
           }}
+          onAnimationComplete={props.contorl}
         />
       </AnimatePresence>
     </Background>
@@ -24,9 +29,9 @@ export function ProgressBar() {
 const Background = styled.div`
   background: #f5f5f5;
 
-  // for reset body padding
-  margin-left: -8px;
-  margin-right: -8px;
+  // for reset body and parent padding
+  margin-left: -20px;
+  margin-right: -20px;
 `;
 
 const Bar = styled(motion.div)`

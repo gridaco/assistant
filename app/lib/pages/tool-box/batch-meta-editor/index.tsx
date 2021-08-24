@@ -97,7 +97,6 @@ function FetchMetaDataViaKey() {
     const type = ev.data?.pluginMessage?.type;
     if (type == "__response__") {
       const data = ev.data?.pluginMessage?.data;
-      console.log("pingpong", data);
       setResponse(data);
     }
   });
@@ -105,7 +104,6 @@ function FetchMetaDataViaKey() {
   const [response, setResponse] = useState<any>(undefined);
   const [key, setKey] = useState("");
   const handleOnSearchClick = () => {
-    console.log(`searching with ey ${key}.`);
     PluginSdk.fetchRootMetadata(key);
   };
   return (
