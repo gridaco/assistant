@@ -35,7 +35,6 @@
 		"figma-lite": "yarn workspace figma-lite run build:dev && yarn web",
 		"sketch": "yarn workspace sketch run render",
 		"web": "yarn workspace web run dev",
-		"webdev": "yarn workspace webdev run start",
 		"xd": "yarn workspace xd run build",
 		"test": "cd figma && yarn build"
 	},
