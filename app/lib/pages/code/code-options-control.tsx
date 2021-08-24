@@ -191,7 +191,8 @@ function __lang_to_docstring_lang(lang: Language): LanguageType {
 }
 
 const Wrapper = styled.div`
-  // for reset body margin 8px
-  /* margin-right: -8px; */
-  /* margin-left: -8px; */
+  div,
+  ul {
+    font-family: "Source Code Pro", "Courier New", "Lucida Console", Monaco;
+  }
 `;
