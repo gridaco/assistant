@@ -167,7 +167,7 @@ export function CodeScreen(props: ICodeScreen) {
         />
       </CodeWrapper>
 
-      <CodeScreenFooter app={app} />
+      <CodeScreenFooter app={app} scene={selection?.node as any} />
     </div>
   );
 }

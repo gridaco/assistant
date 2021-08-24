@@ -6,17 +6,22 @@ import { PluginSdk } from "@plugin-sdk/app";
 import type { ReflectSceneNode } from "@design-sdk/core/nodes";
 
 export function NextUploadButton(props: {
-  scene: ReflectSceneNode;
+  scene?: ReflectSceneNode;
   app?: any;
 }) {
   const register = async () => {
-    // TODO: load image
-    const imagedata: Uint8Array = undefined;
+    const imageRes = await PluginSdk.getNodeImage({
+      id: props.scene.id,
+      opt: {
+        format: "png",
+        contentsOnly: true,
+      },
+    });
 
     // register with all data
     return await registerScene({
       ...props.scene,
-      preview: imagedata,
+      preview: imageRes.data,
       code: {
         flutter: {
           raw: props.app,

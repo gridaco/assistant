@@ -5,9 +5,11 @@ import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import { PluginSdk } from "@plugin-sdk/app";
 import { preview } from "../../../scene-view";
 import { NextUploadButton } from "./next-upload-button";
+import type { ReflectSceneNode } from "@design-sdk/core/nodes";
 
 interface ICodeScreenFooter {
   app?: any;
+  scene?: ReflectSceneNode;
 }
 
 export function CodeScreenFooter(props: ICodeScreenFooter) {
@@ -37,7 +39,6 @@ export function CodeScreenFooter(props: ICodeScreenFooter) {
     <CodeFooterCtaWrapper>
       {props.app && (
         <>
-          {/* @ts-ignore TODO: */}
           <NextUploadButton {...props} />
           <PreviewButton
             disabled={isLaunchingConsole}
