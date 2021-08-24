@@ -1,7 +1,7 @@
 {
+    "name": "Grida (Heavy)",
+    "id": "1009859297533324545",
     "api": "1.0.0",
-    "id": "896445082033423994",
-    "name": "Grida",
     "main": "dist/code.js",
     "ui": "dist/ui.html"
 }
