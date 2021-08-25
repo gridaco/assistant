@@ -2,6 +2,14 @@
   font-family: "Helvetica Neue", "Helvetica", "Roboto", "Arial", sans-serif;
 }
 
+/* 
+  If you want to change the font, be sure to check the following!
+  tippy-1 is `tippyjs' id. it is only for drop item in @code-ui/docstring 
+*/
+#tippy-1 li {
+  font-family: "Source Code Pro", "Courier New", "Lucida Console", Monaco;
+}
+
 #create {
   box-shadow: none;
   background: #18a0fb;
