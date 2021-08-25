@@ -7,7 +7,7 @@ title: Grida assistant for figma, sketch, xd
   <meta name="description" content="figma to flutter code exporter, lint your design. generate human level quality code from figma">
   <meta name="title" content="Grida assistant">
 
-![Grida assistant](./branding/assistant-cover-v2021.2.0.png)
+![Grida assistant](./branding/assistant-cover-v2021.8.0.png)
 
 # Grdia Assistant plugin (figma to flutter)
 
