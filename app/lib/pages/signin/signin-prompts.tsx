@@ -2,7 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import { BlackButton, WhtieButton } from "../../components/style/global-style";
 import { useHistory } from "react-router";
-import { startAuthentication } from "../../auth";
+import { startAuthentication } from "@assistant-fp/auth";
 import BackArrowIcon from "@assistant/icons/back-arrow";
 import {
   BackIcon,

@@ -4,7 +4,7 @@ import { BlackButton } from "../../../components/style/global-style";
 import { registerScene } from "../../../scene-view";
 import { PluginSdk } from "@plugin-sdk/app";
 import type { IReflectNodeReference } from "@design-sdk/core/nodes/lignt";
-import { isAuthenticated } from "../../../auth";
+import { isAuthenticated } from "@assistant-fp/auth";
 import { useHistory } from "react-router-dom";
 
 export function NextUploadButton(props: {

@@ -3,7 +3,7 @@ import {
   __S_DesignOrigin,
   __S_StorableSceneType,
 } from "@base-sdk/scene-store/__api/server-types";
-import { getAccessToken } from "../auth";
+import { getAccessToken } from "@assistant-fp/auth";
 import { upload } from "@base-sdk/hosting";
 import { nanoid } from "nanoid/non-secure";
 import { wrap_with_hosting__flutter } from "./_wrapping-for-hosting";

@@ -4,7 +4,7 @@ import {
   startAuthenticationWithSession,
   startAuthenticationSession,
   checkAuthSession,
-} from "../../auth";
+} from "@assistant-fp/auth";
 import { AuthProxySessionStartResult } from "@base-sdk-fp/auth";
 import {
   BlackButton,

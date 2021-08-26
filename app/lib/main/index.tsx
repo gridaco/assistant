@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "../app.css"; /** TODO: remove raw css usage. */
-import { initialize } from "../analytics";
+import { initialize as analytics_initialize } from "@assistant-fp/analytics";
 
 // UI COMPS
 import { EK_SET_APP_MODE } from "../constants/ek.constant";
@@ -260,7 +260,7 @@ export default function App(props: { platform: TargetPlatform }) {
 
     // region init analytics
     try {
-      initialize();
+      analytics_initialize();
     } catch (e) {
       console.warn("Analytics disabled", e);
     }
