@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { BlackButton, TransparencyButton } from "./style/global-style";
+import {
+  BlackButtonStyle,
+  TransparentButtonStyle,
+} from "@ui/core/button-style";
 import { Button } from "@material-ui/core";
 import { ProgressBar } from "./animation/progress-bar";
 import { AnimatedCheckIcon } from "./animation/animated-check-icon";
@@ -148,11 +151,11 @@ const IconBox = styled.div`
 `;
 
 const CheckButton = styled(Button)`
-  ${BlackButton};
+  ${BlackButtonStyle};
   width: 100%;
 `;
 const UncheckButton = styled(Button)`
-  ${TransparencyButton}
+  ${TransparentButtonStyle}
   width: 100%;
   cursor: pointer;
   text-transform: initial;

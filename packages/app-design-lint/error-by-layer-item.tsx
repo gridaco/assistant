@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 import * as React from "react";
-import { Level } from "../../lint/lint-colors";
-import { LintError, LintErrorIcon } from "../../lint/lint-error-icon";
-import { LintLevelIndicator } from "../../lint/lint-level-indicator";
+import { Level } from "./lint-colors";
+import { LintError, LintErrorIcon } from "./lint-error-icon";
+import { LintLevelIndicator } from "./lint-level-indicator";
 import { default as CloseIcon } from "@assistant/icons/caret-up";
 import { default as ExpandIcon } from "@assistant/icons/caret-down";
 

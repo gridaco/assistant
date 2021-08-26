@@ -1,0 +1,7 @@
+{
+    "name": "@ui/core",
+    "description": "Assistant ui cores",
+    "authors": "Grida co",
+    "version": "0.0.0",
+    "dependencies": {}
+}

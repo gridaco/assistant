@@ -4,7 +4,7 @@ import type { ReflectLintFeedbackLevel } from "@reflect-ui/lint/lib/feedbacks";
 import { LintError, LintErrorIcon } from "../lint-error-icon";
 import { LintLevelIndicator } from "../lint-level-indicator";
 import { choiceItem } from "../lint-list-view";
-import { OptionChoiceItem } from "../../pages/lint/lint-option-choice-item";
+import { OptionChoiceItem } from "../lint-option-choice-item";
 import { default as CloseIcon } from "@assistant/icons/caret-up";
 import { default as ExpandIcon } from "@assistant/icons/caret-down";
 

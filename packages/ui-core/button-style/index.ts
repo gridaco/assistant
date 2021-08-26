@@ -1,4 +1,3 @@
-import styled from "@emotion/styled";
 import { css } from "@emotion/react";
 
 export const ButtonStyle = css`
@@ -18,7 +17,7 @@ export const ButtonStyle = css`
   text-transform: capitalize;
 `;
 
-export const BlackButton = css`
+export const BlackButtonStyle = css`
   ${ButtonStyle}
   border: 1px solid #151617;
   background: #151617;
@@ -38,7 +37,7 @@ export const BlackButton = css`
   }
 `;
 
-export const WhtieButton = css`
+export const WhtieButtonStyle = css`
   ${ButtonStyle}
   /* border: 1px solid #151617; */
   border: 0;
@@ -46,7 +45,7 @@ export const WhtieButton = css`
   background: #fff;
 `;
 
-export const TransparencyButton = css`
+export const TransparentButtonStyle = css`
   ${ButtonStyle}
   color: #c1c1c1;
   border: 0;
@@ -55,13 +54,4 @@ export const TransparencyButton = css`
   &:hover {
     background: rgba(255, 255, 255, 0.3);
   }
-`;
-
-export const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-export const Column = styled.div`
-  display: flex;
-  flex-direction: column;
 `;

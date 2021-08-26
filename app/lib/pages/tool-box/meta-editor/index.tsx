@@ -8,7 +8,7 @@ import {
   MetaDataRepository,
   MetaDataRepositoryFactory,
 } from "../../../repositories/metadata";
-import { useSingleSelection } from "../../../utils/plugin-hooks";
+import { useSingleSelection } from "plugin-app";
 import { PluginSdk } from "@plugin-sdk/app";
 
 interface MetaDataFieldDef {

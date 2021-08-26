@@ -23,7 +23,7 @@ interface VisualComponentManifest {
   codeSnippet: string;
 }
 
-import { useSingleSelection } from "../../utils/plugin-hooks";
+import { useSingleSelection } from "plugin-app";
 
 export function ComponentViewScreen() {
   const [data, setData] = useState<VisualComponentManifest>(undefined);

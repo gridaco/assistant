@@ -2,20 +2,22 @@ import React, { useState } from "react";
 import styled from "@emotion/styled";
 import { PluginSdk } from "@plugin-sdk/app";
 import { ReflectLintFeedback } from "@reflect-ui/lint/lib/feedbacks";
-/* non used (planned. do not remove) */ import {
-  LintItemRow,
-  LintTreeView,
-} from "../../lint";
-import { LintLevelIndicator } from "../../lint/lint-level-indicator";
-import { _APP_EVENT_LINT_RESULT_EK } from "../../lint/__plugin/events";
 import {
-  BlackButton,
-  TransparencyButton,
-} from "../../components/style/global-style";
-import { makeSummary, requestLintOnCurrentSelection } from "../../lint/actions";
-import { useSingleSelection } from "../../utils/plugin-hooks";
-import { mapGrandchildren } from "@design-sdk/core/utils";
+  /* non used (planned. do not remove) */
+  LintItemRow,
+  /* non used (planned. do not remove) */
+  LintTreeView,
+  LintLevelIndicator,
+} from "@app/design-lint";
+import { _APP_EVENT_LINT_RESULT_EK } from "@app/design-lint/__plugin/events";
+import {
+  BlackButtonStyle,
+  TransparentButtonStyle,
+} from "@ui/core/button-style";
+import { useSingleSelection } from "plugin-app";
+import { makeSummary, requestLintOnCurrentSelection } from "./actions";
 import { FixYourSelf } from "./fix-your-self";
+import { mapGrandchildren } from "@design-sdk/core/utils";
 import Dialog from "@material-ui/core/Dialog";
 
 export const LintScreen = () => {
@@ -217,20 +219,20 @@ const FooterActionsWrapper = styled.div`
 `;
 
 const RunLintButtton = styled.button`
-  ${BlackButton}
+  ${BlackButtonStyle}
   width: calc(100% - 32px); // FIXME:
   position: absolute;
   bottom: 16px;
 `;
 
 const FirstErrorButton = styled.button`
-  ${BlackButton}
+  ${BlackButtonStyle}
   width: 66.6666%;
   margin-right: 8px;
 `;
 
 const ClearButton = styled.button`
-  ${TransparencyButton}
+  ${TransparentButtonStyle}
   width: 33.3333%;
   background: #fff;
 `;

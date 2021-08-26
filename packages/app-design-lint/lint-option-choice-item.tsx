@@ -1,7 +1,7 @@
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
 import * as React from "react";
-import { Column, Row } from "../../components/style/global-style";
+import styled from "@emotion/styled";
+import { css } from "@emotion/react";
+import { Column, Row } from "@ui/core";
 
 interface Props {
   selected: boolean;

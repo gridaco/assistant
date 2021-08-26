@@ -19,7 +19,7 @@ import { PluginSdk } from "@plugin-sdk/app";
 import { CodeScreenFooter } from "./footer-action/code-screen-footer";
 import { CodeOptionsControl } from "./code-options-control";
 import { fromApp, CodeGenRequest } from "./__plugin/events";
-import { useSingleSelection } from "../../utils/plugin-hooks";
+import { useSingleSelection } from "plugin-app";
 
 type DesigntoCodeUserOptions = FrameworkOption;
 

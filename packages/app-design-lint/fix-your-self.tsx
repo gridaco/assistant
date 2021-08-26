@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import { PluginSdk } from "@plugin-sdk/app";
-import { ReflectLintFeedback } from "../../../../packages/lint/lib/feedbacks";
-import { BlackButton } from "../../components/style/global-style";
-import { LintItemRow } from "../../lint";
-import { LintProcessPaginator } from "../../lint/lint-process-paginator";
-import { _APP_EVENT_LINT_RESULT_EK } from "../../lint/__plugin/events";
+import { ReflectLintFeedback } from "@reflect-ui/lint/lib/feedbacks";
+import { BlackButtonStyle } from "@ui/core/button-style";
+import { LintItemRow } from "@app/design-lint";
+import { LintProcessPaginator } from "@app/design-lint/lint-process-paginator";
+import { _APP_EVENT_LINT_RESULT_EK } from "@app/design-lint/__plugin/events";
 import BackArrowIcon from "@assistant/icons/back-arrow";
 
 /** Fix your self as page with router props ver. (not used. planned.) */
@@ -150,7 +150,7 @@ const Pagination = styled.div`
 `;
 
 const NextLayerBtn = styled.button`
-  ${BlackButton}
+  ${BlackButtonStyle}
   width: calc(100% - 32px);
   position: absolute;
   bottom: 16px;

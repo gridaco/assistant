@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import * as FigmaApi from "figma-js";
 import { Button, LinearProgress, TextField, Tooltip } from "@material-ui/core";
-import { useSingleSelection } from "../../../utils/plugin-hooks";
+import { useSingleSelection } from "plugin-app";
 import { parseFileId } from "@design-sdk/figma-url";
 import { PluginSdk } from "@plugin-sdk/app";
 import { downloadFile } from "./export-utils";

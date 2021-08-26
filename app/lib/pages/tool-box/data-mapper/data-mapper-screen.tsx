@@ -1,9 +1,6 @@
-import { Button } from "@material-ui/core";
 import React, { useState } from "react";
-import {
-  usePairSelection,
-  useRangeSelection,
-} from "../../../utils/plugin-hooks";
+import { Button } from "@material-ui/core";
+import { useRangeSelection } from "plugin-app";
 import { findDatasourceNodeAndOthers } from "./data-source-node";
 import { fromApp } from "./__plugin/events";
 

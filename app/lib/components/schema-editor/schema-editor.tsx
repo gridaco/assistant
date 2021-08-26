@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "../../constants";
-import { useSingleSelection } from "../../utils/plugin-hooks";
+import { useSingleSelection } from "plugin-app";
 import { PluginSdk } from "@plugin-sdk/app";
 import {
   SingleLayerPropertyDefinition,

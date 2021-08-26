@@ -6,12 +6,7 @@ import {
   checkAuthSession,
 } from "@assistant-fp/auth";
 import { AuthProxySessionStartResult } from "@base-sdk-fp/auth";
-import {
-  BlackButton,
-  ButtonStyle,
-  Column,
-  WhtieButton,
-} from "../../components/style/global-style";
+import { ButtonStyle } from "@ui/core/button-style";
 import { useHistory } from "react-router";
 import {
   BackIcon,

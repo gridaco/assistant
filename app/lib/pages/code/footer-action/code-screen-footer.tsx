@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { WhtieButton } from "../../../components/style/global-style";
+import { WhtieButtonStyle } from "@ui/core/button-style";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import { PluginSdk } from "@plugin-sdk/app";
 import { preview } from "@app/scene-view";
@@ -78,7 +78,7 @@ const CodeFooterCtaWrapper = styled.footer`
   }
 `;
 const PreviewButton = styled.button`
-  ${WhtieButton}
+  ${WhtieButtonStyle}
   /* 1/3 size. 12 is wrapper padding */
   width: calc(33.333% - 12px);
 `;

@@ -14,7 +14,7 @@ import { FontReplacerScreen } from "../pages/tool-box/font-replacer";
 import { ButtonMakerScreen } from "../pages/design/button-maker-screen";
 import { ComponentViewScreen } from "../pages/component-view";
 import { LayoutViewScreen } from "../pages/layout-view";
-import { LintScreen } from "../pages/lint/lint-screen";
+import { LintScreen } from "@app/design-lint/lint-screen";
 import { GlobalizationScreen } from "../pages/g11n-screen";
 import { IconsScreen } from "../pages/icons-screen";
 import { CodeScreen } from "../pages/code/code-screen";
@@ -50,7 +50,7 @@ import {
   SecondaryMenuDropdown,
 } from "../components/navigation";
 import styled from "@emotion/styled";
-import { Column, Row } from "../components/style/global-style";
+import { Column, Row } from "@ui/core";
 import { UploadSteps } from "../components/upload-steps";
 
 function Screen(props: { screen: WorkScreen }) {

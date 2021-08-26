@@ -1,10 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
-import {
-  BlackButton,
-  Column,
-  WhtieButton,
-} from "../../components/style/global-style";
+import { BlackButtonStyle, WhtieButtonStyle } from "@ui/core/button-style";
+import { Column } from "@ui/core";
 
 export const Wrapper = styled.div`
   // 66 is body margin 8*2, wrapper padding 25*2
@@ -47,7 +44,7 @@ export const BtnWrapper = styled.div`
 `;
 
 export const SignInBtn = styled.button`
-  ${BlackButton}
+  ${BlackButtonStyle}
   width: calc(100vw - 54px);
   font-weight: bold;
   font-size: 14px;
@@ -55,7 +52,7 @@ export const SignInBtn = styled.button`
 `;
 
 export const SignUpBtn = styled.button`
-  ${WhtieButton}
+  ${WhtieButtonStyle}
   width: calc(100vw - 54px);
   font-weight: bold;
   font-size: 14px;
