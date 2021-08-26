@@ -1,9 +1,6 @@
 import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "../../constants";
 import { MetaDataMockDataProvider } from "../../mock";
-import {
-  TargetPlatform,
-  TARGET_PLATFORM,
-} from "../../utils/plugin-init/init-target-platform";
+import { TargetPlatform, target_platform } from "@plugin-sdk/core";
 import { PluginSdk } from "@plugin-sdk/app";
 import { figma } from "@design-sdk/figma";
 export class MetaDataRepositoryFactory {
@@ -24,7 +21,7 @@ export abstract class MetaDataRepository<T = any> {
   abstract key: string;
 
   async fetch(): Promise<T> {
-    switch (TARGET_PLATFORM) {
+    switch (target_platform.get()) {
       case TargetPlatform.figma:
         return await PluginSdk.fetchMetadata({
           id: this.id,
@@ -38,7 +35,7 @@ export abstract class MetaDataRepository<T = any> {
   }
 
   async update(data: T) {
-    switch (TARGET_PLATFORM) {
+    switch (target_platform.get()) {
       //  TODO -- figma api call does not work here.
       case TargetPlatform.figma:
         return await PluginSdk.updateMetadata({
@@ -54,7 +51,7 @@ export abstract class MetaDataRepository<T = any> {
   }
 
   clear() {
-    switch (TARGET_PLATFORM) {
+    switch (target_platform.get()) {
       case TargetPlatform.figma:
         const data = figma
           .getNodeById(this.id)

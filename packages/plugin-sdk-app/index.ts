@@ -35,6 +35,8 @@ import {
   ImageExportResponse,
   PLUGIN_SDK_NS_GET_NODE,
   PLUGIN_SDK_EK_REQUEST_GET_NODE_BY_ID,
+  target_platform,
+  TargetPlatform,
 } from "@plugin-sdk/core";
 import type { ReflectSceneNode } from "@design-sdk/core/nodes";
 import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "../../app/lib/constants";
@@ -44,6 +46,7 @@ import { _SharedStorageCache } from "./_shared-storage-cache";
 const __main_plugin_sdk_instance_storage_cache = new _SharedStorageCache(
   "co.grida.assistant"
 );
+
 export class PluginSdk {
   private static _window: Window;
   static get window(): Window {
@@ -51,6 +54,29 @@ export class PluginSdk {
   }
   static initializeWindow(window: Window) {
     this._window = window;
+  }
+
+  /**
+   * this only sets TARGET_PLATFORM on ui thread.
+   * @param platform
+   */
+  static async initializeTargetPlatform(platform: TargetPlatform) {
+    if (!!target_platform.get()) {
+      throw "cannot overwrite target platform on runtime.";
+    }
+
+    target_platform.set(platform);
+    if (platform == TargetPlatform.webdev) {
+      return true;
+    }
+
+    // sync this to code side.
+    await PluginSdk.request({
+      namespace: "__INTERNAL__",
+      key: "sync-target-platform",
+      data: platform,
+    });
+    // console.info(`thread#ui: target platform set as ${platform}`);
   }
 
   // region general canvas api

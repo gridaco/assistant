@@ -37,6 +37,8 @@ import {
   ImageExportRequest,
   PLUGIN_SDK_EK_REQUEST_GET_NODE_BY_ID,
   PLUGIN_SDK_NS_GET_NODE,
+  TargetPlatform,
+  target_platform,
 } from "@plugin-sdk/core";
 
 import { WebStorage, FigmaStorage, IStorage } from "./storage";
@@ -45,11 +47,6 @@ import { WebStorage, FigmaStorage, IStorage } from "./storage";
 import { Figma, figma } from "@design-sdk/figma";
 import type { SceneNode } from "@design-sdk/figma";
 
-import {
-  __syncTargetPlatformForCodeThread,
-  TargetPlatform,
-  TARGET_PLATFORM,
-} from "../../app/lib/utils/plugin-init/init-target-platform";
 import {
   StorageGetItemResponse,
   StorageRequest,
@@ -326,7 +323,7 @@ function handleRemoteApiEvent(props: HanderProps) {}
 
 function handleNotify(props: HanderProps<NotifyRequest>) {
   if (props.key == PLUGIN_SDK_EK_SIMPLE_NOTIFY) {
-    switch (TARGET_PLATFORM) {
+    switch (target_platform.get()) {
       case TargetPlatform.webdev: {
         alert(props.data.message);
       }
@@ -342,7 +339,7 @@ function handleNotify(props: HanderProps<NotifyRequest>) {
 
 function handleGetNodeEvent(props: HanderProps<{ id: string }>) {
   if (props.key == PLUGIN_SDK_EK_REQUEST_GET_NODE_BY_ID) {
-    switch (TARGET_PLATFORM) {
+    switch (target_platform.get()) {
       case TargetPlatform.webdev: {
       }
       case TargetPlatform.figma: {
@@ -363,7 +360,7 @@ function handleGetNodeEvent(props: HanderProps<{ id: string }>) {
 
 function handleFocus(props: HanderProps<FocusRequest>) {
   if (props.key == PLUGIN_SDK_EK_SIMPLE_FOCUS) {
-    switch (TARGET_PLATFORM) {
+    switch (target_platform.get()) {
       case TargetPlatform.webdev: {
         // none
         console.log("mock focus event from webdev", props);
@@ -382,7 +379,7 @@ function handleFocus(props: HanderProps<FocusRequest>) {
 
 async function handleExportEvent(event: HanderProps<ImageExportRequest>) {
   if (event.key === PLUGIN_SDK_EK_REQUEST_EXPORT_AS_IMAGE) {
-    switch (TARGET_PLATFORM) {
+    switch (target_platform.get()) {
       case TargetPlatform.webdev: {
         console.log(
           "webdev cannot perform image export request. ignoring this."
@@ -408,7 +405,7 @@ async function handleExportEvent(event: HanderProps<ImageExportRequest>) {
 
 async function handleStorageEvent(props: HanderProps<StorageRequest>) {
   const _get_dedicated_storage = (): IStorage => {
-    switch (TARGET_PLATFORM) {
+    switch (target_platform.get()) {
       case TargetPlatform.webdev: {
         return new WebStorage();
       }
@@ -481,7 +478,7 @@ function response<T = any>(
   error: Error | undefined = undefined
 ): boolean {
   console.info(
-    `${TARGET_PLATFORM}>> responding to request ${requestId} with data ${JSON.stringify(
+    `${target_platform.get()}>> responding to request ${requestId} with data ${JSON.stringify(
       data
     )} and ${error ? "" + error : "no error"}`
   );
@@ -493,7 +490,7 @@ function response<T = any>(
     error: error,
     data: data,
   };
-  switch (TARGET_PLATFORM) {
+  switch (target_platform.get()) {
     case TargetPlatform.webdev: {
       window.postMessage({ pluginMessage: msg }, undefined);
       break;
@@ -510,7 +507,7 @@ function response<T = any>(
 /** this is used to proxy a request from inner iframe to host iframe. */
 function requestToHost(req) {
   console.log("requesting host to handle requests from hosted app.", req);
-  switch (TARGET_PLATFORM) {
+  switch (target_platform.get()) {
     case TargetPlatform.webdev: {
       window.postMessage(
         { pluginMessage: { __proxy_request_from_hosted_plugin: true, ...req } },
@@ -526,6 +523,14 @@ function requestToHost(req) {
       break;
     }
   }
+}
+
+export function __syncTargetPlatformForCodeThread(
+  platform: TargetPlatform
+): boolean {
+  // console.info(`thread#code: syncing target platform to ${platform}`);
+  target_platform.set(platform);
+  return true;
 }
 
 /**

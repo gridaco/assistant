@@ -10,11 +10,8 @@ import {
 } from "@plugin-sdk/core/events";
 import { NetworkRequest } from "@plugin-sdk/core";
 import { PluginSdk } from "@plugin-sdk/app";
+import type { TargetPlatform } from "@plugin-sdk/core";
 import { currentlySelectedPrimaryNodeId } from "./states/canvas";
-import {
-  initializeTargetPlatform,
-  TargetPlatform,
-} from "../../app/lib/utils/plugin-init/init-target-platform";
 import { initialize as cid_initialize, client_id } from "./client-id";
 
 export function PluginApp(props: {
@@ -51,7 +48,7 @@ export function PluginApp(props: {
     });
 
     // init platform
-    initializeTargetPlatform(props.platform).then(() => {
+    PluginSdk.initializeTargetPlatform(props.platform).then(() => {
       const warmup_procs: Promise<any>[] = [];
 
       // make client id

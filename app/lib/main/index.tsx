@@ -7,6 +7,7 @@ import { EK_SET_APP_MODE } from "../constants/ek.constant";
 import { PluginApp } from "plugin-app";
 import BatchMetaEditor from "../pages/tool-box/batch-meta-editor";
 import { useHistory, Switch, Route } from "react-router-dom";
+import type { TargetPlatform } from "@plugin-sdk/core";
 
 //
 // region screens import
@@ -22,7 +23,6 @@ import { ToolboxScreen } from "../pages/tool-box";
 import { MetaEditorScreen } from "../pages/tool-box/meta-editor";
 import { ExporterScreen } from "../pages/tool-box/exporter";
 import { DataMapperScreen } from "../pages/tool-box/data-mapper/data-mapper-screen";
-import { TargetPlatform } from "../utils/plugin-init/init-target-platform";
 import { AboutScreen } from "../pages/about";
 import Signin from "../pages/signin";
 // endregion screens import

@@ -14,6 +14,10 @@ const withTM = require("next-transpile-modules")([
   "@app/icons-loader",
   "@app/scene-view",
 
+  // cores
+  "@core/code-formatter",
+
+  // Plugin sdk
   "@plugin-sdk/app",
   "@plugin-sdk/core",
   "@plugin-sdk/service",
