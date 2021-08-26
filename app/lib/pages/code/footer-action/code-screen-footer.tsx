@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { WhtieButton } from "../../../components/style/global-style";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import { PluginSdk } from "@plugin-sdk/app";
-import { preview } from "../../../scene-view";
+import { preview } from "@app/scene-view";
 import { NextUploadButton } from "./next-upload-button";
 import type { ReflectSceneNode } from "@design-sdk/core/nodes";
 import { Framework } from "../framework-option";

@@ -1,6 +1,6 @@
 import React from "react";
 
-export function CheckIcon() {
+export default function CheckIcon() {
   return (
     <svg
       width="20"

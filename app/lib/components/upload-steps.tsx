@@ -6,7 +6,7 @@ import { ProgressBar } from "./animation/progress-bar";
 import { AnimatedCheckIcon } from "./animation/animated-check-icon";
 import { motion } from "framer-motion";
 import { Preview } from ".";
-import { CheckIcon } from "./Icon/check-icon";
+import CheckIcon from "@assistant/icons/check";
 
 const step = [
   "converting design to universal format",
