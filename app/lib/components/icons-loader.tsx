@@ -14,7 +14,7 @@ import { withStyles, Select, MenuItem, InputBase } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
 const CONFIG_JSON_S3 =
   "https://reflect-icons.s3-us-west-1.amazonaws.com/all.json";
-import { Draggable } from "../utils/draggable";
+import { Draggable } from "@plugin-sdk/draggable";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import styled from "@emotion/styled";
 
