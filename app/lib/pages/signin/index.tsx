@@ -189,7 +189,9 @@ function Signin() {
               </SignInBtn>
               <SignUpBtn
                 onClick={() => {
-                  open("https://accounts.grida.co/signup");
+                  open(
+                    "https://accounts.grida.co/signup?redirect_uri=figma://"
+                  );
                   // clear states
                   setIsLoading(false);
                 }}
