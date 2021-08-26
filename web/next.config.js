@@ -1,11 +1,23 @@
 const withTM = require("next-transpile-modules")([
+  // _firstparty
+  "@assistant-fp/analytics",
+  "@assistant-fp/auth",
+
+  // UI
+  "@ui/core",
   "@assistant/icons",
   "@assistant/lint-icons",
 
+  // @app
   "app",
+  "@app/design-lint",
+  "@app/icons-loader",
+  "@app/scene-view",
+
   "@plugin-sdk/app",
   "@plugin-sdk/core",
   "@plugin-sdk/service",
+  "@plugin-sdk/draggable",
   "plugin-app",
 
   "@designto/config",
