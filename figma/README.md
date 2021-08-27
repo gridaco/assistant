@@ -16,12 +16,15 @@
 
 First:
 
-```
+```sh
 $ yarn install
-```
 
-```
-$ yarn run dev
+# building for production - this will load production web hosted version in your plugin host
+$ yarn run build
+
+# building for development - this will load localhost:3000/init-figma page in to your plugin host
+$ yarn run build:dev
+$ yarn run watch # same as `build:dev`, but in watch mode. (if you are not interacting with figma-core, you don't have to run this command.)
 ```
 
 ### Installing the plugin
