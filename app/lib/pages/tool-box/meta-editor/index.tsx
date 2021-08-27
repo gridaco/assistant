@@ -7,7 +7,7 @@ import Switch from "@material-ui/core/Switch";
 import {
   MetaDataRepository,
   MetaDataRepositoryFactory,
-} from "../../../repositories/metadata";
+} from "../../../metadata";
 import { useSingleSelection } from "plugin-app";
 import { PluginSdk } from "@plugin-sdk/app";
 

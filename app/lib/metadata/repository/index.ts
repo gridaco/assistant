@@ -1,5 +1,5 @@
 import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "../../constants";
-import { MetaDataMockDataProvider } from "../../mock";
+import { MetaDataMockDataProvider } from "../mock";
 import { TargetPlatform, target_platform } from "@plugin-sdk/core";
 import { PluginSdk } from "@plugin-sdk/app";
 import { figma } from "@design-sdk/figma";
