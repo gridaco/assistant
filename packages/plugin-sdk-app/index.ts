@@ -39,7 +39,7 @@ import {
   TargetPlatform,
 } from "@plugin-sdk/core";
 import type { ReflectSceneNode } from "@design-sdk/core/nodes";
-import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "../../app/lib/constants";
+import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "@core/constant";
 
 import { _SharedStorageCache } from "./_shared-storage-cache";
 

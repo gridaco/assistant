@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Preview } from "../../components/preview";
+import { Preview } from "@ui/previewer";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle/DialogTitle";
@@ -9,7 +9,7 @@ import TextField from "@material-ui/core/TextField/TextField";
 import DialogActions from "@material-ui/core/DialogActions/DialogActions";
 import { PluginSdk } from "@plugin-sdk/app";
 import { Divider, IconButton, Typography } from "@material-ui/core";
-import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "../../constants";
+import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "@core/constant";
 import { Edit, Settings } from "@material-ui/icons";
 import { ComponentCodebox } from "./component-codebox";
 import { ComponentSchemaEditor } from "./schema-editor";

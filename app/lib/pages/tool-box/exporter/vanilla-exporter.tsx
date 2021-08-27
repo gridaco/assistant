@@ -6,7 +6,7 @@ import {
   EK_COMPUTE_STARTED,
   EK_IMAGE_ASSET_REPOSITORY_MAP,
   EK_VANILLA_TRANSPORT,
-} from "../../../constants/ek.constant";
+} from "@core/constant/ek.constant";
 import { downloadFile } from "./export-utils";
 import copy from "copy-to-clipboard";
 

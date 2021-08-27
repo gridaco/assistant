@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@material-ui/core";
-import { EK_REPLACE_FONT } from "../../../constants/ek.constant";
+import { EK_REPLACE_FONT } from "@core/constant/ek.constant";
 
 export function FontReplacerScreen() {
   function onReplaceFontClick() {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "../../constants";
+import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "@core/constant";
 import { useSingleSelection } from "plugin-app";
 import { PluginSdk } from "@plugin-sdk/app";
 import {

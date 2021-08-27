@@ -1,4 +1,4 @@
-import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "app/lib/constants";
+import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "@core/constant";
 import { checksum } from "./api";
 /**
  * root node's id is always 0:0 on plugin api. [learn more](https://github.com/figma/plugin-typings/issues/13)

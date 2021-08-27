@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import React, { ReactNode } from "react";
-import { BlackButton } from "./style/global-style";
+import { BlackButtonStyle } from "@ui/core/button-style";
 
 interface Props {
   coverImage?: string;
@@ -50,6 +50,6 @@ const ButtonWrapper = styled.div`
 `;
 
 const Button = styled.button`
-  ${BlackButton}
+  ${BlackButtonStyle}
   width: calc(100vw - 32px);
 `;

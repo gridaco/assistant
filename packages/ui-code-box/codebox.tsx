@@ -18,7 +18,7 @@ interface Props {
   codeActions?: Array<JSX.Element>;
 }
 
-export default function CodeBox(props: Props) {
+export function CodeBox(props: Props) {
   const raw = typeof props.code == "string" ? props.code : props.code.raw;
 
   useEffect(() => {

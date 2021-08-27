@@ -1,4 +1,4 @@
-import { NS_FILE_ROOT_METADATA } from "app/lib/constants/ns.constant";
+import { NS_FILE_ROOT_METADATA } from "@core/constant/ns.constant";
 
 import {
   PLUGIN_SDK_EK_BATCH_META_UPDATE,

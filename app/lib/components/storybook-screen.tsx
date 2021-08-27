@@ -1,6 +1,6 @@
 import Button from "@material-ui/core/Button";
 import * as React from "react";
-import { BoxDirectoryInput } from "./box-directory-input";
+// import { BoxDirectoryInput } from "./box-directory-input";
 
 const TEST_STORYBOOK_ROOT =
   "https://5f7d1f04988db70022c94c9a-bxsgusmnlc.chromatic.com";
@@ -39,7 +39,7 @@ export class BoxTab extends React.Component {
         <div />
         <Button onClick={this.onClickOpenStorybook}>open in storybook</Button>
         <Button onClick={this.onClickOpenGithub}>open in github</Button>
-        <BoxDirectoryInput />
+        {/* <BoxDirectoryInput /> */}
         <div />
         <h6>Box section end</h6>
       </div>

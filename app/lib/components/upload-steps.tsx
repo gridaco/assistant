@@ -8,7 +8,7 @@ import { Button } from "@material-ui/core";
 import { ProgressBar } from "./animation/progress-bar";
 import { AnimatedCheckIcon } from "./animation/animated-check-icon";
 import { motion } from "framer-motion";
-import { Preview } from ".";
+import { Preview } from "@ui/previewer";
 import CheckIcon from "@assistant/icons/check";
 
 const step = [

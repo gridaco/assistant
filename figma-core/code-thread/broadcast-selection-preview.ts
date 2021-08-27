@@ -1,4 +1,4 @@
-import { EK_PREVIEW_SOURCE } from "app/lib/constants/ek.constant";
+import { EK_PREVIEW_SOURCE } from "@core/constant/ek.constant";
 
 /**
  * extracts the png image of selection, broadcasts to listeners.

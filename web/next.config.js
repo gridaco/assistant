@@ -5,14 +5,21 @@ const withTM = require("next-transpile-modules")([
 
   // UI
   "@ui/core",
+  "@ui/previewer",
+  "@ui/codebox",
   "@assistant/icons",
   "@assistant/lint-icons",
 
   // @app
   "app",
+  "@app/component-manage",
   "@app/design-lint",
   "@app/icons-loader",
+  "@app/meta-editor",
+  "@app/meta-editor",
+  "@app/export-scene-as-json",
   "@app/scene-view",
+  "@app/schema-editor",
 
   // cores
   "@core/code-formatter",

@@ -1,6 +1,6 @@
 import { Typography, CircularProgress, Fade } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
-import { EK_PREVIEW_SOURCE } from "../constants/ek.constant";
+import { EK_PREVIEW_SOURCE } from "@core/constant/ek.constant";
 import EmptyIndicatorIcon from "@assistant/icons/empty-indicator-icon";
 import "./preview.css";
 

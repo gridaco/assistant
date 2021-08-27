@@ -7,7 +7,7 @@ import GridListTile from "@material-ui/core/GridListTile";
 import {
   EK_CREATE_ICON,
   EK_ICON_DRAG_AND_DROPPED,
-} from "../constants/ek.constant";
+} from "@core/constant/ek.constant";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles, Select, MenuItem, InputBase } from "@material-ui/core";

@@ -1,4 +1,4 @@
-import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "../../constants";
+import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "@core/constant";
 import { MetaDataMockDataProvider } from "../mock";
 import { TargetPlatform, target_platform } from "@plugin-sdk/core";
 import { PluginSdk } from "@plugin-sdk/app";

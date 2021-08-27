@@ -3,9 +3,8 @@ import "../app.css"; /** TODO: remove raw css usage. */
 import { initialize as analytics_initialize } from "@assistant-fp/analytics";
 
 // UI COMPS
-import { EK_SET_APP_MODE } from "../constants/ek.constant";
+import { EK_SET_APP_MODE } from "@core/constant/ek.constant";
 import { PluginApp } from "plugin-app";
-import BatchMetaEditor from "../pages/tool-box/batch-meta-editor";
 import { useHistory, Switch, Route } from "react-router-dom";
 import type { TargetPlatform } from "@plugin-sdk/core";
 
@@ -13,14 +12,14 @@ import type { TargetPlatform } from "@plugin-sdk/core";
 // region screens import
 import { FontReplacerScreen } from "../pages/tool-box/font-replacer";
 import { ButtonMakerScreen } from "../pages/design/button-maker-screen";
-import { ComponentViewScreen } from "../pages/component-view";
 import { LayoutViewScreen } from "../pages/layout-view";
-import { LintScreen } from "@app/design-lint/lint-screen";
+import { ComponentViewScreen } from "@app/component-manage";
+import { LintScreen } from "@app/design-lint";
+import { IconsScreen } from "@app/icons-loader";
+import { MetaEditorScreen, BatchMetaEditor } from "@app/meta-editor";
 import { GlobalizationScreen } from "../pages/g11n-screen";
-import { IconsScreen } from "../pages/icons-screen";
 import { CodeScreen } from "../pages/code/code-screen";
 import { ToolboxScreen } from "../pages/tool-box";
-import { MetaEditorScreen } from "../pages/tool-box/meta-editor";
 import { ExporterScreen } from "../pages/tool-box/exporter";
 import { DataMapperScreen } from "../pages/tool-box/data-mapper/data-mapper-screen";
 import { AboutScreen } from "../pages/about";

@@ -1,6 +1,5 @@
 import React from "react";
-import { CodeboxEditDialog } from "../../components/codebox-edit-dialog";
-import CodeBox from "../../components/codebox";
+import { CodeBox, CodeboxEditDialog } from "@ui/codebox";
 import Settings from "@material-ui/icons/Settings";
 import IconButton from "@material-ui/core/IconButton/IconButton";
 

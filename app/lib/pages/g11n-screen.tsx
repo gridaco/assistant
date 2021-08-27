@@ -8,12 +8,11 @@ import { repo_assets } from "@design-sdk/core";
 import Button from "@material-ui/core/Button";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { ImageManifest } from "@reflect-ui/core/lib";
-import { PluginSdk } from "@plugin-sdk/app";
 import {
   EK_COMPUTE_STARTED,
   EK_IMAGE_ASSET_REPOSITORY_MAP,
   EK_VANILLA_TRANSPORT,
-} from "../constants/ek.constant";
+} from "@core/constant/ek.constant";
 
 interface State {
   loading: boolean;

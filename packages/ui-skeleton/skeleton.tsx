@@ -47,23 +47,23 @@ export function AppSkeleton(props: { mount: boolean }) {
         >
           <Wrapper>
             <NavigationWrapper>
-              <Navigation />
-              <Navigation />
+              <_Navigation />
+              <_Navigation />
             </NavigationWrapper>
             <TabWrapper>
-              <Tab />
-              <Tab />
-              <Tab />
-              <Tab />
+              <_Tab />
+              <_Tab />
+              <_Tab />
+              <_Tab />
             </TabWrapper>
             <Skeleton>
-              <Preview />
+              <_Preview />
             </Skeleton>
 
             <ContentsWrapper>
-              <Contents />
-              <Contents />
-              <Contents />
+              <_Contents />
+              <_Contents />
+              <_Contents />
             </ContentsWrapper>
             <ButtonWrapper />
           </Wrapper>
@@ -95,7 +95,7 @@ const Column = styled.div`
 
 const NavigationWrapper = styled(Row)``;
 
-const Navigation = styled(Skeleton)`
+const _Navigation = styled(Skeleton)`
   width: 54px;
   height: 21px !important;
 
@@ -106,7 +106,7 @@ const Navigation = styled(Skeleton)`
 
 const TabWrapper = styled(Row)``;
 
-const Tab = styled(Skeleton)`
+const _Tab = styled(Skeleton)`
   width: 54px;
   height: 13px !important;
 
@@ -117,7 +117,7 @@ const Tab = styled(Skeleton)`
   }
 `;
 
-const Preview = styled.div`
+const _Preview = styled.div`
   width: 100vw;
   height: 200px !important;
   margin: 0 -16px;
@@ -125,7 +125,7 @@ const Preview = styled.div`
 
 const ContentsWrapper = styled(Column)``;
 
-const Contents = styled(Skeleton)`
+const _Contents = styled(Skeleton)`
   width: 137px;
   height: 8px !important;
   margin-bottom: 4px;

@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Dialog,
   DialogTitle,
@@ -7,7 +8,6 @@ import {
   DialogActions,
   Button,
 } from "@material-ui/core";
-import React from "react";
 
 export function CodeboxEditDialog(props: {
   title: string;

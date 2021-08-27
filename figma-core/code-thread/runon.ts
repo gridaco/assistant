@@ -2,7 +2,7 @@ import {
   EK_COMPUTE_STARTED,
   EK_IMAGE_ASSET_REPOSITORY_MAP,
   EK_VANILLA_TRANSPORT,
-} from "app/lib/constants/ek.constant";
+} from "@core/constant/ek.constant";
 import { vanilla } from "@design-sdk/core";
 import { ReflectFrameNode, ReflectSceneNode } from "@design-sdk/core/nodes";
 import { user_interest } from "./user-interest";

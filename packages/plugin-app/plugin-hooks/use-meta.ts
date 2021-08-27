@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "../../../app/lib/constants";
+import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "@core/constant";
 import { PluginSdk } from "@plugin-sdk/app";
 
 export function useMeta() {}

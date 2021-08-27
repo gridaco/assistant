@@ -13,7 +13,7 @@ import {
   SupportedBatchMetaOperationTargetTypes,
 } from "@plugin-sdk/core";
 
-export default function BatchMetaEditor() {
+export function BatchMetaEditor() {
   const [targetType, setTargetType] = useState<BatchMetaOperationTargetType>(
     BatchMetaOperationTargetType.root
   );

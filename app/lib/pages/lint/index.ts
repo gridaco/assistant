@@ -1,1 +1,1 @@
-export * from "./lint-screen";
+export * from "@app/design-lint/lint-screen";
