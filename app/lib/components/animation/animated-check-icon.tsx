@@ -2,7 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 
 import { motion } from "framer-motion";
-import { CheckIcon } from "../Icon/check-icon";
+import CheckIcon from "@assistant/icons/check";
 
 const variants = {
   "make-active": {

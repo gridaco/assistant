@@ -1,0 +1,10 @@
+{
+    "name": "Grida (Heavy)",
+    "id": "1009859297533324545",
+    "api": "1.0.0",
+    "main": "dist/code.js",
+    "ui": "dist/ui.html",
+    "editorType": [
+        "figma"
+    ]
+}

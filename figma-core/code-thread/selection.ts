@@ -1,6 +1,6 @@
 import { analyzeSelection, SelectionAnalysis } from "plugin-app/utils";
 import { convert } from "@design-sdk/figma";
-import { Logger } from "app/lib/utils";
+import { Logger } from "logger";
 import { light } from "@design-sdk/core/nodes";
 import { runon } from "./runon";
 import { FigmaNodeCache } from "../node-cache";

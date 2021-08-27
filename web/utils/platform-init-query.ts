@@ -1,4 +1,4 @@
-import { TargetPlatform } from "app/lib/utils/plugin-init/init-target-platform";
+import { TargetPlatform } from "@plugin-sdk/core";
 
 export function get_target_platform_from_query(platform: string) {
   switch (platform) {

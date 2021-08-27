@@ -1,0 +1,8 @@
+{
+    "name": "@app/schema-editor",
+    "description": "schema editor related package",
+    "authors": "Grida.co",
+    "version": "0.0.0",
+    "private": false,
+    "dependencies": {}
+}

@@ -1,4 +1,4 @@
-import { EK_SET_APP_MODE } from "app/lib/constants";
+import { EK_SET_APP_MODE } from "@core/constant";
 import { addEventHandler } from "./message-handler";
 
 /**

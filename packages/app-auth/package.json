@@ -1,0 +1,6 @@
+{
+    "name": "@app/auth",
+    "version": "0.0.0",
+    "description": "First pary auth - UI only container",
+    "private": false
+}

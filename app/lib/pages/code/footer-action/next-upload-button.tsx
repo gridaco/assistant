@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { BlackButton } from "../../../components/style/global-style";
-import { registerScene } from "../../../scene-view";
+import { BlackButtonStyle } from "@ui/core/button-style";
+import { registerScene } from "@app/scene-view";
 import { PluginSdk } from "@plugin-sdk/app";
 import type { IReflectNodeReference } from "@design-sdk/core/nodes/lignt";
-import { isAuthenticated } from "../../../auth";
+import { isAuthenticated } from "@assistant-fp/auth";
 import { useHistory } from "react-router-dom";
 
 export function NextUploadButton(props: {
@@ -82,7 +82,7 @@ function buildOpenUrlForRegisteredScene(sceneId: string) {
 }
 
 const NextStepButton = styled.button`
-  ${BlackButton}
+  ${BlackButtonStyle}
   /* 2/3 size. 12 is wrapper padding  */
   width: calc(66.666% - 12px); /* FIXME: stupid! */
 

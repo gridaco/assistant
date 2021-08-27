@@ -8,3 +8,6 @@ webdev/.eslintcache
 
 # we use yarn
 package-lock.json
+
+# log including yarn error log
+.log

@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import * as about from "../../about";
+import * as about from "./manifest";
 import { __auth_proxy, ProxyAuthenticationMode } from "@base-sdk-fp/auth";
 import { useHistory } from "react-router-dom";
 import BackArrowIcon from "@assistant/icons/back-arrow";

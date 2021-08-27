@@ -1,4 +1,4 @@
-import { format as dart_format } from "../../utils/dart-format";
+import { format as dart_format } from "@core/code-formatter/dart-format";
 import { Language } from "./framework-option";
 import { format as remote_format } from "@base-sdk/functions-code-format";
 
