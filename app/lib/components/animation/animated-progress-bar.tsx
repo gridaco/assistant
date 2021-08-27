@@ -7,7 +7,7 @@ interface IProgressBar {
   contorl?: () => void;
 }
 
-export function ProgressBar(props: IProgressBar) {
+export function AnimatedProgressBar(props: IProgressBar) {
   return (
     <Background>
       <AnimatePresence>

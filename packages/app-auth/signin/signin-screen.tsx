@@ -21,27 +21,7 @@ import {
   Wrapper,
 } from "./style";
 import { PluginSdk } from "@plugin-sdk/app";
-
-// onClick={() => {
-//   startAuthentication();
-// }}
-
-function LeftArrow() {
-  return (
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M20 11H7.83L13.42 5.41L12 4L4 12L12 20L13.41 18.59L7.83 13H20V11Z"
-        fill="black"
-      />
-    </svg>
-  );
-}
+import BackArrow from "@assistant/icons/back-arrow";
 
 function InitialStateContent() {
   return (
@@ -107,7 +87,7 @@ function FinishCheckingAuth(props: { username: string }) {
   );
 }
 
-function Signin() {
+export function SigninScreen() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [sessionInfo, setSessionInfo] = useState<AuthProxySessionStartResult>();
@@ -121,7 +101,7 @@ function Signin() {
   return (
     <Wrapper>
       <BackIcon onClick={close}>
-        <LeftArrow />
+        <BackArrow />
       </BackIcon>
       <Inner>
         {!isAuthenticated ? (
@@ -224,5 +204,3 @@ const StyledButton = styled.button`
   margin-bottom: 53px;
   border: 0;
 `;
-
-export default Signin;

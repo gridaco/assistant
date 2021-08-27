@@ -12,7 +12,11 @@ const withTM = require("next-transpile-modules")([
 
   // @app
   "app",
+  "@app/auth",
+  "@app/i18n",
   "@app/component-manage",
+  "@app/button-maker",
+  "@app/data-mapper",
   "@app/design-lint",
   "@app/icons-loader",
   "@app/meta-editor",
@@ -20,6 +24,9 @@ const withTM = require("next-transpile-modules")([
   "@app/export-scene-as-json",
   "@app/scene-view",
   "@app/schema-editor",
+
+  // @toolbox
+  "@toolbox/font-replacer",
 
   // cores
   "@core/code-formatter",

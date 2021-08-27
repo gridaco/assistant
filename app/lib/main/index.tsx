@@ -10,20 +10,20 @@ import type { TargetPlatform } from "@plugin-sdk/core";
 
 //
 // region screens import
-import { FontReplacerScreen } from "../pages/tool-box/font-replacer";
-import { ButtonMakerScreen } from "../pages/design/button-maker-screen";
+import { ButtonMakerScreen } from "@app/button-maker";
 import { LayoutViewScreen } from "../pages/layout-view";
 import { ComponentViewScreen } from "@app/component-manage";
 import { LintScreen } from "@app/design-lint";
 import { IconsScreen } from "@app/icons-loader";
 import { MetaEditorScreen, BatchMetaEditor } from "@app/meta-editor";
-import { GlobalizationScreen } from "../pages/g11n-screen";
-import { CodeScreen } from "../pages/code/code-screen";
+import { ExporterScreen } from "@app/export-scene-as-json";
+import { DataMapperScreen } from "@app/data-mapper";
+import { GlobalizationScreen } from "@app/i18n";
 import { ToolboxScreen } from "../pages/tool-box";
-import { ExporterScreen } from "../pages/tool-box/exporter";
-import { DataMapperScreen } from "../pages/tool-box/data-mapper/data-mapper-screen";
+import { FontReplacerScreen } from "@toolbox/font-replacer";
+import { CodeScreen } from "../pages/code/code-screen";
 import { AboutScreen } from "../pages/about";
-import Signin from "../pages/signin";
+import { SigninScreen } from "@app/auth";
 // endregion screens import
 //
 
@@ -85,7 +85,7 @@ function Screen(props: { screen: WorkScreen }) {
     case WorkScreen.scene_upload_steps_final:
       return <UploadSteps />;
     case WorkScreen.signin:
-      return <Signin />;
+      return <SigninScreen />;
     default:
       return <div>Not found</div>;
   }
