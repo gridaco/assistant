@@ -6,9 +6,9 @@
     "jsx": "react",
     "esModuleInterop": true,
     "outDir": "dist",
-    "declaration": true,
+    "declaration": false,
     "allowSyntheticDefaultImports": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "experimentalDecorators": true,
     "noUnusedLocals": false,
     "typeRoots": [

@@ -1,7 +1,6 @@
 const HtmlWebpackInlineSourcePlugin = require("html-webpack-inline-source-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
-const Dotenv = require("dotenv-webpack");
 const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = (env, argv) => ({
@@ -48,23 +47,12 @@ module.exports = (env, argv) => ({
 
   // minimize
   optimization: {
-    minimize: false,
+    minimize: true,
     minimizer: [
       new TerserPlugin({
         terserOptions: {
-          sourceMap: true,
-          compress: {
-            keep_classnames: true, // keep class name cause, flutter-builder uses class name reflection.
-            keep_fnames: true,
-            drop_console: true,
-            conditionals: true,
-            unused: true,
-            comparisons: true,
-            dead_code: true,
-            if_return: true,
-            join_vars: true,
-            warnings: false,
-          },
+          keep_classnames: true, // keep class name cause, flutter-builder uses class name reflection.
+          sourceMap: false,
           output: {
             comments: false,
           },
@@ -82,6 +70,5 @@ module.exports = (env, argv) => ({
       chunks: ["ui"],
     }),
     new HtmlWebpackInlineSourcePlugin(),
-    new Dotenv(),
   ],
 });

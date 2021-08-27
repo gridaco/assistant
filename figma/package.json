@@ -3,12 +3,14 @@
     "description": "A web hosted version of figma plugin.",
     "authors": "Grida.co",
     "version": "0.0.0",
+    "license": "MIT",
     "private": false,
     "dependencies": {
         "@ui/skeleton": "0.0.0"
     },
     "scripts": {
-        "build": "webpack -p --mode=production",
+        "clean": "rimraf dist",
+        "build": "yarn clean && webpack -p --mode=production",
         "build:dev": "webpack --mode=development",
         "watch": "webpack --watch"
     }
