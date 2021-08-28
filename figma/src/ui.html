@@ -10,6 +10,11 @@
   rel="stylesheet"
 />
 
+<!-- preconnection to warm up connection -->
+<link rel="dns-prefetch" href="https://assistant-serve.grida.co/" />
+<link rel="preconnect" href="https://assistant-serve.grida.co/init-figma" />
+<link rel="preload" href="https://assistant-serve.grida.co/init-figma" />
+
 <style>
   /* override ua stylesheet - figma lite is just a wrapper of web, it should not have any styles. */
   body {
@@ -21,9 +26,37 @@
     bottom: 2px;
     cursor: nwse-resize;
   }
+
+  #loader {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 </style>
 <div id="main">
-  <div id="react-page"></div>
+  <div id="loader"></div>
+  <iframe
+    z-index="1"
+    id="remote-host"
+    width="100%"
+    height="100%"
+    sandbox="allow-scripts allow-same-origin allow-popups"
+    frameborder="0"
+    allowfullscreen
+    src="<%= htmlWebpackPlugin.options.host %>/init-figma"
+  ></iframe>
   <svg
     id="resize-knob"
     width="16"
@@ -57,4 +90,54 @@
     corner.onpointermove = null;
     corner.releasePointerCapture(e.pointerId);
   };
+</script>
+<script>
+  const frame = document.getElementById("remote-host");
+  window.addEventListener("message", (event) => {
+    // console.log("event recievd from lite-fima-app", event.data);
+    if (event.data == "plugin-app-initialized") {
+      // handle skeleton hide & initial load animation here.
+      document.getElementById("loader").remove();
+    }
+
+    if ("pluginMessage" in event.data) {
+      if (event.data.pluginMessage.__proxy_request_from_hosted_plugin) {
+        handle(event.data.pluginMessage);
+        return;
+      }
+      if (
+        "pluginId" in event.data ||
+        event.data.pluginMessage.type === "response"
+      ) {
+        frame.contentWindow.postMessage(event.data, "*");
+      } else {
+        parent.postMessage(
+          {
+            ...event.data,
+            "message-transport": true,
+          },
+          "*"
+        );
+      }
+    }
+  });
+
+  ///
+  /// To optimize this package, we don't import any other dependency.
+  /// but for a reference, please add import statement below with commented.
+  ///
+  /*import {*/
+  /* TransportPluginEvent,*/
+  /* PLUGIN_SDK_EK_BROWSER_OPEN_URI,*/
+  /*} from "@plugin-sdk/core";*/
+  function handleProxy(payload) {
+    console.log("handling proxy request from hosted app.", payload);
+
+    // PLUGIN_SDK_EK_BROWSER_OPEN_URI
+    if (payload.key == "assistant/browser-api/open-uri") {
+      open(payload.data.uri);
+    }
+  }
+  ///
+  ///
 </script>

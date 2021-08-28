@@ -267,8 +267,11 @@ export default function App(props: { platform: TargetPlatform }) {
   }, []);
 
   const Router = getDedicatedRouter();
+
+  const Loading = <></>;
+
   return (
-    <PluginApp platform={props.platform}>
+    <PluginApp loading={Loading} platform={props.platform}>
       {/* @ts-ignore */}
       <Router>
         <Switch>

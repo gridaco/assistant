@@ -18,9 +18,11 @@ export function PluginApp(props: {
   platform: TargetPlatform;
   children: any;
   loading?: any;
+  onWillInitialize?: () => void;
   onInitialized?: () => void;
 }) {
   const [booting, setBooting] = useState(true);
+  const [hidecontent, setHidecontent] = useState(true);
   useEffect(() => {
     console.log("start initializing plugin app...");
 
@@ -57,13 +59,15 @@ export function PluginApp(props: {
       Promise.all(warmup_procs).finally(() => {
         console.info("PluginApp initiallized", "cid", client_id);
         parent.postMessage("plugin-app-initialized", "*");
-        props.onInitialized?.();
-        setBooting(false);
+        /* loaded */ props.onInitialized?.();
+        /* loaded */ setBooting(false);
       });
     });
+    /* preload */ props.onWillInitialize?.();
+    /* preload */ setHidecontent(false);
   }, []);
 
-  if (booting) {
+  if (hidecontent) {
     return (
       <>
         {props.loading ? (
