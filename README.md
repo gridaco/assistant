@@ -176,6 +176,14 @@ we release new updates in a by-monthluy cycle. Watch this repository on github o
 
 All update logs available at [CHANGELOG.md](./CHANGELOG.md)
 
+
+## Blogs
+- [Flutter force week 103](https://medium.com/flutterforce/flutterforce-week-103-95b0822ef25f)
+- [Flutter force week 135](https://medium.com/flutterforce/flutterforce-week-135-d28b8741302a)
+- [Assistant initial release](https://blog.grida.co/assistant-initial-release-f75d0084df9c)
+- [Introducng Grida Assistant 2021.8.0b](https://blog.grida.co/figma-assistant-by-grida-supercharge-your-design-development-workflow-e6b2989216e2)
+
+
 ## LEGAL
 
 > read [LICENSE](./LICENSE).
