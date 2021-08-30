@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "@core/constant";
 import { useSingleSelection } from "plugin-app";
 import { PluginSdk } from "@plugin-sdk/app";
-import {
-  SingleLayerPropertyDefinition,
-  ISingleLayerProperty,
-} from "./single-property";
+import { SingleLayerPropertyDefinition } from "./single-property";
+import { ISingleLayerProperty, IProperties } from "./types";
 import { nodes, utils } from "@design-sdk/core";
 import { variant } from "@design-sdk/figma/features";
+import { _FigmaVariantPropertyCompatType_to_string } from "../design-sdk/figma/features/variant";
 
 const ERROR_MESSAGES = {
   nothing_is_selected: "Nothing is selected",
@@ -15,20 +14,41 @@ const ERROR_MESSAGES = {
     "You must select instance or component type of node.",
 };
 
-type EditerMode =
-  // single layer - no matter where it lives under a componennt or a raw group, etc.
-  | "single-layer-property"
-  // component set frame
+type ComponentLikeType =  // component set frame
   | "master-variant-set"
   // componennt with/without variant compat (can be used for both, but use it only for non variant component)
   | "master-component"
   // instance of simple or varianted component
-  | "instance"
+  | "instance";
+
+type SchemaDefinitionLike =
+  | ComponentLikeType
+  // single layer - no matter where it lives under a componennt or a raw group, etc.
+  | "single-layer-property";
+
+type EditerMode =
+  | SchemaDefinitionLike
   // non is set, loading state
-  | "loading";
+  | "no-selection";
+
+function analyzeSelection(node): SchemaDefinitionLike {
+  if (
+    node?.origin != nodes.ReflectSceneNodeType.component &&
+    node?.origin != nodes.ReflectSceneNodeType.variant_set &&
+    node?.origin != nodes.ReflectSceneNodeType.instance
+  ) {
+    return "single-layer-property";
+  } else if (node?.origin == nodes.ReflectSceneNodeType.component) {
+    return "master-component";
+  } else if (node?.origin == nodes.ReflectSceneNodeType.variant_set) {
+    return "master-variant-set";
+  } else if (node?.origin == nodes.ReflectSceneNodeType.instance) {
+    return "instance";
+  }
+}
 
 export function SchemaEditor(props: {}) {
-  const [mode, setMode] = useState<EditerMode>("loading");
+  const [mode, setMode] = useState<EditerMode>("no-selection");
 
   // use selection hook, then update the mode corresponding to selected layer on design tool
 
@@ -36,27 +56,10 @@ export function SchemaEditor(props: {}) {
 
   useEffect(() => {
     if (selection) {
-      if (
-        selection?.node?.origin != nodes.ReflectSceneNodeType.component &&
-        selection?.node?.origin != nodes.ReflectSceneNodeType.variant_set &&
-        selection?.node?.origin != nodes.ReflectSceneNodeType.instance
-      ) {
-        setMode("single-layer-property");
-      } else if (
-        selection?.node?.origin == nodes.ReflectSceneNodeType.component
-      ) {
-        setMode("master-component");
-      } else if (
-        selection?.node?.origin == nodes.ReflectSceneNodeType.variant_set
-      ) {
-        setMode("master-variant-set");
-      } else if (
-        selection?.node?.origin == nodes.ReflectSceneNodeType.instance
-      ) {
-        setMode("instance");
-      }
+      const analysis = analyzeSelection(selection?.node);
+      setMode(analysis);
     } else {
-      setMode("loading");
+      setMode("no-selection");
     }
   }, [selection]);
 
@@ -66,8 +69,8 @@ export function SchemaEditor(props: {}) {
       return <_Mode_Empty />;
     }
     switch (mode) {
-      case "loading":
-        return <_Mode_Loading />;
+      case "no-selection":
+        return <_Mode_NoSelection />;
       case "single-layer-property":
         return <_Mode_SingleLayerProperty node={selection.node} />;
       case "master-variant-set":
@@ -84,6 +87,7 @@ export function SchemaEditor(props: {}) {
   return (
     <>
       <p>schema editor</p>
+      <p>{selection?.node?.origin}</p>
       <Body />
     </>
   );
@@ -93,8 +97,8 @@ function _Mode_Empty() {
   return <>Nothing is selected</>;
 }
 
-function _Mode_Loading() {
-  return <>loading..</>;
+function _Mode_NoSelection() {
+  return <>nothing selected</>;
 }
 
 function _Mode_SingleLayerProperty(props: {
@@ -103,7 +107,7 @@ function _Mode_SingleLayerProperty(props: {
   const { node } = props;
   const id = node.id;
 
-  const [data, setData] = useState<ISingleLayerProperty[]>([]);
+  const [data, setData] = useState<IProperties>([]);
   const handleOnSave = (d: ISingleLayerProperty) => {
     const newData = data;
     newData.push(d);
@@ -177,7 +181,7 @@ function _Mode_Component(props: { node: nodes.light.IReflectNodeReference }) {
     node.parentReference.origin == nodes.ReflectSceneNodeType.variant_set;
 
   // if variant, load default property set by variant namings.
-  let variantProperties: variant.FimaVariantPropertyData[];
+  let variantProperties: variant.VariantProperty[];
   if (isVariantCompat) {
     const names = variant.getVariantNamesSetFromReference_Figma(node);
     variantProperties = variant.extractTypeFromVariantNames_Figma(names);
@@ -210,24 +214,28 @@ function _Mode_Component(props: { node: nodes.light.IReflectNodeReference }) {
       {variantProperties ? (
         <>
           <h6>variant properties</h6>
-          {variantProperties.map((n) => {
-            return (
-              <p>
-                name:{n.name}, type:{n.type}
-              </p>
-            );
-          })}
+          <ul>
+            {variantProperties.map((n) => {
+              return (
+                <li>
+                  name:{n.key}, type:
+                  {`${_FigmaVariantPropertyCompatType_to_string(n.type)}`}
+                </li>
+              );
+            })}
+          </ul>
+          <h6>data</h6>
         </>
       ) : (
         <></>
       )}
       {/*  */}
       {properties ? (
-        <>
+        <ul>
           {properties.map((p) => {
-            return <p>{JSON.stringify(p)}</p>;
+            return <li>{JSON.stringify(p)}</li>;
           })}
-        </>
+        </ul>
       ) : (
         <>Loading..</>
       )}

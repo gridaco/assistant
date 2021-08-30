@@ -65,8 +65,8 @@ export function ComponentViewScreen() {
 
   return (
     <div>
-      <Preview auto />
-      {selection ? (
+      {/* <Preview auto /> */}
+      {/* {selection ? (
         <form key={JSON.stringify(data)}>
           <p>component view placeholder</p>
           <EditableComponentMetaFieldSingleValueDisplay
@@ -109,7 +109,7 @@ export function ComponentViewScreen() {
         </form>
       ) : (
         <></>
-      )}
+      )} */}
       <ComponentSchemaEditor />
     </div>
   );

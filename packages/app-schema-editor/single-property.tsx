@@ -1,6 +1,7 @@
 import { Button, Divider, TextField } from "@material-ui/core";
-import React, { useRef, useState } from "react";
-import { schema } from "coli";
+import React, { useState } from "react";
+import { ISingleLayerProperty } from "./types";
+
 type UserInteractionMode = "editing" | "viewing";
 
 const ModeToggleButton = (props: {
@@ -14,20 +15,6 @@ const ModeToggleButton = (props: {
   return <Button onClick={props.onSave}>save</Button>;
 };
 
-/**
- * Storable object. this is stored to layer's metadata. do not modify this.
- */
-export interface ISingleLayerProperty {
-  schema: schema.IProperty;
-  locateMode: string;
-  /**
-   * target property on layer.
-   * for example if this is a text layer's property,
-   * it can be mapped to text#characters or also text#fills[0].
-   * but only once at a time.
-   */
-  targetProperty: string;
-}
 interface ISingleLayerPropertyDefinitionProps {
   initial?: ISingleLayerProperty;
   initialMode?: UserInteractionMode;
@@ -116,6 +103,17 @@ export function SingleLayerPropertyDefinition(
             });
           }}
           defaultValue={data?.locateMode}
+          disabled={disableInputs}
+        />
+        <TextField
+          label="property"
+          onChange={(e) => {
+            setData({
+              ...data,
+              targetProperty: e.target.value as any,
+            });
+          }}
+          defaultValue={data?.targetProperty}
           disabled={disableInputs}
         />
         <ModeToggleButton
