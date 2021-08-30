@@ -187,7 +187,7 @@ function mapVariant_try(
       const _isConpat =
         value && typeof s.type == "string"
           ? s.type == value
-          : s.type.includes(value);
+          : (s.type as variant.FigmaEnum).values.includes(value);
 
       if (_isConpat) {
         // 4. map the variant
