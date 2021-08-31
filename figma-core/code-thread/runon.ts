@@ -3,7 +3,7 @@ import {
   EK_IMAGE_ASSET_REPOSITORY_MAP,
   EK_VANILLA_TRANSPORT,
 } from "@core/constant/ek.constant";
-import { vanilla } from "@design-sdk/core";
+import * as vanilla from "@design-sdk/vanilla";
 import { ReflectFrameNode, ReflectSceneNode } from "@design-sdk/core/nodes";
 import { user_interest } from "./user-interest";
 import { broadcastSelectionPreview } from "./broadcast-selection-preview";
