@@ -33,7 +33,7 @@ export function SchemaEditor(props: {}) {
       case "variant-set":
         return <Modes.VariantSet />;
       case "master-variant-compoent":
-        return <Modes.VariantMaster />;
+        return <Modes.VariantMaster node={selection.node} />;
       case "variant-instance":
         return <Modes.VariantInstance node={selection.node} />;
       case "master-component":
