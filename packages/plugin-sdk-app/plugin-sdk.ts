@@ -41,7 +41,6 @@ import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "@core/constant";
 
 import { _SharedStorageCache } from "./_shared-storage-cache";
 import { NodeApi } from "./node-api";
-import { request } from "./request";
 
 const __main_plugin_sdk_instance_storage_cache = new _SharedStorageCache(
   "co.grida.assistant"
@@ -341,7 +340,21 @@ export class PluginSdk {
   static promises: Map<string, { resolve; reject }> = new Map();
 
   static request<T = any>(event: BasePluginEvent): Promise<T> {
-    return request<T>(event);
+    // make id
+    const requestId = this.makeRequetsId(event.key);
+
+    return new Promise<T>((resolve, reject) => {
+      // register to event / response que
+      this.registerToEventQue(requestId, resolve, reject);
+
+      // post message after registration is complete.
+      this.postMessage({
+        type: "request",
+        origin: "app",
+        ...event,
+        id: requestId,
+      });
+    });
   }
 
   private static makeRequetsId(key: string): string {

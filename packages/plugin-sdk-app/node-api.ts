@@ -1,4 +1,4 @@
-import { request } from "./request";
+import { PluginSdk } from "./plugin-sdk";
 import {
   PLUGIN_SDK_NS_GET_NODE,
   PLUGIN_SDK_EK_REQUEST_GET_NODE_BY_ID,
@@ -15,7 +15,7 @@ export class NodeApi {
     width: number;
     height: number;
   }> {
-    return await request({
+    return await PluginSdk.request({
       namespace: PLUGIN_SDK_NS_GET_NODE,
       key: PLUGIN_SDK_EK_REQUEST_GET_NODE_BY_ID,
       data: { id: this.id },
