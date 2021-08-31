@@ -16,6 +16,7 @@ import {
   NumberKeyword,
 } from "coli";
 
+import { NameCases, nameit } from "@coli.codes/naming";
 import { stringfy } from "@coli.codes/export-string";
 
 export interface InterfaceCodeBuilParam {
@@ -47,7 +48,11 @@ export function buildInterface(p: InterfaceCodeBuilParam) {
     name: p.name,
     members: p.properties.map((n) => {
       return new PropertySignature({
-        name: new Identifier(n.name),
+        name: new Identifier(
+          nameit(n.name, {
+            case: NameCases.camel,
+          }).name
+        ),
         type: _make_type(n.type),
       });
     }),
