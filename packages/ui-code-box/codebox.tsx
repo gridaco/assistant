@@ -11,14 +11,12 @@ import styled from "@emotion/styled";
 
 export type SourceInput = string | { raw: string };
 
-interface Props {
+export function CodeBox(props: {
   language: "dart" | "jsx" | string;
   code: SourceInput;
   app?: any;
   codeActions?: Array<JSX.Element>;
-}
-
-export function CodeBox(props: Props) {
+}) {
   const raw = typeof props.code == "string" ? props.code : props.code.raw;
 
   useEffect(() => {
