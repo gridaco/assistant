@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSingleSelection } from "plugin-app";
 import { _FigmaVariantPropertyCompatType_to_string } from "@design-sdk/figma/features/variant";
-import { analyzeNode, SchemaDefinitionLike } from "./analyze-node";
+import {
+  analyzeNode,
+  SchemaDefinitionLike,
+} from "@design-sdk/figma/node-analysis";
 import * as Modes from "./by-selection-state";
 
 type EditerMode =
@@ -10,19 +13,10 @@ type EditerMode =
   | "no-selection";
 
 export function SchemaEditor(props: {}) {
-  const [mode, setMode] = useState<EditerMode>("no-selection");
-
   // use selection hook, then update the mode corresponding to selected layer on design tool
   const selection = useSingleSelection();
 
-  useEffect(() => {
-    if (selection) {
-      const analysis = analyzeNode(selection?.node);
-      setMode(analysis);
-    } else {
-      setMode("no-selection");
-    }
-  }, [selection]);
+  const mode = analyzeNode(selection?.node) ?? "no-selection";
 
   const Body = () => {
     if (!selection || mode === "no-selection") {
@@ -36,12 +30,12 @@ export function SchemaEditor(props: {}) {
         return <Modes.ConfigurableLayer node={selection.node} />;
       case "base-master-component":
         return <Modes.BaseMaster />;
+      case "variant-set":
+        return <Modes.VariantSet />;
       case "master-variant-compoent":
         return <Modes.VariantMaster />;
-      case "master-variant-set":
-        return <Modes.VariantSet />;
-      case "master-variant-instance":
-        return <Modes.VariantInstance />;
+      case "variant-instance":
+        return <Modes.VariantInstance node={selection.node} />;
       case "master-component":
         return <Modes.MasterComponent node={selection.node} />;
       case "instance-component":
@@ -53,8 +47,7 @@ export function SchemaEditor(props: {}) {
 
   return (
     <>
-      <p>schema editor</p>
-      <p>{selection?.node?.origin}</p>
+      <h4>schema editor</h4>
       <Body />
     </>
   );

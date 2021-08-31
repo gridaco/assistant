@@ -6,5 +6,10 @@ export default function (props: {
   defaultComponent?: nodes.light.IReflectNodeReference;
 }) {
   // TODO
-  return <p>select component inside variant set</p>;
+  return (
+    <>
+      <h6>variant set</h6>
+      <p>select component inside variant set</p>;
+    </>
+  );
 }

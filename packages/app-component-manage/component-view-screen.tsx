@@ -11,10 +11,8 @@ import { PluginSdk } from "@plugin-sdk/app";
 import { Divider, IconButton, Typography } from "@material-ui/core";
 import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "@core/constant";
 import { Edit, Settings } from "@material-ui/icons";
-import { ComponentCodebox } from "./component-codebox";
 import { ComponentSchemaEditor } from "./schema-editor";
 import { useSingleSelection } from "plugin-app";
-import { CodeBox } from "@ui/codebox";
 
 interface VisualComponentManifest {
   name: string;
@@ -66,7 +64,7 @@ export function ComponentViewScreen() {
   return (
     <div>
       <Preview auto />
-      <CodeBox language="jsx" code="//aa" />
+
       {/* {selection ? (
         <form key={JSON.stringify(data)}>
           <p>component view placeholder</p>

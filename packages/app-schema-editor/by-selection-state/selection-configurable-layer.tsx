@@ -39,6 +39,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
 
   return (
     <>
+      <h6>configurable layer</h6>
       {data.length > 0 ? (
         data.map((d) => (
           <SingleLayerPropertyDefinition

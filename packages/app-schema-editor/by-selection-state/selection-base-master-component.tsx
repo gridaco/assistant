@@ -1,5 +1,9 @@
 import React from "react";
 
 export default function () {
-  return <></>;
+  return (
+    <>
+      <h6>base master component</h6>
+    </>
+  );
 }
