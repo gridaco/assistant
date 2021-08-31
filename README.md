@@ -56,7 +56,7 @@ yarn sketch
 
 # [OPTIONAL 3 & Contributors only] run plugin ui in webdev mode
 yarn web
-# visit http://localhost:3000/init-webdev to work on browser
+# visit http://localhost:3303/init-webdev to work on browser
 ```
 
 _soon as the subpackages are released as stable, we will remove git submodule dependency for ease of use. until then, this will be the primary repository and all the edits and PRs will be caused by this project._ - [Learn more here](https://github.com/bridgedxyz/.github/blob/main/contributing/working-with-submodules.md)
@@ -176,13 +176,12 @@ we release new updates in a by-monthluy cycle. Watch this repository on github o
 
 All update logs available at [CHANGELOG.md](./CHANGELOG.md)
 
-
 ## Blogs
+
 - [Flutter force week 103](https://medium.com/flutterforce/flutterforce-week-103-95b0822ef25f)
 - [Flutter force week 135](https://medium.com/flutterforce/flutterforce-week-135-d28b8741302a)
 - [Assistant initial release](https://blog.grida.co/assistant-initial-release-f75d0084df9c)
 - [Introducng Grida Assistant 2021.8.0b](https://blog.grida.co/figma-assistant-by-grida-supercharge-your-design-development-workflow-e6b2989216e2)
-
 
 ## LEGAL
 

@@ -48,7 +48,7 @@ function LiteHostedAppConnector() {
   const _host =
     process.env.NODE_ENV === "production"
       ? "https://assistant-serve.grida.co"
-      : "http://localhost:3000";
+      : "http://localhost:3303";
 
   // use opacity
   // if (initialized) => show iframe only
