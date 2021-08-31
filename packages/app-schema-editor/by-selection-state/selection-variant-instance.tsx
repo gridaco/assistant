@@ -1,7 +1,12 @@
 import React from "react";
 import { nodes, utils } from "@design-sdk/core";
 import { variant } from "@design-sdk/figma/features";
-import { _FigmaVariantPropertyCompatType_to_string } from "@design-sdk/figma/features/variant";
+import {
+  FigmaBoolean,
+  FigmaNumber,
+  FigmaUnique,
+  _FigmaVariantPropertyCompatType_to_string,
+} from "@design-sdk/figma/features/variant";
 import { CodeBox } from "@ui/codebox";
 
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
@@ -24,7 +29,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
           properties: variantProperties.map((d) => {
             return {
               name: d.key,
-              type: _FigmaVariantPropertyCompatType_to_string(d.type),
+              type: d.type,
             };
           }),
         })}
@@ -57,7 +62,7 @@ interface InterfaceCodeBuilParam {
   name: string;
   properties: {
     name: string;
-    type: string;
+    type: variant.FigmaVariantPropertyCompatType;
   }[];
 }
 
@@ -67,15 +72,35 @@ import {
   Identifier,
   LiteralType,
   StringLiteral,
+  UnionType,
+  BooleanKeyword,
+  NumberKeyword,
 } from "coli";
+
 import { stringfy } from "@coli.codes/export-string";
 function buildInterface(p: InterfaceCodeBuilParam) {
+  const _make_type = (t: variant.FigmaVariantPropertyCompatType) => {
+    if (t == FigmaNumber) {
+      return new NumberKeyword();
+    } else if (t == FigmaBoolean) {
+      return new BooleanKeyword();
+    } else if (t.type == "unique") {
+      return new LiteralType(new StringLiteral(t.value));
+    } else if (t.type == "enum") {
+      return new UnionType({
+        types: t.values.map((v) => {
+          return new LiteralType(new StringLiteral(v));
+        }),
+      });
+    }
+  };
+
   return new InterfaceDeclaration({
     name: p.name,
     members: p.properties.map((n) => {
       return new PropertySignature({
         name: new Identifier(n.name),
-        type: new LiteralType(new StringLiteral(n.type)),
+        type: _make_type(n.type),
       });
     }),
   });
