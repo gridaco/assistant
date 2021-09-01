@@ -25,14 +25,14 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
   }).name;
 
   const interfaceAttrs: InterfaceAttr[] = parser.properties.map((d) => {
-    const _contorls: InterfaceTypeOption = {
+    const _contorl: InterfaceTypeOption = {
       name: "name",
       value: "string",
       description: "type",
     };
     return {
       label: d.key,
-      contorls: [_contorls],
+      contorls: [_contorl],
     };
   });
   const viewName = nameit(master.parent.name, {
