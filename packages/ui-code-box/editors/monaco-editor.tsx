@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import Editor, { DiffEditor, useMonaco, loader } from "@monaco-editor/react";
 
-export function MonacoEditor(props: { src: string }) {
+export function MonacoEditor(props: { src: string; language: string }) {
   const monaco = useMonaco();
 
   useEffect(() => {
@@ -30,10 +30,10 @@ export function MonacoEditor(props: { src: string }) {
   return (
     <>
       <Editor
-        loading={<></>}
+        loading={<></>} // TODO: add loading state.
         theme="vs-dark"
         height="100%"
-        defaultLanguage="javascript"
+        defaultLanguage={props.language}
         defaultValue={props.src}
         value={props.src}
         options={{

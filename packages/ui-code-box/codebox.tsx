@@ -24,7 +24,7 @@ export function CodeBox({
 
   const Editor =
     editor == "monaco" ? (
-      <MonacoEditor src={raw} />
+      <MonacoEditor src={raw} language={language} />
     ) : (
       <PrismView src={raw} language={language} />
     );
