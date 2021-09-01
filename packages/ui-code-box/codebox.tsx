@@ -8,19 +8,30 @@ import {
 // import Prism from "prism-react-renderer/prism";
 import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
+import { MonacoEditor } from "./monaco-editor";
 
 export type SourceInput = string | { raw: string };
 
-export function CodeBox(props: {
+export function CodeBox({
+  language,
+  editor = "prism",
+  readonly = true,
+  code,
+  codeActions,
+}: {
   language: "dart" | "jsx" | string;
+  editor?: "monaco" | "prism";
+  /**
+   * true by default
+   */
+  readonly?: boolean;
   code: SourceInput;
-  app?: any;
   codeActions?: Array<JSX.Element>;
 }) {
-  const raw = typeof props.code == "string" ? props.code : props.code.raw;
+  const raw = typeof code == "string" ? code : code.raw;
 
   useEffect(() => {
-    if (props.language == "dart") {
+    if (language == "dart") {
       // region custom dart support
       // https://github.com/FormidableLabs/prism-react-renderer/issues/22#issuecomment-553042928
       const dartLang = require("refractor/lang/dart");
@@ -29,17 +40,24 @@ export function CodeBox(props: {
     }
   }, []);
 
+  const Editor =
+    editor == "monaco" ? (
+      <MonacoEditor src={raw} />
+    ) : (
+      <PrismCodehighlight src={raw} language={language} />
+    );
+
   return (
     <>
       {/* <CopyCodeButton /> */}
       <CodeWrapper>
-        {props.codeActions &&
-          props.codeActions.map((e) => {
+        {codeActions &&
+          codeActions.map((e) => {
             return e;
           })}
 
         {typeof raw == "string" ? (
-          <PrismCodehighlight code={raw} language={props.language} />
+          Editor
         ) : (
           <>Invalid code was givven. cannot display result (this is a bug)</>
         )}
@@ -50,12 +68,12 @@ export function CodeBox(props: {
   );
 }
 
-function PrismCodehighlight(props: { code: string; language: any | Language }) {
+function PrismCodehighlight(props: { src: string; language: any | Language }) {
   return (
     <PrismHighlight
       {...defaultProps}
       Prism={Prism}
-      code={props.code}
+      code={props.src}
       language={props.language}
     >
       {({ className, style, tokens, getLineProps, getTokenProps }) => (

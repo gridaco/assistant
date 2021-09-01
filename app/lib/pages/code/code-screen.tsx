@@ -161,7 +161,6 @@ export function CodeScreen() {
         />
         <CodeBox
           language={_src_view_language(useroption.framework)}
-          app={app}
           code={_make_source()}
         />
       </CodeWrapper>
