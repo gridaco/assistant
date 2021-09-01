@@ -7,6 +7,12 @@ import {
   buildInterfaceString,
 } from "../interface-code-builder";
 import { nameit, NameCases } from "@coli.codes/naming";
+import { Interface } from "@code-ui/interface";
+import {
+  InterfaceAttr,
+  InterfaceProps,
+  InterfaceTypeOption,
+} from "@code-ui/interface/dist/lib/type";
 
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const master = props.node;
@@ -16,9 +22,30 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const interfaceName = nameit(master.parent.name + "-props", {
     case: NameCases.pascal,
   }).name;
+
+  const interfaceAttrs: InterfaceAttr[] = parser.properties.map((d) => {
+    const _contorls: InterfaceTypeOption = {
+      name: "name",
+      value: "string",
+      description: "type",
+    };
+    return {
+      label: d.key,
+      contorls: [_contorls],
+    };
+  });
+
   return (
     <>
       <h6>variant</h6>
+
+      <Interface
+        lang={"js"}
+        theme={"monokai"}
+        interfaceName={interfaceName}
+        attrs={interfaceAttrs}
+        onChange={() => {}}
+      />
       <CodeBox
         language="jsx"
         code={buildInterfaceString({
