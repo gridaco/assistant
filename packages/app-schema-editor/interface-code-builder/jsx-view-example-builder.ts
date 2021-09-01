@@ -6,8 +6,8 @@ import {
   StringLiteral,
   TypeReference,
   VariableDeclaration,
+  stringfy,
 } from "coli";
-import { stringfy } from "@coli.codes/export-string";
 import { nameit, NameCases } from "@coli.codes/naming";
 
 export function jsxViewExampleBuilder(p: {

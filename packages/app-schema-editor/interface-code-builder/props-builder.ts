@@ -14,10 +14,10 @@ import {
   UnionType,
   BooleanKeyword,
   NumberKeyword,
+  stringfy,
 } from "coli";
 
 import { NameCases, nameit } from "@coli.codes/naming";
-import { stringfy } from "@coli.codes/export-string";
 
 export interface InterfaceCodeBuilParam {
   name: string;
