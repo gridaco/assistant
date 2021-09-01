@@ -160,6 +160,7 @@ export function CodeScreen() {
           onUseroptionChange={onOptionChange}
         />
         <CodeBox
+          editor="monaco"
           language={_src_view_language(useroption.framework)}
           code={_make_source()}
         />

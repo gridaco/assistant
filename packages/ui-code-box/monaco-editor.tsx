@@ -30,6 +30,7 @@ export function MonacoEditor(props: { src: string }) {
   return (
     <>
       <Editor
+        loading={<></>}
         theme="vs-dark"
         height="100%"
         defaultLanguage="javascript"
