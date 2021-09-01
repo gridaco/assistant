@@ -5,6 +5,7 @@ import { CodeBox } from "@ui/codebox";
 import {
   buildeExampleData,
   buildInterfaceString,
+  jsxViewExampleBuilder,
 } from "../interface-code-builder";
 import { nameit, NameCases } from "@coli.codes/naming";
 
@@ -16,6 +17,10 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const interfaceName = nameit(master.parent.name + "-props", {
     case: NameCases.pascal,
   }).name;
+  const viewName = nameit(master.parent.name, {
+    case: NameCases.pascal,
+  }).name;
+
   return (
     <>
       <h6>variant</h6>
@@ -42,11 +47,12 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
 
       <CodeBox
         language="jsx"
-        code={`const View = <${
-          nameit(master.parent.name, {
-            case: NameCases.pascal,
-          }).name
-        } {...data}/>`}
+        code={jsxViewExampleBuilder({
+          varName: "view",
+          viewTag: viewName,
+          typeReference: viewName,
+          properties: data_of_properties,
+        })}
       />
     </>
   );
