@@ -40,7 +40,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
       <CodeBox
         language="jsx"
         code={`const View = <${
-          nameit(props.node.name, {
+          nameit(master.parent.name, {
             case: NameCases.pascal,
           }).name
         } {...data}/>`}
