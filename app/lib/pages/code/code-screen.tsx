@@ -202,8 +202,8 @@ const CopyCodeButton = styled.div`
 `;
 
 const CodeWrapper = styled.div`
-  /* 374 is preview and navigation height*/
-  height: calc(100vh - 374px);
+  /* 366px is preview(200) + navigation(52+40) + footer btn wrapper(74) height*/
+  height: calc(100vh - 366px);
   background: rgb(42, 39, 52);
-  overflow-y: scroll;
+  overflow-y: hidden;
 `;
