@@ -17,7 +17,7 @@ import {
   InterfaceProps,
   InterfaceTypeOption,
 } from "@code-ui/interface/dist/lib/type";
-import { SelectionCodeUiInterface } from "./selectoin-code-ui-interface";
+import { PropsInterfaceView } from "../interface-code-builder/props-interface-view";
 
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const master = props.node;
@@ -36,9 +36,10 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
     <>
       <h6>variant</h6>
 
-      <SelectionCodeUiInterface
+      <PropsInterfaceView
+        onInterfaceNameChange={() => {}}
         properties={parser.properties}
-        interfaceName={interfaceName}
+        initialInterfaceName={interfaceName}
         onChange={() => {}}
       />
       <CodeBox

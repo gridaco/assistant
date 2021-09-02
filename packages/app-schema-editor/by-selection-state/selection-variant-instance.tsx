@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { nodes } from "@design-sdk/core";
 import {
   _FigmaVariantPropertyCompatType_to_string,
@@ -11,48 +11,56 @@ import {
   jsxViewExampleBuilder,
 } from "../interface-code-builder";
 import { nameit, NameCases } from "@coli.codes/naming";
-import { SelectionCodeUiInterface } from "./selectoin-code-ui-interface";
+import { PropsInterfaceView } from "../interface-code-builder/props-interface-view";
 
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
-  const master = props.node.mainComponent;
+  const _format_interface_pascal = (n) => {
+    return nameit(n + "-props", {
+      case: NameCases.pascal,
+    }).name;
+  };
 
+  const [interfaceName, setInterfaceName] = useState(
+    _format_interface_pascal(props.node.name)
+  );
+
+  const formattedInterfaceName = _format_interface_pascal(interfaceName);
+
+  const master = props.node.mainComponent;
   const parser = new VariantPropertyParser(master);
   const data_of_properties = parser.getData(master);
-  const interfaceName = nameit(props.node.name + "-props", {
-    case: NameCases.pascal,
-  }).name;
+  const interface_raw_code = buildInterfaceString({
+    name: formattedInterfaceName,
+    properties: parser.properties.map((d) => {
+      return {
+        name: d.key,
+        type: d.type,
+      };
+    }),
+  });
   const viewName = nameit(master.parent.name, {
     case: NameCases.pascal,
   }).name;
   // display available layer schema as this component's property
 
-  console.log(parser.properties);
   return (
     <>
       <h6>instance of variant</h6>
-
-      <SelectionCodeUiInterface
+      {/* TODO: add copy  - 1interface_raw_code1 */}
+      <PropsInterfaceView
+        onInterfaceNameChange={(n) => {
+          setInterfaceName(n);
+        }}
         properties={parser.properties}
-        interfaceName={interfaceName}
+        initialInterfaceName={interfaceName}
         onChange={() => {}}
       />
-      <CodeBox
-        language="jsx"
-        code={buildInterfaceString({
-          name: interfaceName,
-          properties: parser.properties.map((d) => {
-            return {
-              name: d.key,
-              type: d.type,
-            };
-          }),
-        })}
-      />
+
       <CodeBox
         language="jsx"
         code={buildeExampleData({
           name: "data",
-          interfaceName: interfaceName,
+          interfaceName: formattedInterfaceName,
           properties: data_of_properties,
         })}
       />

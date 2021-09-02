@@ -1,10 +1,11 @@
-import React from "react";
-import { Interface } from "@code-ui/interface";
+import React, { useState } from "react";
+import { Interface as InterfaceView } from "@code-ui/interface";
 import {
   InterfaceAttr,
   InterfaceTypeOption,
   KindOfType,
 } from "@code-ui/interface/dist/lib/type";
+import { nameit, NameCases } from "@coli.codes/naming";
 
 import {
   FigmaVariantPropertyCompatType,
@@ -16,8 +17,9 @@ const regxBooleanType = /(boolean)/;
 
 interface ISelectionCodeUiInterface {
   properties: VariantProperty[];
-  interfaceName: string;
+  initialInterfaceName: string;
   onChange: () => void;
+  onInterfaceNameChange: (n: string) => void;
 }
 
 // only using for interface package!
@@ -40,7 +42,10 @@ export function typeToString(_data: FigmaVariantPropertyCompatType): any {
   }
 }
 
-export function SelectionCodeUiInterface(props: ISelectionCodeUiInterface) {
+export function PropsInterfaceView(props: ISelectionCodeUiInterface) {
+  const [interfaceName, setInterfaceName] = useState(
+    props.initialInterfaceName
+  );
   const interfaceAttrs: InterfaceAttr[] = props.properties.map((d) => {
     const attrTypes = typeToString(d.type);
     const _contorl: InterfaceTypeOption = {
@@ -49,23 +54,27 @@ export function SelectionCodeUiInterface(props: ISelectionCodeUiInterface) {
       description: `type is ${attrTypes}`,
     };
     return {
-      label: d.key,
+      label: nameit(d.key, {
+        case: NameCases.camel,
+      }).name,
       contorls: [_contorl],
     };
   });
 
-  function interfaceHandle(field: string, value: string) {
-    console.log(field);
-    console.log(value);
+  function onchange(field: string, value: string) {
+    if (field == "interfaceName") {
+      setInterfaceName(value);
+      props.onInterfaceNameChange(value);
+    }
   }
 
   return (
-    <Interface
+    <InterfaceView
       lang={"js"}
       theme={"monokai"}
-      interfaceName={props.interfaceName}
+      interfaceName={interfaceName}
       attrs={interfaceAttrs}
-      onChange={interfaceHandle}
+      onChange={onchange}
     />
   );
 }
