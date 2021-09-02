@@ -3,6 +3,7 @@ import { Interface } from "@code-ui/interface";
 import {
   InterfaceAttr,
   InterfaceTypeOption,
+  KindOfType,
 } from "@code-ui/interface/dist/lib/type";
 
 import {
@@ -52,13 +53,19 @@ export function SelectionCodeUiInterface(props: ISelectionCodeUiInterface) {
       contorls: [_contorl],
     };
   });
+
+  function interfaceHandle(field: string, value: string) {
+    console.log(field);
+    console.log(value);
+  }
+
   return (
     <Interface
       lang={"js"}
       theme={"monokai"}
       interfaceName={props.interfaceName}
       attrs={interfaceAttrs}
-      onChange={props.onChange}
+      onChange={interfaceHandle}
     />
   );
 }
