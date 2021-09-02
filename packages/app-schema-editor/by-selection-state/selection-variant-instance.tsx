@@ -45,7 +45,6 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
 
   return (
     <>
-      <h6>instance of variant</h6>
       {/* TODO: add copy  - 1interface_raw_code1 */}
       <PropsInterfaceView
         onInterfaceNameChange={(n) => {

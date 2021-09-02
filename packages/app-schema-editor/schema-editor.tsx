@@ -47,7 +47,6 @@ export function SchemaEditor(props: {}) {
 
   return (
     <>
-      <h4>schema editor</h4>
       <Body />
     </>
   );

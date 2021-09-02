@@ -34,8 +34,6 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
 
   return (
     <>
-      <h6>variant</h6>
-
       <PropsInterfaceView
         onInterfaceNameChange={() => {}}
         properties={parser.properties}
