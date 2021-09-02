@@ -1,0 +1,7 @@
+{
+    "name": "@app/design-text-code-syntax-highlight",
+    "version": "0.0.0",
+    "description": "code syntax highlighter for design texts",
+    "private": false,
+    "license": "BSD-3-Clause"
+}
