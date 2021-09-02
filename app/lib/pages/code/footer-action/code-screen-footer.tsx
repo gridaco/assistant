@@ -86,7 +86,6 @@ const InnerWrapper = styled.div`
 `;
 const PreviewButton = styled.button`
   ${WhtieButtonStyle}
-  /* 1/3 size. 12 is wrapper padding */
-  /* width: calc(33.333% - 12px); */
-  width: 33.333%;
+  /* temp before add button component */
+  width: 36%;
 `;

@@ -18,6 +18,7 @@ import {
   InterfaceTypeOption,
 } from "@code-ui/interface/dist/lib/type";
 import { PropsInterfaceView } from "../interface-code-builder/props-interface-view";
+import styled from "@emotion/styled";
 
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const master = props.node;
@@ -33,7 +34,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
   }).name;
 
   return (
-    <>
+    <CodeStyleWrapper>
       <PropsInterfaceView
         onInterfaceNameChange={() => {}}
         properties={parser.properties}
@@ -70,6 +71,13 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
           properties: data_of_properties,
         })}
       />
-    </>
+    </CodeStyleWrapper>
   );
 }
+
+const CodeStyleWrapper = styled.div`
+  height: calc(100vh - 292px);
+  background: #1e1e1e;
+  overflow: auto;
+  padding: 0 6px;
+`;

@@ -12,6 +12,7 @@ import {
 } from "../interface-code-builder";
 import { nameit, NameCases } from "@coli.codes/naming";
 import { PropsInterfaceView } from "../interface-code-builder/props-interface-view";
+import styled from "@emotion/styled";
 
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const _format_interface_pascal = (n) => {
@@ -45,34 +46,43 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
 
   return (
     <>
-      {/* TODO: add copy  - 1interface_raw_code1 */}
-      <PropsInterfaceView
-        onInterfaceNameChange={(n) => {
-          setInterfaceName(n);
-        }}
-        properties={parser.properties}
-        initialInterfaceName={interfaceName}
-        onChange={() => {}}
-      />
+      <CodeStyleWrapper>
+        {/* TODO: add copy  - 1interface_raw_code1 */}
+        <PropsInterfaceView
+          onInterfaceNameChange={(n) => {
+            setInterfaceName(n);
+          }}
+          properties={parser.properties}
+          initialInterfaceName={interfaceName}
+          onChange={() => {}}
+        />
 
-      <CodeBox
-        language="jsx"
-        code={buildeExampleData({
-          name: "data",
-          interfaceName: formattedInterfaceName,
-          properties: data_of_properties,
-        })}
-      />
+        <CodeBox
+          language="jsx"
+          code={buildeExampleData({
+            name: "data",
+            interfaceName: formattedInterfaceName,
+            properties: data_of_properties,
+          })}
+        />
 
-      <CodeBox
-        language="jsx"
-        code={jsxViewExampleBuilder({
-          varName: "view",
-          viewTag: viewName,
-          typeReference: viewName,
-          properties: data_of_properties,
-        })}
-      />
+        <CodeBox
+          language="jsx"
+          code={jsxViewExampleBuilder({
+            varName: "view",
+            viewTag: viewName,
+            typeReference: viewName,
+            properties: data_of_properties,
+          })}
+        />
+      </CodeStyleWrapper>
     </>
   );
 }
+
+const CodeStyleWrapper = styled.div`
+  height: calc(100vh - 292px);
+  background: #1e1e1e;
+  overflow: auto;
+  padding: 0 6px;
+`;

@@ -114,31 +114,33 @@ export const LintScreen = () => {
 
         {ErrorLineItem()}
         <FooterActionsWrapper>
-          {feedbacks.length === 0 ? (
-            <RunLintButtton
-              disabled={!selection}
-              onClick={requestLintOnCurrentSelection}
-            >
-              Run lint
-            </RunLintButtton>
-          ) : (
-            <>
-              <FirstErrorButton
-                onClick={() => {
-                  setIsFixingMode(true);
-                }}
+          <InnerWrapper>
+            {feedbacks.length === 0 ? (
+              <RunLintButtton
+                disabled={!selection}
+                onClick={requestLintOnCurrentSelection}
               >
-                Jump to first error
-              </FirstErrorButton>
-              <ClearButton
-                onClick={() => {
-                  setFeedbacks([]); // clear feedbacks
-                }}
-              >
-                Clear
-              </ClearButton>
-            </>
-          )}
+                Run lint
+              </RunLintButtton>
+            ) : (
+              <>
+                <FirstErrorButton
+                  onClick={() => {
+                    setIsFixingMode(true);
+                  }}
+                >
+                  Jump to first error
+                </FirstErrorButton>
+                <ClearButton
+                  onClick={() => {
+                    setFeedbacks([]); // clear feedbacks
+                  }}
+                >
+                  Clear
+                </ClearButton>
+              </>
+            )}
+          </InnerWrapper>
         </FooterActionsWrapper>
       </Wrapper>
       <Dialog open={isFixingMode} fullScreen>
@@ -213,30 +215,34 @@ const ErrorList = styled.ul`
 `;
 
 const FooterActionsWrapper = styled.div`
-  // FIXME:
-  /* width: calc(100% - 32px); */
   width: 100%;
   display: flex;
   position: absolute;
   bottom: 16px;
+  left: 0;
+`;
+
+const InnerWrapper = styled.div`
+  width: 100%;
+  margin: 0 16px;
 `;
 
 const RunLintButtton = styled.button`
   ${BlackButtonStyle}
-  width: calc(100% - 32px); // FIXME:
-  position: absolute;
-  bottom: 16px;
+  width: 100%;
 `;
 
 const FirstErrorButton = styled.button`
   ${BlackButtonStyle}
-  width: 66.6666%;
+  /* temp before add button component */
+  width: 61%;
   margin-right: 8px;
 `;
 
 const ClearButton = styled.button`
   ${TransparentButtonStyle}
-  width: 33.3333%;
+  /* temp before add button component */
+  width: 36%;
   background: #fff;
 `;
 
