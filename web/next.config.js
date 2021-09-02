@@ -18,6 +18,7 @@ const withTM = require("next-transpile-modules")([
   "@app/button-maker",
   "@app/data-mapper",
   "@app/design-lint",
+  "@app/design-text-code-syntax-highlight",
   "@app/icons-loader",
   "@app/meta-editor",
   "@app/meta-editor",

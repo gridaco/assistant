@@ -24,6 +24,7 @@ import { FontReplacerScreen } from "@toolbox/font-replacer";
 import { CodeScreen } from "../pages/code/code-screen";
 import { AboutScreen } from "../pages/about";
 import { SigninScreen } from "@app/auth";
+import { DesignTextCdoeSyntaxHighligherScreen } from "@app/design-text-code-syntax-highlight";
 // endregion screens import
 //
 
@@ -61,7 +62,9 @@ function Screen(props: { screen: WorkScreen }) {
     case WorkScreen.component:
       return <ComponentViewScreen />;
     case WorkScreen.layout:
-      return <LayoutViewScreen />;
+      // return <LayoutViewScreen />;
+      // FIXME: temporary dev
+      return <DesignTextCdoeSyntaxHighligherScreen />;
     case WorkScreen.icon:
       return <IconsScreen />;
     case WorkScreen.lint:
