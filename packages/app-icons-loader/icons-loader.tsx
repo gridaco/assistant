@@ -367,12 +367,12 @@ const SearchBar = styled.div`
   width: 100%;
   font-size: 14px;
   height: 55px;
+  padding: 8px;
   display: flex;
   align-items: center;
 
   svg {
-    margin: 10px;
-    margin-left: 8px;
+    margin: 10px 10px 10px 8px;
     font-size: 20px;
   }
 `;
