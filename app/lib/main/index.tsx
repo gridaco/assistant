@@ -123,7 +123,7 @@ function TabsLayout(props: {
   return (
     <div className="outer-ui">
       {props.isTabVisible && (
-        <div className="tabs-wrapper" style={{ margin: "0 -8px" }}>
+        <div className="tabs-wrapper">
           <WorkmodeScreenTabs
             layout={tabs_as_page_configs}
             tabIndex={tabIndex}
@@ -310,6 +310,6 @@ function _update_focused_screen_ev(screen: WorkScreen) {
 
 const Wrapper = styled.div`
   display: flex;
-  padding: 0 8px;
-  /* margin-bottom: -8px; */
+  padding: 0 16px;
+  /* padding: 0 8px; */
 `;

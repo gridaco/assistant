@@ -142,7 +142,7 @@ const Item = styled(motion.h5)`
 
 const FooterButtonWrapper = styled.div`
   position: absolute;
-  bottom: 8px;
+  bottom: 16px;
   width: calc(100% - 40px);
 `;
 const IconBox = styled.div`

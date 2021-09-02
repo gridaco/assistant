@@ -45,7 +45,7 @@ export function CodeScreenFooter(props: ICodeScreenFooter) {
   return (
     <CodeFooterCtaWrapper>
       {
-        <>
+        <InnerWrapper>
           <NextUploadButton disabled={!_can_enable_next} {...props} />
           {_can_show_preview && (
             <PreviewButton
@@ -55,7 +55,7 @@ export function CodeScreenFooter(props: ICodeScreenFooter) {
               {isLaunchingConsole ? "launching.." : "preview"}
             </PreviewButton>
           )}
-        </>
+        </InnerWrapper>
       }
     </CodeFooterCtaWrapper>
   );
@@ -63,13 +63,15 @@ export function CodeScreenFooter(props: ICodeScreenFooter) {
 
 const CodeFooterCtaWrapper = styled.footer`
   /* 32 is padding */
-  width: calc(100% - 32px);
-  padding: 12px 16px;
+  /* width: calc(100% - 32px); */
+  width: 100%;
+  padding: 12px 0;
   display: flex;
   background: #fff;
   position: absolute;
   left: 0;
   bottom: 0;
+  display: flex;
 
   button {
     &:first-child {
@@ -77,8 +79,14 @@ const CodeFooterCtaWrapper = styled.footer`
     }
   }
 `;
+
+const InnerWrapper = styled.div`
+  width: 100%;
+  margin: 0 16px;
+`;
 const PreviewButton = styled.button`
   ${WhtieButtonStyle}
   /* 1/3 size. 12 is wrapper padding */
-  width: calc(33.333% - 12px);
+  /* width: calc(33.333% - 12px); */
+  width: 33.333%;
 `;

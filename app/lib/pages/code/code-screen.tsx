@@ -205,6 +205,5 @@ const CodeWrapper = styled.div`
   /* 374 is preview and navigation height*/
   height: calc(100vh - 374px);
   background: rgb(42, 39, 52);
-  margin: 0 -8px;
   overflow-y: scroll;
 `;

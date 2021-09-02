@@ -103,7 +103,7 @@ export const LintScreen = () => {
   return (
     <>
       {/* <Preview data={undefined} name="selected node name" /> */}
-      <ErrorWrapper>
+      <Wrapper>
         {!!selection ? (
           <>{handleSelectionLayer()}</>
         ) : (
@@ -113,32 +113,34 @@ export const LintScreen = () => {
         )}
 
         {ErrorLineItem()}
-        {feedbacks.length === 0 ? (
-          <RunLintButtton
-            disabled={!selection}
-            onClick={requestLintOnCurrentSelection}
-          >
-            Run lint
-          </RunLintButtton>
-        ) : (
-          <FooterActionsWrapper>
-            <FirstErrorButton
-              onClick={() => {
-                setIsFixingMode(true);
-              }}
+        <FooterActionsWrapper>
+          {feedbacks.length === 0 ? (
+            <RunLintButtton
+              disabled={!selection}
+              onClick={requestLintOnCurrentSelection}
             >
-              Jump to first error
-            </FirstErrorButton>
-            <ClearButton
-              onClick={() => {
-                setFeedbacks([]); // clear feedbacks
-              }}
-            >
-              Clear
-            </ClearButton>
-          </FooterActionsWrapper>
-        )}
-      </ErrorWrapper>
+              Run lint
+            </RunLintButtton>
+          ) : (
+            <>
+              <FirstErrorButton
+                onClick={() => {
+                  setIsFixingMode(true);
+                }}
+              >
+                Jump to first error
+              </FirstErrorButton>
+              <ClearButton
+                onClick={() => {
+                  setFeedbacks([]); // clear feedbacks
+                }}
+              >
+                Clear
+              </ClearButton>
+            </>
+          )}
+        </FooterActionsWrapper>
+      </Wrapper>
       <Dialog open={isFixingMode} fullScreen>
         <FixYourSelf
           feedbacks={feedbacks}
@@ -156,7 +158,7 @@ function _makeshortname(origin: string, cut?: number): string {
   return _cut < origin.length ? origin.substring(0, _cut) + "..." : origin;
 }
 
-const ErrorWrapper = styled.div`
+const Wrapper = styled.div`
   margin: 0 8px;
 `;
 
@@ -212,7 +214,8 @@ const ErrorList = styled.ul`
 
 const FooterActionsWrapper = styled.div`
   // FIXME:
-  width: calc(100% - 32px);
+  /* width: calc(100% - 32px); */
+  width: 100%;
   display: flex;
   position: absolute;
   bottom: 16px;

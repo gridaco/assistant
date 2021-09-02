@@ -83,8 +83,6 @@ function buildOpenUrlForRegisteredScene(sceneId: string) {
 
 const NextStepButton = styled.button`
   ${BlackButtonStyle}
-  /* 2/3 size. 12 is wrapper padding  */
-  width: calc(66.666% - 12px); /* FIXME: stupid! */
 
   &:hover {
     color: #fff;

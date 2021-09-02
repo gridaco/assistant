@@ -429,7 +429,6 @@ const SizeCheck = styled.div`
 
 const StyledLinearProgress = styled(LinearProgress)`
   /* for reset body margin */
-  margin: 0 -8px;
 
   /* reset material-ui style */
   &.color-primary {

@@ -51,9 +51,13 @@ const CodeInnerWrapper = styled.pre`
     font-weight: 400;
   }
   width: 100%;
-  /* height: 408px; */
-  margin: 0 8px;
-  /* margin: 0 -8px; */
   padding: 8px;
+
+  // for reset pre user agent style
+  margin: 0;
+
+  /* height: 408px; */
+  /* margin: 0 8px; */
+  /* margin: 0 -8px; */
   /* overflow: scroll; */
 `;
