@@ -1047,15 +1047,19 @@
     "@abraham/reflection" "^0.8.0"
     dart-style "^1.3.2-dev"
 
-"@code-ui/color-scheme@0.0.0":
+"@code-ui/color-scheme@0.0.0", "@code-ui/color-scheme@^0.0.0":
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/@code-ui/color-scheme/-/color-scheme-0.0.0.tgz#9f7b1d32e33193166c2958dec999c9fbf9009c8d"
   integrity sha512-KqxYgHgEZYEqs0+n2wX4cIAo4PpBtsLDHxWJcUdXcYeV9u0cTVQ9qJA/8M+d44L6Hu8sYz+lM7f5q2o3W4hloQ==
 
-"@code-ui/core@^0.0.0":
-  version "0.0.0"
-  resolved "https://registry.yarnpkg.com/@code-ui/core/-/core-0.0.0.tgz#1ded6bfd5ab2ec1f44e40116baa569662a0de60c"
-  integrity sha512-NTFTGyzdEBmyfQR68slWe99D0VvHQWJnl/5KqS+WZfm1bn0C+i5g/ZEKyqyNnF+F755dTF/rMYCs2eZw0Cn0EA==
+"@code-ui/core@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@code-ui/core/-/core-0.0.1.tgz#42d8ecea95ffa90037778a1b8fde537956158181"
+  integrity sha512-YoVyYAYOSwxZnSzs+/uyobth0ixC2p7UvkGrOpUpnTcQr8GP6xqZiC6Tm9iHl8L0SRxiQeRdt9rrLljEMyoaiQ==
+  dependencies:
+    "@code-ui/color-scheme" "^0.0.0"
+    "@code-ui/token" "^0.0.1"
+    handlebars "^4.7.7"
 
 "@code-ui/docstring@^0.0.9":
   version "0.0.9"
@@ -1065,22 +1069,22 @@
     "@tippyjs/react" "^4.2.5"
     handlebars "^4.7.7"
 
-"@code-ui/interface@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@code-ui/interface/-/interface-0.0.3.tgz#f506008427c3cf1a65d404915f21e02c1308fbc7"
-  integrity sha512-yF0yVLtXuwKPr2sa2JrPItW22NRaBQWkDg2sVkYw20Y395cRtJkk8f5OiJwGkZCCc5swcErn6uERXinFFd7pkw==
+"@code-ui/interface@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@code-ui/interface/-/interface-0.0.5.tgz#0b967f91cf648b7c8e1f60891e95031f28783fcc"
+  integrity sha512-PXUeukdmEcqHjFCT19MLlvg60HLN4yFIpJuBHzP4zaBEb2ki7O5gwuREuZzPnrXl3A0NcGfK8xecd/17E4ix7w==
   dependencies:
     "@code-ui/color-scheme" "0.0.0"
-    "@code-ui/core" "^0.0.0"
-    "@code-ui/token" "^0.0.2"
+    "@code-ui/core" "^0.0.1"
     "@emotion/react" "^11.4.1"
 
-"@code-ui/token@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@code-ui/token/-/token-0.0.2.tgz#c44f8cce112a938b7dbd0608a0f3cd2e082e65f8"
-  integrity sha512-JKNvZ1TcRjW/uHwQ8bghIpEU4w97F+dwWt4TKu8tx9I42Rmy3xeqN9Fq4s9+M2pt3xYjRER7CwYq9s+R2ye6Qg==
+"@code-ui/token@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@code-ui/token/-/token-0.0.1.tgz#910af77dd7deb310406b40fef62eef9db1e15115"
+  integrity sha512-wKXzAEjIi5zur7En74I1KZBWArkER+aiMHSMxx3uuXzW+gnx3BWtWAqbWmJjDAOjD8WqbwN/frvtidl9M8E3cw==
   dependencies:
     "@tippyjs/react" "^4.2.5"
+    handlebars "^4.7.7"
 
 "@design-sdk/figma-remote-api@0.0.0":
   version "0.0.0"

@@ -5,6 +5,6 @@
   "version": "0.0.0",
   "private": false,
   "dependencies": {
-    "@code-ui/interface": "^0.0.3"
+    "@code-ui/interface": "^0.0.5"
   }
 }
