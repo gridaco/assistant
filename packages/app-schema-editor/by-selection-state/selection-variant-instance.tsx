@@ -11,6 +11,7 @@ import {
   jsxViewExampleBuilder,
 } from "../interface-code-builder";
 import { nameit, NameCases } from "@coli.codes/naming";
+import { SelectionCodeUiInterface } from "./selectoin-code-ui-interface";
 
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const master = props.node.mainComponent;
@@ -24,9 +25,17 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
     case: NameCases.pascal,
   }).name;
   // display available layer schema as this component's property
+
+  console.log(parser.properties);
   return (
     <>
       <h6>instance of variant</h6>
+
+      <SelectionCodeUiInterface
+        properties={parser.properties}
+        interfaceName={interfaceName}
+        onChange={() => {}}
+      />
       <CodeBox
         language="jsx"
         code={buildInterfaceString({
