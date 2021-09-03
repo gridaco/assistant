@@ -15,6 +15,7 @@ import { LayoutViewScreen } from "../pages/layout-view";
 import { ComponentViewScreen } from "@app/component-manage";
 import { LintScreen } from "@app/design-lint";
 import { IconsScreen } from "@app/icons-loader";
+import { PhotoScreen } from "@app/photo-loader";
 import { MetaEditorScreen, BatchMetaEditor } from "@app/meta-editor";
 import { ExporterScreen } from "@app/export-scene-as-json";
 import { DataMapperScreen } from "@app/data-mapper";
@@ -64,6 +65,8 @@ function Screen(props: { screen: WorkScreen }) {
       return <LayoutViewScreen />;
     case WorkScreen.icon:
       return <IconsScreen />;
+    case WorkScreen.photo:
+      return <PhotoScreen />;
     case WorkScreen.lint:
       return <LintScreen />;
     case WorkScreen.dev:
@@ -218,14 +221,17 @@ function RouterTabNavigationApp(props) {
   const path = "/" + workmode + "/" + work;
   useEffect(() => {
     const _page_config = get_page_config_by_path(path);
-
-    loadLayout().then((l) =>
-      setSavedLayout({
-        ...l,
-        currentWorkmode: workmode,
-        currentWork: _page_config.id,
-      })
-    );
+    if (_page_config) {
+      loadLayout().then((l) =>
+        setSavedLayout({
+          ...l,
+          currentWorkmode: workmode,
+          currentWork: _page_config.id,
+        })
+      );
+    } else {
+      throw `${path} is not registered`;
+    }
   }, []);
 
   return <>{savedLayout && <TabNavigationApp savedLayout={savedLayout} />}</>;
@@ -233,21 +239,14 @@ function RouterTabNavigationApp(props) {
 
 function Home() {
   const history = useHistory();
-  const [savedLayout, setSavedLayout] =
-    useState<NavigationStoreState>(undefined);
-
   useEffect(() => {
     loadLayout()
-      .then((d) => {
-        setSavedLayout(d);
+      .then((savedLayout) => {
+        const p = get_page_config(savedLayout.currentWork).path;
+        history.replace(p);
       })
       .finally(() => {});
   }, []);
-
-  if (savedLayout) {
-    const p = get_page_config(savedLayout.currentWork).path;
-    history.replace(p);
-  }
 
   return <></>;
 }
@@ -289,6 +288,17 @@ export default function App(props: { platform: TargetPlatform }) {
           <Route path="/:workmode/:work" component={RouterTabNavigationApp} />
           <Route path="/" component={Home} />
           {/* 👆 this is for preventing blank page on book up. this will be fixed and removed.*/}
+          <Route
+            component={() => (
+              <>
+                Not found -{" "}
+                <a href="https://github.com/gridaco/assistant/issues/new">
+                  report issue
+                </a>{" "}
+              </>
+            )}
+          />
+          {/* all other unregistered paths - FIXME: won't catch */}
         </Switch>
       </Router>
     </PluginApp>

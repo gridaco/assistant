@@ -9,6 +9,7 @@ export enum WorkScreen {
   component = "component",
   layout = "layout",
   icon = "icon",
+  photo = "photo",
   lint = "lint",
   g11n = "g11n",
   dev = "dev",

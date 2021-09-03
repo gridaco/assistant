@@ -15,7 +15,12 @@ export function getWorkmodeTabLayout(workspaceMode: WorkMode): TabLayout {
           WorkScreen.lint,
         ];
       case WorkMode.design:
-        return [WorkScreen.icon, WorkScreen.layout, WorkScreen.lint];
+        return [
+          WorkScreen.icon,
+          WorkScreen.photo,
+          WorkScreen.layout,
+          WorkScreen.lint,
+        ];
       case WorkMode.content:
         return [WorkScreen.g11n, WorkScreen.exporter];
       case WorkMode.settings:
@@ -52,6 +57,8 @@ export function workScreenToName(appMode: WorkScreen): string {
       return "tools";
     case WorkScreen.icon:
       return "icon";
+    case WorkScreen.photo:
+      return "photo";
     case WorkScreen.lint:
       return "lint";
     case WorkScreen.exporter:

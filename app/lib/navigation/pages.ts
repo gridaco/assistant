@@ -40,6 +40,12 @@ const page_design_icon: PageConfig = {
   path: "/design/icons",
 };
 
+const page_design_photo: PageConfig = {
+  id: WorkScreen.photo,
+  title: "Photo",
+  path: "/design/photos-loader",
+};
+
 const page_design_layout: PageConfig = {
   id: WorkScreen.layout,
   title: "Layout",
@@ -119,6 +125,7 @@ const all_pages: PageConfig[] = [
   page_design_lint,
   page_design_layout,
   page_design_icon,
+  page_design_photo,
   page_code_layout,
   page_code_preview,
   page_code_component,

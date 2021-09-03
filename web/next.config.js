@@ -19,6 +19,7 @@ const withTM = require("next-transpile-modules")([
   "@app/data-mapper",
   "@app/design-lint",
   "@app/icons-loader",
+  "@app/photo-loader",
   "@app/meta-editor",
   "@app/meta-editor",
   "@app/export-scene-as-json",
