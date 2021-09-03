@@ -1,0 +1,8 @@
+{
+    "name": "@app/photo-loader",
+    "description": "Photo loader for designers",
+    "version": "0.0.0",
+    "author": "Grida.co",
+    "license": "MIT",
+    "private": false
+}
