@@ -4,5 +4,10 @@
     "version": "0.0.0",
     "author": "Grida.co",
     "license": "MIT",
-    "private": false
+    "private": false,
+    "dependencies": {
+        "react-virtualized": "^9.22.3",
+        "react-virtualized-image-measurer": "^0.4.0",
+        "unsplash-js": "^7.0.15"
+    }
 }
