@@ -1052,6 +1052,11 @@
   resolved "https://registry.yarnpkg.com/@code-ui/color-scheme/-/color-scheme-0.0.0.tgz#9f7b1d32e33193166c2958dec999c9fbf9009c8d"
   integrity sha512-KqxYgHgEZYEqs0+n2wX4cIAo4PpBtsLDHxWJcUdXcYeV9u0cTVQ9qJA/8M+d44L6Hu8sYz+lM7f5q2o3W4hloQ==
 
+"@code-ui/color-scheme@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@code-ui/color-scheme/-/color-scheme-0.0.2.tgz#aa3e805068591cad4f2f7f476d89fba037cb4d85"
+  integrity sha512-Z7YHcEj/2+6oBEQITlxC3qJyRbhilsr0xyeKUJ4SBdY+MTVWmMKN5P/zvVO7DUQ/Lqi9E6bKSk9VOvvfFwvKdQ==
+
 "@code-ui/core@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@code-ui/core/-/core-0.0.1.tgz#42d8ecea95ffa90037778a1b8fde537956158181"
@@ -1061,13 +1066,21 @@
     "@code-ui/token" "^0.0.1"
     handlebars "^4.7.7"
 
-"@code-ui/docstring@^0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@code-ui/docstring/-/docstring-0.0.9.tgz#d46d6024924f4ec6f1e3cceee4816a23c903f35d"
-  integrity sha512-xe2vUOtUJmTgQSn9+dDpDaWRvc6B696wAKID+mfGA3s8WwncAOiE60mQJbxq4Td+HwyWDpaEOZScb/1/OEDDqw==
+"@code-ui/core@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@code-ui/core/-/core-0.0.2.tgz#40ea9c3284e8b33f6c6201f16129707edad22dbf"
+  integrity sha512-uDluALu5H3uh8Qsg7ACnXccaNxwmnXntTlaSWr+R/nXb1LnMJGaO5bBuaw16UbA86DjDz2eWCK1iierdb47KWA==
   dependencies:
-    "@tippyjs/react" "^4.2.5"
+    "@code-ui/color-scheme" "^0.0.2"
+    "@code-ui/token" "^0.0.2-beta"
     handlebars "^4.7.7"
+
+"@code-ui/docstring@^0.0.12":
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/@code-ui/docstring/-/docstring-0.0.12.tgz#8e3b2b3ef67ee7927e564377bd844329278eef42"
+  integrity sha512-1418Jsu5Nk9bzxmHO5YoY1Y4MAFduBzhrd0dIZ1IaDWcLzxsaHxkPyRmj16lt8ThYnhlmcYLH6GzuRk4hXQmkg==
+  dependencies:
+    "@code-ui/core" "^0.0.2"
 
 "@code-ui/interface@^0.0.5":
   version "0.0.5"
@@ -1085,6 +1098,13 @@
   dependencies:
     "@tippyjs/react" "^4.2.5"
     handlebars "^4.7.7"
+
+"@code-ui/token@^0.0.2-beta":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@code-ui/token/-/token-0.0.2.tgz#c44f8cce112a938b7dbd0608a0f3cd2e082e65f8"
+  integrity sha512-JKNvZ1TcRjW/uHwQ8bghIpEU4w97F+dwWt4TKu8tx9I42Rmy3xeqN9Fq4s9+M2pt3xYjRER7CwYq9s+R2ye6Qg==
+  dependencies:
+    "@tippyjs/react" "^4.2.5"
 
 "@design-sdk/figma-remote-api@0.0.0":
   version "0.0.0"
