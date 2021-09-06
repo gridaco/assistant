@@ -1,4 +1,4 @@
-// HAS ERROR!
+// FIXME HAS ERROR!
 // react-virtualized image measurer
 // error message
 // Critical dependency: require function is used in a way in which dependencies cannot be statically extracted
@@ -12,7 +12,7 @@ import {
   Masonry,
 } from "react-virtualized";
 import ImageMeasurer from "react-virtualized-image-measurer";
-import { list, itemsWithSizes } from "./__test_";
+import { list, itemsWithSizes } from "./.test";
 
 // Array of images with captions
 //const list = [{image: 'http://...', title: 'Foo'}];
