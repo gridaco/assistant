@@ -1,57 +1,75 @@
-import React from "react";
+// HAS ERROR!
+// react-virtualized image measurer
+// error message
+// Critical dependency: require function is used in a way in which dependencies cannot be statically extracted
+
+import React, { useState } from "react";
 import styled from "@emotion/styled";
-// import ImageMeasurer from "react-virtualized-image-measurer";
 import {
   CellMeasurer,
   CellMeasurerCache,
   createMasonryCellPositioner,
   Masonry,
 } from "react-virtualized";
+import ImageMeasurer from "react-virtualized-image-measurer";
+import { list, itemsWithSizes } from "./__test_";
 
-const list = [{ image: "http://...", title: "Foo" }];
+// Array of images with captions
+//const list = [{image: 'http://...', title: 'Foo'}];
 
-const noCacheList = list.map((item) => ({
-  ...item,
-  image: item.image + "?noCache=" + Math.random(),
+// We need to make sure images are loaded from scratch every time for this demo
+const noCacheList = list.map((item, index) => ({
+  title: index + ". " + item.title,
+  image: item.image + (item.image ? "?noCache=" + Math.random() : ""),
 }));
+
+const keyMapper = (item, index) => item.image || index;
 
 const columnWidth = 200;
 const defaultHeight = 250;
 const defaultWidth = columnWidth;
 
+// Default sizes help Masonry decide how many images to batch-measure
 const cache = new CellMeasurerCache({
   defaultHeight,
   defaultWidth,
   fixedWidth: true,
 });
-const cellPositioner = createMasonryCellPositioner({
+
+// Our masonry layout will use 3 columns with a 10px gutter between
+const cellPositionerConfig = {
   cellMeasurerCache: cache,
   columnCount: 3,
   columnWidth,
   spacer: 10,
-});
+};
 
-const MasonryComponent = ({ itemsWithSizes }) => {
-  function cellRenderer({ index, key, parent, style }) {
+const cellPositioner = createMasonryCellPositioner(cellPositionerConfig);
+
+const MasonryComponent = ({ itemsWithSizes, setRef }) => {
+  const cellRenderer = ({ index, key, parent, style }) => {
     const { item, size } = itemsWithSizes[index];
     const height = columnWidth * (size.height / size.width) || defaultHeight;
 
     return (
       <CellMeasurer cache={cache} index={index} key={key} parent={parent}>
         <div style={style}>
-          <img
-            src={item.image}
-            alt={item.title}
-            style={{
-              height: height,
-              width: columnWidth,
-            }}
-          />
-          <h4>{item.title}</h4>
+          <div>{item.title}</div>
+          {item.image && (
+            <img
+              src={item.image}
+              alt={item.title}
+              style={{
+                height: height,
+                width: columnWidth,
+                display: "block",
+              }}
+            />
+          )}
         </div>
       </CellMeasurer>
     );
-  }
+  };
 
   return (
     <Masonry
@@ -59,36 +77,65 @@ const MasonryComponent = ({ itemsWithSizes }) => {
       cellMeasurerCache={cache}
       cellPositioner={cellPositioner}
       cellRenderer={cellRenderer}
-      height={600}
-      width={800}
+      height={800}
+      width={300}
+      keyMapper={keyMapper}
+      ref={setRef}
     />
   );
 };
 
 export function PhotoLoader() {
+  const [state, setState] = useState({ images: noCacheList });
+
+  let masonryRef = null;
+
+  // this shows how to significantly change the input array, if items will be only appended this recalculation is not needed
+
+  const setMasonry = (node) => (masonryRef = node);
+
   return (
     <Wrapper>
       <Inner>
-        look at this
+        <p>
+          HAS ERROR! in react-virtualized image measurer <br /> <br />
+          <b> error message</b> <br />
+          <i>
+            Critical dependency: require function is used in a way in which
+            dependencies cannot be statically extracted
+          </i>
+          <br />
+          <br />
+          react-virtualized-image-measurer{" "}
+          <a href="https://codesandbox.io/s/7y66p25qv6?file=/index.js">
+            codesandbox link
+          </a>
+        </p>
+
         {/* <ImageMeasurer
-          items={noCacheList}
-          image={(item) => item.image}
-          defaultHeight={defaultHeight}
-          defaultWidth={defaultWidth}
-        >
-          {({ itemsWithSizes }) => (
-            <MasonryComponent itemsWithSizes={itemsWithSizes} />
-          )}
-        </ImageMeasurer> */}
-        ,
-        {/* <Gird>
-          <GridItem />
-          <GridLongItem />
-          <GridItem />
-          <GridItem />
-          <GridItem />
-          <GridLongItem />
-        </Gird> */}
+        items={state.images}
+        image={(item) => item.image}
+        keyMapper={keyMapper}
+        onError={(error, item, src) => {
+          console.error(
+            "Cannot load image",
+            src,
+            "for item",
+            item,
+            "error",
+            error
+          );
+        }}
+        defaultHeight={defaultHeight}
+        defaultWidth={defaultWidth}
+      >
+        {({ itemsWithSizes }) => (
+          <MasonryComponent
+            setRef={setMasonry}
+            itemsWithSizes={itemsWithSizes}
+          />
+        )}
+      </ImageMeasurer> */}
       </Inner>
     </Wrapper>
   );
