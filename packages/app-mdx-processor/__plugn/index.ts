@@ -1,21 +1,91 @@
 import { mapGrandchildren } from "@design-sdk/core/utils";
+import { getTextStyleById } from "@design-sdk/figma";
 import { Minimatch } from "minimatch";
+import {
+  MdxParsedResponse,
+  onService,
+  ParseMdxRequest,
+  Requests,
+} from "./event";
+import * as make from "./make";
 
-function frameToMdx(
-  frame: FrameNode
-):
-  | {
-      mdx_raw: string;
+///
+/// register
+onService(main_cb);
+/// register
+///
+
+function main_cb(data: Requests) {
+  switch (data.type) {
+    case "request-parse-mdx-from-frame": {
+      const frame = figma.getNodeById(data.frame);
+      const res = frameToMdx(frame as FrameNode);
+      if (res) {
+        figma.ui.postMessage({
+          type: "parse-mdx-from-frame-result", // TODO: make this constant shared key
+          data: res,
+        });
+      } else {
+        console.log(
+          `tried to make mdx from frame ${frame}, but failed. no parsable content.`
+        );
+      }
+      break;
     }
-  | false {
+  }
+}
+
+function frameToMdx(frame: FrameNode): MdxParsedResponse | false {
   if (!isMdxFrame(frame)) {
     return false;
   }
-  //
+
+  // currently we only loop trhough 1 depth under frame. TODO: this needs to be fixed.
+  const lines = Array.from(frame.children)
+    .sort(sort_by_x)
+    .map((child) => {
+      switch (child.type) {
+        case "TEXT": {
+          const text = child as TextNode;
+          if (isTextMixed(text)) {
+            // TODO: additional mixed style handling is required.
+            return text.characters;
+          } else {
+            // since no style is mixed, we can return the value as is.
+            const mdx_textstyle = isMdxTextStyle(
+              getTextStyleById(text.textStyleId as string).name
+            );
+            switch (mdx_textstyle) {
+              case false:
+                return make.paragraph(text.characters);
+              case "h1":
+                return make.h1(text.characters);
+              case "h2":
+                return make.h2(text.characters);
+              case "h3":
+                return make.h3(text.characters);
+              case "h4":
+                return make.h4(text.characters);
+              case "h5":
+                return make.h5(text.characters);
+              case "h6":
+                return make.h6(text.characters);
+            }
+            return make.unknown(text.characters);
+          }
+          break;
+        }
+      }
+    });
+
   return {
-    mdx_raw: "",
+    mdx: lines.join("\n"),
   };
 }
+
+const sort_by_x = (a: { x: number }, b: { x: number }) => {
+  return a.x - b.x;
+};
 
 /**
  * returns if text contains mixed content. e.g.
@@ -25,9 +95,16 @@ function frameToMdx(
  * ```
  * @returns
  */
-function isTextMixed(): boolean {
-  //
-  throw " not implemented ";
+function isTextMixed(text: TextNode): boolean {
+  if (
+    text.textStyleId === figma.mixed ||
+    text.fontName === figma.mixed ||
+    text.fontSize === figma.mixed ||
+    text.fills === figma.mixed
+    // add more validation here
+  ) {
+    return true;
+  }
   return false;
 }
 
