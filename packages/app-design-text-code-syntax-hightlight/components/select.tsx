@@ -36,6 +36,7 @@ const Select: React.FC<Props> = ({
       onChange={(event) => {
         onChange(event);
       }}
+      value={current}
       input={<BootstrapInput classes={{ root: "root" }} />}
     >
       {collection.map((item, index) => {

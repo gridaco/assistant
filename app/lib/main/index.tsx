@@ -62,9 +62,7 @@ function Screen(props: { screen: WorkScreen }) {
     case WorkScreen.component:
       return <ComponentViewScreen />;
     case WorkScreen.layout:
-      // return <LayoutViewScreen />;
-      // FIXME: temporary dev
-      return <DesignTextCdoeSyntaxHighligherScreen />;
+      return <LayoutViewScreen />;
     case WorkScreen.icon:
       return <IconsScreen />;
     case WorkScreen.lint:
@@ -85,6 +83,8 @@ function Screen(props: { screen: WorkScreen }) {
       return <BatchMetaEditor />;
     case WorkScreen.tool_data_mapper:
       return <DataMapperScreen />;
+    case WorkScreen.tool_code_syntax_highlighter:
+      return <DesignTextCdoeSyntaxHighligherScreen />;
     case WorkScreen.scene_upload_steps_final:
       return <UploadSteps />;
     case WorkScreen.signin:
@@ -236,8 +236,9 @@ function RouterTabNavigationApp(props) {
 
 function Home() {
   const history = useHistory();
-  const [savedLayout, setSavedLayout] =
-    useState<NavigationStoreState>(undefined);
+  const [savedLayout, setSavedLayout] = useState<NavigationStoreState>(
+    undefined
+  );
 
   useEffect(() => {
     loadLayout()
