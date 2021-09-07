@@ -1,7 +1,6 @@
 const HtmlWebpackInlineSourcePlugin = require("html-webpack-inline-source-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
-const Dotenv = require("dotenv-webpack");
 const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = (env, argv) => ({
@@ -15,7 +14,6 @@ module.exports = (env, argv) => ({
   devtool: argv.mode === "production" ? false : "inline-source-map",
 
   entry: {
-    ui: "./src/ui.tsx", // The entry point for your UI code
     code: "./src/code.ts", // The entry point for your plugin code
   },
 
@@ -23,23 +21,11 @@ module.exports = (env, argv) => ({
     rules: [
       // Converts TypeScript code to JavaScript
       { test: /\.tsx?$/, use: "ts-loader", exclude: /node_modules/ },
-
-      // Enables including CSS by doing "import './file.css'" in your TypeScript code
-      {
-        test: /\.css$/,
-        loader: [{ loader: "style-loader" }, { loader: "css-loader" }],
-      },
-
-      // Allows you to use "<%= require('./file.svg') %>" in your HTML code to get a data URI
-      {
-        test: /\.(png|jpg|gif|webp|svg|zip)$/,
-        loader: [{ loader: "url-loader" }],
-      },
     ],
   },
 
   // Webpack tries these extensions for you if you omit the extension like "import './file'"
-  resolve: { extensions: [".tsx", ".ts", ".jsx", ".js"] },
+  resolve: { extensions: [".ts", ".js"] },
 
   output: {
     filename: "[name].js",
@@ -48,23 +34,12 @@ module.exports = (env, argv) => ({
 
   // minimize
   optimization: {
-    minimize: false,
+    minimize: true,
     minimizer: [
       new TerserPlugin({
         terserOptions: {
-          sourceMap: true,
-          compress: {
-            keep_classnames: true, // keep class name cause, flutter-builder uses class name reflection.
-            keep_fnames: true,
-            drop_console: true,
-            conditionals: true,
-            unused: true,
-            comparisons: true,
-            dead_code: true,
-            if_return: true,
-            join_vars: true,
-            warnings: false,
-          },
+          keep_classnames: true, // keep class name cause, flutter-builder uses class name reflection.
+          sourceMap: false,
           output: {
             comments: false,
           },
@@ -80,8 +55,12 @@ module.exports = (env, argv) => ({
       filename: "ui.html",
       inlineSource: ".(js)$",
       chunks: ["ui"],
+      // custom env var - ref: https://stackoverflow.com/a/49375928/5463235
+      host:
+        argv.mode == "production"
+          ? "https://assistant-serve.grida.co"
+          : "http://localhost:3000",
     }),
     new HtmlWebpackInlineSourcePlugin(),
-    new Dotenv(),
   ],
 });

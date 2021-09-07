@@ -1,50 +1,17 @@
 {
-  "name": "figma",
-  "version": "2021.0.1f1.1",
-  "keywords": [
-    "figma",
-    "bridged",
-    "flutter",
-    "flutter-figma",
-    "figma-plugin"
-  ],
-  "license": "https://github.com/bridgedxyz/contributing-and-license",
-  "author": "bridged.xyz by softmarshmallow <woojoo@softmarshmallow.com>",
-  "dependencies": {
-    "app": "^0.0.1",
-    "figma-js": "^1.13.0",
-    "figma-core": "0.0.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.14.3",
-    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
-    "@babel/plugin-transform-runtime": "^7.14.3",
-    "@babel/preset-env": "^7.14.2",
-    "@babel/preset-react": "^7.13.13",
-    "@babel/preset-typescript": "^7.13.0",
-    "@babel/runtime": "^7.14.0",
-    "@types/fs-extra": "^9.0.1",
-    "@types/node": "^14.11.8",
-    "@types/pug": "^2.0.4",
-    "@types/react": "^17.0.3",
-    "@types/react-dom": "^16.9.8",
-    "babel-loader": "^8.2.2",
-    "css-loader": "^3.1.0",
-    "dotenv": "^8.2.0",
-    "dotenv-webpack": "^2.0.0",
-    "html-webpack-inline-source-plugin": "0.0.10",
-    "html-webpack-plugin": "^3.2.0",
-    "style-loader": "^0.23.1",
-    "terser-webpack-plugin": "^4.2.3",
-    "ts-loader": "^6.0.4",
-    "typescript": "^4.0.5",
-    "url-loader": "^2.1.0",
-    "webpack": "^4.38.0",
-    "webpack-cli": "^3.3.6"
-  },
-  "scripts": {
-    "webpack:watch": "webpack --watch",
-    "build": "webpack -p --mode=production",
-    "dev": "webpack --watch"
-  }
+    "name": "figma",
+    "description": "A web hosted version of figma plugin.",
+    "authors": "Grida.co",
+    "version": "0.0.0",
+    "license": "MIT",
+    "private": false,
+    "dependencies": {
+        "@ui/skeleton": "0.0.0"
+    },
+    "scripts": {
+        "clean": "rimraf dist",
+        "build": "yarn clean && webpack -p --mode=production",
+        "build:dev": "webpack --mode=development",
+        "watch": "webpack --watch"
+    }
 }

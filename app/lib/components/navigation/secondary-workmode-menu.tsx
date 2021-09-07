@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
 import React from "react";
-import { Column, Row } from "../style/global-style";
+import { Column, Row } from "@ui/core";
 import { SecondaryWorkmodeChoice } from "./secondary-workmode-choice";
+
 export function SecondaryWorkmodeMenu<T extends string>(props: {
   menus: {
     id: T;

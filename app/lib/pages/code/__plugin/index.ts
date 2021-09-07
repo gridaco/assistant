@@ -1,7 +1,7 @@
 import {
   EK_GENERATED_CODE_PLAIN,
   EK_IMAGE_ASSET_REPOSITORY_MAP,
-} from "app/lib/constants/ek.constant";
+} from "@core/constant/ek.constant";
 import {
   onService,
   _Code_Event,

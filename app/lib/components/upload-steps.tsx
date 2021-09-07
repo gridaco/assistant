@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import { BlackButton, TransparencyButton } from "./style/global-style";
+import {
+  BlackButtonStyle,
+  TransparentButtonStyle,
+} from "@ui/core/button-style";
 import { Button } from "@material-ui/core";
-import { ProgressBar } from "./animation/progress-bar";
+import { AnimatedProgressBar } from "./animation/animated-progress-bar";
 import { AnimatedCheckIcon } from "./animation/animated-check-icon";
 import { motion } from "framer-motion";
-import { Preview } from ".";
-import { CheckIcon } from "./Icon/check-icon";
+import { Preview } from "@ui/previewer";
+import CheckIcon from "@assistant/icons/check";
 
 const step = [
   "converting design to universal format",
@@ -40,7 +43,7 @@ export function UploadSteps() {
   return (
     <>
       <Preview auto />
-      {isLoading && <ProgressBar contorl={animateHandle} />}
+      {isLoading && <AnimatedProgressBar contorl={animateHandle} />}
       <InnerWrapper variants={fieldVariants} animate="make-active">
         {isLoading ? (
           <Loading>
@@ -148,11 +151,11 @@ const IconBox = styled.div`
 `;
 
 const CheckButton = styled(Button)`
-  ${BlackButton};
+  ${BlackButtonStyle};
   width: 100%;
 `;
 const UncheckButton = styled(Button)`
-  ${TransparencyButton}
+  ${TransparentButtonStyle}
   width: 100%;
   cursor: pointer;
   text-transform: initial;

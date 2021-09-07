@@ -1,0 +1,7 @@
+{
+    "name": "@assistant-fp/auth",
+    "description": "First party authentication for assistant",
+    "authors": "Grida.co",
+    "version": "0.0.0",
+    "dependencies": {}
+}

@@ -9,7 +9,7 @@
 			"app",
 			"figma",
 			"figma-core",
-			"figma-lite",
+			"figma-native",
 			"sketch",
 			"web",
 			"webdev",
@@ -31,13 +31,13 @@
 	"author": "Grida.co, bridged.xyz softmarshmallow <woojoo@softmarshmallow.com>",
 	"scripts": {
 		"pull:all": "git submodule update --init --recursive",
-		"figma": "yarn workspace figma run webpack:watch",
-		"figma-lite": "yarn workspace figma-lite run build:dev && yarn web",
-		"build:figma:prod": "yarn workspace figma-lite run build",
+		"figma-native": "yarn workspace figma-native run webpack:watch",
+		"figma": "yarn workspace figma run build:dev && yarn web",
+		"build:figma:prod": "yarn workspace figma run build",
 		"sketch": "yarn workspace sketch run render",
 		"web": "yarn workspace web run dev",
 		"xd": "yarn workspace xd run build",
-		"test": "cd figma && yarn build"
+		"test": "cd figma-native && yarn build"
 	},
 	"collective": {
 		"type": "opencollective",

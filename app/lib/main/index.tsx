@@ -1,30 +1,29 @@
 import React, { useState, useEffect } from "react";
 import "../app.css"; /** TODO: remove raw css usage. */
-import { initialize } from "../analytics";
+import { initialize as analytics_initialize } from "@assistant-fp/analytics";
 
 // UI COMPS
-import { EK_SET_APP_MODE } from "../constants/ek.constant";
+import { EK_SET_APP_MODE } from "@core/constant/ek.constant";
 import { PluginApp } from "plugin-app";
-import BatchMetaEditor from "../pages/tool-box/batch-meta-editor";
 import { useHistory, Switch, Route } from "react-router-dom";
+import type { TargetPlatform } from "@plugin-sdk/core";
 
 //
 // region screens import
-import { FontReplacerScreen } from "../pages/tool-box/font-replacer";
-import { ButtonMakerScreen } from "../pages/design/button-maker-screen";
-import { ComponentViewScreen } from "../pages/component-view";
+import { ButtonMakerScreen } from "@app/button-maker";
 import { LayoutViewScreen } from "../pages/layout-view";
-import { LintScreen } from "../pages/lint/lint-screen";
-import { GlobalizationScreen } from "../pages/g11n-screen";
-import { IconsScreen } from "../pages/icons-screen";
-import { CodeScreen } from "../pages/code/code-screen";
+import { ComponentViewScreen } from "@app/component-manage";
+import { LintScreen } from "@app/design-lint";
+import { IconsScreen } from "@app/icons-loader";
+import { MetaEditorScreen, BatchMetaEditor } from "@app/meta-editor";
+import { ExporterScreen } from "@app/export-scene-as-json";
+import { DataMapperScreen } from "@app/data-mapper";
+import { GlobalizationScreen } from "@app/i18n";
 import { ToolboxScreen } from "../pages/tool-box";
-import { MetaEditorScreen } from "../pages/tool-box/meta-editor";
-import { ExporterScreen } from "../pages/tool-box/exporter";
-import { DataMapperScreen } from "../pages/tool-box/data-mapper/data-mapper-screen";
-import { TargetPlatform } from "../utils/plugin-init/init-target-platform";
+import { FontReplacerScreen } from "@toolbox/font-replacer";
+import { CodeScreen } from "../pages/code/code-screen";
 import { AboutScreen } from "../pages/about";
-import Signin from "../pages/signin";
+import { SigninScreen } from "@app/auth";
 // endregion screens import
 //
 
@@ -50,7 +49,7 @@ import {
   SecondaryMenuDropdown,
 } from "../components/navigation";
 import styled from "@emotion/styled";
-import { Column, Row } from "../components/style/global-style";
+import { Column, Row } from "@ui/core";
 import { UploadSteps } from "../components/upload-steps";
 
 function Screen(props: { screen: WorkScreen }) {
@@ -86,7 +85,7 @@ function Screen(props: { screen: WorkScreen }) {
     case WorkScreen.scene_upload_steps_final:
       return <UploadSteps />;
     case WorkScreen.signin:
-      return <Signin />;
+      return <SigninScreen />;
     default:
       return <div>Not found</div>;
   }
@@ -260,7 +259,7 @@ export default function App(props: { platform: TargetPlatform }) {
 
     // region init analytics
     try {
-      initialize();
+      analytics_initialize();
     } catch (e) {
       console.warn("Analytics disabled", e);
     }
@@ -268,8 +267,11 @@ export default function App(props: { platform: TargetPlatform }) {
   }, []);
 
   const Router = getDedicatedRouter();
+
+  const Loading = <></>;
+
   return (
-    <PluginApp platform={props.platform}>
+    <PluginApp loading={Loading} platform={props.platform}>
       {/* @ts-ignore */}
       <Router>
         <Switch>

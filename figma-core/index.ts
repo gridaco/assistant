@@ -1,6 +1,6 @@
 // ==========
 // init plugin
-/* do not delete this line */ import "app/lib/utils/plugin-init"; // NO REMOVE
+/* do not delete this line */ import "app/__plugin__init__"; // NO REMOVE
 // ==========
 
 // ==========

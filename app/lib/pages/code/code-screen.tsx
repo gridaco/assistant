@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import CodeBox, { SourceInput } from "../../components/codebox";
-import { Preview } from "../../components/preview";
+import { CodeBox, SourceInput } from "@ui/codebox";
+import { Preview } from "@ui/previewer";
 import {
   EK_GENERATED_CODE_PLAIN,
   EK_IMAGE_ASSET_REPOSITORY_MAP,
-} from "../../constants/ek.constant";
+} from "@core/constant/ek.constant";
 import { repo_assets } from "@design-sdk/core";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import {
@@ -19,7 +19,7 @@ import { PluginSdk } from "@plugin-sdk/app";
 import { CodeScreenFooter } from "./footer-action/code-screen-footer";
 import { CodeOptionsControl } from "./code-options-control";
 import { fromApp, CodeGenRequest } from "./__plugin/events";
-import { useSingleSelection } from "../../utils/plugin-hooks";
+import { useSingleSelection } from "plugin-app";
 
 type DesigntoCodeUserOptions = FrameworkOption;
 

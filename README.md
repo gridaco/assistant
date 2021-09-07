@@ -6,8 +6,10 @@ title: Grida assistant for figma, sketch, xd
 
   <meta name="description" content="figma to flutter code exporter, lint your design. generate human level quality code from figma">
   <meta name="title" content="Grida assistant">
+  
+![Grida assistant](./branding/assistant-cover-v2021.8.0.png)
 
-![Grida assistant](./branding/assistant-cover-v2021.2.0.png)
+<div style="text-align:center"><a href="https://www.producthunt.com/posts/grida-assistant-figma-2-flutter-react?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-grida-assistant-figma-2-flutter-react" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=310028&theme=light" alt="Grida Assistant - Figma 2 Flutter &React - Free & Opensource Design2Code Plugin with lot more features. | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a></div>
 
 # Grdia Assistant plugin (figma to flutter)
 
@@ -43,8 +45,11 @@ cd assistant
 # [REQUIRED] yarn will install dependencies, link packages, and generate compiled code of packages, so it can be referenced by root projects.
 yarn
 
-# [OPTIONAL 1] run figma plugin in dev mode
+# [OPTIONAL 1] run figma plugin in dev mode (use localhost server) (recommanded)
 yarn figma
+
+# [OPTIONAL 1-2] run figma plugin in dev mode (native)
+yarn figma-native
 
 # [OPTIONAL 2]run sketch plugin in dev mode
 yarn sketch
