@@ -6,6 +6,7 @@ export enum WorkScreen {
   code_flutter = "code/flutter",
   /** @deprecated only used for sendig event */
   code_react = "code/react",
+  code_mdx = "code_mdx",
   component = "component",
   layout = "layout",
   icon = "icon",
