@@ -20,6 +20,7 @@ function main_cb(data: Requests) {
     case "request-parse-mdx-from-frame": {
       const frame = figma.getNodeById(data.frame);
       const res = frameToMdx(frame as FrameNode);
+      console.log("handling with res - ", res);
       if (res) {
         figma.ui.postMessage({
           type: "parse-mdx-from-frame-result", // TODO: make this constant shared key
@@ -27,7 +28,7 @@ function main_cb(data: Requests) {
         });
       } else {
         console.log(
-          `tried to make mdx from frame ${frame}, but failed. no parsable content.`
+          `tried to make mdx from frame ${frame.name}, but failed. no parsable content.`
         );
       }
       break;
@@ -37,6 +38,7 @@ function main_cb(data: Requests) {
 
 function frameToMdx(frame: FrameNode): MdxParsedResponse | false {
   if (!isMdxFrame(frame)) {
+    console.log(`${frame.name} is not a mdx frame. skipping.`);
     return false;
   }
 
@@ -53,7 +55,9 @@ function frameToMdx(frame: FrameNode): MdxParsedResponse | false {
           } else {
             // since no style is mixed, we can return the value as is.
             const mdx_textstyle = isMdxTextStyle(
-              getTextStyleById(text.textStyleId as string).name
+              text.textStyleId
+                ? getTextStyleById(text.textStyleId as string).name
+                : ""
             );
             switch (mdx_textstyle) {
               case false:
@@ -143,7 +147,8 @@ function isMdxFrame(frame: FrameNode): boolean {
   // 1. must be frame
   if (frame.type == "FRAME") {
     // must match path
-    const glob_pattern = `(+(document|doc|docs|mdx|md|content))*/**/*.+(md|mdx)`;
+    // const glob_pattern = `(+(document|doc|docs|mdx|md|content))*/**/*.+(md|mdx)`;
+    const glob_pattern = `*/**/*.+(md|mdx)`;
     const mm = new Minimatch(glob_pattern);
     if (mm.match(frame.name)) {
       return true;

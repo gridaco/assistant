@@ -23,11 +23,13 @@ export function MdxProcessorScreen() {
   }, []);
 
   useEffect(() => {
-    fromApp({
-      type: "request-parse-mdx-from-frame",
-      frame: selection.id,
-    });
-  }, [selection.id]);
+    if (selection) {
+      fromApp({
+        type: "request-parse-mdx-from-frame",
+        frame: selection.id,
+      });
+    }
+  }, [selection]);
 
   return (
     <>
