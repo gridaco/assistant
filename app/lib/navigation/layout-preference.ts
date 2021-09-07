@@ -15,7 +15,12 @@ export function getWorkmodeTabLayout(workspaceMode: WorkMode): TabLayout {
           WorkScreen.lint,
         ];
       case WorkMode.design:
-        return [WorkScreen.icon, WorkScreen.layout, WorkScreen.lint];
+        return [
+          WorkScreen.icon,
+          WorkScreen.layout,
+          WorkScreen.lint,
+          WorkScreen.tool_code_syntax_highlighter /** temporarily placing under design workmode. though, it won't matter since code-syntax-hightlight will still be on beta staging. */,
+        ];
       case WorkMode.content:
         return [WorkScreen.g11n, WorkScreen.exporter];
       case WorkMode.settings:
@@ -58,6 +63,8 @@ export function workScreenToName(appMode: WorkScreen): string {
       return "exporter";
     case WorkScreen.g11n:
       return "globalization";
+    case WorkScreen.tool_code_syntax_highlighter:
+      return "syntax highlight";
     case WorkScreen.tool_desing_button_maker:
       return "button maker";
     case WorkScreen.tool_font_replacer:

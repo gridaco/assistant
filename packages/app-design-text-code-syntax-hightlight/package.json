@@ -1,0 +1,15 @@
+{
+    "name": "@app/design-text-code-syntax-highlight",
+    "version": "0.0.0",
+    "description": "code syntax highlighter for design texts",
+    "private": false,
+    "license": "BSD-3-Clause",
+    "dependencies": {
+        "highlight.js": "9.15.10",
+        "xmldom": "^0.6.0",
+        "xpath": "^0.0.32"
+    },
+    "devDependencies": {
+        "@types/highlight.js": "9.12.3"
+    }
+}

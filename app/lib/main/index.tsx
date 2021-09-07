@@ -24,6 +24,7 @@ import { FontReplacerScreen } from "@toolbox/font-replacer";
 import { CodeScreen } from "../pages/code/code-screen";
 import { AboutScreen } from "../pages/about";
 import { SigninScreen } from "@app/auth";
+import { DesignTextCdoeSyntaxHighligherScreen } from "@app/design-text-code-syntax-highlight";
 // endregion screens import
 //
 
@@ -82,6 +83,8 @@ function Screen(props: { screen: WorkScreen }) {
       return <BatchMetaEditor />;
     case WorkScreen.tool_data_mapper:
       return <DataMapperScreen />;
+    case WorkScreen.tool_code_syntax_highlighter:
+      return <DesignTextCdoeSyntaxHighligherScreen />;
     case WorkScreen.scene_upload_steps_final:
       return <UploadSteps />;
     case WorkScreen.signin:
@@ -233,8 +236,9 @@ function RouterTabNavigationApp(props) {
 
 function Home() {
   const history = useHistory();
-  const [savedLayout, setSavedLayout] =
-    useState<NavigationStoreState>(undefined);
+  const [savedLayout, setSavedLayout] = useState<NavigationStoreState>(
+    undefined
+  );
 
   useEffect(() => {
     loadLayout()
