@@ -1,50 +1,61 @@
 {
-	"name": "@grida.co/assistant",
-	"version": "0.1.0",
-	"private": true,
-	"license": "https://github.com/bridgedxyz/contributing-and-license",
-	"description": "Grida assistant mono repository. for figma, sketch, zeplin.",
-	"workspaces": {
-		"packages": [
-			"app",
-			"figma",
-			"figma-core",
-			"figma-native",
-			"sketch",
-			"web",
-			"webdev",
-			"xd",
-			"packages/*",
-			"packages/reflect-core/packages/*",
-			"packages/design-sdk/*",
-			"packages/base-sdk/*",
-			"packages/base-sdk/_firstparty/*",
-			"packages/reflect-core/packages/*",
-			"packages/design-to-code/packages/designto-*",
-			"packages/design-to-code/packages/builder-config",
-			"packages/design-to-code/packages/coli/packages/*",
-			"packages/design-to-code/packages/coli-web-builder/*",
-			"packages/design-to-code/packages/reflect-detection"
-		]
-	},
-	"repository": "https://github.com/gridaco/assistant",
-	"author": "Grida.co, bridged.xyz softmarshmallow <woojoo@softmarshmallow.com>",
-	"scripts": {
-		"pull:all": "git submodule update --init --recursive",
-		"figma-native": "yarn workspace figma-native run webpack:watch",
-		"figma": "yarn workspace figma run build:dev && yarn web",
-		"build:figma:prod": "yarn workspace figma run build",
-		"sketch": "yarn workspace sketch run render",
-		"web": "yarn workspace web run dev",
-		"xd": "yarn workspace xd run build",
-		"test": "cd figma-native && yarn build"
-	},
-	"collective": {
-		"type": "opencollective",
-		"url": "https://opencollective.com/bridged",
-		"logo": "https://opencollective.com/bridged/logo.txt"
-	},
-	"engines": {
-		"node": ">=12.0.0"
-	}
+  "name": "@grida.co/assistant",
+  "version": "0.1.0",
+  "private": true,
+  "license": "https://github.com/bridgedxyz/contributing-and-license",
+  "description": "Grida assistant mono repository. for figma, sketch, zeplin.",
+  "workspaces": {
+    "packages": [
+      "app",
+      "figma",
+      "figma-core",
+      "figma-native",
+      "sketch",
+      "web",
+      "webdev",
+      "xd",
+      "packages/*",
+      "packages/reflect-core/packages/*",
+      "packages/design-sdk/*",
+      "packages/base-sdk/*",
+      "packages/base-sdk/_firstparty/*",
+      "packages/reflect-core/packages/*",
+      "packages/design-to-code/packages/designto-*",
+      "packages/design-to-code/packages/builder-config",
+      "packages/design-to-code/packages/coli/packages/*",
+      "packages/design-to-code/packages/coli-web-builder/*",
+      "packages/design-to-code/packages/reflect-detection"
+    ]
+  },
+  "repository": "https://github.com/gridaco/assistant",
+  "author": "Grida.co, bridged.xyz softmarshmallow <woojoo@softmarshmallow.com>",
+  "scripts": {
+    "pull:all": "git submodule update --init --recursive",
+    "figma-native": "yarn workspace figma-native run webpack:watch",
+    "figma": "yarn workspace figma run build:dev && yarn web",
+    "build:figma:prod": "yarn workspace figma run build",
+    "sketch": "yarn workspace sketch run render",
+    "web": "yarn workspace web run dev",
+    "xd": "yarn workspace xd run build",
+    "test": "cd figma-native && yarn build",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  },
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/bridged",
+    "logo": "https://opencollective.com/bridged/logo.txt"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.5",
+    "@storybook/addon-actions": "^6.3.8",
+    "@storybook/addon-essentials": "^6.3.8",
+    "@storybook/addon-links": "^6.3.8",
+    "@storybook/react": "^6.3.8",
+    "babel-loader": "^8.2.2"
+  },
+  "dependencies": {}
 }
