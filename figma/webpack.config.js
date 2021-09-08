@@ -1,8 +1,7 @@
-const HtmlWebpackInlineSourcePlugin = require("html-webpack-inline-source-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
-const Dotenv = require("dotenv-webpack");
 const TerserPlugin = require("terser-webpack-plugin");
+const InlineChunkHtmlPlugin = require("react-dev-utils/InlineChunkHtmlPlugin");
 
 module.exports = (env, argv) => ({
   mode: argv.mode === "production" ? "production" : "development",
@@ -49,28 +48,7 @@ module.exports = (env, argv) => ({
   // minimize
   optimization: {
     minimize: false,
-    minimizer: [
-      new TerserPlugin({
-        terserOptions: {
-          sourceMap: true,
-          compress: {
-            keep_classnames: true, // keep class name cause, flutter-builder uses class name reflection.
-            keep_fnames: true,
-            drop_console: true,
-            conditionals: true,
-            unused: true,
-            comparisons: true,
-            dead_code: true,
-            if_return: true,
-            join_vars: true,
-            warnings: false,
-          },
-          output: {
-            comments: false,
-          },
-        },
-      }),
-    ],
+    minimizer: [new TerserPlugin()],
   },
 
   // Tells Webpack to generate "ui.html" and to inline "ui.ts" into it
@@ -81,7 +59,7 @@ module.exports = (env, argv) => ({
       inlineSource: ".(js)$",
       chunks: ["ui"],
     }),
-    new HtmlWebpackInlineSourcePlugin(),
-    new Dotenv(),
+    // https://github.com/jantimon/html-webpack-plugin/issues/1379#issuecomment-610208969
+    new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/\.(js|css)$/]),
   ],
 });
