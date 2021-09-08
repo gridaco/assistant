@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import { PluginSdk } from "@plugin-sdk/app";
 import { ReflectLintFeedback } from "@reflect-ui/lint/lib/feedbacks";
@@ -25,7 +25,7 @@ export const LintScreen = () => {
   const [isFixingMode, setIsFixingMode] = useState<boolean>(false);
   const selection = useSingleSelection();
 
-  window.addEventListener("message", (ev: MessageEvent) => {
+  const messagehandler = (ev: MessageEvent) => {
     const msg = ev.data.pluginMessage;
     if (msg.type == _APP_EVENT_LINT_RESULT_EK) {
       const _feedbacks = msg.data as Array<ReflectLintFeedback>;
@@ -35,7 +35,14 @@ export const LintScreen = () => {
         setFeedbacks(_feedbacks);
       }
     }
-  });
+  };
+
+  useEffect(() => {
+    window.addEventListener("message", messagehandler);
+    return () => {
+      window.removeEventListener("message", messagehandler);
+    };
+  }, []);
 
   function countSelection() {
     return mapGrandchildren(selection.node, null, {

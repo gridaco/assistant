@@ -233,20 +233,34 @@ function RouterTabNavigationApp(props) {
 
 function Home() {
   const history = useHistory();
-  const [savedLayout, setSavedLayout] =
-    useState<NavigationStoreState>(undefined);
+  const [savedLayout, setSavedLayout] = useState<NavigationStoreState>(
+    undefined
+  );
 
   useEffect(() => {
     loadLayout()
       .then((d) => {
         setSavedLayout(d);
       })
+      .catch((e) => {
+        console.log("failed loading layout", e);
+      })
       .finally(() => {});
   }, []);
 
   if (savedLayout) {
-    const p = get_page_config(savedLayout.currentWork).path;
-    history.replace(p);
+    try {
+      const p = get_page_config(savedLayout.currentWork).path;
+      history.replace(p);
+    } catch (e) {
+      console.log("failed to load saved layout", e);
+      console.log(
+        "this can happen during development, switching between branches, or could happen on production wehn new version lo longer has a page that is previously loaded."
+      );
+      // if somehow, failed loading the path of the current work, we will redirect to the home page.
+      // this can happen during development, switching between branches, or could happen on production wehn new version lo longer has a page that is previously loaded.
+      history.replace("/code/preview");
+    }
   }
 
   return <></>;
