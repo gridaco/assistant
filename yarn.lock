@@ -2140,6 +2140,11 @@
   resolved "https://registry.yarnpkg.com/@reflect-ui/uiutils/-/uiutils-0.1.2.tgz#1020e557d2fdbf512a10b97b0c424c430ff7ad38"
   integrity sha512-uhE5Btrzud86MuNykB23EfEHn/jBJ8BicYjOkq7ZFgh38dnvF54vqZV0/LNYF77Z+3jTgQMwZR++e4gL8zCyHw==
 
+"@reflect-ui/uiutils@0.1.2-1":
+  version "0.1.2-1"
+  resolved "https://registry.yarnpkg.com/@reflect-ui/uiutils/-/uiutils-0.1.2-1.tgz#b88d08223eb19ab5e6dd5ecf4a03075a41bb89c1"
+  integrity sha512-fv3mITNqM6U7DEpOr5B6c9lmmkj22r3114aR8Tvp2izMIndLbFJBzLnYEVA07bHiglic1POWCePwYVhB+bAF1Q==
+
 "@sinonjs/commons@^1.7.0":
   version "1.8.3"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.8.3.tgz#3802ddd21a50a949b6721ddd72da36e67e7f1b2d"
