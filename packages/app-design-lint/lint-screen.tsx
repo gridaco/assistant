@@ -27,7 +27,7 @@ export const LintScreen = () => {
 
   const messagehandler = (ev: MessageEvent) => {
     const msg = ev.data.pluginMessage;
-    if (msg.type == _APP_EVENT_LINT_RESULT_EK) {
+    if (msg && msg.type == _APP_EVENT_LINT_RESULT_EK) {
       const _feedbacks = msg.data as Array<ReflectLintFeedback>;
       if (_feedbacks.length === 0) {
         PluginSdk.notify("🤩 Neat and clean (nothing to clean)", 2);
