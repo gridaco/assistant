@@ -28,6 +28,12 @@ const page_code_component: PageConfig = {
   path: "/code/component",
 };
 
+const page_code_mdx: PageConfig = {
+  id: WorkScreen.code_mdx,
+  title: "MDX",
+  path: "/code/mdx",
+};
+
 const page_code_lint: PageConfig = {
   id: WorkScreen.lint,
   title: "Lint",
@@ -130,6 +136,7 @@ const all_pages: PageConfig[] = [
   page_code_preview,
   page_code_component,
   page_code_lint,
+  page_code_mdx,
   page_toolbox_code_syntax_highlight /** temporarily under design workmode */,
   // standalones
   page_signup,

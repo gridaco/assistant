@@ -15,6 +15,7 @@ const withTM = require("next-transpile-modules")([
   "@app/auth",
   "@app/i18n",
   "@app/component-manage",
+  "@app/mdx-processor",
   "@app/button-maker",
   "@app/data-mapper",
   "@app/design-lint",

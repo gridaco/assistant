@@ -18,6 +18,7 @@ import { IconsScreen } from "@app/icons-loader";
 import { MetaEditorScreen, BatchMetaEditor } from "@app/meta-editor";
 import { ExporterScreen } from "@app/export-scene-as-json";
 import { DataMapperScreen } from "@app/data-mapper";
+import { MdxProcessorScreen } from "@app/mdx-processor";
 import { GlobalizationScreen } from "@app/i18n";
 import { ToolboxScreen } from "../pages/tool-box";
 import { FontReplacerScreen } from "@toolbox/font-replacer";
@@ -63,6 +64,8 @@ function Screen(props: { screen: WorkScreen }) {
       return <ComponentViewScreen />;
     case WorkScreen.layout:
       return <LayoutViewScreen />;
+    case WorkScreen.code_mdx:
+      return <MdxProcessorScreen />;
     case WorkScreen.icon:
       return <IconsScreen />;
     case WorkScreen.lint:

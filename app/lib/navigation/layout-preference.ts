@@ -13,6 +13,7 @@ export function getWorkmodeTabLayout(workspaceMode: WorkMode): TabLayout {
           WorkScreen.component,
           WorkScreen.layout,
           WorkScreen.lint,
+          WorkScreen.code_mdx,
         ];
       case WorkMode.design:
         return [
@@ -49,6 +50,8 @@ export function workScreenToName(appMode: WorkScreen): string {
       return "flutter";
     case WorkScreen.code_react:
       return "react";
+    case WorkScreen.code_mdx:
+      return "mdx";
     case WorkScreen.component:
       return "component";
     case WorkScreen.layout:

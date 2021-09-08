@@ -1582,6 +1582,11 @@
     "@tippyjs/react" "^4.2.5"
     handlebars "^4.7.7"
 
+"@design-sdk/figma-remote-api@0.0.0":
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/@design-sdk/figma-remote-api/-/figma-remote-api-0.0.0.tgz#c1937575bbf824ca8fc45141db5327dd98d789ff"
+  integrity sha512-AA+LelJSudE2fEIvrecgcc7nmXTeRZy8WEdqhqZV4SuvgqZUH8i+t2m3dw/L/NmbxxdduRmltzTuX78MxwGntA==
+
 "@design-sdk/figma-url@0.0.2":
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@design-sdk/figma-url/-/figma-url-0.0.2.tgz#6cdac717440def04f419efea080f95dae23e9d6f"
@@ -2624,6 +2629,11 @@
   resolved "https://registry.yarnpkg.com/@reflect-ui/uiutils/-/uiutils-0.1.2.tgz#1020e557d2fdbf512a10b97b0c424c430ff7ad38"
   integrity sha512-uhE5Btrzud86MuNykB23EfEHn/jBJ8BicYjOkq7ZFgh38dnvF54vqZV0/LNYF77Z+3jTgQMwZR++e4gL8zCyHw==
 
+"@reflect-ui/uiutils@0.1.2-1":
+  version "0.1.2-1"
+  resolved "https://registry.yarnpkg.com/@reflect-ui/uiutils/-/uiutils-0.1.2-1.tgz#b88d08223eb19ab5e6dd5ecf4a03075a41bb89c1"
+  integrity sha512-fv3mITNqM6U7DEpOr5B6c9lmmkj22r3114aR8Tvp2izMIndLbFJBzLnYEVA07bHiglic1POWCePwYVhB+bAF1Q==
+
 "@sinonjs/commons@^1.7.0":
   version "1.8.3"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.8.3.tgz#3802ddd21a50a949b6721ddd72da36e67e7f1b2d"
@@ -3599,6 +3609,14 @@
   dependencies:
     jest-diff "^26.0.0"
     pretty-format "^26.0.0"
+
+"@types/jest@^27.0.1":
+  version "27.0.1"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-27.0.1.tgz#fafcc997da0135865311bb1215ba16dba6bdf4ca"
+  integrity sha512-HTLpVXHrY69556ozYkcq47TtQJXpcWAWfkoqz+ZGz2JnmZhzlRjprCIyFnetSy8gpDWwTTGBcRVv1J1I1vBrHw==
+  dependencies:
+    jest-diff "^27.0.0"
+    pretty-format "^27.0.0"
 
 "@types/json-schema@^7.0.4", "@types/json-schema@^7.0.5", "@types/json-schema@^7.0.8":
   version "7.0.9"
@@ -8635,7 +8653,7 @@ jest-diff@^26.0.0:
     jest-get-type "^26.3.0"
     pretty-format "^26.6.2"
 
-jest-diff@^27.1.0:
+jest-diff@^27.0.0, jest-diff@^27.1.0:
   version "27.1.0"
   resolved "https://registry.yarnpkg.com/jest-diff/-/jest-diff-27.1.0.tgz#c7033f25add95e2218f3c7f4c3d7b634ab6b3cd2"
   integrity sha512-rjfopEYl58g/SZTsQFmspBODvMSytL16I+cirnScWTLkQVXYVZfxm78DFfdIIXc05RCYuGjxJqrdyG4PIFzcJg==
@@ -9039,7 +9057,7 @@ jest-worker@^27.1.0:
     merge-stream "^2.0.0"
     supports-color "^8.0.0"
 
-jest@^27.0.3, jest@^27.0.4, jest@^27.0.6:
+jest@^27.0.3, jest@^27.0.4, jest@^27.0.6, jest@^27.1.0:
   version "27.1.0"
   resolved "https://registry.yarnpkg.com/jest/-/jest-27.1.0.tgz#eaab62dfdc02d8b7c814cd27b8d2d92bc46d3d69"
   integrity sha512-pSQDVwRSwb109Ss13lcMtdfS9r8/w2Zz8+mTUA9VORD66GflCdl8nUFCqM96geOD2EBwWCNURrNAfQsLIDNBdg==
@@ -10846,7 +10864,7 @@ pretty-format@^26.0.0, pretty-format@^26.6.2:
     ansi-styles "^4.0.0"
     react-is "^17.0.1"
 
-pretty-format@^27.1.0:
+pretty-format@^27.0.0, pretty-format@^27.1.0:
   version "27.1.0"
   resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-27.1.0.tgz#022f3fdb19121e0a2612f3cff8d724431461b9ca"
   integrity sha512-4aGaud3w3rxAO6OXmK3fwBFQ0bctIOG3/if+jYEFGNGIs0EvuidQm3bZ9mlP2/t9epLNC/12czabfy7TZNSwVA==
@@ -12869,7 +12887,7 @@ ts-essentials@^2.0.3:
   resolved "https://registry.yarnpkg.com/ts-essentials/-/ts-essentials-2.0.12.tgz#c9303f3d74f75fa7528c3d49b80e089ab09d8745"
   integrity sha512-3IVX4nI6B5cc31/GFFE+i8ey/N2eA0CZDbo6n0yrz0zDX8ZJ8djmU1p+XRz7G3is0F3bB3pu2pAroFdAWQKU3w==
 
-ts-jest@^27.0.2, ts-jest@^27.0.3:
+ts-jest@^27.0.2, ts-jest@^27.0.3, ts-jest@^27.0.5:
   version "27.0.5"
   resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-27.0.5.tgz#0b0604e2271167ec43c12a69770f0bb65ad1b750"
   integrity sha512-lIJApzfTaSSbtlksfFNHkWOzLJuuSm4faFAfo5kvzOiRAuoN4/eKxVJ2zEAho8aecE04qX6K1pAzfH5QHL1/8w==
@@ -12988,7 +13006,7 @@ typescript@4.3.5:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.3.5.tgz#4d1c37cc16e893973c45a06886b7113234f119f4"
   integrity sha512-DqQgihaQ9cUrskJo9kIyW/+g0Vxsk8cDtZ52a3NGh0YNTfpUSArXSohyUGnvbPazEPLu398C0UxmKSOrPumUzA==
 
-typescript@^4.0.5, typescript@^4.1.2, typescript@^4.2.3, typescript@^4.2.4, typescript@^4.3.2, typescript@^4.3.5:
+typescript@^4.0.5, typescript@^4.1.2, typescript@^4.2.3, typescript@^4.2.4, typescript@^4.3.2, typescript@^4.3.5, typescript@^4.4.2:
   version "4.4.2"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.4.2.tgz#6d618640d430e3569a1dfb44f7d7e600ced3ee86"
   integrity sha512-gzP+t5W4hdy4c+68bfcv0t400HVJMMd2+H9B7gae1nQlBzCqvrXX+6GL/b3GAgyTH966pzrZ70/fRjwAtZksSQ==

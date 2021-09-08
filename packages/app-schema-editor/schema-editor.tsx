@@ -174,10 +174,10 @@ function _Mode_Component(props: { node: nodes.light.IReflectNodeReference }) {
 
   // 0. check if variant compat component (if it's parent is variant-set then it is.)
   const isVariantCompat =
-    node.parentReference.origin == nodes.ReflectSceneNodeType.variant_set;
+    node.parent.origin == nodes.ReflectSceneNodeType.variant_set;
 
   // if variant, load default property set by variant namings.
-  let variantProperties: variant.FimaVariantPropertyData[];
+  let variantProperties: variant.VariantProperty[];
   if (isVariantCompat) {
     const names = variant.getVariantNamesSetFromReference_Figma(node);
     variantProperties = variant.extractTypeFromVariantNames_Figma(names);
@@ -213,7 +213,7 @@ function _Mode_Component(props: { node: nodes.light.IReflectNodeReference }) {
           {variantProperties.map((n) => {
             return (
               <p>
-                name:{n.name}, type:{n.type}
+                name:{n.key}, type:{n.type}
               </p>
             );
           })}

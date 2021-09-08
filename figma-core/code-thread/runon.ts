@@ -3,7 +3,7 @@ import {
   EK_IMAGE_ASSET_REPOSITORY_MAP,
   EK_VANILLA_TRANSPORT,
 } from "@core/constant/ek.constant";
-import { vanilla } from "@design-sdk/core";
+import * as vanilla from "@design-sdk/vanilla";
 import { ReflectFrameNode, ReflectSceneNode } from "@design-sdk/core/nodes";
 import { user_interest } from "./user-interest";
 import { broadcastSelectionPreview } from "./broadcast-selection-preview";
@@ -37,8 +37,7 @@ export async function runon(rnode: ReflectSceneNode) {
   // region make vanilla
   if (user_interest == "g11n" || user_interest == "exporter") {
     const globalizatoinScreen = vanilla.makeVanilla(rnode as ReflectFrameNode);
-    const vanillaTransportableImageRepository =
-      await globalizatoinScreen.repository.makeTransportable();
+    const vanillaTransportableImageRepository = await globalizatoinScreen.repository.makeTransportable();
     figma.ui.postMessage({
       type: EK_IMAGE_ASSET_REPOSITORY_MAP,
       data: vanillaTransportableImageRepository,

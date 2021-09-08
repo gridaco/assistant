@@ -4,6 +4,7 @@ import { Figma } from "@design-sdk/figma";
 import { PluginSdk } from "@plugin-sdk/app";
 import { extractDataFromDataSourceNode } from "../data-source-node";
 import { onService, _Event_DataMapper_GoodUserInputTransfer } from "./events";
+import { FigmaEnum } from "@design-sdk/figma/features/variant";
 
 export const TEMPLATE_NODE_PATTERN = "@//template-for-manipulation/*";
 
@@ -183,18 +184,18 @@ function mapVariant_try(
     const set = variant.extractTypeFromVariantNames_Figma(_names);
 
     for (const s of set) {
-      const value = data[s.name];
+      const value = data[s.key];
       const _isConpat =
         value && typeof s.type == "string"
           ? s.type == value
-          : s.type.includes(value);
+          : (s.type as FigmaEnum).values.includes(value);
 
       if (_isConpat) {
         // 4. map the variant
 
         const swappingName = variant.buildVariantNameIncluding_Figma({
           including: {
-            swapPropertyName: s.name,
+            swapPropertyName: s.key,
             swapPropertyValue: value,
             thisOriginName: thisVariantName,
           },
