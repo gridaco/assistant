@@ -11,8 +11,8 @@ import { PluginSdk } from "@plugin-sdk/app";
 import { Divider, IconButton, Typography } from "@material-ui/core";
 import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "@core/constant";
 import { Edit, Settings } from "@material-ui/icons";
-import { ComponentCodebox } from "./component-codebox";
 import { ComponentSchemaEditor } from "./schema-editor";
+import { useSingleSelection } from "plugin-app";
 
 interface VisualComponentManifest {
   name: string;
@@ -22,8 +22,6 @@ interface VisualComponentManifest {
   gitUrl: string;
   codeSnippet: string;
 }
-
-import { useSingleSelection } from "plugin-app";
 
 export function ComponentViewScreen() {
   const [data, setData] = useState<VisualComponentManifest>(undefined);
@@ -66,7 +64,8 @@ export function ComponentViewScreen() {
   return (
     <div>
       <Preview auto />
-      {selection ? (
+
+      {/* {selection ? (
         <form key={JSON.stringify(data)}>
           <p>component view placeholder</p>
           <EditableComponentMetaFieldSingleValueDisplay
@@ -109,7 +108,7 @@ export function ComponentViewScreen() {
         </form>
       ) : (
         <></>
-      )}
+      )} */}
       <ComponentSchemaEditor />
     </div>
   );

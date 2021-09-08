@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { IField, Option } from "@code-ui/docstring/dist/lib/field/type";
-import { LanguageType } from "@code-ui/docstring/dist/lib/type";
-import { CodeLikeView as DocstringView } from "@code-ui/docstring";
+import { IField, LanguageType, Option } from "@code-ui/docstring/dist/lib/type";
+import { Docstring as DocstringView } from "@code-ui/docstring";
 import {
   Framework,
   FrameworkOption,

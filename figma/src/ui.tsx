@@ -16,12 +16,10 @@ function LiteHostedAppConnector() {
   useEffect(() => {
     if (frame) {
       window.addEventListener("message", (event) => {
-        // console.log("event recievd from lite-fima-app", event.data);
-        if (event.data == "plugin-app-initialized") {
+        if (event.data === "plugin-app-initialized") {
           setInitialized(true);
-        }
-
-        if ("pluginMessage" in event.data) {
+          return;
+        } else if ("pluginMessage" in event.data) {
           if (event.data.pluginMessage.__proxy_request_from_hosted_plugin) {
             handle(event.data.pluginMessage);
             return;
@@ -48,7 +46,7 @@ function LiteHostedAppConnector() {
   const _host =
     process.env.NODE_ENV === "production"
       ? "https://assistant-serve.grida.co"
-      : "http://localhost:3000";
+      : "http://localhost:3303";
 
   // use opacity
   // if (initialized) => show iframe only

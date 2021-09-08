@@ -183,18 +183,18 @@ function mapVariant_try(
     const set = variant.extractTypeFromVariantNames_Figma(_names);
 
     for (const s of set) {
-      const value = data[s.name];
+      const value = data[s.key];
       const _isConpat =
         value && typeof s.type == "string"
           ? s.type == value
-          : s.type.includes(value);
+          : (s.type as variant.FigmaEnum).values.includes(value);
 
       if (_isConpat) {
         // 4. map the variant
 
         const swappingName = variant.buildVariantNameIncluding_Figma({
           including: {
-            swapPropertyName: s.name,
+            swapPropertyName: s.key,
             swapPropertyValue: value,
             thisOriginName: thisVariantName,
           },

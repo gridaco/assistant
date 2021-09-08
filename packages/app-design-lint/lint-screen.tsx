@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import { PluginSdk } from "@plugin-sdk/app";
 import { ReflectLintFeedback } from "@reflect-ui/lint/lib/feedbacks";
@@ -25,9 +25,9 @@ export const LintScreen = () => {
   const [isFixingMode, setIsFixingMode] = useState<boolean>(false);
   const selection = useSingleSelection();
 
-  window.addEventListener("message", (ev: MessageEvent) => {
+  const messagehandler = (ev: MessageEvent) => {
     const msg = ev.data.pluginMessage;
-    if (msg.type == _APP_EVENT_LINT_RESULT_EK) {
+    if (msg && msg.type == _APP_EVENT_LINT_RESULT_EK) {
       const _feedbacks = msg.data as Array<ReflectLintFeedback>;
       if (_feedbacks.length === 0) {
         PluginSdk.notify("🤩 Neat and clean (nothing to clean)", 2);
@@ -35,7 +35,14 @@ export const LintScreen = () => {
         setFeedbacks(_feedbacks);
       }
     }
-  });
+  };
+
+  useEffect(() => {
+    window.addEventListener("message", messagehandler);
+    return () => {
+      window.removeEventListener("message", messagehandler);
+    };
+  }, []);
 
   function countSelection() {
     return mapGrandchildren(selection.node, null, {
@@ -103,7 +110,7 @@ export const LintScreen = () => {
   return (
     <>
       {/* <Preview data={undefined} name="selected node name" /> */}
-      <ErrorWrapper>
+      <Wrapper>
         {!!selection ? (
           <>{handleSelectionLayer()}</>
         ) : (
@@ -113,32 +120,36 @@ export const LintScreen = () => {
         )}
 
         {ErrorLineItem()}
-        {feedbacks.length === 0 ? (
-          <RunLintButtton
-            disabled={!selection}
-            onClick={requestLintOnCurrentSelection}
-          >
-            Run lint
-          </RunLintButtton>
-        ) : (
-          <FooterActionsWrapper>
-            <FirstErrorButton
-              onClick={() => {
-                setIsFixingMode(true);
-              }}
-            >
-              Jump to first error
-            </FirstErrorButton>
-            <ClearButton
-              onClick={() => {
-                setFeedbacks([]); // clear feedbacks
-              }}
-            >
-              Clear
-            </ClearButton>
-          </FooterActionsWrapper>
-        )}
-      </ErrorWrapper>
+        <FooterActionsWrapper>
+          <InnerWrapper>
+            {feedbacks.length === 0 ? (
+              <RunLintButtton
+                disabled={!selection}
+                onClick={requestLintOnCurrentSelection}
+              >
+                Run lint
+              </RunLintButtton>
+            ) : (
+              <>
+                <FirstErrorButton
+                  onClick={() => {
+                    setIsFixingMode(true);
+                  }}
+                >
+                  Jump to first error
+                </FirstErrorButton>
+                <ClearButton
+                  onClick={() => {
+                    setFeedbacks([]); // clear feedbacks
+                  }}
+                >
+                  Clear
+                </ClearButton>
+              </>
+            )}
+          </InnerWrapper>
+        </FooterActionsWrapper>
+      </Wrapper>
       <Dialog open={isFixingMode} fullScreen>
         <FixYourSelf
           feedbacks={feedbacks}
@@ -156,7 +167,7 @@ function _makeshortname(origin: string, cut?: number): string {
   return _cut < origin.length ? origin.substring(0, _cut) + "..." : origin;
 }
 
-const ErrorWrapper = styled.div`
+const Wrapper = styled.div`
   margin: 0 8px;
 `;
 
@@ -211,29 +222,34 @@ const ErrorList = styled.ul`
 `;
 
 const FooterActionsWrapper = styled.div`
-  // FIXME:
-  width: calc(100% - 32px);
+  width: 100%;
   display: flex;
   position: absolute;
   bottom: 16px;
+  left: 0;
+`;
+
+const InnerWrapper = styled.div`
+  width: 100%;
+  margin: 0 16px;
 `;
 
 const RunLintButtton = styled.button`
   ${BlackButtonStyle}
-  width: calc(100% - 32px); // FIXME:
-  position: absolute;
-  bottom: 16px;
+  width: 100%;
 `;
 
 const FirstErrorButton = styled.button`
   ${BlackButtonStyle}
-  width: 66.6666%;
+  /* temp before add button component */
+  width: 61%;
   margin-right: 8px;
 `;
 
 const ClearButton = styled.button`
   ${TransparentButtonStyle}
-  width: 33.3333%;
+  /* temp before add button component */
+  width: 36%;
   background: #fff;
 `;
 

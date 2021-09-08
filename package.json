@@ -21,7 +21,7 @@
       "packages/base-sdk/_firstparty/*",
       "packages/reflect-core/packages/*",
       "packages/design-to-code/packages/designto-*",
-      "packages/design-to-code/packages/builder-config",
+      "packages/design-to-code/packages/builder-*",
       "packages/design-to-code/packages/coli/packages/*",
       "packages/design-to-code/packages/coli-web-builder/*",
       "packages/design-to-code/packages/reflect-detection"

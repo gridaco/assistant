@@ -110,8 +110,7 @@ export function CodeScreen() {
 
           break;
         case EK_IMAGE_ASSET_REPOSITORY_MAP:
-          const imageRepo =
-            msg.data as repo_assets.TransportableImageRepository;
+          const imageRepo = msg.data as repo_assets.TransportableImageRepository;
           repo_assets.ImageHostingRepository.setRepository(imageRepo);
           break;
       }
@@ -160,8 +159,8 @@ export function CodeScreen() {
           onUseroptionChange={onOptionChange}
         />
         <CodeBox
+          editor="monaco"
           language={_src_view_language(useroption.framework)}
-          app={app}
           code={_make_source()}
         />
       </CodeWrapper>
@@ -201,10 +200,11 @@ const CopyCodeButton = styled.div`
   cursor: pointer;
 `;
 
+const _VSCODE_DARK_BG = "#1e1e1e";
+
 const CodeWrapper = styled.div`
-  /* 374 is preview and navigation height*/
-  height: calc(100vh - 374px);
-  background: rgb(42, 39, 52);
-  margin: 0 -8px;
-  overflow-y: scroll;
+  /* 366px is preview(200) + navigation(52+40) + footer btn wrapper(74) height*/
+  height: calc(100vh - 366px);
+  background: ${_VSCODE_DARK_BG};
+  overflow-y: hidden;
 `;

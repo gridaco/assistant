@@ -22,7 +22,7 @@ export const BlackButtonStyle = css`
   border: 1px solid #151617;
   background: #151617;
   color: #fff;
-  width: 66.666666%;
+  width: 61%;
 
   // for reset material-ui button style
   &:hover {

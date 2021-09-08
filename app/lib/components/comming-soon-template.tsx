@@ -26,10 +26,7 @@ export function CommingSoonTemplate(props: Props) {
   );
 }
 
-const Wrapper = styled.div`
-  /* -8 is for reset body margin */
-  margin: 0 -8px;
-`;
+const Wrapper = styled.div``;
 
 const ImageBox = styled.div``;
 

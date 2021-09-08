@@ -126,7 +126,7 @@ function TabsLayout(props: {
   return (
     <div className="outer-ui">
       {props.isTabVisible && (
-        <div className="tabs-wrapper" style={{ margin: "0 -8px" }}>
+        <div className="tabs-wrapper">
           <WorkmodeScreenTabs
             layout={tabs_as_page_configs}
             tabIndex={tabIndex}
@@ -245,12 +245,25 @@ function Home() {
       .then((d) => {
         setSavedLayout(d);
       })
+      .catch((e) => {
+        console.log("failed loading layout", e);
+      })
       .finally(() => {});
   }, []);
 
   if (savedLayout) {
-    const p = get_page_config(savedLayout.currentWork).path;
-    history.replace(p);
+    try {
+      const p = get_page_config(savedLayout.currentWork).path;
+      history.replace(p);
+    } catch (e) {
+      console.log("failed to load saved layout", e);
+      console.log(
+        "this can happen during development, switching between branches, or could happen on production wehn new version lo longer has a page that is previously loaded."
+      );
+      // if somehow, failed loading the path of the current work, we will redirect to the home page.
+      // this can happen during development, switching between branches, or could happen on production wehn new version lo longer has a page that is previously loaded.
+      history.replace("/code/preview");
+    }
   }
 
   return <></>;
@@ -314,6 +327,6 @@ function _update_focused_screen_ev(screen: WorkScreen) {
 
 const Wrapper = styled.div`
   display: flex;
-  padding: 0 8px;
-  /* margin-bottom: -8px; */
+  padding: 0 16px;
+  /* padding: 0 8px; */
 `;

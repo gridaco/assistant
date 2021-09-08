@@ -39,6 +39,16 @@ export const PLUGIN_SDK_NS_GET_NODE = `${__PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/get-
 export const PLUGIN_SDK_EK_REQUEST_GET_NODE_BY_ID = "assistant/node/get/by-id";
 // endregion node read
 
+// region node access
+export const PLUGIN_SDK_NS_NODE = `${__PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/node`;
+export const PLUGIN_SDK_EK_REQUEST_RESCALE_NODE_BY_ID =
+  "assistant/node/rescale/by-id";
+export const PLUGIN_SDK_EK_REQUEST_RESIZE_NODE_BY_ID =
+  "assistant/node/resize/by-id";
+export const PLUGIN_SDK_EK_REQUEST_REMOVE_NODE_BY_ID =
+  "assistant/node/remove/by-id";
+// endregion node access
+
 // region storage
 export const PLUGIN_SDK_NS_STORAGE = `${__PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/storage`;
 export const PLUGIN_SDK_EK_REQUEST_STORAGE_SET_ITEM =
