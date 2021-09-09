@@ -12,6 +12,7 @@ const withTM = require("next-transpile-modules")([
 
   // @app
   "app",
+  "@app/design-to-code",
   "@app/auth",
   "@app/i18n",
   "@app/component-manage",

@@ -21,7 +21,7 @@ import { DataMapperScreen } from "@app/data-mapper";
 import { GlobalizationScreen } from "@app/i18n";
 import { ToolboxScreen } from "../pages/tool-box";
 import { FontReplacerScreen } from "@toolbox/font-replacer";
-import { CodeScreen } from "../pages/code/code-screen";
+import { CodeScreen } from "@app/design-to-code";
 import { AboutScreen } from "../pages/about";
 import { SigninScreen } from "@app/auth";
 import { DesignTextCdoeSyntaxHighligherScreen } from "@app/design-text-code-syntax-highlight";
