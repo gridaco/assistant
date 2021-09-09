@@ -15,5 +15,5 @@ declare module "@emotion/react" {
   export interface Theme extends _Theme {}
 }
 
-//@ts-ignore - below line sometimes throw "Type error: Type 'CreateStyled' is not generic." even if it is generic typed
-export default styled as CreateStyled<_Theme>;
+// //@ts-ignore - below line sometimes throw "Type error: Type 'CreateStyled' is not generic." even if it is generic typed
+// export default styled as CreateStyled<_Theme>;

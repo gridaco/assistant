@@ -16,7 +16,7 @@ import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 export function CodeViewWithControl(props: {
   targetid: string;
   onUserOptionsChange?: (options: DesigntoCodeUserOptions) => void;
-  onGeneration: (app: string, src: string) => void;
+  onGeneration?: (app: string, src: string) => void;
 }) {
   const [app, setApp] = useState<string>();
   const [source, setSource] = useState<SourceInput>();
@@ -54,7 +54,7 @@ export function CodeViewWithControl(props: {
 
   const __onGeneration__cb = (app, src) => {
     const _source = typeof src == "string" ? source : src?.raw;
-    props.onGeneration(app, _source);
+    props.onGeneration?.(app, _source);
   };
 
   const handleSourceInput = ({
