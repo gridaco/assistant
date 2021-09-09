@@ -10,6 +10,7 @@ export function CodeBox({
   readonly = true,
   code,
   codeActions,
+  disabled,
 }: {
   language: "dart" | "jsx" | string;
   editor?: "monaco" | "prism";
@@ -19,6 +20,7 @@ export function CodeBox({
   readonly?: boolean;
   code: SourceInput;
   codeActions?: Array<JSX.Element>;
+  disabled?: true;
 }) {
   const raw = (code && (typeof code == "string" ? code : code.raw)) || "";
 
@@ -32,7 +34,7 @@ export function CodeBox({
   return (
     <>
       {/* <CopyCodeButton /> */}
-      <CodeWrapper>
+      <CodeWrapper disabled={disabled}>
         {codeActions &&
           codeActions.map((e) => {
             return e;
@@ -50,7 +52,8 @@ export function CodeBox({
   );
 }
 
-const CodeWrapper = styled.code`
+const CodeWrapper = styled.code<{ disabled?: boolean }>`
+  opacity: ${(props) => (props.disabled ? 0.5 : 1)};
   width: max-content;
   height: auto;
 `;

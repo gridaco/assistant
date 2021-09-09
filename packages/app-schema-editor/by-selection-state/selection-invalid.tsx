@@ -19,6 +19,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
       </div>
       <CodeViewWithControl
         targetid={props.node.id}
+        disabled
         editor="prism"
         customMessages={["@oops this is not a component"]}
       />

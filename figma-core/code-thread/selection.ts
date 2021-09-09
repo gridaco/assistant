@@ -78,6 +78,7 @@ export function onfigmaselectionchange() {
         });
       } catch (_) {
         figma.notify(`Oops. we don't support "${target.type}" yet.`);
+        console.error(_)
       }
       // endregion
       FigmaNodeCache.setConverted(rnode);

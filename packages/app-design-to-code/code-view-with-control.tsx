@@ -17,6 +17,7 @@ export function CodeViewWithControl({
   targetid,
   editor = "monaco",
   onUserOptionsChange,
+  disabled,
   onGeneration,
   customMessages,
 }: {
@@ -25,6 +26,7 @@ export function CodeViewWithControl({
   onUserOptionsChange?: (options: DesigntoCodeUserOptions) => void;
   onGeneration?: (app: string, src: string) => void;
   customMessages?: string[];
+  disabled?: true;
 }) {
   const [app, setApp] = useState<string>();
   const [source, setSource] = useState<SourceInput>();
@@ -121,6 +123,7 @@ export function CodeViewWithControl({
         })}
       />
       <CodeBox
+        disabled={disabled}
         editor={editor}
         language={_src_view_language(useroption.framework)}
         code={source}

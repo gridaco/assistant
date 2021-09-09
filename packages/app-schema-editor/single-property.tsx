@@ -8,6 +8,7 @@ import {
 import React, { useState } from "react";
 import { ISingleLayerProperty } from "./types";
 import { nameit, NameCases } from "@coli.codes/naming";
+import { UserSuggestionReason } from "./property-suggestions";
 
 type UserInteractionMode = "editing" | "viewing";
 
@@ -30,6 +31,8 @@ interface ISingleLayerPropertyDefinitionProps {
    * when remove this whole preference. if not provided, remove button won't be present.
    */
   onRemove?: () => void;
+
+  suggestions: UserSuggestionReason[];
 }
 
 export function SingleLayerPropertyDefinition(
@@ -56,12 +59,12 @@ export function SingleLayerPropertyDefinition(
   const disableInputs = mode == "viewing";
 
   return (
-    <>
+    <div style={{ margin: 16 }}>
       <Divider />
       <form>
         <TextField
           required
-          label="name"
+          label="key"
           defaultValue={data?.schema.name}
           onChange={(e) => {
             setData({
@@ -103,12 +106,17 @@ export function SingleLayerPropertyDefinition(
           disabled={disableInputs}
           value={data?.targetProperty}
         >
-          {["on click", "on double click", "enabled", "opacity"].map((d) => {
-            return (
-              <MenuItem key={d} value={d}>
-                {d}
-              </MenuItem>
-            );
+          {props.suggestions.map((d) => {
+            switch (d.type) {
+              case "suggestion":
+                return (
+                  <MenuItem key={d.to} value={d.to}>
+                    {d.to}
+                  </MenuItem>
+                );
+              default:
+                return <></>;
+            }
           })}
         </Select>
 
@@ -130,27 +138,6 @@ export function SingleLayerPropertyDefinition(
           />
         )}
 
-        <Select
-          label="how to locate"
-          onChange={(e) => {
-            setData({
-              ...data,
-              locateMode: e.target.value as string,
-            });
-          }}
-          defaultValue={data?.locateMode}
-          disabled={disableInputs}
-          value="auto"
-        >
-          {["auto"].map((d) => {
-            return (
-              <MenuItem key={d} value={d}>
-                {d}
-              </MenuItem>
-            );
-          })}
-        </Select>
-
         <ModeToggleButton
           current={mode}
           onSave={handleSave}
@@ -162,6 +149,6 @@ export function SingleLayerPropertyDefinition(
           </Button>
         )}
       </form>
-    </>
+    </div>
   );
 }

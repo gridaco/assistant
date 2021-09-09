@@ -8,35 +8,17 @@ import { _FigmaVariantPropertyCompatType_to_string } from "@design-sdk/figma/fea
 import { nameit, NameCases } from "@coli.codes/naming";
 import { CodeBox } from "@ui/codebox";
 import { isMemberOfComponentLike } from "@design-sdk/figma/node-analysis/component-like-type-analysis/analyze";
-
-type ConfigurableLayerContext =
-  /**
-   * frame with auto layout
-   */
-  | "frame-layouted"
-  /**
-   *
-   */
-  | "text"
-  /**
-   *
-   */
-  | "vector-colored"
-  /**
-   *
-   */
-  | "shape-with-image";
+import { get_suggestions } from "../property-suggestions";
 
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const { node } = props;
-  const id = node.id;
 
   const [data, setData] = useState<IProperties>([]);
   const handleOnSave = (d: ISingleLayerProperty) => {
     const newData = data;
     newData.push(d);
-    setData(newData);
-    _update_all();
+    setData([...newData]);
+    _sync_data_with_storage();
   };
 
   const manifest = isMemberOfComponentLike(node);
@@ -48,10 +30,16 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
   } else {
     throw "logical error.";
   }
+
+  const id =
+    (manifest.parent.node.mainComponent &&
+      manifest.parent.node.mainComponent.id) ||
+    manifest.parent.node.id;
+
   // TODO: layer analysis. configurable layer can be raw layyer or instance of a component (including variant isntance.)
   // << this is irrelevant comment to below code.
 
-  const _update_all = () => {
+  const _sync_data_with_storage = () => {
     // this update logic shall be applied to master node's corresponding layer
     PluginSdk.updateMetadata({
       id: id,
@@ -64,7 +52,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const handleOnRemove = (at: number) => {
     data.splice(at, at + 1);
     setData([...data]);
-    _update_all();
+    _sync_data_with_storage();
   };
 
   useEffect(() => {
@@ -78,6 +66,11 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
       }
     });
   }, []);
+
+  const all_suggestions = get_suggestions(node);
+  const suggestions = Array.isArray(all_suggestions)
+    ? all_suggestions
+    : (all_suggestions && [all_suggestions]) || [];
 
   const _has_saved_data = data.length > 0;
   return (
@@ -95,33 +88,39 @@ interface Props {
 }`}
       />
 
-      {_has_saved_data ? (
-        data.map((d, i) => (
+      <div key={data?.length ?? ""}>
+        {_has_saved_data ? (
+          <>
+            {data.map((d, i) => (
+              <SingleLayerPropertyDefinition
+                onRemove={() => {
+                  handleOnRemove(i);
+                }}
+                key={d?.schema.name}
+                onSave={handleOnSave}
+                initial={d}
+                suggestions={suggestions}
+              />
+            ))}
+            <button>add new</button>
+          </>
+        ) : (
+          // automatically preset a new property
           <SingleLayerPropertyDefinition
-            onRemove={() => {
-              handleOnRemove(i);
-            }}
-            key={d?.schema.name}
+            initialMode={"editing"}
             onSave={handleOnSave}
-            initial={d}
+            initial={{
+              schema: {
+                name: nameit(node.name, { case: NameCases.camel }).name,
+                type: "string",
+              },
+              targetProperty: undefined,
+              locateMode: "auto",
+            }}
+            suggestions={suggestions}
           />
-        ))
-      ) : (
-        //   automatically preset a new property
-        <SingleLayerPropertyDefinition
-          key={"new"}
-          initialMode={"editing"}
-          onSave={handleOnSave}
-          initial={{
-            schema: {
-              name: nameit(node.name, { case: NameCases.camel }).name,
-              type: "string",
-            },
-            targetProperty: undefined,
-            locateMode: "auto",
-          }}
-        />
-      )}
+        )}
+      </div>
     </>
   );
 }
