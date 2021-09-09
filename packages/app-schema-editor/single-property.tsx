@@ -1,6 +1,13 @@
-import { Button, Divider, TextField } from "@material-ui/core";
+import {
+  Button,
+  Divider,
+  TextField,
+  Select,
+  MenuItem,
+} from "@material-ui/core";
 import React, { useState } from "react";
 import { ISingleLayerProperty } from "./types";
+import { nameit, NameCases } from "@coli.codes/naming";
 
 type UserInteractionMode = "editing" | "viewing";
 
@@ -19,6 +26,10 @@ interface ISingleLayerPropertyDefinitionProps {
   initial?: ISingleLayerProperty;
   initialMode?: UserInteractionMode;
   onSave: (data: ISingleLayerProperty) => void;
+  /**
+   * when remove this whole preference. if not provided, remove button won't be present.
+   */
+  onRemove?: () => void;
 }
 
 export function SingleLayerPropertyDefinition(
@@ -79,33 +90,8 @@ export function SingleLayerPropertyDefinition(
           helperText="description for this property"
           disabled={disableInputs}
         />
-        <TextField
-          label="type"
-          required
-          defaultValue={data?.schema.type}
-          onChange={(e) => {
-            setData({
-              ...data,
-              schema: {
-                ...data.schema,
-                type: e.target.value,
-              },
-            });
-          }}
-          disabled={disableInputs}
-        />
-        <TextField
-          label="how to locate"
-          onChange={(e) => {
-            setData({
-              ...data,
-              locateMode: e.target.value,
-            });
-          }}
-          defaultValue={data?.locateMode}
-          disabled={disableInputs}
-        />
-        <TextField
+
+        <Select
           label="property"
           onChange={(e) => {
             setData({
@@ -115,12 +101,66 @@ export function SingleLayerPropertyDefinition(
           }}
           defaultValue={data?.targetProperty}
           disabled={disableInputs}
-        />
+          value={data?.targetProperty}
+        >
+          {[1, 2, 3, 4, 5].map((d) => {
+            return (
+              <MenuItem key={d} value={d}>
+                {d}
+              </MenuItem>
+            );
+          })}
+        </Select>
+
+        {data?.targetProperty && (
+          <TextField
+            label="type"
+            required
+            defaultValue={data?.schema.type}
+            onChange={(e) => {
+              setData({
+                ...data,
+                schema: {
+                  ...data.schema,
+                  type: e.target.value,
+                },
+              });
+            }}
+            disabled={disableInputs}
+          />
+        )}
+
+        <Select
+          label="how to locate"
+          onChange={(e) => {
+            setData({
+              ...data,
+              locateMode: e.target.value as string,
+            });
+          }}
+          defaultValue={data?.locateMode}
+          disabled={disableInputs}
+          value="auto"
+        >
+          {["auto"].map((d) => {
+            return (
+              <MenuItem key={d} value={d}>
+                {d}
+              </MenuItem>
+            );
+          })}
+        </Select>
+
         <ModeToggleButton
           current={mode}
           onSave={handleSave}
           onStartEdit={handleStartEdit}
         />
+        {props.onRemove && (
+          <Button variant="outlined" onClick={props.onRemove}>
+            remove
+          </Button>
+        )}
       </form>
     </>
   );

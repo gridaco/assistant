@@ -5,7 +5,9 @@ import { SingleLayerPropertyDefinition } from "../single-property";
 import { ISingleLayerProperty, IProperties } from "../types";
 import { nodes } from "@design-sdk/core";
 import { _FigmaVariantPropertyCompatType_to_string } from "@design-sdk/figma/features/variant";
-
+import { nameit, NameCases } from "@coli.codes/naming";
+import { CodeBox } from "@ui/codebox";
+import { isMemberOfComponentLike } from "@design-sdk/figma/node-analysis/component-like-type-analysis/analyze";
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const { node } = props;
   const id = node.id;
@@ -15,7 +17,22 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
     const newData = data;
     newData.push(d);
     setData(newData);
+    _update_all();
+  };
 
+  const manifest = isMemberOfComponentLike(node);
+
+  if (manifest) {
+    // with this, you can show root parent's info
+    manifest.parent.type;
+    manifest.parent.node;
+  } else {
+    throw "logical error.";
+  }
+  // TODO: layer analysis. configurable layer can be raw layyer or instance of a component (including variant isntance.)
+  // << this is irrelevant comment to below code.
+
+  const _update_all = () => {
     // this update logic shall be applied to master node's corresponding layer
     PluginSdk.updateMetadata({
       id: id,
@@ -23,6 +40,12 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
       key: "layer-property-data",
       value: data,
     });
+  };
+
+  const handleOnRemove = (at: number) => {
+    data.splice(at, at + 1);
+    setData([...data]);
+    _update_all();
   };
 
   useEffect(() => {
@@ -37,12 +60,28 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
     });
   }, []);
 
+  const _has_saved_data = data.length > 0;
   return (
     <>
-      <h6>configurable layer</h6>
-      {data.length > 0 ? (
-        data.map((d) => (
+      <CodeBox
+        editor="prism"
+        language="typescript"
+        code={`/** parent’s interface */
+interface Props {
+  property_a : TYPE
+  // properties of ${node.name}
+  // -------------------------------
+
+  // -------------------------------
+}`}
+      />
+
+      {_has_saved_data ? (
+        data.map((d, i) => (
           <SingleLayerPropertyDefinition
+            onRemove={() => {
+              handleOnRemove(i);
+            }}
             key={d?.schema.name}
             onSave={handleOnSave}
             initial={d}
@@ -56,7 +95,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
           onSave={handleOnSave}
           initial={{
             schema: {
-              name: `${node.name}`,
+              name: nameit(node.name, { case: NameCases.camel }).name,
               type: "string",
             },
             targetProperty: undefined,
