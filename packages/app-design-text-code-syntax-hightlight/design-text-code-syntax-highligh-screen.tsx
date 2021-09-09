@@ -25,18 +25,16 @@ export function DesignTextCdoeSyntaxHighligherScreen() {
       <HighlightExecutor
         schemaAndLanguage={schemaAndLanguage}
         setColorSchema={(event) => {
-          setSchemaAndLanguage(
-            Object.assign(schemaAndLanguage, {
-              colorSchema: event.target.value,
-            })
-          );
+          setSchemaAndLanguage({
+            ...schemaAndLanguage,
+            colorSchema: event.target.value,
+          });
         }}
         setLanguage={(event) => {
-          setSchemaAndLanguage(
-            Object.assign(schemaAndLanguage, {
-              language: event.target.value,
-            })
-          );
+          setSchemaAndLanguage({
+            ...schemaAndLanguage,
+            language: event.target.value,
+          });
         }}
       />
     </div>
