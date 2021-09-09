@@ -13,8 +13,7 @@ import {
   react_styles,
 } from "./framework-option";
 import styled from "@emotion/styled";
-
-export type DesigntoCodeUserOptions = FrameworkOption;
+import { DesigntoCodeUserOptions } from "./user-options";
 
 // FIXME: get useroption as props from parent. userprops & preset (optional) should be managed on its parent
 interface CodeOptionsControlProps {

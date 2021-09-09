@@ -20,7 +20,7 @@ export function CodeBox({
   code: SourceInput;
   codeActions?: Array<JSX.Element>;
 }) {
-  const raw = typeof code == "string" ? code : code.raw;
+  const raw = (code && (typeof code == "string" ? code : code.raw)) || "";
 
   const Editor =
     editor == "monaco" ? (
@@ -37,8 +37,8 @@ export function CodeBox({
           codeActions.map((e) => {
             return e;
           })}
-
-        {typeof raw == "string" ? (
+        {/* when empty input, don't raise error */}
+        {raw || typeof raw == "string" ? (
           Editor
         ) : (
           <>Invalid code was givven. cannot display result (this is a bug)</>
