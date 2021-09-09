@@ -387,9 +387,9 @@ async function handleExportEvent(event: HanderProps<ImageExportRequest>) {
         return undefined;
       }
       case TargetPlatform.figma: {
-        const r = await (
-          figma.getNodeById(event.data.id) as SceneNode
-        ).exportAsync({
+        const r = await (figma.getNodeById(
+          event.data.id
+        ) as SceneNode).exportAsync({
           ..._ImageExportOption_to_FigmaCompat(event.data.opt),
         });
 
@@ -436,8 +436,14 @@ async function handleBrowserApiEvent(props: TransportPluginEvent) {
 
 function handleDragDropped(props: HanderProps<DragAndDropOnCanvasRequest>) {
   console.log("handling drop event", props.data);
-  const { dropPosition, windowSize, offset, itemSize, eventKey, customData } =
-    props.data;
+  const {
+    dropPosition,
+    windowSize,
+    offset,
+    itemSize,
+    eventKey,
+    customData,
+  } = props.data;
 
   // Getting the position and size of the visible area of the canvas.
   const bounds = figma.viewport.bounds;
@@ -477,11 +483,11 @@ function response<T = any>(
   data: T,
   error: Error | undefined = undefined
 ): boolean {
-  console.info(
-    `${target_platform.get()}>> responding to request ${requestId} with data ${JSON.stringify(
-      data
-    )} and ${error ? "" + error : "no error"}`
-  );
+  // console.info(
+  //   `${target_platform.get()}>> responding to request ${requestId} with data ${JSON.stringify(
+  //     data
+  //   )} and ${error ? "" + error : "no error"}`
+  // );
 
   const msg = <TransportPluginEvent>{
     id: requestId,
