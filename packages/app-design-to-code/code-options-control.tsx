@@ -17,6 +17,7 @@ import { DesigntoCodeUserOptions } from "./user-options";
 
 // FIXME: get useroption as props from parent. userprops & preset (optional) should be managed on its parent
 interface CodeOptionsControlProps {
+  customFields?: IField[];
   initialPreset?: string;
   onUseroptionChange: (op: DesigntoCodeUserOptions) => void;
 }
@@ -158,6 +159,11 @@ export function CodeOptionsControl(props: CodeOptionsControlProps) {
     }
   }
 
+  const _controls = [
+    ...(props.customFields ?? []),
+    ...fields_config[useroption.framework],
+  ];
+
   // console.log("code-screen-control::useroption", useroption);
   return (
     <Wrapper>
@@ -166,7 +172,7 @@ export function CodeOptionsControl(props: CodeOptionsControlProps) {
         lang={__lang_to_docstring_lang(useroption.language)}
         theme={"monokai"}
         padding={"16px"}
-        controls={fields_config[useroption.framework]}
+        controls={_controls}
         expandableConfig={{
           lines: 2,
           expandable: true,

@@ -13,10 +13,18 @@ import {
 import { repo_assets } from "@design-sdk/core";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 
-export function CodeViewWithControl(props: {
+export function CodeViewWithControl({
+  targetid,
+  editor = "monaco",
+  onUserOptionsChange,
+  onGeneration,
+  customMessages,
+}: {
   targetid: string;
+  editor?: "monaco" | "prism";
   onUserOptionsChange?: (options: DesigntoCodeUserOptions) => void;
   onGeneration?: (app: string, src: string) => void;
+  customMessages?: string[];
 }) {
   const [app, setApp] = useState<string>();
   const [source, setSource] = useState<SourceInput>();
@@ -41,11 +49,11 @@ export function CodeViewWithControl(props: {
       type: "code-gen-request",
       option: useroption,
     });
-  }, [useroption.framework, props.targetid]);
+  }, [useroption.framework, targetid]);
 
   // tell parent about user option initial change
   useEffect(() => {
-    props.onUserOptionsChange?.(useroption);
+    onUserOptionsChange?.(useroption);
   }, [useroption.framework, useroption.language]);
 
   const onOptionChange = (op: DesigntoCodeUserOptions) => {
@@ -54,7 +62,7 @@ export function CodeViewWithControl(props: {
 
   const __onGeneration__cb = (app, src) => {
     const _source = typeof src == "string" ? source : src?.raw;
-    props.onGeneration?.(app, _source);
+    onGeneration?.(app, _source);
   };
 
   const handleSourceInput = ({
@@ -108,9 +116,12 @@ export function CodeViewWithControl(props: {
         // key={JSON.stringify(useroption)} // FIXME: do not uncomment me
         // initialPreset="react_default" // FIXME: do not uncomment me
         onUseroptionChange={onOptionChange}
+        customFields={customMessages?.map((d) => {
+          return { name: d };
+        })}
       />
       <CodeBox
-        editor="monaco"
+        editor={editor}
         language={_src_view_language(useroption.framework)}
         code={source}
       />
