@@ -70,10 +70,15 @@ export function onfigmaselectionchange() {
       // Logger.debug("reflect-converted-selection", rnode);
 
       // region sync selection event (search "selectionchange" for references)
-      figma.ui.postMessage({
-        type: "selectionchange",
-        data: light.makeReference(rnode),
-      });
+      try {
+        const data = light.makeReference(rnode);
+        figma.ui.postMessage({
+          type: "selectionchange",
+          data: data,
+        });
+      } catch (_) {
+        figma.notify(`Oops. we don't support "${target.type}" yet.`);
+      }
       // endregion
       FigmaNodeCache.setConverted(rnode);
       runon(rnode);

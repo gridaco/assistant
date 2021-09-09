@@ -103,7 +103,7 @@ export function SingleLayerPropertyDefinition(
           disabled={disableInputs}
           value={data?.targetProperty}
         >
-          {[1, 2, 3, 4, 5].map((d) => {
+          {["on click", "on double click", "enabled", "opacity"].map((d) => {
             return (
               <MenuItem key={d} value={d}>
                 {d}

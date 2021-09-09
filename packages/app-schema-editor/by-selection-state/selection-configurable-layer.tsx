@@ -8,6 +8,25 @@ import { _FigmaVariantPropertyCompatType_to_string } from "@design-sdk/figma/fea
 import { nameit, NameCases } from "@coli.codes/naming";
 import { CodeBox } from "@ui/codebox";
 import { isMemberOfComponentLike } from "@design-sdk/figma/node-analysis/component-like-type-analysis/analyze";
+
+type ConfigurableLayerContext =
+  /**
+   * frame with auto layout
+   */
+  | "frame-layouted"
+  /**
+   *
+   */
+  | "text"
+  /**
+   *
+   */
+  | "vector-colored"
+  /**
+   *
+   */
+  | "shape-with-image";
+
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const { node } = props;
   const id = node.id;
