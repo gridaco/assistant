@@ -23,12 +23,14 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
           <CustomButton>Learn more</CustomButton>
         </div>
       </Wrapper>
-      <CodeViewWithControl
-        targetid={props.node.id}
-        disabled
-        editor="prism"
-        customMessages={["@oops this is not a component"]}
-      />
+      <InnerWrapper>
+        <CodeViewWithControl
+          targetid={props.node.id}
+          disabled
+          editor="prism"
+          customMessages={["@oops this is not a component"]}
+        />
+      </InnerWrapper>
     </>
   );
 }
@@ -68,6 +70,7 @@ const CustomButton = styled.button`
   border: 0;
   outline: none;
   background: rgba(255, 255, 255, 0);
+  font-weight: 400;
   font-size: 14px;
   line-height: 17px;
   /* identical to box height */
@@ -82,5 +85,12 @@ const CustomButton = styled.button`
   margin-right: 16px;
   &:last-child {
     margin-right: 0;
+  }
+`;
+
+const InnerWrapper = styled.div`
+  white-space: pre;
+  * {
+    font-family: "Source Code Pro", "Courier New", "Lucida Console", Monaco;
   }
 `;
