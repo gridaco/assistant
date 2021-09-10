@@ -194,6 +194,7 @@ export class PluginSdk {
     key: string
   ): Promise<T> {
     return this.fetchMetadata<T>({
+      type: "node-meta-fetch-request",
       id: on,
       key: key,
       namespace: ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE,
@@ -215,6 +216,7 @@ export class PluginSdk {
    * when instance id was givven it will automatically locate master component to set the metadata
    * @param request
    * @returns
+   * @deprecated - use plain meta update instead.
    */
   static async fetchMainComponentMetadata(request: NodeMetaFetchRequest) {
     return this.request({
@@ -226,6 +228,7 @@ export class PluginSdk {
 
   /**
    * fetches the master component's layer corresponding to givven id. works similar like "fetchMainComponentMetadata"
+   * @deprecated - use plain meta update instead.
    */
   static async fetchMainComponentLayerMetadata(request: NodeMetaFetchRequest) {
     throw "not implemented on handler side";
@@ -244,6 +247,7 @@ export class PluginSdk {
    *  - so you'll need to prevent using this on some case to prevent future confusion)
    * @param request
    * @returns
+   * @deprecated - use plain meta update instead.
    */
   static async updateMainComponentMetadata(request: NodeMetaUpdateRequest) {
     return this.request({
@@ -255,6 +259,7 @@ export class PluginSdk {
 
   static fetchRootMetadata(key: string): Promise<any> {
     const data: BatchMetaFetchRequest = {
+      type: "batch-meta-fetch-request",
       key: key,
     };
     return this.request({

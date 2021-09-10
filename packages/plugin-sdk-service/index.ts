@@ -39,9 +39,15 @@ import {
   PLUGIN_SDK_NS_GET_NODE,
   TargetPlatform,
   target_platform,
+  MetaRequest,
 } from "@plugin-sdk/core";
 
-import { WebStorage, FigmaStorage, IStorage } from "./storage";
+import {
+  WebStorage,
+  FigmaStorage,
+  IStorage,
+  LayerMetadataStorage,
+} from "./storage";
 
 // TODO - make it universal
 import { Figma, figma } from "@design-sdk/figma";
@@ -228,95 +234,68 @@ function handleInternalEvent(event: HanderProps) {
   return response(event.id, true);
 }
 
-function handleMetaEvent(props: HanderProps) {
-  if (props.key == PLUGIN_SDK_EK_BATCH_META_UPDATE) {
-    const d = props.data as BatchMetaUpdateRequest;
-    figma?.root.setSharedPluginData(NS_FILE_ROOT_METADATA, d.key, d.value);
-    figma?.notify("metadata updated", { timeout: 1 });
-  } else if (props.key == PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META) {
-    const d = props.data as BatchMetaFetchRequest;
-    const fetched = figma?.root.getSharedPluginData(
-      NS_FILE_ROOT_METADATA,
-      d.key
-    );
-    console.log(`fetched root metadata for key ${d.key} is.`, fetched);
-    response(props.id, fetched);
-  } else if (props.key == PLUGIN_SDK_EK_REQUEST_FETCH_NODE_META) {
-    const request: NodeMetaFetchRequest = props.data;
-    if (!request.id) {
-      throw `node id is required in order to perform meta fetch`;
-    }
-    const data = figma
-      .getNodeById(request.id)
-      .getSharedPluginData(request.namespace, request.key);
-    const normData = normalizeMetadata(data);
-    return response(props.id, normData);
-  } else if (
-    props.key == PLUGIN_SDK_EK_REQUEST_FETCH_NODE_MAIN_COMPONENT_META
+function handleMetaEvent(props: HanderProps<MetaRequest>) {
+  if (
+    props.key == PLUGIN_SDK_EK_BATCH_META_UPDATE ||
+    props.key == PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META ||
+    props.key == PLUGIN_SDK_EK_REQUEST_FETCH_NODE_META ||
+    props.key == PUGIN_SDK_EK_REQUEST_UPDATE_NODE_META
   ) {
-    const request: NodeMetaFetchRequest = props.data;
-    const node = figma?.getNodeById(request.id);
-    let targetNode: Figma.SceneNode = getMaincomponentLike(node?.id);
-    const data = targetNode.getSharedPluginData(request.namespace, request.key);
-    const normData = normalizeMetadata(data);
-    return response(props.id, normData);
-  } else if (props.key == PUGIN_SDK_EK_REQUEST_UPDATE_MAIN_COMPONENT_META) {
-    const request: NodeMetaUpdateRequest = props.data;
-    const node = figma?.getNodeById(request.id);
-    let targetNode: Figma.SceneNode = getMaincomponentLike(node?.id);
-    targetNode.setSharedPluginData(
-      request.namespace,
-      request.key,
-      normalizeSavingMetadata(request.value)
-    );
-    return response(props.id, true);
-    //
-  } else if (props.key == PUGIN_SDK_EK_REQUEST_UPDATE_NODE_META) {
-    const request: NodeMetaUpdateRequest = props.data;
-    figma
-      .getNodeById(request.id)
-      .setSharedPluginData(
-        request.namespace,
-        request.key,
-        normalizeSavingMetadata(request.value)
-      );
-    return response(props.id, true);
-  }
-}
+    const d = props.data;
+    switch (d.type) {
+      case "batch-meta-update-request": {
+        new LayerMetadataStorage(figma.root.id, NS_FILE_ROOT_METADATA).setItem(
+          d.key,
+          d.value
+        );
+        figma.notify("metadata updated", { timeout: 1 });
+        return response(props.id, true);
+      }
+      case "batch-meta-fetch-request": {
+        const fetched = new LayerMetadataStorage(
+          figma.root.id,
+          NS_FILE_ROOT_METADATA
+        ).getItem(d.key);
 
-function normalizeSavingMetadata(data: string | object) {
-  return typeof data == "object" ? JSON.stringify(data) : data;
-}
-
-function normalizeMetadata(data: string): object | string {
-  if (data == undefined || data.length == 0) {
-    return undefined;
+        return response(props.id, fetched);
+      }
+      case "node-meta-fetch-request": {
+        if (!d.id) {
+          throw `node id is required in order to perform meta fetch`;
+        }
+        const fetched = new LayerMetadataStorage(
+          figma.root.id,
+          d.namespace
+        ).getItem(d.key);
+        return response(props.id, fetched);
+      }
+      case "node-meta-update-request": {
+        new LayerMetadataStorage(figma.root.id, d.namespace).setItem(
+          d.key,
+          d.value
+        );
+        return response(props.id, true);
+      }
+    }
   }
 
-  try {
-    const json = JSON.parse(data);
-    return json;
-  } catch (_) {
-    return data;
-  }
-}
-
-function getMaincomponentLike(nodeID: string): Figma.SceneNode {
-  if (!nodeID) {
-    throw `node id is required in order to perform meta fetch`;
-  }
-  const node = figma?.getNodeById(nodeID);
-  let targetNode: Figma.SceneNode;
-  if (node.type == "INSTANCE") {
-    targetNode = node.mainComponent;
-  } else if (node.type == "COMPONENT") {
-    targetNode = node;
-  } else if (node.type == "COMPONENT_SET") {
-    targetNode = node;
-  } else {
-    throw `node ${node.id} of type ${node.type} is not supported for component meta manipulation.`;
-  }
-  return targetNode;
+  // if (props.key == PLUGIN_SDK_EK_REQUEST_FETCH_NODE_MAIN_COMPONENT_META) {
+  //   const request: NodeMetaFetchRequest = props.data;
+  //   let targetNode: Figma.SceneNode = getMaincomponentLike(request.id);
+  //   const data = targetNode.getSharedPluginData(request.namespace, request.key);
+  //   const normData = decode(data);
+  //   return response(props.id, normData);
+  // } else if (props.key == PUGIN_SDK_EK_REQUEST_UPDATE_MAIN_COMPONENT_META) {
+  //   const request: NodeMetaUpdateRequest = props.data;
+  //   let targetNode: Figma.SceneNode = getMaincomponentLike(request?.id);
+  //   targetNode.setSharedPluginData(
+  //     request.namespace,
+  //     request.key,
+  //     encode(request.value)
+  //   );
+  //   return response(props.id, true);
+  //   //
+  // }
 }
 
 function handleRemoteApiEvent(props: HanderProps) {}
@@ -483,11 +462,13 @@ function response<T = any>(
   data: T,
   error: Error | undefined = undefined
 ): boolean {
-  // console.info(
-  //   `${target_platform.get()}>> responding to request ${requestId} with data ${JSON.stringify(
-  //     data
-  //   )} and ${error ? "" + error : "no error"}`
-  // );
+  if (process.env.NODE_ENV == "development" && process.env.VERBOSE) {
+    console.info(
+      `${target_platform.get()}>> responding to request ${requestId} with data ${JSON.stringify(
+        data
+      )} and ${error ? "" + error : "no error"}`
+    );
+  }
 
   const msg = <TransportPluginEvent>{
     id: requestId,
