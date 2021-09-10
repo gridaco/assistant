@@ -1836,7 +1836,7 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
-"@figma/plugin-typings@^1.19.3":
+"@figma/plugin-typings@^1.33.0":
   version "1.33.0"
   resolved "https://registry.yarnpkg.com/@figma/plugin-typings/-/plugin-typings-1.33.0.tgz#dd9d22aaec1126b6cba73079c9d0da8e2de890c4"
   integrity sha512-k0YazDJqo5daYznnH+PKJJ32MGv8ftimFp1x+flH4k4lFwtH8UQ/tUGFBClZHDXZWX3rdr1GvUzhbUMdZhN3ug==
