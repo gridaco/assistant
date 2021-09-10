@@ -53,6 +53,7 @@ const withTM = require("next-transpile-modules")([
   "@design-sdk/universal",
   "@design-sdk/figma",
   "@design-sdk/figma-url",
+  "@design-sdk/figma-xpath",
   "@design-sdk/url-analysis",
   "@design-sdk/sketch",
   // reflect-ui

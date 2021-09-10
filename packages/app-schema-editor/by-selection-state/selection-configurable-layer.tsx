@@ -10,16 +10,14 @@ import { isMemberOfComponentLike } from "@design-sdk/figma/node-analysis/compone
 import { get_suggestions } from "../property-suggestions";
 import { MappedPropertyStorage } from "../storage";
 import { IReflectNodeReference } from "@design-sdk/core/nodes/lignt";
+import {
+  findWithRelativeIndexPath,
+  getRelativeIndexPath,
+} from "@design-sdk/figma-xpath";
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const { node } = props;
 
   const [data, setData] = useState<IProperties>([]);
-  const handleOnSave = (d: ISingleLayerProperty) => {
-    const newData = data;
-    newData.push(d);
-    setData([...newData]);
-    _sync_data_with_storage();
-  };
 
   const manifest = isMemberOfComponentLike(node);
   if (manifest) {
@@ -46,26 +44,38 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
 
   const storage = new MappedPropertyStorage(id);
 
+  const handleOnSave = (d: ISingleLayerProperty) => {
+    console.log("on save", d);
+    storage
+      .upsertLayerProperty({
+        layerId: d.layer.id,
+        name: d.schema.name,
+        type: d.schema.type,
+        accessor: d.layer.propertyType,
+      })
+      .then(() => {
+        refresh_list();
+      });
+  };
+
   // TODO: layer analysis. configurable layer can be raw layyer or instance of a component (including variant isntance.)
   // << this is irrelevant comment to below code.
 
-  const _sync_data_with_storage = () => {
-    // this update logic shall be applied to master node's corresponding layer
-    storage.sync(data);
+  const handleOnRemove = (at: number) => {
+    storage.remove(data[at].id);
+    refresh_list();
   };
 
-  const handleOnRemove = (at: number) => {
-    data.splice(at, at + 1);
-    setData([...data]);
-    _sync_data_with_storage();
+  const refresh_list = () => {
+    storage.getPropertiesOf(main_component_sibling_layer.id).then((d) => {
+      setData(d);
+      console.log("refresh list", main_component_sibling_layer.id, d);
+    });
   };
 
   useEffect(() => {
-    storage.getProperties().then((d) => {
-      if (d) {
-        setData(d);
-      }
-    });
+    // load list for the first time.
+    refresh_list();
   }, []);
 
   const all_suggestions = get_suggestions(node);
@@ -79,10 +89,10 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
       <CodeBox
         editor="prism"
         language="typescript"
-        code={`/** parent’s interface */
+        code={`/** ${mainComponent.name}'s interface */
 interface Props {
   property_a : TYPE
-  // properties of ${node.name}
+  // properties of "${node.name}""
   // -------------------------------
 
   // -------------------------------
@@ -127,50 +137,4 @@ interface Props {
       </div>
     </>
   );
-}
-
-/**
- * relative path of current node. (not main component)
- * e.g. 0/1
- * ```
- * instance
- *   - layer
- *     - layer
- *     - THIS
- *   - layer
- * ```
- */
-function getRelativeIndexPath(
-  root: IReflectNodeReference,
-  target: IReflectNodeReference
-) {
-  const paths = [];
-  while (target) {
-    if (target.id === root.id) {
-      break;
-    }
-    paths.push(target.parent.children.findIndex((c) => c.id === target.id));
-    target = target.parent;
-  }
-
-  return paths.reverse().join("/");
-}
-
-function findWithRelativeIndexPath(
-  root: IReflectNodeReference,
-  indexPath: string | number[]
-): IReflectNodeReference {
-  if (typeof indexPath === "string") {
-    indexPath = indexPath.split("/").map(Number);
-  }
-
-  let children = root.children;
-  let i = 0;
-  for (const at of indexPath) {
-    if (i === indexPath.length - 1) {
-      return children[at];
-    }
-    children = children[at].children;
-    i++;
-  }
 }

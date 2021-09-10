@@ -33,7 +33,7 @@ export class MappedPropertyStorage {
 
     const newRecord = <ISingleLayerProperty>{
       id: `${layerId}/${accessor}`,
-      layer: layerId,
+      layer: { id: layerId },
       schema: {
         name: name,
         type: type,
@@ -59,7 +59,17 @@ export class MappedPropertyStorage {
     if (!this.__properties__cache) {
       this.__properties__cache = await PluginSdk.getItem(this.key);
     }
+    console.log("getProperties", this.__properties__cache);
     return this.__properties__cache ?? [];
+  }
+
+  async remove(id: string) {
+    const all = await this.getProperties();
+    const index = all.findIndex((p) => p.id === id);
+    if (index !== -1) {
+      all.splice(index, 1);
+      await this.updateProperties(...all);
+    }
   }
 
   private async updateProperties(...all: IProperties) {
@@ -68,7 +78,7 @@ export class MappedPropertyStorage {
   }
 
   async sync(all: IProperties) {
-    this.updateProperties(...all);
+    await this.updateProperties(...all);
   }
 }
 

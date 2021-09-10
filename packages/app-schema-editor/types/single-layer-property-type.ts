@@ -9,14 +9,14 @@ export interface ISingleLayerPropertyMapping {
   /** the id of the layer */
   layer: {
     id?: string;
-    location: LocateMode;
+    location?: LocateMode;
     /**
      * target property on layer.
      * for example if this is a text layer's property,
      * it can be mapped to text#characters or also text#fills[0].
      * but only once at a time.
      */
-    propertyType: TargetPropertyType;
+    propertyType?: TargetPropertyType;
   };
   schema: schema.IProperty;
 }
