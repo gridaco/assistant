@@ -184,12 +184,12 @@ function mapVariant_try(
 
     for (const s of set) {
       const value = data[s.key];
-      const _isConpat =
-        value && typeof s.type == "string"
+      const _isCompat =
+        value && typeof s.type == "symbol"
           ? s.type == value
           : (s.type as variant.FigmaEnum).values.includes(value);
 
-      if (_isConpat) {
+      if (_isCompat) {
         // 4. map the variant
 
         const swappingName = variant.buildVariantNameIncluding_Figma({
