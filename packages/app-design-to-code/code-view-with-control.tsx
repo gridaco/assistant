@@ -12,6 +12,7 @@ import {
 } from "@core/constant/ek.constant";
 import { repo_assets } from "@design-sdk/core";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
+import { CodeSessionCacheStorage } from "./code-session-cache-storage";
 
 export function CodeViewWithControl({
   targetid,
@@ -20,6 +21,7 @@ export function CodeViewWithControl({
   disabled,
   onGeneration,
   customMessages,
+  useCache = false,
 }: {
   targetid: string;
   editor?: "monaco" | "prism";
@@ -27,6 +29,7 @@ export function CodeViewWithControl({
   onGeneration?: (app: string, src: string) => void;
   customMessages?: string[];
   disabled?: true;
+  useCache?: boolean;
 }) {
   const [app, setApp] = useState<string>();
   const [source, setSource] = useState<SourceInput>();
@@ -34,8 +37,16 @@ export function CodeViewWithControl({
     all_preset_options_map__prod.flutter_default
   );
 
+  const cacheStore = new CodeSessionCacheStorage(targetid, useroption);
+
   /** register event listener for events from code thread. */
   useEffect(() => {
+    const _cache = cacheStore.getCache();
+    _cache && setSource(_cache); // for fpc
+    if (useCache && _cache) {
+      // if use cache & cache is present, do not register callback.
+      return;
+    }
     window.addEventListener("message", onMessage);
     return function cleaup() {
       window.removeEventListener("message", onMessage);
@@ -44,6 +55,10 @@ export function CodeViewWithControl({
 
   /** post to code thread about target framework change */
   useEffect(() => {
+    if (useCache && cacheStore.getCache()) {
+      setSource(cacheStore.getCache());
+      return;
+    }
     // 1. clear previous result.
     setSource(undefined);
     // 2. request new code gen.
@@ -63,6 +78,7 @@ export function CodeViewWithControl({
   };
 
   const __onGeneration__cb = (app, src) => {
+    cacheStore.setCache(src);
     const _source = typeof src == "string" ? source : src?.raw;
     onGeneration?.(app, _source);
   };

@@ -27,6 +27,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
         <CodeViewWithControl
           targetid={props.node.id}
           disabled
+          useCache
           editor="prism"
           customMessages={["@oops this is not a component"]}
         />
