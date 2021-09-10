@@ -90,7 +90,13 @@ const CustomButton = styled.button`
 
 const InnerWrapper = styled.div`
   white-space: pre;
+
   * {
     font-family: "Source Code Pro", "Courier New", "Lucida Console", Monaco;
+  }
+
+  // TEMP STYLE
+  pre {
+    padding: 0 16px;
   }
 `;
