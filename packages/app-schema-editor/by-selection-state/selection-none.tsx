@@ -52,6 +52,7 @@ function DummyInterfacePreview() {
       editor="prism"
       code={__placeholder_dummy_interface_code}
       language={"typescript"}
+      disabled={true}
     />
   );
 }
@@ -90,4 +91,6 @@ const Wrapper = styled.div`
 const DisabledOverlay = styled.div`
   /* TODO: add overlay color */
   /* color: #8c1d1d1d; */
+  margin-top: 25px;
+  }
 `;
