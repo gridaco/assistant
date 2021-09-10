@@ -21,7 +21,7 @@ export function CodeViewWithControl({
   disabled,
   onGeneration,
   customMessages,
-  useCache = false,
+  cachedOnly = false,
 }: {
   targetid: string;
   editor?: "monaco" | "prism";
@@ -29,7 +29,7 @@ export function CodeViewWithControl({
   onGeneration?: (app: string, src: string) => void;
   customMessages?: string[];
   disabled?: true;
-  useCache?: boolean;
+  cachedOnly?: boolean;
 }) {
   const [app, setApp] = useState<string>();
   const [source, setSource] = useState<SourceInput>();
@@ -39,34 +39,35 @@ export function CodeViewWithControl({
 
   const cacheStore = new CodeSessionCacheStorage(targetid, useroption);
 
-  /** register event listener for events from code thread. */
-  useEffect(() => {
-    const _cache = cacheStore.getCache();
-    _cache && setSource(_cache); // for fpc
-    if (useCache && _cache) {
-      // if use cache & cache is present, do not register callback.
-      return;
-    }
-    window.addEventListener("message", onMessage);
-    return function cleaup() {
-      window.removeEventListener("message", onMessage);
-    };
-  }, [useroption.language]);
-
   /** post to code thread about target framework change */
   useEffect(() => {
-    if (useCache && cacheStore.getCache()) {
-      setSource(cacheStore.getCache());
-      return;
+    // 1. clear previous result & preload the cache.
+    const _cache = cacheStore.getCache();
+    setSource(_cache ?? undefined); // for fpc
+    if (!cachedOnly || !_cache) {
+      // 2. request new code gen.
+      fromApp({
+        type: "code-gen-request",
+        option: useroption,
+      });
     }
-    // 1. clear previous result.
-    setSource(undefined);
-    // 2. request new code gen.
-    fromApp({
-      type: "code-gen-request",
-      option: useroption,
-    });
   }, [useroption.framework, targetid]);
+
+  /** register event listener for events from code thread. */
+  useEffect(
+    () => {
+      if (cachedOnly && cacheStore.getCache()) {
+        // if use cache & cache is present, do not register callback.
+        return;
+      }
+      window.addEventListener("message", onMessage);
+      return function cleaup() {
+        window.removeEventListener("message", onMessage);
+      };
+    },
+    // having dependencies becuase event listener must be registered when there is no saved cache when using cached mode.
+    [useroption.framework, useroption.language, targetid]
+  );
 
   // tell parent about user option initial change
   useEffect(() => {
