@@ -54,12 +54,15 @@ export class MappedPropertyStorage {
     return (await this.getProperties()).filter((p) => p.layer.id === layer);
   }
 
+  async getPropertiesExcept(layerId: string) {
+    return (await this.getProperties()).filter((p) => p.layer.id !== layerId);
+  }
+
   private __properties__cache: IProperties;
   async getProperties(): Promise<IProperties> {
     if (!this.__properties__cache) {
       this.__properties__cache = await PluginSdk.getItem(this.key);
     }
-    console.log("getProperties", this.__properties__cache);
     return this.__properties__cache ?? [];
   }
 

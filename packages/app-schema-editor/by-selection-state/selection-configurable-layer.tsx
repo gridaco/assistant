@@ -4,7 +4,7 @@ import { SingleLayerPropertyDefinition } from "../single-property";
 import { ISingleLayerProperty, IProperties } from "../types";
 import { nodes } from "@design-sdk/core";
 import { _FigmaVariantPropertyCompatType_to_string } from "@design-sdk/figma/features/variant";
-import { nameit, NameCases } from "@coli.codes/naming";
+import { nameit, NameCases, ScopedVariableNamer } from "@coli.codes/naming";
 import { CodeBox } from "@ui/codebox";
 import { isMemberOfComponentLike } from "@design-sdk/figma/node-analysis/component-like-type-analysis/analyze";
 import { get_suggestions } from "../property-suggestions";
@@ -14,10 +14,15 @@ import {
   findWithRelativeIndexPath,
   getRelativeIndexPath,
 } from "@design-sdk/figma-xpath";
+import { stringfy } from "coli";
+import this_interface_builder from "./selection-configurable-layer.coli";
+import { ReservedKeywordPlatformPresets } from "@coli.codes/naming/reserved";
+
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const { node } = props;
 
-  const [data, setData] = useState<IProperties>([]);
+  const [localProperties, setLocalProperties] = useState<IProperties>([]);
+  const [parentProperties, setParentProperties] = useState<IProperties>([]);
 
   const manifest = isMemberOfComponentLike(node);
   if (manifest) {
@@ -62,20 +67,22 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
   // << this is irrelevant comment to below code.
 
   const handleOnRemove = (at: number) => {
-    storage.remove(data[at].id);
+    storage.remove(localProperties[at].id);
     refresh_list();
   };
 
   const refresh_list = () => {
     storage.getPropertiesOf(main_component_sibling_layer.id).then((d) => {
-      setData(d);
-      console.log("refresh list", main_component_sibling_layer.id, d);
+      setLocalProperties(d);
     });
   };
 
   useEffect(() => {
     // load list for the first time.
     refresh_list();
+    storage
+      .getPropertiesExcept(main_component_sibling_layer.id)
+      .then(setParentProperties);
   }, []);
 
   const all_suggestions = get_suggestions(node);
@@ -83,26 +90,32 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
     ? all_suggestions
     : (all_suggestions && [all_suggestions]) || [];
 
-  const _has_saved_data = data.length > 0;
+  const final_code = stringfy(
+    this_interface_builder({
+      root: mainComponent,
+      rootInterfaceName: mainComponent.name, // TODO: pass built name
+      rootProperties: parentProperties,
+      propertyNamer: new ScopedVariableNamer(
+        "properties",
+        ReservedKeywordPlatformPresets.react
+      ),
+      layerProperties: localProperties,
+      layer: node,
+    }),
+    {
+      language: "typescript",
+    }
+  );
+
+  const _has_saved_data = localProperties.length > 0;
   return (
     <>
-      <CodeBox
-        editor="prism"
-        language="typescript"
-        code={`/** ${mainComponent.name}'s interface */
-interface Props {
-  property_a : TYPE
-  // properties of "${node.name}""
-  // -------------------------------
+      <CodeBox editor="prism" language="typescript" code={final_code} />
 
-  // -------------------------------
-}`}
-      />
-
-      <div key={data?.length ?? ""}>
+      <div key={localProperties?.length ?? ""}>
         {_has_saved_data ? (
           <>
-            {data.map((d, i) => (
+            {localProperties.map((d, i) => (
               <SingleLayerPropertyDefinition
                 onRemove={() => {
                   handleOnRemove(i);
