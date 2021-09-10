@@ -57,8 +57,9 @@ export function onfigmaselectionchange() {
 
       // TODO: this will not trigger unless user deselects and re select the same node. currently node cache does not have expiry control.
       let rnode;
-      const _cached = FigmaNodeCache.getLastConverted();
+      const _cached = FigmaNodeCache.getConverted(singleFigmaNodeSelection.id);
       if (_cached) {
+        console.info("using cached", _cached.name);
         rnode = _cached;
       } else {
         rnode = convert.intoReflectNode(
@@ -78,7 +79,7 @@ export function onfigmaselectionchange() {
         });
       } catch (_) {
         figma.notify(`Oops. we don't support "${target.type}" yet.`);
-        console.error(_)
+        console.error(_);
       }
       // endregion
       FigmaNodeCache.setConverted(rnode);
