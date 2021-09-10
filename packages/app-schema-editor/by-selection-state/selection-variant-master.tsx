@@ -13,9 +13,9 @@ import {
 } from "../interface-code-builder";
 import { nameit, NameCases } from "@coli.codes/naming";
 import { PropsInterfaceView } from "../interface-code-builder/props-interface-view";
-import styled from "@emotion/styled";
 import { ISingleLayerProperty } from "../types";
 import { MappedPropertyStorage } from "../storage";
+import { CodeStyleWrapper } from "./_shared-components";
 
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const master = props.node;
@@ -84,10 +84,3 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
     </CodeStyleWrapper>
   );
 }
-
-const CodeStyleWrapper = styled.div`
-  height: calc(100vh - 292px);
-  background: #1e1e1e;
-  overflow: auto;
-  padding: 0 6px;
-`;

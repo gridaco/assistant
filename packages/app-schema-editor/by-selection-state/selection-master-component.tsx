@@ -10,6 +10,7 @@ import { CodeBox } from "@ui/codebox";
 import this_interface_builder from "./selection-master-component.coli";
 import { reactNamer } from "../interface-code-builder/scoped-property-id-namer";
 import { stringfy } from "coli";
+import { CodeStyleWrapper } from "./_shared-components";
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const { node } = props;
   const [mappedProperties, setMappedProperties] = useState<
@@ -37,7 +38,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
   });
 
   return (
-    <>
+    <CodeStyleWrapper>
       <CodeBox language="typescript" code={interface_code_string} />
       {/* <PropsInterfaceView
         onInterfaceNameChange={() => {}}
@@ -53,6 +54,6 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
         initialInterfaceName={interfaceName}
         onChange={() => {}}
       /> */}
-    </>
+    </CodeStyleWrapper>
   );
 }

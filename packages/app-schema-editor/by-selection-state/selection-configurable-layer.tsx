@@ -18,6 +18,7 @@ import { stringfy } from "coli";
 import this_interface_builder from "./selection-configurable-layer.coli";
 import { ReservedKeywordPlatformPresets } from "@coli.codes/naming/reserved";
 import { reactNamer } from "../interface-code-builder/scoped-property-id-namer";
+import { CodeStyleWrapper } from "./_shared-components";
 
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const { node } = props;
@@ -107,7 +108,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
 
   const _has_saved_data = localProperties.length > 0;
   return (
-    <>
+    <CodeStyleWrapper>
       <CodeBox editor="prism" language="typescript" code={final_code} />
 
       <div key={localProperties?.length ?? ""}>
@@ -146,6 +147,6 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
           />
         )}
       </div>
-    </>
+    </CodeStyleWrapper>
   );
 }

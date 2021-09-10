@@ -10,6 +10,7 @@ import { buildeExampleData } from "../interface-code-builder";
 import this_interface_builder from "./selection-instance-component.coli";
 import { reactNamer } from "../interface-code-builder/scoped-property-id-namer";
 import { stringfy } from "coli";
+import { CodeStyleWrapper } from "./_shared-components";
 
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const [properties, setProperties] = useState<ISingleLayerProperty[]>([]);
@@ -36,7 +37,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
   });
 
   return (
-    <>
+    <CodeStyleWrapper>
       <CodeBox language="typescript" code={interface_code_string} />
       {/* <PropsInterfaceView
         onInterfaceNameChange={() => {}}
@@ -60,6 +61,6 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
           properties: {},
         })}
       />
-    </>
+    </CodeStyleWrapper>
   );
 }
