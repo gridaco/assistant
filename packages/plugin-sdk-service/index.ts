@@ -298,7 +298,9 @@ function handleMetaEvent(props: HanderProps<MetaRequest>) {
   // }
 }
 
-function handleRemoteApiEvent(props: HanderProps) {}
+function handleRemoteApiEvent(props: HanderProps) {
+  throw "not implemented";
+}
 
 function handleNotify(props: HanderProps<NotifyRequest>) {
   if (props.key == PLUGIN_SDK_EK_SIMPLE_NOTIFY) {
