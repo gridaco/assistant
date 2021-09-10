@@ -6,10 +6,15 @@ import { PropsInterfaceView } from "../interface-code-builder/props-interface-vi
 import { NameCases, nameit } from "@coli.codes/naming";
 import { FigmaNumber } from "@design-sdk/figma/features/variant";
 import { MappedPropertyStorage } from "../storage";
-
+import { CodeBox } from "@ui/codebox";
+import this_interface_builder from "./selection-master-component.coli";
+import { reactNamer } from "../interface-code-builder/scoped-property-id-namer";
+import { stringfy } from "coli";
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const { node } = props;
-  const [properties, setProperties] = useState<ISingleLayerProperty[]>(null);
+  const [mappedProperties, setMappedProperties] = useState<
+    ISingleLayerProperty[]
+  >([]);
 
   const interfaceName = nameit(node.name + "-props", {
     case: NameCases.pascal,
@@ -18,13 +23,23 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const storage = new MappedPropertyStorage(node.id);
   useEffect(() => {
     storage.getProperties().then((properties) => {
-      setProperties(properties);
+      setMappedProperties(properties);
     });
   }, []);
 
+  const interface_code_coli = this_interface_builder({
+    mainInterfaceName: interfaceName,
+    properties: mappedProperties,
+    propertyNamer: reactNamer,
+  });
+  const interface_code_string = stringfy(interface_code_coli, {
+    language: "typescript",
+  });
+
   return (
     <>
-      <PropsInterfaceView
+      <CodeBox language="typescript" code={interface_code_string} />
+      {/* <PropsInterfaceView
         onInterfaceNameChange={() => {}}
         properties={
           properties?.map((i) => {
@@ -37,7 +52,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
         }
         initialInterfaceName={interfaceName}
         onChange={() => {}}
-      />
+      /> */}
     </>
   );
 }

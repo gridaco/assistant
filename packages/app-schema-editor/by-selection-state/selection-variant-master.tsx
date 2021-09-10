@@ -51,12 +51,6 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
 
   return (
     <CodeStyleWrapper>
-      <PropsInterfaceView
-        onInterfaceNameChange={() => {}}
-        properties={merged_properties}
-        initialInterfaceName={interfaceName}
-        onChange={() => {}}
-      />
       <CodeBox
         language="jsx"
         code={buildInterfaceString({

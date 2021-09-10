@@ -20,6 +20,7 @@ import {
   NumberKeyword,
   stringfy,
 } from "coli";
+import { singleLayerPropertyMappingToPropertySignature } from "../interface-code-builder/single-layer-property-mapping-to-property-signature";
 import { typeToColiType } from "../interface-code-builder/type-to-coli-type";
 import { IProperties } from "../types";
 import { ISingleLayerPropertyMapping } from "../types/single-layer-property-type";
@@ -39,16 +40,14 @@ export default function ({
   layerProperties: IProperties;
   layer: IReflectNodeReference;
 }) {
-  const _parent_static_property_signatures = rootProperties.map((n) => {
-    return new PropertySignature({
-      name: new Identifier(
-        propertyNamer.nameit(n.schema.name, {
-          case: NameCases.camel,
-        }).name
-      ),
-      type: typeToColiType(FigmaNumber), // FIXME: use => n.schema.type
+  const mapper = (singleLineProperty) => {
+    return singleLayerPropertyMappingToPropertySignature({
+      singlePropertyMapping: singleLineProperty,
+      propertyNamer,
     });
-  });
+  };
+
+  const _parent_static_property_signatures = rootProperties.map(mapper);
 
   const _this_static_property_signatures = [...layerProperties];
 
@@ -64,16 +63,7 @@ export default function ({
         type: "todo",
       },
     },
-  ].map((n) => {
-    return new PropertySignature({
-      name: new Identifier(
-        propertyNamer.nameit(n.schema.name, {
-          case: NameCases.camel,
-        }).name
-      ),
-      type: typeToColiType(FigmaNumber), // FIXME: use => n.schema.type
-    });
-  });
+  ].map(mapper);
 
   return [
     // @ts-ignore

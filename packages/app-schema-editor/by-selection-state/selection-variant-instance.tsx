@@ -73,13 +73,17 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
     <>
       <CodeStyleWrapper>
         {/* TODO: add copy  - 1interface_raw_code1 */}
-        <PropsInterfaceView
-          onInterfaceNameChange={(n) => {
-            setInterfaceName(n);
-          }}
-          properties={merged_properties}
-          initialInterfaceName={interfaceName}
-          onChange={() => {}}
+        <CodeBox
+          language="jsx"
+          code={buildInterfaceString({
+            name: interfaceName,
+            properties: parser.properties.map((d) => {
+              return {
+                name: d.key,
+                type: d.type,
+              };
+            }),
+          })}
         />
 
         <CodeBox

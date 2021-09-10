@@ -7,9 +7,12 @@ import { FigmaNumber } from "@design-sdk/figma/features/variant";
 import { MappedPropertyStorage } from "../storage";
 import { CodeBox } from "@ui/codebox";
 import { buildeExampleData } from "../interface-code-builder";
+import this_interface_builder from "./selection-instance-component.coli";
+import { reactNamer } from "../interface-code-builder/scoped-property-id-namer";
+import { stringfy } from "coli";
 
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
-  const [properties, setProperties] = useState<ISingleLayerProperty[]>(null);
+  const [properties, setProperties] = useState<ISingleLayerProperty[]>([]);
 
   const master = props.node.mainComponent;
   const interfaceName = nameit(master.name + "-props", {
@@ -23,9 +26,19 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
     });
   }, []);
 
+  const interface_code_coli = this_interface_builder({
+    mainInterfaceName: interfaceName,
+    properties: properties,
+    propertyNamer: reactNamer,
+  });
+  const interface_code_string = stringfy(interface_code_coli, {
+    language: "typescript",
+  });
+
   return (
     <>
-      <PropsInterfaceView
+      <CodeBox language="typescript" code={interface_code_string} />
+      {/* <PropsInterfaceView
         onInterfaceNameChange={() => {}}
         properties={
           properties?.map((i) => {
@@ -38,7 +51,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
         }
         initialInterfaceName={interfaceName}
         onChange={() => {}}
-      />
+      /> */}
       <CodeBox
         language="jsx"
         code={buildeExampleData({

@@ -17,6 +17,7 @@ import {
 import { stringfy } from "coli";
 import this_interface_builder from "./selection-configurable-layer.coli";
 import { ReservedKeywordPlatformPresets } from "@coli.codes/naming/reserved";
+import { reactNamer } from "../interface-code-builder/scoped-property-id-namer";
 
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const { node } = props;
@@ -95,10 +96,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
       root: mainComponent,
       rootInterfaceName: mainComponent.name, // TODO: pass built name
       rootProperties: parentProperties,
-      propertyNamer: new ScopedVariableNamer(
-        "properties",
-        ReservedKeywordPlatformPresets.react
-      ),
+      propertyNamer: reactNamer,
       layerProperties: localProperties,
       layer: node,
     }),
