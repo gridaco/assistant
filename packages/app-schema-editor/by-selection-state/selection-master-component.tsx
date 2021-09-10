@@ -4,6 +4,8 @@ import { ISingleLayerProperty, IProperties } from "../types";
 import { PluginSdk } from "@plugin-sdk/app";
 import { PropsInterfaceView } from "../interface-code-builder/props-interface-view";
 import { NameCases, nameit } from "@coli.codes/naming";
+import { FigmaNumber } from "@design-sdk/figma/features/variant";
+import { MappedPropertyStorage } from "../storage";
 
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const { node } = props;
@@ -13,21 +15,10 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
     case: NameCases.pascal,
   }).name;
 
-  //1. list all layers under this component
-  const grandchilds = utils.mapGrandchildren(node);
-
-  //2. extract schema from layers
+  const storage = new MappedPropertyStorage(node.id);
   useEffect(() => {
-    Promise.all(
-      grandchilds.map((c) => {
-        return PluginSdk.fetchMetadata_grida<ISingleLayerProperty>(
-          c.id,
-          "layer-property-data"
-        );
-      })
-    ).then((res) => {
-      const layersWithPropertyData = res.filter((i) => i !== undefined);
-      setProperties(layersWithPropertyData);
+    storage.getProperties().then((properties) => {
+      setProperties(properties);
     });
   }, []);
 
@@ -35,20 +26,18 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
     <>
       <PropsInterfaceView
         onInterfaceNameChange={() => {}}
-        properties={[]}
+        properties={
+          properties?.map((i) => {
+            return {
+              key: i.schema.name,
+              type: FigmaNumber, // FIXME: change this to - i.schema.type
+              nullable: false, // TODO:
+            };
+          }) ?? []
+        }
         initialInterfaceName={interfaceName}
         onChange={() => {}}
       />
-      {/*  */}
-      {properties ? (
-        <ul>
-          {properties.map((p) => {
-            return <li>{JSON.stringify(p)}</li>;
-          })}
-        </ul>
-      ) : (
-        <>Loading..</>
-      )}
     </>
   );
 }

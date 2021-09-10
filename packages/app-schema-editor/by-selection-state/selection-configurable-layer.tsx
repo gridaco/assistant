@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "@core/constant";
-import { PluginSdk } from "@plugin-sdk/app";
 import { SingleLayerPropertyDefinition } from "../single-property";
 import { ISingleLayerProperty, IProperties } from "../types";
 import { nodes } from "@design-sdk/core";
@@ -9,7 +8,8 @@ import { nameit, NameCases } from "@coli.codes/naming";
 import { CodeBox } from "@ui/codebox";
 import { isMemberOfComponentLike } from "@design-sdk/figma/node-analysis/component-like-type-analysis/analyze";
 import { get_suggestions } from "../property-suggestions";
-
+import { MappedPropertyStorage } from "../storage";
+import { IReflectNodeReference } from "@design-sdk/core/nodes/lignt";
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const { node } = props;
 
@@ -22,7 +22,6 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
   };
 
   const manifest = isMemberOfComponentLike(node);
-
   if (manifest) {
     // with this, you can show root parent's info
     manifest.parent.type;
@@ -31,22 +30,28 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
     throw "logical error.";
   }
 
-  const id =
-    (manifest.parent.node.mainComponent &&
-      manifest.parent.node.mainComponent.id) ||
-    manifest.parent.node.id;
+  const this_root = manifest.parent.node;
+  const this_relative_index_path = getRelativeIndexPath(
+    manifest.parent.node,
+    node
+  );
+
+  const mainComponent = this_root.mainComponent || this_root;
+  const id = mainComponent.id;
+
+  const main_component_sibling_layer = findWithRelativeIndexPath(
+    mainComponent,
+    this_relative_index_path
+  );
+
+  const storage = new MappedPropertyStorage(id);
 
   // TODO: layer analysis. configurable layer can be raw layyer or instance of a component (including variant isntance.)
   // << this is irrelevant comment to below code.
 
   const _sync_data_with_storage = () => {
     // this update logic shall be applied to master node's corresponding layer
-    PluginSdk.updateMetadata({
-      id: id,
-      namespace: ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE,
-      key: "layer-property-data",
-      value: data,
-    });
+    storage.sync(data);
   };
 
   const handleOnRemove = (at: number) => {
@@ -56,11 +61,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
   };
 
   useEffect(() => {
-    PluginSdk.fetchMetadata({
-      id: id,
-      namespace: ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE,
-      key: "layer-property-data",
-    }).then((d) => {
+    storage.getProperties().then((d) => {
       if (d) {
         setData(d);
       }
@@ -114,8 +115,11 @@ interface Props {
                 name: nameit(node.name, { case: NameCases.camel }).name,
                 type: "string",
               },
-              targetProperty: undefined,
-              locateMode: "auto",
+              layer: {
+                id: main_component_sibling_layer.id,
+                propertyType: undefined,
+                location: "auto",
+              },
             }}
             suggestions={suggestions}
           />
@@ -123,4 +127,50 @@ interface Props {
       </div>
     </>
   );
+}
+
+/**
+ * relative path of current node. (not main component)
+ * e.g. 0/1
+ * ```
+ * instance
+ *   - layer
+ *     - layer
+ *     - THIS
+ *   - layer
+ * ```
+ */
+function getRelativeIndexPath(
+  root: IReflectNodeReference,
+  target: IReflectNodeReference
+) {
+  const paths = [];
+  while (target) {
+    if (target.id === root.id) {
+      break;
+    }
+    paths.push(target.parent.children.findIndex((c) => c.id === target.id));
+    target = target.parent;
+  }
+
+  return paths.reverse().join("/");
+}
+
+function findWithRelativeIndexPath(
+  root: IReflectNodeReference,
+  indexPath: string | number[]
+): IReflectNodeReference {
+  if (typeof indexPath === "string") {
+    indexPath = indexPath.split("/").map(Number);
+  }
+
+  let children = root.children;
+  let i = 0;
+  for (const at of indexPath) {
+    if (i === indexPath.length - 1) {
+      return children[at];
+    }
+    children = children[at].children;
+    i++;
+  }
 }

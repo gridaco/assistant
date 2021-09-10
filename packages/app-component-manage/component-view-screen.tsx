@@ -12,7 +12,7 @@ import { Divider, IconButton, Typography } from "@material-ui/core";
 import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "@core/constant";
 import { Edit, Settings } from "@material-ui/icons";
 import { ComponentSchemaEditor } from "./schema-editor";
-import { useSingleSelection } from "plugin-app";
+import { useSingleSelection, useMainComponentMeta } from "plugin-app";
 
 interface VisualComponentManifest {
   name: string;
@@ -24,22 +24,14 @@ interface VisualComponentManifest {
 }
 
 export function ComponentViewScreen() {
-  const [data, setData] = useState<VisualComponentManifest>(undefined);
-
   const selection = useSingleSelection();
+  // const _data = useMainComponentMeta(selection.id);
+  const [data, setData] = useState<VisualComponentManifest>(undefined);
 
   if (selection) {
     // 2. check if selected layer is a component or an instance.
     // TODO
-
     // 3. find if data to display exists on a master component.
-    PluginSdk.fetchMainComponentMetadata({
-      id: selection.id,
-      namespace: ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE,
-      key: "component-meta-data",
-    }).then((d) => {
-      setData(d);
-    });
   }
 
   // 4. display data if exists. else, display input.
@@ -54,6 +46,7 @@ export function ComponentViewScreen() {
     setData(newData);
 
     PluginSdk.updateMainComponentMetadata({
+      type: "node-meta-update-request",
       id: selection.id,
       namespace: ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE,
       key: "component-meta-data",

@@ -7,7 +7,6 @@ import {
 } from "@material-ui/core";
 import React, { useState } from "react";
 import { ISingleLayerProperty } from "./types";
-import { nameit, NameCases } from "@coli.codes/naming";
 import { UserSuggestionReason } from "./property-suggestions";
 
 type UserInteractionMode = "editing" | "viewing";
@@ -99,12 +98,15 @@ export function SingleLayerPropertyDefinition(
           onChange={(e) => {
             setData({
               ...data,
-              targetProperty: e.target.value as any,
+              layer: {
+                ...data.layer,
+                propertyType: e.target.value as any,
+              },
             });
           }}
-          defaultValue={data?.targetProperty}
+          defaultValue={data?.layer?.propertyType}
           disabled={disableInputs}
-          value={data?.targetProperty}
+          value={data?.layer?.propertyType}
         >
           {props.suggestions.map((d) => {
             switch (d.type) {
@@ -120,7 +122,7 @@ export function SingleLayerPropertyDefinition(
           })}
         </Select>
 
-        {data?.targetProperty && (
+        {data?.layer?.propertyType && (
           <TextField
             label="type"
             required
