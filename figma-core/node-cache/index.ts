@@ -30,6 +30,14 @@ export class FigmaNodeCache {
 
   static select(...ids: string[]) {
     this._lastSelections = ids;
+
+    /// when deselected, update last selected nodes' updated at.
+    if (ids.length === 0) {
+      this._lastConverted = {
+        ...this._lastConverted,
+        updatedAt: Date.now(),
+      };
+    }
   }
 
   static setConverted(rnode: ReflectSceneNode) {
