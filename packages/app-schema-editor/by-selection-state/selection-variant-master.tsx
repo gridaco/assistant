@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { nodes } from "@design-sdk/core";
 import {
   FigmaNumber,
-  FigmaVariantPropertyCompatType,
+  VariantProperty,
   VariantPropertyParser,
 } from "@design-sdk/figma/features/variant";
 import { CodeBox } from "@ui/codebox";
@@ -12,17 +12,16 @@ import {
   jsxViewExampleBuilder,
 } from "../interface-code-builder";
 import { nameit, NameCases } from "@coli.codes/naming";
-import {
-  InterfaceAttr,
-  InterfaceProps,
-  InterfaceTypeOption,
-} from "@code-ui/interface/dist/lib/type";
 import { PropsInterfaceView } from "../interface-code-builder/props-interface-view";
 import styled from "@emotion/styled";
+import { ISingleLayerProperty } from "../types";
+import { MappedPropertyStorage } from "../storage";
 
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const master = props.node;
-
+  const [mappedProperties, setMappedProperties] = useState<
+    ISingleLayerProperty[]
+  >(null);
   const parser = new VariantPropertyParser(master);
   const data_of_properties = parser.getData(master);
   const interfaceName = nameit(master.parent.name + "-props", {
@@ -33,11 +32,28 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
     case: NameCases.pascal,
   }).name;
 
+  const mappedPropertyStorage = new MappedPropertyStorage(master.id);
+  useEffect(() => {
+    mappedPropertyStorage.getProperties().then((properties) => {
+      setMappedProperties(properties);
+    });
+  }, []);
+  const merged_properties: VariantProperty[] = [
+    ...parser.properties,
+    ...(mappedProperties?.map((i) => {
+      return {
+        key: i.schema.name,
+        type: FigmaNumber, // FIXME: change this to - i.schema.type
+        nullable: false, // TODO:
+      } as VariantProperty;
+    }) || []),
+  ];
+
   return (
     <CodeStyleWrapper>
       <PropsInterfaceView
         onInterfaceNameChange={() => {}}
-        properties={parser.properties}
+        properties={merged_properties}
         initialInterfaceName={interfaceName}
         onChange={() => {}}
       />

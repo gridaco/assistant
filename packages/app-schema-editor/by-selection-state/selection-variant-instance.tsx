@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { nodes } from "@design-sdk/core";
 import {
   _FigmaVariantPropertyCompatType_to_string,
   VariantPropertyParser,
+  FigmaNumber,
+  VariantProperty,
 } from "@design-sdk/figma/features/variant";
 import { CodeBox } from "@ui/codebox";
 import {
@@ -13,6 +15,8 @@ import {
 import { nameit, NameCases } from "@coli.codes/naming";
 import { PropsInterfaceView } from "../interface-code-builder/props-interface-view";
 import styled from "@emotion/styled";
+import { MappedPropertyStorage } from "../storage";
+import { ISingleLayerProperty } from "../types";
 
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const _format_interface_pascal = (n) => {
@@ -21,6 +25,9 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
     }).name;
   };
 
+  const [mappedProperties, setMappedProperties] = useState<
+    ISingleLayerProperty[]
+  >(null);
   const [interfaceName, setInterfaceName] = useState(
     _format_interface_pascal(props.node.name)
   );
@@ -28,8 +35,26 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const formattedInterfaceName = _format_interface_pascal(interfaceName);
 
   const master = props.node.mainComponent;
+  const mappedPropertyStorage = new MappedPropertyStorage(master.id);
+  useEffect(() => {
+    mappedPropertyStorage.getProperties().then((properties) => {
+      setMappedProperties(properties);
+    });
+  }, []);
   const parser = new VariantPropertyParser(master);
   const data_of_properties = parser.getData(master);
+
+  const merged_properties: VariantProperty[] = [
+    ...parser.properties,
+    ...(mappedProperties?.map((i) => {
+      return {
+        key: i.schema.name,
+        type: FigmaNumber, // FIXME: change this to - i.schema.type
+        nullable: false, // TODO:
+      } as VariantProperty;
+    }) || []),
+  ];
+
   const interface_raw_code = buildInterfaceString({
     name: formattedInterfaceName,
     properties: parser.properties.map((d) => {
@@ -52,7 +77,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
           onInterfaceNameChange={(n) => {
             setInterfaceName(n);
           }}
-          properties={parser.properties}
+          properties={merged_properties}
           initialInterfaceName={interfaceName}
           onChange={() => {}}
         />
