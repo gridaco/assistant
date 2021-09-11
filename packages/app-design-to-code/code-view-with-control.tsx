@@ -21,6 +21,7 @@ export function CodeViewWithControl({
   disabled,
   onGeneration,
   customMessages,
+  automaticRemoteFormatting = false,
   cachedOnly = false,
 }: {
   targetid: string;
@@ -28,6 +29,7 @@ export function CodeViewWithControl({
   onUserOptionsChange?: (options: DesigntoCodeUserOptions) => void;
   onGeneration?: (app: string, src: string) => void;
   customMessages?: string[];
+  automaticRemoteFormatting?: boolean;
   disabled?: true;
   cachedOnly?: boolean;
 }) {
@@ -91,17 +93,31 @@ export function CodeViewWithControl({
     app: string;
     code: SourceInput;
   }) => {
-    format(app, useroption.language, (s) => {
-      setApp(s);
-      __onGeneration__cb(s, source);
-    });
+    format(
+      app,
+      useroption.language,
+      (s) => {
+        setApp(s);
+        __onGeneration__cb(s, source);
+      },
+      {
+        disable_remote_format: !automaticRemoteFormatting,
+      }
+    );
 
     // for SourceInput, we need type checking
     const _code = typeof code == "string" ? code : code.raw;
-    format(_code, useroption.language, (s) => {
-      setSource(s);
-      __onGeneration__cb(app, s);
-    });
+    format(
+      _code,
+      useroption.language,
+      (s) => {
+        setSource(s);
+        __onGeneration__cb(app, s);
+      },
+      {
+        disable_remote_format: !automaticRemoteFormatting,
+      }
+    );
   };
 
   const onMessage = (ev: MessageEvent) => {

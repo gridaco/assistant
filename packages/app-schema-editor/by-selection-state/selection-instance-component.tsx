@@ -6,7 +6,7 @@ import { NameCases, nameit } from "@coli.codes/naming";
 import { FigmaNumber } from "@design-sdk/figma/features/variant";
 import { MappedPropertyStorage } from "../storage";
 import { CodeBox } from "@ui/codebox";
-import { buildeExampleData } from "../interface-code-builder";
+import { buildeExampleDataDeclaration } from "../interface-code-builder";
 import this_interface_builder from "./selection-instance-component.coli";
 import { reactNamer } from "../interface-code-builder/scoped-property-id-namer";
 import { stringfy } from "coli";
@@ -55,7 +55,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
       /> */}
       <CodeBox
         language="jsx"
-        code={buildeExampleData({
+        code={buildeExampleDataDeclaration({
           name: "data",
           interfaceName: interfaceName,
           properties: {},

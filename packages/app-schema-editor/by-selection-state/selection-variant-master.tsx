@@ -7,7 +7,7 @@ import {
 } from "@design-sdk/figma/features/variant";
 import { CodeBox } from "@ui/codebox";
 import {
-  buildeExampleData,
+  buildeExampleDataDeclaration,
   buildInterfaceString,
   jsxViewExampleBuilder,
 } from "../interface-code-builder";
@@ -65,7 +65,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
       />
       <CodeBox
         language="jsx"
-        code={buildeExampleData({
+        code={buildeExampleDataDeclaration({
           name: "data",
           interfaceName: interfaceName,
           properties: data_of_properties,

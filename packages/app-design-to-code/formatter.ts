@@ -51,8 +51,12 @@ export const formatter_by_lang = (lang: Language): Formatter => {
 export function format(
   code: string,
   lang: Language,
-  onFormat: (code: string) => void
+  onFormat: (code: string) => void,
+  options?: {
+    disable_remote_format?: boolean;
+  }
 ) {
+  const can_remote_format = !options?.disable_remote_format;
   // prevalidation
   if (typeof code != "string") {
     onFormat(code); // return as marked as format.
@@ -66,16 +70,21 @@ export function format(
       const formatting = _formatter(code);
       if (formatting instanceof Promise) {
         onFormat(code); // fast response
-        formatting.then(onFormat);
+        if (can_remote_format) {
+          formatting.then(onFormat);
+        }
       } else {
         onFormat(formatting);
       }
       break;
     case "smart":
       const fastresult = (formatter as SmartFormatter).sync(code);
-      onFormat(fastresult);
       // fastresult
-      (formatter as SmartFormatter).async(code).then(onFormat);
+      onFormat(fastresult);
+
+      if (can_remote_format) {
+        (formatter as SmartFormatter).async(code).then(onFormat);
+      }
       break;
   }
 }
