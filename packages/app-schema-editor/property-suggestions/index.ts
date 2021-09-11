@@ -1,5 +1,6 @@
 import type { IReflectNodeReference } from "@design-sdk/core/nodes/lignt";
 import { ReflectSceneNodeType } from "@design-sdk/core/nodes";
+import { PropertyAccessors } from "../types/single-layer-property-type";
 
 type ConfigurableLayerContext =
   /**
@@ -28,16 +29,6 @@ const default_type_map: { [key in PropertyAccessors]: string } = {
   "image.src": "string",
   "vector.color": "string",
 };
-
-export type PropertyAccessors =
-  // text chars
-  | "text.text"
-  // single fill color
-  | "text.color"
-  // single fill image-like node image fill
-  | "image.src"
-  // single fill for vector (e.g. icon content vector)
-  | "vector.color";
 
 export interface NoSuggestionReason {
   type: "no-suggestions";

@@ -16,7 +16,7 @@ export interface ISingleLayerPropertyMapping {
      * it can be mapped to text#characters or also text#fills[0].
      * but only once at a time.
      */
-    propertyType?: TargetPropertyType;
+    propertyType?: PropertyAccessors;
   };
   schema: schema.IProperty;
 }
@@ -28,10 +28,12 @@ type LocateMode =
       xpath: string;
     };
 
-type TargetPropertyType = TextNodeEditableProperty;
-
-type TextNodeEditableProperty =
-  | { key: "text" }
-  | { key: "text-style" } // with design tool's saved text style
-  //
-  | { key: "text-align" }; //?
+export type PropertyAccessors =
+  // text chars
+  | "text.text"
+  // single fill color
+  | "text.color"
+  // single fill image-like node image fill
+  | "image.src"
+  // single fill for vector (e.g. icon content vector)
+  | "vector.color";
