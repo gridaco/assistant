@@ -8,7 +8,10 @@ import { FigmaNumber } from "@design-sdk/figma/features/variant";
 import { MappedPropertyStorage } from "../storage";
 import { CodeBox } from "@ui/codebox";
 import this_interface_builder from "./selection-master-component.coli";
-import { reactNamer } from "../interface-code-builder/scoped-property-id-namer";
+import {
+  reactNamer,
+  tsNamer,
+} from "../interface-code-builder/scoped-property-id-namer";
 import { stringfy } from "coli";
 import { CodeStyleWrapper } from "./_shared-components";
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
@@ -31,7 +34,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const interface_code_coli = this_interface_builder({
     mainInterfaceName: interfaceName,
     properties: mappedProperties,
-    propertyNamer: reactNamer(node.id),
+    propertyNamer: tsNamer(node.id),
   });
   const interface_code_string = stringfy(interface_code_coli, {
     language: "typescript",

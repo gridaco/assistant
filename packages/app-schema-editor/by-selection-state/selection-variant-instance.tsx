@@ -74,7 +74,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
       <CodeStyleWrapper>
         {/* TODO: add copy  - 1interface_raw_code1 */}
         <CodeBox
-          language="jsx"
+          language="ts"
           code={buildInterfaceString({
             name: interfaceName,
             properties: parser.properties.map((d) => {
@@ -87,7 +87,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
         />
 
         <CodeBox
-          language="jsx"
+          language="ts"
           code={buildeExampleDataDeclaration({
             name: "data",
             interfaceName: formattedInterfaceName,
@@ -96,9 +96,8 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
         />
 
         <CodeBox
-          language="jsx"
+          language="tsx"
           code={jsxViewExampleBuilder({
-            varName: "view",
             viewTag: viewName,
             typeReference: viewName,
             properties: data_of_properties,

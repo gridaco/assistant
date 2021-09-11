@@ -8,7 +8,10 @@ import { MappedPropertyStorage } from "../storage";
 import { CodeBox } from "@ui/codebox";
 import { buildeExampleDataDeclaration } from "../interface-code-builder";
 import this_interface_builder from "./selection-instance-component.coli";
-import { reactNamer } from "../interface-code-builder/scoped-property-id-namer";
+import {
+  reactNamer,
+  tsNamer,
+} from "../interface-code-builder/scoped-property-id-namer";
 import { stringfy } from "coli";
 import { CodeStyleWrapper } from "./_shared-components";
 
@@ -30,7 +33,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const interface_code_coli = this_interface_builder({
     mainInterfaceName: interfaceName,
     properties: properties,
-    propertyNamer: reactNamer(master.id),
+    propertyNamer: tsNamer(master.id),
   });
   const interface_code_string = stringfy(interface_code_coli, {
     language: "typescript",

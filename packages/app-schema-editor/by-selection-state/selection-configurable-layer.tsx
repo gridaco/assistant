@@ -17,7 +17,10 @@ import {
 import { stringfy } from "coli";
 import this_interface_builder from "./selection-configurable-layer.coli";
 import { ReservedKeywordPlatformPresets } from "@coli.codes/naming/reserved";
-import { reactNamer } from "../interface-code-builder/scoped-property-id-namer";
+import {
+  reactNamer,
+  tsNamer,
+} from "../interface-code-builder/scoped-property-id-namer";
 import { CodeStyleWrapper } from "./_shared-components";
 
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
@@ -97,7 +100,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
       root: mainComponent,
       rootInterfaceName: mainComponent.name, // TODO: pass built name
       rootProperties: parentProperties,
-      propertyNamer: reactNamer(mainComponent.id),
+      propertyNamer: tsNamer(mainComponent.id),
       layerProperties: localProperties,
       layer: node,
     }),

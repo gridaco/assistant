@@ -12,7 +12,7 @@ export function CodeBox({
   codeActions,
   disabled,
 }: {
-  language: "dart" | "jsx" | string;
+  language: "dart" | "jsx" | "tsx" | "ts" | "js" | string;
   editor?: "monaco" | "prism";
   /**
    * true by default

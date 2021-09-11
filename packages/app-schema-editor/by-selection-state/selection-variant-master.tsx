@@ -75,7 +75,6 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
       <CodeBox
         language="jsx"
         code={jsxViewExampleBuilder({
-          varName: "view",
           viewTag: viewName,
           typeReference: viewName,
           properties: data_of_properties,
