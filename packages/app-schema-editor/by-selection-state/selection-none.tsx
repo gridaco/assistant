@@ -89,8 +89,5 @@ const Wrapper = styled.div`
 `;
 
 const DisabledOverlay = styled.div`
-  /* TODO: add overlay color */
-  /* color: #8c1d1d1d; */
   margin-top: 25px;
-  }
 `;
