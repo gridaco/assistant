@@ -1,7 +1,7 @@
 import {
   Identifier,
   JSX,
-  JSXAtrribute,
+  JSXAttribute,
   Snippet,
   StringLiteral,
   TypeReference,
@@ -21,7 +21,7 @@ export function jsxViewExampleBuilder(p: {
     const keyname = nameit(k, {
       case: NameCases.camel,
     }).name;
-    return new JSXAtrribute(keyname, new StringLiteral(_v));
+    return new JSXAttribute(keyname, new StringLiteral(_v));
   });
 
   const customTagBuilder = JSX.tag(p.viewTag, {
