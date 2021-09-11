@@ -1,6 +1,7 @@
 import type { IReflectNodeReference } from "@design-sdk/core/nodes/lignt";
 import { ReflectSceneNodeType } from "@design-sdk/core/nodes";
 import { PropertyAccessors } from "../types/single-layer-property-type";
+import { IReflectNodeRootShapeReference } from "@design-sdk/core/nodes/types/reflect-node-reference";
 
 type ConfigurableLayerContext =
   /**
@@ -21,13 +22,25 @@ type ConfigurableLayerContext =
    */
   | "shape-with-image";
 
-const global_properties = ["on click", "on double click", "enabled", "opacity"];
+const global_properties = [
+  "event.click",
+  "event.double-click",
+  "enabled",
+  "opacity",
+];
 
 const default_type_map: { [key in PropertyAccessors]: string } = {
   "text.text": "string",
   "text.color": "string",
+  color: "string",
   "image.src": "string",
   "vector.color": "string",
+  //
+  "event.click": "callback",
+  "event.double-click": "callback",
+  enabled: "boolean",
+  opacity: "number",
+  any: "any",
 };
 
 export interface NoSuggestionReason {
@@ -54,7 +67,8 @@ export type UserSuggestionReason =
 export function get_suggestions(
   node: IReflectNodeReference
 ): UserSuggestionReason | UserSuggestionReason[] {
-  switch (node.origin) {
+  console.log("get suggestion for", node.type, node);
+  switch (node.type) {
     case ReflectSceneNodeType.group:
       return {
         type: "no-available-property",
@@ -66,16 +80,23 @@ export function get_suggestions(
     case ReflectSceneNodeType.text:
       return get_text_property_suggestions(node);
     case ReflectSceneNodeType.frame:
-      return;
+      return get_frame_layer_property_suggestions(node);
     case ReflectSceneNodeType.line:
       return {
         type: "no-available-property",
         reason: "we do not support mapping data to line yet. use rect instead.",
       };
+    case ReflectSceneNodeType.rectangle:
+    case ReflectSceneNodeType.ellipse:
+      return get_shape_layer_property_suggestions(
+        node as IReflectNodeRootShapeReference
+      );
     case ReflectSceneNodeType.vector:
       return get_vector_property_suggestions(node);
 
     case ReflectSceneNodeType.image: // handle this when conversion is properly implemented
+      // Won't work.
+      return get_single_image_fill_layer_property_suggestions(node);
     case ReflectSceneNodeType.constraint: // handle this when conversion is properly implemented
     case ReflectSceneNodeType.unknown:
       throw "unknown node type";
@@ -85,6 +106,57 @@ export function get_suggestions(
       throw "logical error";
   }
   //
+}
+
+function get_frame_layer_property_suggestions(
+  shape: IReflectNodeReference
+): UserSuggestionReason[] {
+  return [
+    {
+      type: "suggestion",
+      to: "event.click",
+      locate: "auto",
+    },
+    {
+      type: "suggestion",
+      to: "enabled",
+      locate: "auto",
+    },
+  ];
+}
+
+function get_shape_layer_property_suggestions(
+  shape: IReflectNodeRootShapeReference
+): UserSuggestionReason[] {
+  console.log("shape", shape);
+  if (shape.fills?.length === 1) {
+    switch (shape.fills[0].type) {
+      case "IMAGE":
+        return get_single_image_fill_layer_property_suggestions(shape);
+      case "SOLID":
+        return [
+          {
+            type: "suggestion",
+            to: "color",
+            locate: "auto",
+          },
+        ];
+    }
+  }
+
+  return [];
+}
+
+function get_single_image_fill_layer_property_suggestions(
+  image: IReflectNodeReference
+): UserSuggestionReason[] {
+  return [
+    {
+      type: "suggestion",
+      to: "image.src",
+      locate: "auto",
+    },
+  ];
 }
 
 function get_text_property_suggestions(

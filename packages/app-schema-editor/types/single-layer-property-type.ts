@@ -36,4 +36,16 @@ export type PropertyAccessors =
   // single fill image-like node image fill
   | "image.src"
   // single fill for vector (e.g. icon content vector)
-  | "vector.color";
+  | "vector.color"
+  // primary color when single color fill.
+  | "color"
+
+  //
+  // region global properties
+  | "event.click"
+  | "event.double-click"
+  | "enabled"
+  | "opacity"
+  // region global properties
+  //
+  | "any";
