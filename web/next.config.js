@@ -76,6 +76,7 @@ const withTM = require("next-transpile-modules")([
   "coli",
   "@coli.codes/escape-string",
   "@coli.codes/web-builder",
+  "@coli.codes/core-syntax-kind",
   "@coli.codes/web-builder-core",
   "@coli.codes/nodejs-builder",
   "@coli.codes/react-builder",
