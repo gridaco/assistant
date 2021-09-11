@@ -31,7 +31,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const interface_code_coli = this_interface_builder({
     mainInterfaceName: interfaceName,
     properties: mappedProperties,
-    propertyNamer: reactNamer,
+    propertyNamer: reactNamer(node.id),
   });
   const interface_code_string = stringfy(interface_code_coli, {
     language: "typescript",

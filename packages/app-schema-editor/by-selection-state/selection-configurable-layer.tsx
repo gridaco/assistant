@@ -97,7 +97,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
       root: mainComponent,
       rootInterfaceName: mainComponent.name, // TODO: pass built name
       rootProperties: parentProperties,
-      propertyNamer: reactNamer,
+      propertyNamer: reactNamer(mainComponent.id),
       layerProperties: localProperties,
       layer: node,
     }),

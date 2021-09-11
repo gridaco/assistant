@@ -30,11 +30,16 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const interface_code_coli = this_interface_builder({
     mainInterfaceName: interfaceName,
     properties: properties,
-    propertyNamer: reactNamer,
+    propertyNamer: reactNamer(master.id),
   });
   const interface_code_string = stringfy(interface_code_coli, {
     language: "typescript",
   });
+
+  const properties_as_data_map = properties.reduce(function (map, p) {
+    map[p.schema.name] = p.schema.type;
+    return map;
+  }, {});
 
   return (
     <CodeStyleWrapper>
@@ -58,7 +63,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
         code={buildeExampleDataDeclaration({
           name: "data",
           interfaceName: interfaceName,
-          properties: {},
+          properties: properties_as_data_map,
         })}
       />
     </CodeStyleWrapper>
