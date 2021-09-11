@@ -1,13 +1,7 @@
-import {
-  Button,
-  Divider,
-  TextField,
-  Select,
-  MenuItem,
-} from "@material-ui/core";
 import React, { useState } from "react";
 import { ISingleLayerProperty } from "./types";
 import { UserSuggestionReason } from "./property-suggestions";
+import { Divider } from "@ui/core";
 
 type UserInteractionMode = "editing" | "viewing";
 
@@ -17,9 +11,9 @@ const ModeToggleButton = (props: {
   onStartEdit: () => void;
 }) => {
   if (props.current == "viewing") {
-    return <Button onClick={props.onStartEdit}>edit</Button>;
+    return <button onClick={props.onStartEdit}>edit</button>;
   }
-  return <Button onClick={props.onSave}>save</Button>;
+  return <button onClick={props.onSave}>save</button>;
 };
 
 interface ISingleLayerPropertyDefinitionProps {
@@ -61,9 +55,9 @@ export function SingleLayerPropertyDefinition(
     <div style={{ margin: 16 }}>
       <Divider />
       <form>
-        <TextField
+        <input
           required
-          label="key"
+          placeholder="key name"
           defaultValue={data?.schema.name}
           onChange={(e) => {
             setData({
@@ -74,12 +68,11 @@ export function SingleLayerPropertyDefinition(
               },
             });
           }}
-          helperText="name for this property"
           disabled={disableInputs}
         />
-        <TextField
-          label="description"
+        <input
           defaultValue={data?.schema.description}
+          placeholder="description doc"
           onChange={(e) => {
             setData({
               ...data,
@@ -89,12 +82,10 @@ export function SingleLayerPropertyDefinition(
               },
             });
           }}
-          helperText="description for this property"
           disabled={disableInputs}
         />
 
-        <Select
-          label="property"
+        <select
           onChange={(e) => {
             setData({
               ...data,
@@ -104,28 +95,30 @@ export function SingleLayerPropertyDefinition(
               },
             });
           }}
-          defaultValue={data?.layer?.propertyType}
           disabled={disableInputs}
-          value={data?.layer?.propertyType}
         >
           {props.suggestions.map((d) => {
             switch (d.type) {
               case "suggestion":
                 return (
-                  <MenuItem key={d.to} value={d.to}>
+                  <option
+                    key={d.to}
+                    value={d.to}
+                    selected={data?.layer?.propertyType == d.to}
+                  >
                     {d.to}
-                  </MenuItem>
+                  </option>
                 );
               default:
                 return <></>;
             }
           })}
-        </Select>
+        </select>
 
         {data?.layer?.propertyType && (
-          <TextField
-            label="type"
+          <input
             required
+            placeholder="type"
             defaultValue={data?.schema.type}
             onChange={(e) => {
               setData({
@@ -145,11 +138,7 @@ export function SingleLayerPropertyDefinition(
           onSave={handleSave}
           onStartEdit={handleStartEdit}
         />
-        {props.onRemove && (
-          <Button variant="outlined" onClick={props.onRemove}>
-            remove
-          </Button>
-        )}
+        {props.onRemove && <button onClick={props.onRemove}>remove</button>}
       </form>
     </div>
   );
