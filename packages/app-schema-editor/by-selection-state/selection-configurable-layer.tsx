@@ -1,34 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "@core/constant";
-import { SingleLayerPropertyDefinition } from "../single-property";
+import { SingleLayerPropertyDefinition } from "../components/single-property";
 import { ISingleLayerProperty, IProperties } from "../types";
 import { nodes } from "@design-sdk/core";
 import { _FigmaVariantPropertyCompatType_to_string } from "@design-sdk/figma/features/variant";
-import { nameit, NameCases, ScopedVariableNamer } from "@coli.codes/naming";
+import { nameit, NameCases } from "@coli.codes/naming";
 import { CodeBox } from "@ui/codebox";
 import { isMemberOfComponentLike } from "@design-sdk/figma/node-analysis/component-like-type-analysis/analyze";
 import { get_suggestions } from "../property-suggestions";
 import { MappedPropertyStorage } from "../storage";
-import { IReflectNodeReference } from "@design-sdk/core/nodes/lignt";
 import {
   findWithRelativeIndexPath,
   getRelativeIndexPath,
 } from "@design-sdk/figma-xpath";
 import { stringfy } from "coli";
 import this_interface_builder from "./selection-configurable-layer.coli";
-import { ReservedKeywordPlatformPresets } from "@coli.codes/naming/reserved";
-import {
-  reactNamer,
-  tsNamer,
-} from "../interface-code-builder/scoped-property-id-namer";
+import { tsNamer } from "../interface-code-builder/scoped-property-id-namer";
 import { CodeStyleWrapper } from "./_shared-components";
+import { ISingleLayerPropertyMapping } from "../types/single-layer-property-type";
 
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const { node } = props;
 
   const [localProperties, setLocalProperties] = useState<IProperties>([]);
   const [parentProperties, setParentProperties] = useState<IProperties>([]);
-
+  const [editingProperties, setEditingProperties] = useState<IProperties>([]);
   const manifest = isMemberOfComponentLike(node);
   if (manifest) {
     // with this, you can show root parent's info
@@ -64,7 +59,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
         accessor: d.layer.propertyType,
       })
       .then(() => {
-        refresh_list();
+        refreshThisPropertiesList();
       });
   };
 
@@ -73,18 +68,48 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
 
   const handleOnRemove = (at: number) => {
     storage.remove(localProperties[at].id);
-    refresh_list();
+    refreshThisPropertiesList();
   };
 
-  const refresh_list = () => {
-    storage.getPropertiesOf(main_component_sibling_layer.id).then((d) => {
+  const empty_placeholder: ISingleLayerPropertyMapping = {
+    schema: {
+      name: nameit(node.name, { case: NameCases.camel }).name,
+      type: "string",
+    },
+    layer: {
+      id: main_component_sibling_layer.id,
+      propertyType: undefined,
+      location: "auto",
+    },
+  };
+
+  const initiallyLoadThisPropertiesList = async () => {
+    const d = await refreshThisPropertiesList();
+    if (d?.length === 0) {
+      setEditingProperties([empty_placeholder]);
+    }
+  };
+
+  const handle_add_new_field = () => {
+    setEditingProperties([...editingProperties, empty_placeholder]);
+  };
+
+  const handle_cancel_new_field = () => {
+    editingProperties.pop();
+    setEditingProperties([...editingProperties]);
+  };
+
+  const refreshThisPropertiesList = async () => {
+    const d = await storage.getPropertiesOf(main_component_sibling_layer.id);
+    if (d?.length > 0) {
       setLocalProperties(d);
-    });
+    }
+    return d;
   };
 
   useEffect(() => {
     // load list for the first time.
-    refresh_list();
+    initiallyLoadThisPropertiesList();
     storage
       .getPropertiesExcept(main_component_sibling_layer.id)
       .then(setParentProperties);
@@ -110,12 +135,13 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
   );
 
   const _has_saved_data = localProperties.length > 0;
+  const _is_editing_data = editingProperties.length > 0;
   return (
     <CodeStyleWrapper>
       <CodeBox editor="prism" language="typescript" code={final_code} />
 
       <div key={localProperties?.length ?? ""}>
-        {_has_saved_data ? (
+        {_has_saved_data && (
           <>
             {localProperties.map((d, i) => (
               <SingleLayerPropertyDefinition
@@ -128,27 +154,22 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
                 suggestions={suggestions}
               />
             ))}
-            <button>add new</button>
           </>
-        ) : (
-          // automatically preset a new property
-          <SingleLayerPropertyDefinition
-            initialMode={"editing"}
-            onSave={handleOnSave}
-            initial={{
-              schema: {
-                name: nameit(node.name, { case: NameCases.camel }).name,
-                type: "string",
-              },
-              layer: {
-                id: main_component_sibling_layer.id,
-                propertyType: undefined,
-                location: "auto",
-              },
-            }}
-            suggestions={suggestions}
-          />
         )}
+        {_is_editing_data && ( // automatically preset a new property
+          <>
+            {editingProperties.map((d, i) => (
+              <SingleLayerPropertyDefinition
+                initialMode={"editing"}
+                onSave={handleOnSave}
+                onCancel={handle_cancel_new_field}
+                initial={d}
+                suggestions={suggestions}
+              />
+            ))}
+          </>
+        )}
+        <button onClick={handle_add_new_field}>add new</button>
       </div>
     </CodeStyleWrapper>
   );

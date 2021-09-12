@@ -12,7 +12,7 @@ import {
   jsxViewExampleBuilder,
 } from "../interface-code-builder";
 import { nameit, NameCases } from "@coli.codes/naming";
-import { PropsInterfaceView } from "../interface-code-builder/props-interface-view";
+import { PropsInterfaceView } from "../components/props-interface-view";
 import { ISingleLayerProperty } from "../types";
 import { MappedPropertyStorage } from "../storage";
 import { CodeStyleWrapper } from "./_shared-components";
