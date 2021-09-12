@@ -40,6 +40,7 @@ import {
   TargetPlatform,
   target_platform,
   MetaRequest,
+  makeExportSetting,
 } from "@plugin-sdk/core";
 
 import {
@@ -371,7 +372,7 @@ async function handleExportEvent(event: HanderProps<ImageExportRequest>) {
         const r = await (figma.getNodeById(
           event.data.id
         ) as SceneNode).exportAsync({
-          ..._ImageExportOption_to_FigmaCompat(event.data.opt),
+          ...makeExportSetting(event.data.opt),
         });
 
         return response<ImageExportResponse>(event.id, {

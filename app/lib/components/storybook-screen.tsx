@@ -22,11 +22,7 @@ export class BoxTab extends React.Component {
   componentDidMount() {
     window.addEventListener("message", function (ev: MessageEvent) {
       const msg = ev.data.pluginMessage;
-      switch (
-        msg.type
-        // case EK_GENERATED_CODE_PLAIN:
-        // case EK_PREVIEW_SOURCE:
-      ) {
+      switch (msg.type) {
       }
     });
   }

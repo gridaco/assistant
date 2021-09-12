@@ -46,3 +46,51 @@ interface _FigmaExportSettingsConstraints {
   readonly type: "SCALE" | "WIDTH" | "HEIGHT";
   readonly value: number;
 }
+
+export type QuickImageExportPreset = "mini" | "small" | "original" | "@2x";
+export function makeExportSetting(
+  p: ImageExportOptions | QuickImageExportPreset
+): ExportSettings {
+  if (typeof p === "string") {
+    return preset(p);
+  } else {
+    return _ImageExportOption_to_FigmaCompat(p);
+  }
+}
+
+export function preset(p: QuickImageExportPreset): ExportSettings {
+  switch (p) {
+    case <QuickImageExportPreset>"mini":
+      return {
+        format: "PNG",
+        contentsOnly: true,
+        constraint: {
+          type: "HEIGHT",
+          value: 124,
+        },
+      };
+    case <QuickImageExportPreset>"small":
+      return {
+        format: "PNG",
+        contentsOnly: true,
+        constraint: {
+          type: "HEIGHT",
+          value: 248,
+        },
+      };
+    case <QuickImageExportPreset>"original":
+      return {
+        format: "PNG",
+        contentsOnly: true,
+      };
+    case <QuickImageExportPreset>"@2x":
+      return {
+        format: "PNG",
+        contentsOnly: true,
+        constraint: {
+          type: "SCALE",
+          value: 2,
+        },
+      };
+  }
+}

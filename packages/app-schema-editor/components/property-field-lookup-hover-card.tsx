@@ -1,14 +1,21 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { HoverView } from "@code-ui/hover";
+import { Preview } from "@ui/previewer";
 
-export function PropertyFieldDocuemntationHoverCard() {
+export function PropertyFieldDocuemntationHoverCard(props: {
+  layer: string;
+  hierarchy?: string[];
+}) {
   return (
     <HoverView
       contents={[
         <Wrapper>
-          <Image />
+          <PreviewWrap>
+            <Preview of={props.layer} />
+          </PreviewWrap>
           <Contents>
+            {props.layer}
             frame/inner-wrap/cover <br />
             fills[0].src <br />
             <br />
@@ -26,7 +33,7 @@ const Wrapper = styled.div`
   padding: 8px;
 `;
 
-const Image = styled.div`
+const PreviewWrap = styled.div`
   width: 80px;
   height: 80px;
   background-color: wheat;

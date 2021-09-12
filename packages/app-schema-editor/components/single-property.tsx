@@ -147,10 +147,12 @@ export function SingleLayerPropertyDefinition(
           </form>
         </div>
       </HoverCard.Trigger>
-      <HoverCard.Content>
-        <HoverCard.Arrow />
-        <PropertyFieldDocuemntationHoverCard />
-      </HoverCard.Content>
+      {mode == "viewing" && (
+        <HoverCard.Content>
+          <HoverCard.Arrow />
+          <PropertyFieldDocuemntationHoverCard layer={data.layer.id} />
+        </HoverCard.Content>
+      )}
     </HoverCard.Root>
   );
 }
