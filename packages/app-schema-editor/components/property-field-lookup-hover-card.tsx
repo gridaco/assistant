@@ -16,10 +16,14 @@ export function PropertyFieldDocuemntationHoverCard(props: {
           </PreviewWrap>
           <Contents>
             {props.layer}
-            frame/inner-wrap/cover <br />
+            <br />
+            <GrayContent>frame/inner-wrap/</GrayContent>cover <br />
+            <br />
             fills[0].src <br />
             <br />
-            current: https://unsplash.com/331SS42.png
+            <br />
+            current: <br />
+            https://unsplash.com/331SS42.png
           </Contents>
         </Wrapper>,
       ]}
@@ -36,10 +40,28 @@ const Wrapper = styled.div`
 const PreviewWrap = styled.div`
   width: 80px;
   height: 80px;
+  display: inline-block;
   background-color: wheat;
   margin-right: 6px;
+
+  img {
+    height: calc(100% - 16px) !important;
+  }
 `;
 
 const Contents = styled.div`
   color: #fff;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 90%;
+  /* or 11px */
+
+  letter-spacing: -0.015em;
+
+  color: #ffffff;
+`;
+
+const GrayContent = styled.b`
+  color: #646464;
+  font-weight: normal;
 `;
