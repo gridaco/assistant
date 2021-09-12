@@ -44,8 +44,15 @@ const PreviewWrap = styled.div`
   background-color: wheat;
   margin-right: 6px;
 
+  // TEMP!! WILL BE CHANGE
+
+  div {
+    height: fit-content !important;
+  }
+
   img {
-    height: calc(100% - 16px) !important;
+    // PreviewWrap's height - Wrapper padding 8*2  - preview padding 16
+    height: calc(64px - 16px) !important;
   }
 `;
 
