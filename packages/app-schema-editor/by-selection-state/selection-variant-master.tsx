@@ -12,10 +12,10 @@ import {
   jsxViewExampleBuilder,
 } from "../interface-code-builder";
 import { nameit, NameCases } from "@coli.codes/naming";
-import { PropsInterfaceView } from "../components/props-interface-view";
 import { ISingleLayerProperty } from "../types";
 import { MappedPropertyStorage } from "../storage";
 import { CodeStyleWrapper } from "./_shared-components";
+import { SingleLayerPropertyDefinition } from "../components/single-property";
 
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const master = props.node;
@@ -55,7 +55,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
         language="jsx"
         code={buildInterfaceString({
           name: interfaceName,
-          properties: parser.properties.map((d) => {
+          properties: merged_properties.map((d) => {
             return {
               name: d.key,
               type: d.type,
@@ -80,6 +80,18 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
           properties: data_of_properties,
         })}
       />
+
+      {mappedProperties?.map((d, i) => (
+        <SingleLayerPropertyDefinition
+          onRemove={() => {
+            // handleOnRemove(i);
+          }}
+          key={d?.schema.name}
+          onSave={() => {}}
+          initial={d}
+          suggestions={[]}
+        />
+      ))}
     </CodeStyleWrapper>
   );
 }

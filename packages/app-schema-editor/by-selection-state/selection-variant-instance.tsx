@@ -17,6 +17,7 @@ import { PropsInterfaceView } from "../components/props-interface-view";
 import styled from "@emotion/styled";
 import { MappedPropertyStorage } from "../storage";
 import { ISingleLayerProperty } from "../types";
+import { SingleLayerPropertyDefinition } from "../components/single-property";
 
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const _format_interface_pascal = (n) => {
@@ -77,7 +78,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
           language="ts"
           code={buildInterfaceString({
             name: interfaceName,
-            properties: parser.properties.map((d) => {
+            properties: merged_properties.map((d) => {
               return {
                 name: d.key,
                 type: d.type,
@@ -103,6 +104,17 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
             properties: data_of_properties,
           })}
         />
+        {mappedProperties?.map((d, i) => (
+          <SingleLayerPropertyDefinition
+            onRemove={() => {
+              // handleOnRemove(i);
+            }}
+            key={d?.schema.name}
+            onSave={() => {}}
+            initial={d}
+            suggestions={[]}
+          />
+        ))}
       </CodeStyleWrapper>
     </>
   );

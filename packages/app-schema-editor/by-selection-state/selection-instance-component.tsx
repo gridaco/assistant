@@ -9,6 +9,7 @@ import this_interface_builder from "./selection-instance-component.coli";
 import { tsNamer } from "../interface-code-builder/scoped-property-id-namer";
 import { stringfy } from "coli";
 import { CodeStyleWrapper } from "./_shared-components";
+import { SingleLayerPropertyDefinition } from "../components/single-property";
 
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const [properties, setProperties] = useState<ISingleLayerProperty[]>([]);
@@ -51,6 +52,18 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
           properties: properties_as_data_map,
         })}
       />
+
+      {properties.map((d, i) => (
+        <SingleLayerPropertyDefinition
+          onRemove={() => {
+            // handleOnRemove(i);
+          }}
+          key={d?.schema.name}
+          onSave={() => {}}
+          initial={d}
+          suggestions={[]}
+        />
+      ))}
     </CodeStyleWrapper>
   );
 }
