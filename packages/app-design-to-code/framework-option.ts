@@ -92,11 +92,19 @@ export const getpreset = (preset_name: string): FrameworkOption => {
   throw `"${preset_name}" is not a valid platform preset key`;
 };
 
-export const getDefaultPresetByFramework = (frameowrk: Framework) => {
+export const getDefaultPresetNameByFramework = (frameowrk: Framework) => {
   switch (frameowrk) {
     case Framework.flutter:
-      return all_preset_options_map__prod.flutter_default;
+      return "flutter_default";
     case Framework.react:
-      return all_preset_options_map__prod.react_default;
+      return "react_default";
   }
 };
+
+export const getDefaultPresetByFramework = (frameowrk: Framework) => {
+  return getPresetByName(getDefaultPresetNameByFramework(frameowrk));
+};
+
+export function getPresetByName(name: string) {
+  return all_preset_options_map__prod[name];
+}

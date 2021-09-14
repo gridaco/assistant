@@ -17,15 +17,16 @@ import { DesigntoCodeUserOptions } from "./user-options";
 // FIXME: get useroption as props from parent. userprops & preset (optional) should be managed on its parent
 interface CodeOptionsControlProps {
   customFields?: IField[];
+  fallbackPreset?: string;
   initialPreset?: string;
   onUseroptionChange: (op: DesigntoCodeUserOptions) => void;
 }
 
 export function CodeOptionsControl(props: CodeOptionsControlProps) {
-  const __preetname = props.initialPreset ?? "flutter_default";
-  const [presetname, setPresetname] = React.useState<string>(__preetname);
+  const __presetname = props.initialPreset ?? props.fallbackPreset;
+  const [presetname, setPresetname] = React.useState<string>(__presetname);
   const [useroption, setUseroption] = React.useState<DesigntoCodeUserOptions>(
-    all_preset_options_map__prod[__preetname]
+    all_preset_options_map__prod[__presetname]
   );
 
   // FIXME: this should be fixed on https://github.com/gridaco/code-like-ui (view CURSOR)

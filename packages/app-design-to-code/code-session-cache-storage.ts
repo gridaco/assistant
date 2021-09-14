@@ -6,7 +6,7 @@ export class CodeSessionCacheStorage {
     readonly node: string,
     readonly preference: DesigntoCodeUserOptions
   ) {
-    this.key = `${node}-${preference.framework}-${preference.language}`;
+    this.key = `${node}-${preference?.framework}-${preference?.language}`;
   }
 
   setCache(code: string) {

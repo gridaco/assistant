@@ -3,7 +3,10 @@ import { CodeBox, SourceInput } from "@ui/codebox";
 import { CodeOptionsControl } from "./code-options-control";
 import styled from "@emotion/styled";
 import { format } from "./formatter";
-import { getDefaultPresetByFramework } from "./framework-option";
+import {
+  getDefaultPresetNameByFramework,
+  getPresetByName,
+} from "./framework-option";
 import { fromApp, CodeGenRequest } from "./__plugin/events";
 import { DesigntoCodeUserOptions } from "./user-options";
 import {
@@ -39,8 +42,13 @@ export function CodeViewWithControl({
   const [source, setSource] = useState<SourceInput>();
 
   const framework_preference = new PreferFramework();
+  const initialPresetName = getDefaultPresetNameByFramework(
+    framework_preference.get() ?? Framework.flutter
+  );
+
+  const initialPreset = getPresetByName(initialPresetName);
   const [useroption, setUseroption] = useState<DesigntoCodeUserOptions>(
-    getDefaultPresetByFramework(framework_preference.get() ?? Framework.flutter)
+    initialPreset
   );
 
   const cacheStore = new CodeSessionCacheStorage(targetid, useroption);
@@ -155,6 +163,8 @@ export function CodeViewWithControl({
       <CodeOptionsControl
         // key={JSON.stringify(useroption)} // FIXME: do not uncomment me
         // initialPreset="react_default" // FIXME: do not uncomment me
+        initialPreset={initialPresetName}
+        fallbackPreset="flutter_default"
         onUseroptionChange={onOptionChange}
         customFields={customMessages?.map((d) => {
           return { name: d };
