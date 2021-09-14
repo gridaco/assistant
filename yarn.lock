@@ -1584,10 +1584,10 @@
   resolved "https://registry.yarnpkg.com/@code-ui/color-scheme/-/color-scheme-0.0.2.tgz#aa3e805068591cad4f2f7f476d89fba037cb4d85"
   integrity sha512-Z7YHcEj/2+6oBEQITlxC3qJyRbhilsr0xyeKUJ4SBdY+MTVWmMKN5P/zvVO7DUQ/Lqi9E6bKSk9VOvvfFwvKdQ==
 
-"@code-ui/completion-provider@^0.0.3":
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/@code-ui/completion-provider/-/completion-provider-0.0.3.tgz#43243cf6403c18cad7b848e5520487bbfba297b6"
-  integrity sha512-EkVXD9b1Jugz+uWTjJ31UyzGecs5DhJnbpz8URb5bhIfqOmYjaPF3P9hkDr0PUqfg/Mc4StxFfyDgZQz+7zhXg==
+"@code-ui/completion-provider@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@code-ui/completion-provider/-/completion-provider-0.0.4.tgz#56958b13e8b6ea1a166ae51342f9aac1a43e25ff"
+  integrity sha512-pOLugIPGEoBYsMQXFOKZm9svd3Wll/2csTtA+goNGJFW9WUFym+w47XoYSeiEBwS8sthFP+HRs3w/WZh40GseA==
   dependencies:
     "@code-ui/hover" "0.0.2"
     "@tippyjs/react" "^4.2.5"
@@ -1646,10 +1646,10 @@
   dependencies:
     "@tippyjs/react" "^4.2.5"
 
-"@code-ui/token@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@code-ui/token/-/token-0.0.4.tgz#e20f711935b3814a0af9fcf6497aa99cdf40e793"
-  integrity sha512-1CoDXpYjcquctBs8IlPHMB4w3SXojKpbnjgyDPzIBz01/4KNbLLsrVb8rglykpGhOcGQ3Q4CEKpXSXFrs656Tg==
+"@code-ui/token@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@code-ui/token/-/token-0.0.5.tgz#fd877f3df72feee5e9b70a0974fb8516e23a00e2"
+  integrity sha512-czaNgr4+nQreaYH38UOYXNOrK0ItD6sXEDziRb4Uv9tHmewIIiP6yLdn7t0hMh8rZP1hPI9CCaO/gDLZURwUoA==
   dependencies:
     "@code-ui/color-scheme" "0.0.2"
     "@code-ui/hover" "0.0.2"
