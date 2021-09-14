@@ -4,6 +4,8 @@ import { UserSuggestionReason } from "../property-suggestions";
 import { Divider } from "@ui/core";
 import * as HoverCard from "@radix-ui/react-hover-card";
 import { PropertyFieldDocuemntationHoverCard } from "./property-field-lookup-hover-card";
+import { BasedToken, Colon, Input } from "@code-ui/token";
+import styled from "@emotion/styled";
 
 type UserInteractionMode = "editing" | "viewing";
 
@@ -53,42 +55,85 @@ export function SingleLayerPropertyDefinition(
 
   const disableInputs = mode == "viewing";
 
+  const suggestionItems = props.suggestions.map(
+    (item: UserSuggestionReason) => {
+      if (item.type === "suggestion") {
+        return {
+          id: item.to,
+          label: item.to,
+        };
+      }
+    }
+  );
+
   return (
     <HoverCard.Root openDelay={100} closeDelay={100}>
       <HoverCard.Trigger>
         <div style={{ margin: 16 }}>
           <Divider />
           <form>
-            <input
-              required
-              placeholder="key name"
-              defaultValue={data?.schema.name}
-              onChange={(e) => {
-                setData({
-                  ...data,
-                  schema: {
-                    ...data.schema,
-                    name: e.target.value,
-                  },
-                });
-              }}
-              disabled={disableInputs}
-            />
-            <input
-              defaultValue={data?.schema.description}
-              placeholder="description doc"
-              onChange={(e) => {
-                setData({
-                  ...data,
-                  schema: {
-                    ...data.schema,
-                    description: e.target.value,
-                  },
-                });
-              }}
-              disabled={disableInputs}
-            />
+            <Flex>
+              <BasedToken
+                onClick={() => {
+                  console.log("onClicked");
+                }}
+                onDoubleClick={() => {
+                  console.log("onDoubleClick");
+                }}
+                onHover={(isOver) => console.log(isOver)}
+                hoverOverlayColor={"rgba(157, 178, 255, 0.25)"}
+                cornerRadius={2}
+                contentPadding={[0, 2]}
+                contentColor="#9CDCFE"
+                content={
+                  <Input
+                    value="content"
+                    color="#9CDCFE"
+                    onChange={(e) => {
+                      setData({
+                        ...data,
+                        schema: {
+                          ...data.schema,
+                          name: e.target.value,
+                        },
+                      });
+                    }}
+                  />
+                }
+              />
+              <Colon />
 
+              <BasedToken
+                onClick={() => {
+                  console.log("onClicked");
+                }}
+                onDoubleClick={() => {
+                  console.log("onDoubleClick");
+                }}
+                onHover={(isOver) => console.log(isOver)}
+                hoverOverlayColor={"rgba(157, 178, 255, 0.25)"}
+                cornerRadius={2}
+                contentPadding={[0, 2]}
+                contentColor="#9CDCFE"
+                content={
+                  <Input
+                    value="default"
+                    // defaultValue={data?.schema.description}
+                    placeholder="description doc"
+                    onChange={(e) => {
+                      setData({
+                        ...data,
+                        schema: {
+                          ...data.schema,
+                          description: e.target.value,
+                        },
+                      });
+                    }}
+                    disabled={disableInputs}
+                  />
+                }
+              />
+            </Flex>
             <select
               onChange={(e) => {
                 setData({
@@ -156,3 +201,8 @@ export function SingleLayerPropertyDefinition(
     </HoverCard.Root>
   );
 }
+
+const Flex = styled.div`
+  display: flex;
+  align-items: center;
+`;

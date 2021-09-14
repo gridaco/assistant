@@ -1579,7 +1579,7 @@
   resolved "https://registry.yarnpkg.com/@code-ui/color-scheme/-/color-scheme-0.0.0.tgz#9f7b1d32e33193166c2958dec999c9fbf9009c8d"
   integrity sha512-KqxYgHgEZYEqs0+n2wX4cIAo4PpBtsLDHxWJcUdXcYeV9u0cTVQ9qJA/8M+d44L6Hu8sYz+lM7f5q2o3W4hloQ==
 
-"@code-ui/color-scheme@^0.0.2":
+"@code-ui/color-scheme@0.0.2", "@code-ui/color-scheme@^0.0.2":
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@code-ui/color-scheme/-/color-scheme-0.0.2.tgz#aa3e805068591cad4f2f7f476d89fba037cb4d85"
   integrity sha512-Z7YHcEj/2+6oBEQITlxC3qJyRbhilsr0xyeKUJ4SBdY+MTVWmMKN5P/zvVO7DUQ/Lqi9E6bKSk9VOvvfFwvKdQ==
@@ -1609,7 +1609,7 @@
   dependencies:
     "@code-ui/core" "^0.0.2"
 
-"@code-ui/hover@^0.0.2":
+"@code-ui/hover@0.0.2", "@code-ui/hover@^0.0.2":
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@code-ui/hover/-/hover-0.0.2.tgz#0e66637417b02b79e3caa2debfeda8f486705375"
   integrity sha512-czTCGSPloamoxG5uz+MDNsigbtjdbAuK0rjIZKxb0XXl3CmUu/lbFvlRDl87pAqI5us6OLqDdYVUzfzC4oqBcw==
@@ -1636,6 +1636,15 @@
   resolved "https://registry.yarnpkg.com/@code-ui/token/-/token-0.0.2.tgz#c44f8cce112a938b7dbd0608a0f3cd2e082e65f8"
   integrity sha512-JKNvZ1TcRjW/uHwQ8bghIpEU4w97F+dwWt4TKu8tx9I42Rmy3xeqN9Fq4s9+M2pt3xYjRER7CwYq9s+R2ye6Qg==
   dependencies:
+    "@tippyjs/react" "^4.2.5"
+
+"@code-ui/token@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@code-ui/token/-/token-0.0.4.tgz#e20f711935b3814a0af9fcf6497aa99cdf40e793"
+  integrity sha512-1CoDXpYjcquctBs8IlPHMB4w3SXojKpbnjgyDPzIBz01/4KNbLLsrVb8rglykpGhOcGQ3Q4CEKpXSXFrs656Tg==
+  dependencies:
+    "@code-ui/color-scheme" "0.0.2"
+    "@code-ui/hover" "0.0.2"
     "@tippyjs/react" "^4.2.5"
 
 "@design-sdk/figma-remote-api@0.0.0":
