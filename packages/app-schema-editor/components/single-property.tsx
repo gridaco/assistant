@@ -5,7 +5,9 @@ import { Divider } from "@ui/core";
 import * as HoverCard from "@radix-ui/react-hover-card";
 import { PropertyFieldDocuemntationHoverCard } from "./property-field-lookup-hover-card";
 import { BasedToken, Colon, Input } from "@code-ui/token";
+import { SuggestionItems, Suggestions } from "@code-ui/completion-provider";
 import styled from "@emotion/styled";
+import Tippy from "@tippyjs/react";
 
 type UserInteractionMode = "editing" | "viewing";
 
@@ -36,7 +38,8 @@ export function SingleLayerPropertyDefinition(
   props: ISingleLayerPropertyDefinitionProps
 ) {
   const [data, setData] = useState<ISingleLayerProperty>(props.initial);
-
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  console.log(props.suggestions);
   // if no initial data provided, start with editing mode
   const _initialMode: UserInteractionMode =
     props.initialMode ?? (props.initial ? "viewing" : "editing");
@@ -53,6 +56,17 @@ export function SingleLayerPropertyDefinition(
     setMode("editing");
   };
 
+  const items: SuggestionItems[] = [
+    {
+      id: "29213123123/cover",
+      label: "cover",
+    },
+    {
+      id: "94839482/text",
+      label: "text",
+    },
+  ];
+
   const disableInputs = mode == "viewing";
 
   const suggestionItems = props.suggestions.map(
@@ -66,6 +80,18 @@ export function SingleLayerPropertyDefinition(
     }
   );
 
+  function suggestionShow() {
+    return (
+      <Test>
+        <Suggestions
+          items={items}
+          selectedId={items[0].id}
+          onSelected={(id: string) => console.log(id)}
+        />
+      </Test>
+    );
+  }
+
   return (
     <HoverCard.Root openDelay={100} closeDelay={100}>
       <HoverCard.Trigger>
@@ -75,13 +101,11 @@ export function SingleLayerPropertyDefinition(
             <Flex>
               <BasedToken
                 onClick={() => {
-                  console.log("onClicked");
+                  setIsVisible(!isVisible);
                 }}
                 onDoubleClick={() => {
                   console.log("onDoubleClick");
                 }}
-                onHover={(isOver) => console.log(isOver)}
-                hoverOverlayColor={"rgba(157, 178, 255, 0.25)"}
                 cornerRadius={2}
                 contentPadding={[0, 2]}
                 contentColor="#9CDCFE"
@@ -102,10 +126,9 @@ export function SingleLayerPropertyDefinition(
                 }
               />
               <Colon />
-
               <BasedToken
                 onClick={() => {
-                  console.log("onClicked");
+                  setIsVisible(!isVisible);
                 }}
                 onDoubleClick={() => {
                   console.log("onDoubleClick");
@@ -116,26 +139,41 @@ export function SingleLayerPropertyDefinition(
                 contentPadding={[0, 2]}
                 contentColor="#9CDCFE"
                 content={
-                  <Input
-                    value="default"
-                    // defaultValue={data?.schema.description}
-                    placeholder="description doc"
-                    onChange={(e) => {
-                      setData({
-                        ...data,
-                        schema: {
-                          ...data.schema,
-                          description: e.target.value,
-                        },
-                      });
-                    }}
-                    disabled={disableInputs}
-                  />
+                  <div>
+                    <StyledTippy
+                      visible={isVisible}
+                      placement="bottom-start"
+                      content={suggestionShow()}
+                      max-width={"100%"}
+                      delay={[0, 0]}
+                    >
+                      <div>
+                        <Input
+                          value="string"
+                          defaultValue={data?.schema.description}
+                          placeholder="description doc"
+                          color="#9CDCFE"
+                          onChange={(e) => {
+                            setData({
+                              ...data,
+                              schema: {
+                                ...data.schema,
+                                description: e.target.value,
+                              },
+                            });
+                          }}
+                          disabled={disableInputs}
+                        />
+                      </div>
+                    </StyledTippy>
+                  </div>
                 }
               />
             </Flex>
+
             <select
               onChange={(e) => {
+                console.log(data);
                 setData({
                   ...data,
                   layer: {
@@ -149,14 +187,25 @@ export function SingleLayerPropertyDefinition(
               {props.suggestions.map((d) => {
                 switch (d.type) {
                   case "suggestion":
+                    console.log("%c here", "color: red");
+                    console.log(d);
                     return (
-                      <option
-                        key={d.to}
-                        value={d.to}
-                        selected={data?.layer?.propertyType == d.to}
-                      >
-                        {d.to}
-                      </option>
+                      <>
+                        <option
+                          key={d.to}
+                          value={d.to}
+                          selected={data?.layer?.propertyType == d.to}
+                        >
+                          {d.to}
+                        </option>
+                        <option
+                          key={"text.text"}
+                          value={d.to}
+                          selected={data?.layer?.propertyType == d.to}
+                        >
+                          {d.to}
+                        </option>
+                      </>
                     );
                   default:
                     return <></>;
@@ -165,21 +214,40 @@ export function SingleLayerPropertyDefinition(
             </select>
 
             {data?.layer?.propertyType && (
-              <input
-                required
-                placeholder="type"
-                defaultValue={data?.schema.type}
-                onChange={(e) => {
-                  setData({
-                    ...data,
-                    schema: {
-                      ...data.schema,
-                      type: e.target.value,
-                    },
-                  });
-                }}
-                disabled={disableInputs}
-              />
+              <>
+                <BasedToken
+                  onClick={() => {
+                    console.log("onClicked");
+                  }}
+                  onDoubleClick={() => {
+                    console.log("onDoubleClick");
+                  }}
+                  onHover={(isOver) => console.log(isOver)}
+                  hoverOverlayColor={"rgba(157, 178, 255, 0.25)"}
+                  cornerRadius={2}
+                  contentPadding={[0, 2]}
+                  contentColor="#9CDCFE"
+                  content={
+                    <Input
+                      value={data?.schema.type}
+                      defaultValue={data?.schema.type}
+                      required
+                      placeholder="type"
+                      color="#9CDCFE"
+                      onChange={(e) => {
+                        setData({
+                          ...data,
+                          schema: {
+                            ...data.schema,
+                            type: e.target.value,
+                          },
+                        });
+                      }}
+                      disabled={disableInputs}
+                    />
+                  }
+                />
+              </>
             )}
 
             <ModeToggleButton
@@ -205,4 +273,13 @@ export function SingleLayerPropertyDefinition(
 const Flex = styled.div`
   display: flex;
   align-items: center;
+`;
+
+const StyledTippy = styled(Tippy)`
+  pointer-events: auto !important;
+  transform: translate3d(0, -10px, 0px);
+`;
+
+const Test = styled.div`
+  position: relative;
 `;

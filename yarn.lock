@@ -1584,6 +1584,14 @@
   resolved "https://registry.yarnpkg.com/@code-ui/color-scheme/-/color-scheme-0.0.2.tgz#aa3e805068591cad4f2f7f476d89fba037cb4d85"
   integrity sha512-Z7YHcEj/2+6oBEQITlxC3qJyRbhilsr0xyeKUJ4SBdY+MTVWmMKN5P/zvVO7DUQ/Lqi9E6bKSk9VOvvfFwvKdQ==
 
+"@code-ui/completion-provider@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@code-ui/completion-provider/-/completion-provider-0.0.3.tgz#43243cf6403c18cad7b848e5520487bbfba297b6"
+  integrity sha512-EkVXD9b1Jugz+uWTjJ31UyzGecs5DhJnbpz8URb5bhIfqOmYjaPF3P9hkDr0PUqfg/Mc4StxFfyDgZQz+7zhXg==
+  dependencies:
+    "@code-ui/hover" "0.0.2"
+    "@tippyjs/react" "^4.2.5"
+
 "@code-ui/core@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@code-ui/core/-/core-0.0.1.tgz#42d8ecea95ffa90037778a1b8fde537956158181"
