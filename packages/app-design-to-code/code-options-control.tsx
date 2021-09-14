@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { IField, LanguageType, Option } from "@code-ui/docstring/dist/lib/type";
 import { Docstring as DocstringView } from "@code-ui/docstring";
 import {
-  Framework,
   FrameworkOption,
   getpreset,
   Language,

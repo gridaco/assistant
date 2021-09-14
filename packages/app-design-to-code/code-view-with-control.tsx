@@ -3,7 +3,7 @@ import { CodeBox, SourceInput } from "@ui/codebox";
 import { CodeOptionsControl } from "./code-options-control";
 import styled from "@emotion/styled";
 import { format } from "./formatter";
-import { all_preset_options_map__prod } from "./framework-option";
+import { getDefaultPresetByFramework } from "./framework-option";
 import { fromApp, CodeGenRequest } from "./__plugin/events";
 import { DesigntoCodeUserOptions } from "./user-options";
 import {
@@ -13,6 +13,8 @@ import {
 import { repo_assets } from "@design-sdk/core";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import { CodeSessionCacheStorage } from "./code-session-cache-storage";
+import { PreferFramework } from "@app/preferences";
+import { Framework } from "@grida/builder-platform-types";
 
 export function CodeViewWithControl({
   targetid,
@@ -35,8 +37,10 @@ export function CodeViewWithControl({
 }) {
   const [app, setApp] = useState<string>();
   const [source, setSource] = useState<SourceInput>();
-  const [useroption, setUseroption] = React.useState<DesigntoCodeUserOptions>(
-    all_preset_options_map__prod.flutter_default
+
+  const framework_preference = new PreferFramework();
+  const [useroption, setUseroption] = useState<DesigntoCodeUserOptions>(
+    getDefaultPresetByFramework(framework_preference.get() ?? Framework.flutter)
   );
 
   const cacheStore = new CodeSessionCacheStorage(targetid, useroption);
@@ -77,6 +81,7 @@ export function CodeViewWithControl({
   }, [useroption.framework, useroption.language]);
 
   const onOptionChange = (op: DesigntoCodeUserOptions) => {
+    framework_preference.set(op.framework); // save updated.
     setUseroption(op);
   };
 
