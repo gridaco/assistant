@@ -5,6 +5,7 @@ import EmptyIndicatorIcon from "@assistant/icons/empty-indicator-icon";
 import "./preview.css";
 import { PluginSdk } from "@plugin-sdk/app";
 import { QuickImageExportPreset } from "@plugin-sdk/core";
+import { PreviewSessionCache } from "./cache";
 
 interface Props {
   auto?: boolean;
@@ -53,10 +54,20 @@ export function Preview(props: Props) {
     }
 
     if (props.of) {
+      const cachestore = new PreviewSessionCache(
+        props.of,
+        props.fetchingConfig
+      );
+      const cache = cachestore.getCache();
+      if (cache) {
+        setData(cache);
+      }
+
       PluginSdk.getNodeImage({
         id: props.of,
         opt: props.fetchingConfig ?? "small",
       }).then((data) => {
+        cachestore.setCache(data.data);
         setData(data.data);
       });
     }
