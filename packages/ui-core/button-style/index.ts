@@ -1,20 +1,18 @@
 import { css } from "@emotion/react";
 
 export const ButtonStyle = css`
-  width: calc(50% - 5px);
+  /* width: calc(50% - 5px); */
   /* for unused .MuiButton-root margin: 0  */
   /* margin-left: 5px !important; */
-  font-size: 14px;
+  height: 48px;
+  font-size: 16px;
   font-weight: bold;
   border-radius: 4px;
   box-sizing: border-box;
-  padding-top: 16px;
-  padding-bottom: 16px;
+  padding-top: 14px;
+  padding-bottom: 14px;
   cursor: pointer;
   outline: none;
-
-  // FIXME: CHEKC IS RIGHT capitalize?
-  text-transform: capitalize;
 `;
 
 export const BlackButtonStyle = css`

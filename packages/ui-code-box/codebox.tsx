@@ -10,8 +10,9 @@ export function CodeBox({
   readonly = true,
   code,
   codeActions,
+  disabled,
 }: {
-  language: "dart" | "jsx" | string;
+  language: "dart" | "jsx" | "tsx" | "ts" | "js" | string;
   editor?: "monaco" | "prism";
   /**
    * true by default
@@ -19,8 +20,9 @@ export function CodeBox({
   readonly?: boolean;
   code: SourceInput;
   codeActions?: Array<JSX.Element>;
+  disabled?: true;
 }) {
-  const raw = typeof code == "string" ? code : code.raw;
+  const raw = (code && (typeof code == "string" ? code : code.raw)) || "";
 
   const Editor =
     editor == "monaco" ? (
@@ -32,13 +34,13 @@ export function CodeBox({
   return (
     <>
       {/* <CopyCodeButton /> */}
-      <CodeWrapper>
+      <CodeWrapper disabled={disabled}>
         {codeActions &&
           codeActions.map((e) => {
             return e;
           })}
-
-        {typeof raw == "string" ? (
+        {/* when empty input, don't raise error */}
+        {raw || typeof raw == "string" ? (
           Editor
         ) : (
           <>Invalid code was givven. cannot display result (this is a bug)</>
@@ -50,7 +52,11 @@ export function CodeBox({
   );
 }
 
-const CodeWrapper = styled.code`
+const CodeWrapper = styled.code<{ disabled?: boolean }>`
+  // TEMPORARILY STYLE
+  pre {
+    opacity: ${(props) => (props.disabled ? 0.5 : 1)};
+  }
   width: max-content;
   height: auto;
 `;

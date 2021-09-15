@@ -1,5 +1,5 @@
-import type { ISingleLayerProperty } from "./single-layer-property-type";
+import type { ISingleLayerPropertyMapping } from "./single-layer-property-type";
 
 // region export
-export type IProperties = ISingleLayerProperty[];
-export type { ISingleLayerProperty } from "./single-layer-property-type";
+export type IProperties = ISingleLayerPropertyMapping[];
+export type { ISingleLayerPropertyMapping as ISingleLayerProperty } from "./single-layer-property-type";

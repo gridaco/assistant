@@ -1,4 +1,5 @@
-import { EK_PREVIEW_SOURCE } from "@core/constant/ek.constant";
+import { EK_CURRENT_SELECTION_PREVIEW_SOURCE_CHANGED } from "@core/constant/ek.constant";
+import { preset, QuickImageExportPreset } from "@plugin-sdk/core";
 
 /**
  * extracts the png image of selection, broadcasts to listeners.
@@ -6,22 +7,23 @@ import { EK_PREVIEW_SOURCE } from "@core/constant/ek.constant";
  * @param selection
  */
 export function broadcastSelectionPreview(selection: SceneNode) {
-  selection
-    .exportAsync({
-      format: "PNG",
-      contentsOnly: true,
-      constraint: {
-        type: "HEIGHT",
-        value: 250,
+  exportImage(selection).then((d) => {
+    figma.ui.postMessage({
+      type: EK_CURRENT_SELECTION_PREVIEW_SOURCE_CHANGED,
+      data: {
+        source: d,
+        name: selection.name,
       },
-    })
-    .then((d) => {
-      figma.ui.postMessage({
-        type: EK_PREVIEW_SOURCE,
-        data: {
-          source: d,
-          name: selection.name,
-        },
-      });
     });
+  });
+}
+
+export async function exportImage(
+  target: SceneNode,
+  options?: {
+    preset?: QuickImageExportPreset;
+  }
+): Promise<Uint8Array> {
+  const config = preset(options?.preset ?? "small");
+  return await target.exportAsync(config);
 }

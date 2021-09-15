@@ -1,45 +1,55 @@
 import React, { useEffect, useState } from "react";
-import { nodes, utils } from "@design-sdk/core";
-import { ISingleLayerProperty, IProperties } from "../types";
-import { PluginSdk } from "@plugin-sdk/app";
-
+import { nodes } from "@design-sdk/core";
+import { ISingleLayerProperty } from "../types";
+import { NameCases, nameit } from "@coli.codes/naming";
+import { MappedPropertyStorage } from "../storage";
+import { CodeBox } from "@ui/codebox";
+import this_interface_builder from "./selection-master-component.coli";
+import { tsNamer } from "../interface-code-builder/scoped-property-id-namer";
+import { stringfy } from "coli";
+import { CodeStyleWrapper } from "./_shared-components";
+import { SingleLayerPropertyDefinition } from "../components/single-property";
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const { node } = props;
-  const [properties, setProperties] = useState<ISingleLayerProperty[]>(null);
+  const [mappedProperties, setMappedProperties] = useState<
+    ISingleLayerProperty[]
+  >([]);
 
-  //1. list all layers under this component
-  const grandchilds = utils.mapGrandchildren(node);
+  const interfaceName = nameit(node.name + "-props", {
+    case: NameCases.pascal,
+  }).name;
 
-  //2. extract schema from layers
+  const storage = new MappedPropertyStorage(node.id);
   useEffect(() => {
-    Promise.all(
-      grandchilds.map((c) => {
-        return PluginSdk.fetchMetadata_grida<ISingleLayerProperty>(
-          c.id,
-          "layer-property-data"
-        );
-      })
-    ).then((res) => {
-      const layersWithPropertyData = res.filter((i) => i !== undefined);
-      setProperties(layersWithPropertyData);
+    storage.getProperties().then((properties) => {
+      setMappedProperties(properties);
     });
   }, []);
 
-  return (
-    <>
-      <h6>mater component</h6>
-      <br />
+  const interface_code_coli = this_interface_builder({
+    mainInterfaceName: interfaceName,
+    properties: mappedProperties,
+    propertyNamer: tsNamer(node.id),
+  });
+  const interface_code_string = stringfy(interface_code_coli, {
+    language: "typescript",
+  });
 
-      {/*  */}
-      {properties ? (
-        <ul>
-          {properties.map((p) => {
-            return <li>{JSON.stringify(p)}</li>;
-          })}
-        </ul>
-      ) : (
-        <>Loading..</>
-      )}
-    </>
+  return (
+    <CodeStyleWrapper>
+      <CodeBox language="typescript" code={interface_code_string} />
+
+      {mappedProperties.map((d, i) => (
+        <SingleLayerPropertyDefinition
+          onRemove={() => {
+            // handleOnRemove(i);
+          }}
+          key={d?.schema.name}
+          onSave={() => {}}
+          initial={d}
+          suggestions={[]}
+        />
+      ))}
+    </CodeStyleWrapper>
   );
 }

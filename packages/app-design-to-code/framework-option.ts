@@ -1,7 +1,5 @@
-export enum Framework {
-  react = "react",
-  flutter = "flutter",
-}
+import { Framework } from "@grida/builder-platform-types";
+
 export enum Language {
   jsx = "jsx",
   tsx = "tsx",
@@ -93,3 +91,20 @@ export const getpreset = (preset_name: string): FrameworkOption => {
   }
   throw `"${preset_name}" is not a valid platform preset key`;
 };
+
+export const getDefaultPresetNameByFramework = (frameowrk: Framework) => {
+  switch (frameowrk) {
+    case Framework.flutter:
+      return "flutter_default";
+    case Framework.react:
+      return "react_default";
+  }
+};
+
+export const getDefaultPresetByFramework = (frameowrk: Framework) => {
+  return getPresetByName(getDefaultPresetNameByFramework(frameowrk));
+};
+
+export function getPresetByName(name: string) {
+  return all_preset_options_map__prod[name];
+}

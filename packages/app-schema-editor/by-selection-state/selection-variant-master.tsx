@@ -1,28 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { nodes } from "@design-sdk/core";
 import {
   FigmaNumber,
-  FigmaVariantPropertyCompatType,
+  VariantProperty,
   VariantPropertyParser,
 } from "@design-sdk/figma/features/variant";
 import { CodeBox } from "@ui/codebox";
 import {
-  buildeExampleData,
+  buildeExampleDataDeclaration,
   buildInterfaceString,
   jsxViewExampleBuilder,
 } from "../interface-code-builder";
 import { nameit, NameCases } from "@coli.codes/naming";
-import {
-  InterfaceAttr,
-  InterfaceProps,
-  InterfaceTypeOption,
-} from "@code-ui/interface/dist/lib/type";
-import { PropsInterfaceView } from "../interface-code-builder/props-interface-view";
-import styled from "@emotion/styled";
+import { ISingleLayerProperty } from "../types";
+import { MappedPropertyStorage } from "../storage";
+import { CodeStyleWrapper } from "./_shared-components";
+import { SingleLayerPropertyDefinition } from "../components/single-property";
 
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const master = props.node;
-
+  const [mappedProperties, setMappedProperties] = useState<
+    ISingleLayerProperty[]
+  >(null);
   const parser = new VariantPropertyParser(master);
   const data_of_properties = parser.getData(master);
   const interfaceName = nameit(master.parent.name + "-props", {
@@ -33,19 +32,30 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
     case: NameCases.pascal,
   }).name;
 
+  const mappedPropertyStorage = new MappedPropertyStorage(master.id);
+  useEffect(() => {
+    mappedPropertyStorage.getProperties().then((properties) => {
+      setMappedProperties(properties);
+    });
+  }, []);
+  const merged_properties: VariantProperty[] = [
+    ...parser.properties,
+    ...(mappedProperties?.map((i) => {
+      return {
+        key: i.schema.name,
+        type: FigmaNumber, // FIXME: change this to - i.schema.type
+        nullable: false, // TODO:
+      } as VariantProperty;
+    }) || []),
+  ];
+
   return (
     <CodeStyleWrapper>
-      <PropsInterfaceView
-        onInterfaceNameChange={() => {}}
-        properties={parser.properties}
-        initialInterfaceName={interfaceName}
-        onChange={() => {}}
-      />
       <CodeBox
         language="jsx"
         code={buildInterfaceString({
           name: interfaceName,
-          properties: parser.properties.map((d) => {
+          properties: merged_properties.map((d) => {
             return {
               name: d.key,
               type: d.type,
@@ -55,7 +65,7 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
       />
       <CodeBox
         language="jsx"
-        code={buildeExampleData({
+        code={buildeExampleDataDeclaration({
           name: "data",
           interfaceName: interfaceName,
           properties: data_of_properties,
@@ -65,19 +75,23 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
       <CodeBox
         language="jsx"
         code={jsxViewExampleBuilder({
-          varName: "view",
           viewTag: viewName,
           typeReference: viewName,
           properties: data_of_properties,
         })}
       />
+
+      {mappedProperties?.map((d, i) => (
+        <SingleLayerPropertyDefinition
+          onRemove={() => {
+            // handleOnRemove(i);
+          }}
+          key={d?.schema.name}
+          onSave={() => {}}
+          initial={d}
+          suggestions={[]}
+        />
+      ))}
     </CodeStyleWrapper>
   );
 }
-
-const CodeStyleWrapper = styled.div`
-  height: calc(100vh - 292px);
-  background: #1e1e1e;
-  overflow: auto;
-  padding: 0 6px;
-`;

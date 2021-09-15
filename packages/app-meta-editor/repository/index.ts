@@ -24,6 +24,7 @@ export abstract class MetaDataRepository<T = any> {
     switch (target_platform.get()) {
       case TargetPlatform.figma:
         return await PluginSdk.fetchMetadata({
+          type: "node-meta-fetch-request",
           id: this.id,
           namespace: ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE,
           key: this.key,
@@ -39,6 +40,7 @@ export abstract class MetaDataRepository<T = any> {
       //  TODO -- figma api call does not work here.
       case TargetPlatform.figma:
         return await PluginSdk.updateMetadata({
+          type: "node-meta-update-request",
           id: this.id,
           namespace: ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE,
           key: this.key,

@@ -17,7 +17,9 @@ import {
   stringfy,
 } from "coli";
 
-import { NameCases, nameit } from "@coli.codes/naming";
+import { NameCases, nameit, ScopedVariableNamer } from "@coli.codes/naming";
+import { ReservedKeywordPlatforms } from "@coli.codes/naming/reserved";
+import { typeToColiType } from "./type-to-coli-type";
 
 export interface InterfaceCodeBuilParam {
   name: string;
@@ -28,32 +30,20 @@ export interface InterfaceCodeBuilParam {
 }
 
 export function buildInterface(p: InterfaceCodeBuilParam) {
-  const _make_type = (t: variant.FigmaVariantPropertyCompatType) => {
-    if (t == FigmaNumber) {
-      return new NumberKeyword();
-    } else if (t == FigmaBoolean) {
-      return new BooleanKeyword();
-    } else if (t.type == "unique") {
-      return new LiteralType(new StringLiteral(t.value));
-    } else if (t.type == "enum") {
-      return new UnionType({
-        types: t.values.map((v) => {
-          return new LiteralType(new StringLiteral(v));
-        }),
-      });
-    }
-  };
+  const propertyNamer = new ScopedVariableNamer("property", [
+    ReservedKeywordPlatforms.typescript,
+  ]);
 
   return new InterfaceDeclaration({
     name: p.name,
     members: p.properties.map((n) => {
       return new PropertySignature({
         name: new Identifier(
-          nameit(n.name, {
+          propertyNamer.nameit(n.name, {
             case: NameCases.camel,
           }).name
         ),
-        type: _make_type(n.type),
+        type: typeToColiType(n.type),
       });
     }),
   });

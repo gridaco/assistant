@@ -6,7 +6,7 @@ import { PluginSdk } from "@plugin-sdk/app";
 import { preview } from "@app/scene-view";
 import { NextUploadButton } from "./next-upload-button";
 import type { ReflectSceneNode } from "@design-sdk/core/nodes";
-import { Framework } from "../framework-option";
+import { Framework } from "@grida/builder-platform-types";
 
 interface ICodeScreenFooter {
   framework: Framework;

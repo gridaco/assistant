@@ -39,7 +39,7 @@ export function MonacoEditor(props: { src: string; language: string }) {
         options={{
           fontFamily: `Menlo, Monaco, 'Courier New', monospace`,
           fontSize: 14,
-
+          colorDecorators: true,
           minimap: {
             // disable minimap a.k.a preview
             enabled: false,

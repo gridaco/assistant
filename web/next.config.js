@@ -12,11 +12,13 @@ const withTM = require("next-transpile-modules")([
 
   // @app
   "app",
+  "@app/design-to-code",
   "@app/auth",
   "@app/i18n",
   "@app/component-manage",
   "@app/button-maker",
   "@app/data-mapper",
+  "@app/preferences",
   "@app/design-lint",
   "@app/design-text-code-syntax-highlight",
   "@app/icons-loader",
@@ -39,6 +41,7 @@ const withTM = require("next-transpile-modules")([
   "@plugin-sdk/draggable",
   "plugin-app",
 
+  "@grida/builder-platform-types",
   "@designto/config",
   "@designto/code",
   "@designto/token",
@@ -52,6 +55,7 @@ const withTM = require("next-transpile-modules")([
   "@design-sdk/universal",
   "@design-sdk/figma",
   "@design-sdk/figma-url",
+  "@design-sdk/figma-xpath",
   "@design-sdk/url-analysis",
   "@design-sdk/sketch",
   // reflect-ui
@@ -74,6 +78,7 @@ const withTM = require("next-transpile-modules")([
   "coli",
   "@coli.codes/escape-string",
   "@coli.codes/web-builder",
+  "@coli.codes/core-syntax-kind",
   "@coli.codes/web-builder-core",
   "@coli.codes/nodejs-builder",
   "@coli.codes/react-builder",

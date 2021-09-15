@@ -10,7 +10,7 @@ import {
 } from "./events";
 import { designToFlutter, designToReact } from "./design-to-code";
 import { FigmaNodeCache } from "figma-core/node-cache";
-import { Framework } from "../framework-option";
+import { Framework } from "@grida/builder-platform-types";
 import { repo_assets } from "@design-sdk/core";
 onService(main_cb);
 
@@ -43,8 +43,7 @@ async function _handle_code_gen_request(req: CodeGenRequest) {
 
     const hostingjob = async () => {
       // host images
-      const transportableImageAssetRepository =
-        await repo_assets.MainImageRepository.instance.current.makeTransportable();
+      const transportableImageAssetRepository = await repo_assets.MainImageRepository.instance.current.makeTransportable();
       figma.ui.postMessage({
         type: EK_IMAGE_ASSET_REPOSITORY_MAP,
         data: transportableImageAssetRepository,

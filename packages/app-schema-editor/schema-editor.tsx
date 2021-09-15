@@ -25,7 +25,7 @@ export function SchemaEditor(props: {}) {
     }
     switch (mode) {
       case "invalid-target":
-        return <Modes.InvalidSelection />;
+        return <Modes.InvalidSelection node={selection.node} />;
       case "single-layer-property":
         return <Modes.ConfigurableLayer node={selection.node} />;
       case "base-master-component":
