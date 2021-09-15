@@ -4,10 +4,10 @@ import { UserSuggestionReason } from "../property-suggestions";
 import { Divider } from "@ui/core";
 import * as HoverCard from "@radix-ui/react-hover-card";
 import { PropertyFieldDocuemntationHoverCard } from "./property-field-lookup-hover-card";
-import { BasedToken, Colon, Input } from "@code-ui/token";
 import { SuggestionItems, Suggestions } from "@code-ui/completion-provider";
 import styled from "@emotion/styled";
 import Tippy from "@tippyjs/react";
+import { BasedToken, Colon, Input } from "@code-ui/token";
 
 type UserInteractionMode = "editing" | "viewing";
 
@@ -17,9 +17,9 @@ const ModeToggleButton = (props: {
   onStartEdit: () => void;
 }) => {
   if (props.current == "viewing") {
-    return <button onClick={props.onStartEdit}>edit</button>;
+    return <OptionalBtn onClick={props.onStartEdit}>edit</OptionalBtn>;
   }
-  return <button onClick={props.onSave}>save</button>;
+  return <OptionalBtn onClick={props.onSave}>save</OptionalBtn>;
 };
 
 interface ISingleLayerPropertyDefinitionProps {
@@ -39,7 +39,6 @@ export function SingleLayerPropertyDefinition(
 ) {
   const [data, setData] = useState<ISingleLayerProperty>(props.initial);
   const [isVisible, setIsVisible] = useState<boolean>(false);
-  console.log(props.suggestions);
   // if no initial data provided, start with editing mode
   const _initialMode: UserInteractionMode =
     props.initialMode ?? (props.initial ? "viewing" : "editing");
@@ -82,13 +81,13 @@ export function SingleLayerPropertyDefinition(
 
   function suggestionShow() {
     return (
-      <Test>
+      <div>
         <Suggestions
           items={items}
-          selectedId={items[0].id}
+          selectedId={items[0]?.id}
           onSelected={(id: string) => console.log(id)}
         />
-      </Test>
+      </div>
     );
   }
 
@@ -111,7 +110,8 @@ export function SingleLayerPropertyDefinition(
                 contentColor="#9CDCFE"
                 content={
                   <Input
-                    value="content"
+                    value={data?.schema.name.toString()}
+                    defaultValue={data?.schema.name}
                     color="#9CDCFE"
                     onChange={(e) => {
                       setData({
@@ -149,7 +149,7 @@ export function SingleLayerPropertyDefinition(
                     >
                       <div>
                         <Input
-                          value="string"
+                          value={data?.schema.description}
                           defaultValue={data?.schema.description}
                           placeholder="description doc"
                           color="#9CDCFE"
@@ -171,7 +171,7 @@ export function SingleLayerPropertyDefinition(
               />
             </Flex>
 
-            <select
+            {/* <select
               onChange={(e) => {
                 console.log(data);
                 setData({
@@ -187,8 +187,6 @@ export function SingleLayerPropertyDefinition(
               {props.suggestions.map((d) => {
                 switch (d.type) {
                   case "suggestion":
-                    console.log("%c here", "color: red");
-                    console.log(d);
                     return (
                       <>
                         <option
@@ -211,7 +209,7 @@ export function SingleLayerPropertyDefinition(
                     return <></>;
                 }
               })}
-            </select>
+            </select> */}
 
             {data?.layer?.propertyType && (
               <>
@@ -249,14 +247,21 @@ export function SingleLayerPropertyDefinition(
                 />
               </>
             )}
+            <Field>
+              <ModeToggleButton
+                current={mode}
+                onSave={handleSave}
+                onStartEdit={handleStartEdit}
+              />
+              <Splash>/</Splash>
+              {props.onRemove && (
+                <OptionalBtn onClick={props.onRemove}>add property</OptionalBtn>
+              )}
 
-            <ModeToggleButton
-              current={mode}
-              onSave={handleSave}
-              onStartEdit={handleStartEdit}
-            />
-            {props.onRemove && <button onClick={props.onRemove}>remove</button>}
-            {props.onCancel && <button onClick={props.onCancel}>cancel</button>}
+              {props.onCancel && (
+                <OptionalBtn onClick={props.onCancel}>remove</OptionalBtn>
+              )}
+            </Field>
           </form>
         </div>
       </HoverCard.Trigger>
@@ -280,6 +285,25 @@ const StyledTippy = styled(Tippy)`
   transform: translate3d(0, -10px, 0px);
 `;
 
-const Test = styled.div`
-  position: relative;
+const Field = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-items: center;
+  align-items: center;
+`;
+
+const OptionalBtn = styled.button`
+  text-decoration: underline;
+  outline: none;
+  background: transparent;
+  color: #868686;
+  border: none;
+  cursor: pointer;
+  align-items: center;
+`;
+
+const Splash = styled.span`
+  outline: none;
+  background: transparent;
+  color: #868686;
 `;
