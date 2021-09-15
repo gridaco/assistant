@@ -18,6 +18,7 @@ const withTM = require("next-transpile-modules")([
   "@app/component-manage",
   "@app/button-maker",
   "@app/data-mapper",
+  "@app/preferences",
   "@app/design-lint",
   "@app/design-text-code-syntax-highlight",
   "@app/icons-loader",
@@ -40,6 +41,7 @@ const withTM = require("next-transpile-modules")([
   "@plugin-sdk/draggable",
   "plugin-app",
 
+  "@grida/builder-platform-types",
   "@designto/config",
   "@designto/code",
   "@designto/token",

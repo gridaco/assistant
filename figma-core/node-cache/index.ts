@@ -87,7 +87,7 @@ export class FigmaNodeCache {
   }
 
   static getLastConverted(): ReflectSceneNode | null {
-    if (this.lastId == this._lastConverted?.data?.id) {
+    if (this.lastId && this.lastId == this._lastConverted?.data?.id) {
       return this._lastConverted.data;
     }
     return null;

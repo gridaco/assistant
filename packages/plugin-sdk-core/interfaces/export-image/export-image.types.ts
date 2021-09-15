@@ -1,3 +1,4 @@
+import type { ExportSettings } from "@design-sdk/figma-types";
 export interface ImageExportOptions {
   format: "png" | "jpeg" | "webp" | "pdf" | "svg";
   contentsOnly: boolean;
