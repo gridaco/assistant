@@ -1646,10 +1646,10 @@
   dependencies:
     "@tippyjs/react" "^4.2.5"
 
-"@code-ui/token@^0.0.5":
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/@code-ui/token/-/token-0.0.5.tgz#fd877f3df72feee5e9b70a0974fb8516e23a00e2"
-  integrity sha512-czaNgr4+nQreaYH38UOYXNOrK0ItD6sXEDziRb4Uv9tHmewIIiP6yLdn7t0hMh8rZP1hPI9CCaO/gDLZURwUoA==
+"@code-ui/token@^0.0.6":
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/@code-ui/token/-/token-0.0.6.tgz#429fd3e56f21872d26bfbcab99758115ae90898a"
+  integrity sha512-i2+bJ+KMtvvavpYMjywuM6VuDNs8qbt8iRIkwSY5+8I1VK0+S6DlhwCIhwdRU9drfo/sJVnjl1gyB4GYbXgfFg==
   dependencies:
     "@code-ui/color-scheme" "0.0.2"
     "@code-ui/hover" "0.0.2"
