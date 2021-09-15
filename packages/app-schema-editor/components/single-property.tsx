@@ -55,6 +55,7 @@ export function SingleLayerPropertyDefinition(
     setMode("editing");
   };
 
+  // for test
   const items: SuggestionItems[] = [
     {
       id: "29213123123/cover",
@@ -83,201 +84,165 @@ export function SingleLayerPropertyDefinition(
     return (
       <div>
         <Suggestions
-          items={items}
-          selectedId={items[0]?.id}
-          onSelected={(id: string) => console.log(id)}
+          items={suggestionItems}
+          selectedId={data.schema.description}
+          onSelected={(id: string) =>
+            setData({
+              ...data,
+              schema: {
+                ...data.schema,
+                description: id,
+              },
+            })
+          }
         />
       </div>
     );
   }
 
   return (
-    <HoverCard.Root openDelay={100} closeDelay={100}>
-      <HoverCard.Trigger>
-        <div style={{ margin: 16 }}>
-          <Divider />
-          <form>
-            <Flex>
-              <BasedToken
-                onClick={() => {
-                  setIsVisible(!isVisible);
-                }}
-                onDoubleClick={() => {
-                  console.log("onDoubleClick");
-                }}
-                cornerRadius={2}
-                contentPadding={[0, 2]}
-                contentColor="#9CDCFE"
-                content={
-                  <Input
-                    value={data?.schema.name.toString()}
-                    defaultValue={data?.schema.name}
-                    color="#9CDCFE"
-                    onChange={(e) => {
-                      setData({
-                        ...data,
-                        schema: {
-                          ...data.schema,
-                          name: e.target.value,
-                        },
-                      });
-                    }}
-                  />
-                }
-              />
-              <Colon />
-              <BasedToken
-                onClick={() => {
-                  setIsVisible(!isVisible);
-                }}
-                onDoubleClick={() => {
-                  console.log("onDoubleClick");
-                }}
-                onHover={(isOver) => console.log(isOver)}
-                hoverOverlayColor={"rgba(157, 178, 255, 0.25)"}
-                cornerRadius={2}
-                contentPadding={[0, 2]}
-                contentColor="#9CDCFE"
-                content={
-                  <div>
-                    <StyledTippy
-                      visible={isVisible}
-                      placement="bottom-start"
-                      content={suggestionShow()}
-                      max-width={"100%"}
-                      delay={[0, 0]}
-                    >
-                      <div>
-                        <Input
-                          value={data?.schema.description}
-                          defaultValue={data?.schema.description}
-                          placeholder="description doc"
-                          color="#9CDCFE"
-                          onChange={(e) => {
-                            setData({
-                              ...data,
-                              schema: {
-                                ...data.schema,
-                                description: e.target.value,
-                              },
-                            });
-                          }}
-                          disabled={disableInputs}
-                        />
-                      </div>
-                    </StyledTippy>
-                  </div>
-                }
-              />
-            </Flex>
-
-            {/* <select
-              onChange={(e) => {
-                console.log(data);
-                setData({
-                  ...data,
-                  layer: {
-                    ...data.layer,
-                    propertyType: e.target.value as any,
-                  },
-                });
-              }}
-              disabled={disableInputs}
-            >
-              {props.suggestions.map((d) => {
-                switch (d.type) {
-                  case "suggestion":
-                    return (
-                      <>
-                        <option
-                          key={d.to}
-                          value={d.to}
-                          selected={data?.layer?.propertyType == d.to}
-                        >
-                          {d.to}
-                        </option>
-                        <option
-                          key={"text.text"}
-                          value={d.to}
-                          selected={data?.layer?.propertyType == d.to}
-                        >
-                          {d.to}
-                        </option>
-                      </>
-                    );
-                  default:
-                    return <></>;
-                }
-              })}
-            </select> */}
-
-            {data?.layer?.propertyType && (
-              <>
+    <>
+      <div style={{ margin: 16 }}>
+        <Divider />
+        <form>
+          <HoverCard.Root openDelay={100} closeDelay={100}>
+            <HoverCard.Trigger>
+              <Flex>
                 <BasedToken
-                  onClick={() => {
-                    console.log("onClicked");
-                  }}
-                  onDoubleClick={() => {
-                    console.log("onDoubleClick");
-                  }}
-                  onHover={(isOver) => console.log(isOver)}
-                  hoverOverlayColor={"rgba(157, 178, 255, 0.25)"}
+                  onClick={() => {}}
+                  onDoubleClick={() => {}}
                   cornerRadius={2}
                   contentPadding={[0, 2]}
                   contentColor="#9CDCFE"
                   content={
                     <Input
-                      value={data?.schema.type}
-                      defaultValue={data?.schema.type}
-                      required
-                      placeholder="type"
+                      value={data?.schema.name.toString()}
+                      defaultValue={data?.schema.name}
                       color="#9CDCFE"
                       onChange={(e) => {
                         setData({
                           ...data,
                           schema: {
                             ...data.schema,
-                            type: e.target.value,
+                            name: e.target.value,
                           },
                         });
                       }}
-                      disabled={disableInputs}
                     />
                   }
                 />
-              </>
-            )}
-            <Field>
-              <ModeToggleButton
-                current={mode}
-                onSave={handleSave}
-                onStartEdit={handleStartEdit}
-              />
-              <Splash>/</Splash>
-              {props.onRemove && (
-                <OptionalBtn onClick={props.onRemove}>add property</OptionalBtn>
-              )}
+                <Colon />
+                <BasedToken
+                  onClick={() => {
+                    setIsVisible(!isVisible);
+                  }}
+                  onDoubleClick={() => {}}
+                  onHover={(isOver) => console.log(isOver)}
+                  hoverOverlayColor={"rgba(157, 178, 255, 0.25)"}
+                  cornerRadius={2}
+                  contentPadding={[0, 2]}
+                  contentColor="#9CDCFE"
+                  content={
+                    <div>
+                      <StyledTippy
+                        visible={isVisible}
+                        placement="bottom-start"
+                        content={suggestionShow()}
+                        max-width={"100%"}
+                        delay={[0, 0]}
+                      >
+                        <div>
+                          <Input
+                            value={data?.schema.description}
+                            placeholder="description doc"
+                            color="#9CDCFE"
+                            onChange={(e) => {
+                              setData({
+                                ...data,
+                                schema: {
+                                  ...data.schema,
+                                  description: e.target.value,
+                                },
+                              });
+                            }}
+                            disabled={disableInputs}
+                          />
+                        </div>
+                      </StyledTippy>
+                    </div>
+                  }
+                />
+              </Flex>
 
-              {props.onCancel && (
-                <OptionalBtn onClick={props.onCancel}>remove</OptionalBtn>
+              {data?.layer?.propertyType && (
+                <>
+                  <BasedToken
+                    onClick={() => {
+                      console.log("onClicked");
+                    }}
+                    onDoubleClick={() => {
+                      console.log("onDoubleClick");
+                    }}
+                    onHover={(isOver) => console.log(isOver)}
+                    hoverOverlayColor={"rgba(157, 178, 255, 0.25)"}
+                    cornerRadius={2}
+                    contentPadding={[0, 2]}
+                    contentColor="#9CDCFE"
+                    content={
+                      <Input
+                        value={data?.schema.type}
+                        defaultValue={data?.schema.type}
+                        required
+                        placeholder="type"
+                        color="#9CDCFE"
+                        onChange={(e) => {
+                          setData({
+                            ...data,
+                            schema: {
+                              ...data.schema,
+                              type: e.target.value,
+                            },
+                          });
+                        }}
+                        disabled={disableInputs}
+                      />
+                    }
+                  />
+                </>
               )}
-            </Field>
-          </form>
-        </div>
-      </HoverCard.Trigger>
-      {mode == "viewing" && (
-        <HoverCard.Content>
-          <HoverCard.Arrow />
-          <PropertyFieldDocuemntationHoverCard layer={data.layer.id} />
-        </HoverCard.Content>
-      )}
-    </HoverCard.Root>
+            </HoverCard.Trigger>
+            {mode == "viewing" && (
+              <HoverCard.Content>
+                <HoverCard.Arrow />
+                <PropertyFieldDocuemntationHoverCard layer={data.layer.id} />
+              </HoverCard.Content>
+            )}
+          </HoverCard.Root>
+          <Field>
+            <ModeToggleButton
+              current={mode}
+              onSave={handleSave}
+              onStartEdit={handleStartEdit}
+            />
+            <Splash>/</Splash>
+            {props.onRemove && (
+              <OptionalBtn onClick={props.onRemove}>add property</OptionalBtn>
+            )}
+
+            {props.onCancel && (
+              <OptionalBtn onClick={props.onCancel}>remove</OptionalBtn>
+            )}
+          </Field>
+        </form>
+      </div>
+    </>
   );
 }
 
 const Flex = styled.div`
   display: flex;
   align-items: center;
+  width: fit-content;
 `;
 
 const StyledTippy = styled(Tippy)`
