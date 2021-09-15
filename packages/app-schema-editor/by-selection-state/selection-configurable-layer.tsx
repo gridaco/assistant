@@ -17,6 +17,7 @@ import this_interface_builder from "./selection-configurable-layer.coli";
 import { tsNamer } from "../interface-code-builder/scoped-property-id-namer";
 import { CodeStyleWrapper } from "./_shared-components";
 import { ISingleLayerPropertyMapping } from "../types/single-layer-property-type";
+import styled from "@emotion/styled";
 
 export default function (props: { node: nodes.light.IReflectNodeReference }) {
   const { node } = props;
@@ -169,8 +170,17 @@ export default function (props: { node: nodes.light.IReflectNodeReference }) {
             ))}
           </>
         )}
-        <button onClick={handle_add_new_field}>add new</button>
+        <OptionalBtn onClick={handle_add_new_field}>add new</OptionalBtn>
       </div>
     </CodeStyleWrapper>
   );
 }
+const OptionalBtn = styled.button`
+  text-decoration: underline;
+  outline: none;
+  background: transparent;
+  color: #868686;
+  border: none;
+  cursor: pointer;
+  align-items: center;
+`;
