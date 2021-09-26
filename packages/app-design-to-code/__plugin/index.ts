@@ -43,7 +43,9 @@ async function _handle_code_gen_request(req: CodeGenRequest) {
 
     const hostingjob = async () => {
       // host images
-      const transportableImageAssetRepository = await repo_assets.MainImageRepository.instance.current.makeTransportable();
+      const transportableImageAssetRepository = await repo_assets.MainImageRepository.instance
+        .get("fill-later-assets")
+        .makeTransportable();
       figma.ui.postMessage({
         type: EK_IMAGE_ASSET_REPOSITORY_MAP,
         data: transportableImageAssetRepository,
