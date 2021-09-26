@@ -1,5 +1,5 @@
 import { SceneNode } from "@design-sdk/figma-types";
-import { ReflectSceneNode } from "@design-sdk/core/nodes";
+import { ReflectSceneNode } from "@design-sdk/figma-node";
 
 const RUNTIME_RAPID_SHORT_LIVED_CACHE_TIMEOUT_MS = 5 * 1000; // after 5 seconds, we'll assume the node is not available
 const RUNTIME_SHORT_LIVED_SAME_SELECTION_CACHE_TIMEOUT_MS = 2.5 * 1000;

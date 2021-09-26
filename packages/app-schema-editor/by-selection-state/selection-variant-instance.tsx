@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { nodes } from "@design-sdk/core";
+import * as nodes from "@design-sdk/figma-node";
 import {
   _FigmaVariantPropertyCompatType_to_string,
   VariantPropertyParser,
@@ -19,7 +19,7 @@ import { MappedPropertyStorage } from "../storage";
 import { ISingleLayerProperty } from "../types";
 import { SingleLayerPropertyDefinition } from "../components/single-property";
 
-export default function (props: { node: nodes.light.IReflectNodeReference }) {
+export default function (props: { node: nodes.IReflectNodeReference }) {
   const _format_interface_pascal = (n) => {
     return nameit(n + "-props", {
       case: NameCases.pascal,

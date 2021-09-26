@@ -1,7 +1,7 @@
 import { analyzeSelection, SelectionAnalysis } from "plugin-app/utils";
 import { convert } from "@design-sdk/figma";
 import { Logger } from "logger";
-import { light } from "@design-sdk/core/nodes";
+import { makeReference } from "@design-sdk/figma-node";
 import { runon } from "./runon";
 import { FigmaNodeCache } from "../node-cache";
 
@@ -45,7 +45,7 @@ export function onfigmaselectionchange() {
       // region sync selection event (search "selectionchange" for references)
       figma.ui.postMessage({
         type: "selectionchange",
-        data: rnodes.map((n) => light.makeReference(n)),
+        data: rnodes.map((n) => makeReference(n)),
       });
     // endregion
 
@@ -72,7 +72,7 @@ export function onfigmaselectionchange() {
 
       // region sync selection event (search "selectionchange" for references)
       try {
-        const data = light.makeReference(rnode);
+        const data = makeReference(rnode);
         figma.ui.postMessage({
           type: "selectionchange",
           data: data,

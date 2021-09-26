@@ -1,10 +1,10 @@
 import React from "react";
 import { CodeViewWithControl } from "@app/design-to-code/code-view-with-control";
-import { nodes } from "@design-sdk/core";
+import * as nodes from "@design-sdk/figma-node";
 import styled from "@emotion/styled";
 import Warning from "@assistant/icons/warning";
 
-export default function (props: { node: nodes.light.IReflectNodeReference }) {
+export default function (props: { node: nodes.IReflectNodeReference }) {
   return (
     <>
       <Wrapper>

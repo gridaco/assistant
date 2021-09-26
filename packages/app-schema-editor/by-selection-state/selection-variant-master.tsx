@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { nodes } from "@design-sdk/core";
+import * as nodes from "@design-sdk/figma-node";
 import {
   FigmaNumber,
   VariantProperty,
@@ -17,7 +17,7 @@ import { MappedPropertyStorage } from "../storage";
 import { CodeStyleWrapper } from "./_shared-components";
 import { SingleLayerPropertyDefinition } from "../components/single-property";
 
-export default function (props: { node: nodes.light.IReflectNodeReference }) {
+export default function (props: { node: nodes.IReflectNodeReference }) {
   const master = props.node;
   const [mappedProperties, setMappedProperties] = useState<
     ISingleLayerProperty[]
