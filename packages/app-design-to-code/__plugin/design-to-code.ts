@@ -1,4 +1,4 @@
-import type { ReflectSceneNode } from "@design-sdk/core/nodes";
+import type { ReflectSceneNode } from "@design-sdk/figma-node";
 import { flutter, react, token } from "@designto/code";
 
 interface GenerationResultToUI {

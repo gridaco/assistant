@@ -1,7 +1,9 @@
-import type { IReflectNodeReference } from "@design-sdk/core/nodes/lignt";
-import { ReflectSceneNodeType } from "@design-sdk/core/nodes";
+import {
+  ReflectSceneNodeType,
+  IReflectNodeReference,
+  IReflectNodeRootShapeReference,
+} from "@design-sdk/figma-node";
 import { PropertyAccessors } from "../types/single-layer-property-type";
-import { IReflectNodeRootShapeReference } from "@design-sdk/core/nodes/types/reflect-node-reference";
 
 type ConfigurableLayerContext =
   /**
