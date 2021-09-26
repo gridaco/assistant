@@ -2,10 +2,10 @@ import { Typography, CircularProgress, Fade } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import { EK_CURRENT_SELECTION_PREVIEW_SOURCE_CHANGED } from "@core/constant/ek.constant";
 import EmptyIndicatorIcon from "@assistant/icons/empty-indicator-icon";
-import "./preview.css";
+import "../preview.css";
 import { PluginSdk } from "@plugin-sdk/app";
 import { QuickImageExportPreset } from "@plugin-sdk/core";
-import { PreviewSessionCache } from "./cache";
+import { PreviewSessionCache } from "../cache";
 
 interface Props {
   auto?: boolean;
