@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { BlackButtonStyle } from "@ui/core/button-style";
 import { registerScene } from "@app/scene-view";
 import { PluginSdk } from "@plugin-sdk/app";
-import type { IReflectNodeReference } from "@design-sdk/core/nodes/lignt";
+import type { IReflectNodeReference } from "@design-sdk/figma-node";
 import { isAuthenticated } from "@assistant-fp/auth";
 import { useHistory } from "react-router-dom";
 

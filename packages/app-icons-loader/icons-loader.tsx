@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { icons } from "@base-sdk/resources";
-import { IconConfig } from "@reflect-ui/core/lib";
+import { NamedDefaultOssIconConfig } from "@reflect-ui/core";
 import Tooltip from "@material-ui/core/Tooltip";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
@@ -19,12 +19,18 @@ import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import styled from "@emotion/styled";
 
 // cached icons configs
-let CONFIGS: Map<string, IconConfig>;
+let CONFIGS: Map<string, NamedDefaultOssIconConfig>;
 export function IconsLoader() {
-  const [configs, setConfigs] = useState<Map<string, IconConfig>>(undefined);
+  const [configs, setConfigs] = useState<
+    Map<string, NamedDefaultOssIconConfig>
+  >(undefined);
   const [queryTerm, setQueryTerm] = useState<string>(undefined);
   const [iconLoadLimit, setIconLoadLimit] = useState(100);
-  const [iconProperty, setIconProperty] = useState<IconConfig>({
+  const [iconProperty, setIconProperty] = useState<{
+    default_size: string;
+    variant: string;
+    host: string;
+  }>({
     default_size: "size",
     variant: "variant",
     host: "material",
@@ -203,15 +209,15 @@ function IconSearch(props: {
 }
 
 function filterIcons(
-  configs: Map<string, IconConfig>,
+  configs: Map<string, NamedDefaultOssIconConfig>,
   options: {
     includes?: string;
   }
-): [string, IconConfig][] {
+): [string, NamedDefaultOssIconConfig][] {
   const keys = Object.keys(configs);
   const defaultIcons = keys
-    .map<[string, IconConfig]>((k) => {
-      const item = configs[k] as IconConfig;
+    .map<[string, NamedDefaultOssIconConfig]>((k) => {
+      const item = configs[k] as NamedDefaultOssIconConfig;
 
       if (options.includes) {
         if (k.includes(options.includes)) {
@@ -227,7 +233,7 @@ function filterIcons(
   return defaultIcons;
 }
 
-function IconList(props: { icons: [string, IconConfig][] }) {
+function IconList(props: { icons: [string, NamedDefaultOssIconConfig][] }) {
   const { icons } = props;
 
   return (
@@ -247,7 +253,7 @@ function IconList(props: { icons: [string, IconConfig][] }) {
   );
 }
 
-function IconItem(props: { name: string; config: IconConfig }) {
+function IconItem(props: { name: string; config: NamedDefaultOssIconConfig }) {
   const { name, config } = props;
   const [downloading, setDownloading] = useState<boolean>(false);
 
