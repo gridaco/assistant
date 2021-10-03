@@ -23,7 +23,7 @@ export function CodeScreenFooter(props: ICodeScreenFooter) {
     };
 
     setLoadingState(true);
-    preview("quicklook", props.app)
+    preview("quicklook", props.app.raw)
       .then((r) => {
         setLoadingState(false);
         PluginSdk.notify("quick look ready !");
