@@ -7,6 +7,9 @@ export const _APP_EVENT_CODE_GEN_RESULT_EK = "design-to-code-result";
 export interface CodeGenRequest {
   type: "code-gen-request";
   option: FrameworkOption;
+  config: {
+    do_generate_vanilla_preview_source: boolean;
+  };
 }
 
 export type _Code_Event = CodeGenRequest;

@@ -1,1 +1,1 @@
-export * from "./preview-static";
+export * from "./preview";

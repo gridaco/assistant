@@ -8,7 +8,11 @@ import {
   _APP_EVENT_CODE_GEN_RESULT_EK,
   CodeGenRequest,
 } from "./events";
-import { designToFlutter, designToReact } from "./design-to-code";
+import {
+  designToFlutter,
+  designToReact,
+  designToVanilla,
+} from "./design-to-code";
 import { FigmaNodeCache } from "figma-core/node-cache";
 import { Framework } from "@grida/builder-platform-types";
 import { repo_assets } from "@design-sdk/core";
@@ -52,28 +56,38 @@ async function _handle_code_gen_request(req: CodeGenRequest) {
       });
     };
 
-    //@ts-ignore
+    // generate vanilla preview source ------------------
+    let vanilla_preview_source;
+    if (req.config.do_generate_vanilla_preview_source) {
+      const vanilla_res = await designToVanilla(rnode);
+      vanilla_preview_source = vanilla_res.scaffold.raw;
+    }
+    // --------------------------------------------------
+
     if (codePlatform == "flutter") {
       const flutterBuild = await designToFlutter(rnode, hostingjob);
-      figma.ui.postMessage({
-        type: EK_GENERATED_CODE_PLAIN,
-        data: {
-          code: flutterBuild.code,
-          app: flutterBuild.scaffold,
-        },
+      post_cb({
+        code: flutterBuild.code,
+        app: flutterBuild.scaffold,
+        vanilla_preview_source: vanilla_preview_source,
       });
     } else if (codePlatform == "react") {
       const reactBuild = await designToReact(rnode);
-      figma.ui.postMessage({
-        type: EK_GENERATED_CODE_PLAIN,
-        data: {
-          code: reactBuild.code,
-          app: reactBuild.scaffold,
-        },
+      post_cb({
+        code: reactBuild.code,
+        app: reactBuild.scaffold,
+        vanilla_preview_source: vanilla_preview_source,
       });
     }
   } else {
     console.warn("user requested linting, but non selected to run lint on.");
   }
   //#endregion
+}
+
+function post_cb(data: { code; app; vanilla_preview_source }) {
+  figma.ui.postMessage({
+    type: EK_GENERATED_CODE_PLAIN,
+    data: data,
+  });
 }

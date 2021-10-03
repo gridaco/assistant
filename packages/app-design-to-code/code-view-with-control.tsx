@@ -32,7 +32,11 @@ export function CodeViewWithControl({
   targetid: string;
   editor?: "monaco" | "prism";
   onUserOptionsChange?: (options: DesigntoCodeUserOptions) => void;
-  onGeneration?: (app: string, src: string) => void;
+  onGeneration?: (
+    app: string,
+    src: string,
+    vanilla_preview_source?: string
+  ) => void;
   customMessages?: string[];
   automaticRemoteFormatting?: boolean;
   disabled?: true;
@@ -63,6 +67,9 @@ export function CodeViewWithControl({
       fromApp({
         type: "code-gen-request",
         option: useroption,
+        config: {
+          do_generate_vanilla_preview_source: true,
+        },
       });
     }
   }, [useroption.framework, targetid]);
@@ -93,25 +100,27 @@ export function CodeViewWithControl({
     setUseroption(op);
   };
 
-  const __onGeneration__cb = (app, src) => {
+  const __onGeneration__cb = (app, src, vanilla_preview_source) => {
     cacheStore.setCache(src);
     const _source = typeof src == "string" ? source : src?.raw;
-    onGeneration?.(app, _source);
+    onGeneration?.(app, _source, vanilla_preview_source);
   };
 
   const handleSourceInput = ({
     app,
     code,
+    vanilla_preview_source,
   }: {
     app: string;
     code: SourceInput;
+    vanilla_preview_source?: string;
   }) => {
     format(
       app,
       useroption.language,
       (s) => {
         setApp(s);
-        __onGeneration__cb(s, source);
+        __onGeneration__cb(s, source, vanilla_preview_source);
       },
       {
         disable_remote_format: !automaticRemoteFormatting,
@@ -125,7 +134,7 @@ export function CodeViewWithControl({
       useroption.language,
       (s) => {
         setSource(s);
-        __onGeneration__cb(app, s);
+        __onGeneration__cb(app, s, vanilla_preview_source);
       },
       {
         disable_remote_format: !automaticRemoteFormatting,
@@ -141,6 +150,7 @@ export function CodeViewWithControl({
           handleSourceInput({
             app: msg.data.app,
             code: msg.data.code,
+            vanilla_preview_source: msg.data.vanilla_preview_source,
           });
           // analytics
           analytics.event_selection_to_code({

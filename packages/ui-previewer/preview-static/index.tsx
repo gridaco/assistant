@@ -1,23 +1,13 @@
-import { Typography, CircularProgress, Fade } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import { EK_CURRENT_SELECTION_PREVIEW_SOURCE_CHANGED } from "@core/constant/ek.constant";
-import EmptyIndicatorIcon from "@assistant/icons/empty-indicator-icon";
-import "../preview.css";
 import { PluginSdk } from "@plugin-sdk/app";
 import { QuickImageExportPreset } from "@plugin-sdk/core";
 import { PreviewSessionCache } from "../cache";
 
-interface Props {
-  auto?: boolean;
+export interface StaticPreviewProps {
+  type: "static";
   data?: Uint8Array;
-  empty?: JSX.Element;
   name?: string;
-  /**
-   * the background color
-   * @deprecated not implemented
-   */
-  background?: string;
-  type?: string;
   /**
    * show image of.
    */
@@ -25,7 +15,7 @@ interface Props {
   fetchingConfig?: QuickImageExportPreset;
 }
 
-export function Preview(props: Props) {
+export function StaticPreview(props: StaticPreviewProps) {
   const [data, setData] = useState(props.data);
   const [name, setName] = useState(props.name);
 
@@ -40,7 +30,7 @@ export function Preview(props: Props) {
   };
 
   useEffect(() => {
-    if (props.auto) {
+    if (!props.of) {
       window.addEventListener(
         "message",
         preview_selection_change_broadcast_event_listener
@@ -51,9 +41,7 @@ export function Preview(props: Props) {
           preview_selection_change_broadcast_event_listener
         );
       };
-    }
-
-    if (props.of) {
+    } else {
       const cachestore = new PreviewSessionCache(
         props.of,
         props.fetchingConfig
@@ -81,7 +69,7 @@ export function Preview(props: Props) {
     }
   }
 
-  let render = data ? (
+  return (
     <img
       className="render"
       alt={name}
@@ -89,29 +77,5 @@ export function Preview(props: Props) {
       width="100%"
       height="200px"
     />
-  ) : (
-    <div className="render">
-      <div className="inner-render">
-        {props.auto && (
-          <>
-            {props.empty || (
-              <>
-                <EmptyIndicatorIcon />
-                <Typography className="rendering-notify">
-                  Nothing is selected
-                </Typography>
-              </>
-            )}
-          </>
-        )}
-      </div>
-    </div>
-  );
-
-  return (
-    <div className="preview">
-      <Typography variant="caption">{props.type}</Typography>
-      {render}
-    </div>
   );
 }

@@ -15,6 +15,10 @@ import { CodeViewWithControl } from "./code-view-with-control";
 export function CodeScreen() {
   const selection = useSingleSelection();
 
+  const [
+    vanilla_preview_source,
+    set_vanilla_preview_source,
+  ] = useState<string>();
   const [source, setSource] = useState<string>();
   const [app, setApp] = useState<string>();
   const [useroption, setUseroption] = useState<DesigntoCodeUserOptions>();
@@ -47,7 +51,7 @@ export function CodeScreen() {
 
   return (
     <div>
-      <Preview auto />
+      <Preview auto type="responsive" data={vanilla_preview_source} />
 
       {/* FIXME: add onCopyClicked to code-box */}
       <CopyCodeButton onClick={onCopyClicked}>
@@ -66,9 +70,10 @@ export function CodeScreen() {
       </CopyCodeButton>
       <CodeViewWithControl
         targetid={selection?.id}
-        onGeneration={(app, src) => {
+        onGeneration={(app, src, vanilla_preview_source) => {
           setApp(app);
           setSource(src);
+          set_vanilla_preview_source(vanilla_preview_source);
         }}
         onUserOptionsChange={setUseroption}
       />
