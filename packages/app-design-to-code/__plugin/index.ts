@@ -45,27 +45,44 @@ async function _handle_code_gen_request(req: CodeGenRequest) {
       throw `unrecognized user_interest givven "${req.option.framework}"`;
     })();
 
-    const hostingjob = async () => {
+    const asset_export_job = async (
+      mode: /**
+       * full fetch
+       */
+      | "full"
+        /**
+         * preview fetch - as the actual size.
+         */
+        | "preview-only" = "full"
+    ): Promise<repo_assets.TransportableImageRepository> => {
+      const transportable_config_map = {
+        full: undefined,
+        "preview-only": "original",
+      };
+      const transportable_config = { type: transportable_config_map[mode] };
       // host images
       const transportableImageAssetRepository = await repo_assets.MainImageRepository.instance
         .get("fill-later-assets")
-        .makeTransportable();
+        .makeTransportable(transportable_config);
       figma.ui.postMessage({
         type: EK_IMAGE_ASSET_REPOSITORY_MAP,
         data: transportableImageAssetRepository,
       });
+      return transportableImageAssetRepository;
     };
 
     // generate vanilla preview source ------------------
     let vanilla_preview_source;
     if (req.config.do_generate_vanilla_preview_source) {
-      const vanilla_res = await designToVanilla(rnode);
+      const vanilla_res = await designToVanilla(rnode, () => {
+        return asset_export_job("preview-only");
+      });
       vanilla_preview_source = vanilla_res.scaffold.raw;
     }
     // --------------------------------------------------
 
     if (codePlatform == "flutter") {
-      const flutterBuild = await designToFlutter(rnode, hostingjob);
+      const flutterBuild = await designToFlutter(rnode, asset_export_job);
       post_cb({
         code: flutterBuild.code,
         app: flutterBuild.scaffold,

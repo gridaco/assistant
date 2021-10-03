@@ -11,6 +11,13 @@ import { CodeScreenFooter } from "./footer-action/code-screen-footer";
 
 import { useSingleSelection } from "plugin-app";
 import { CodeViewWithControl } from "./code-view-with-control";
+import { finalize_temporary_assets_with_prefixed_static_string_keys__dangerously } from "@code-features/assets";
+import { repo_assets } from "@design-sdk/core";
+import { k } from "@web-builder/core";
+import {
+  ImageRepository,
+  ImageHostingRepository,
+} from "@design-sdk/core/assets-repository";
 
 export function CodeScreen() {
   const selection = useSingleSelection();
@@ -22,22 +29,6 @@ export function CodeScreen() {
   const [source, setSource] = useState<string>();
   const [app, setApp] = useState<string>();
   const [useroption, setUseroption] = useState<DesigntoCodeUserOptions>();
-  // const _make_placeholder = () => {
-  //   return make_empty_selection_state_text_content("empty");
-  // };
-
-  // const _make_source = (): SourceInput => {
-  //   if (typeof source == "string") {
-  //     if (source && source.length > 0) {
-  //       return source;
-  //     }
-  //   } else {
-  //     if (source && source.raw.length > 0) {
-  //       return source;
-  //     }
-  //   }
-  //   return _make_placeholder();
-  // };
 
   const onCopyClicked = (e) => {
     // const _code: SourceInput = _make_source();
@@ -49,9 +40,21 @@ export function CodeScreen() {
     analytics.event_click_copy_code();
   };
 
+  const handle_vanilla_preview_source = (
+    v: string,
+    r?: repo_assets.TransportableImageRepository
+  ) => {
+    set_vanilla_preview_source(inject_assets_source_to_vanilla(v, r));
+  };
+
   return (
     <div>
-      <Preview auto type="responsive" data={vanilla_preview_source} />
+      <Preview
+        key={vanilla_preview_source}
+        auto
+        type="responsive"
+        data={vanilla_preview_source}
+      />
 
       {/* FIXME: add onCopyClicked to code-box */}
       <CopyCodeButton onClick={onCopyClicked}>
@@ -69,11 +72,15 @@ export function CodeScreen() {
         </svg>
       </CopyCodeButton>
       <CodeViewWithControl
+        key={selection?.id}
         targetid={selection?.id}
         onGeneration={(app, src, vanilla_preview_source) => {
           setApp(app);
           setSource(src);
-          set_vanilla_preview_source(vanilla_preview_source);
+          handle_vanilla_preview_source(vanilla_preview_source);
+        }}
+        onAssetsLoad={(r) => {
+          handle_vanilla_preview_source(vanilla_preview_source, r);
         }}
         onUserOptionsChange={setUseroption}
       />
@@ -85,6 +92,37 @@ export function CodeScreen() {
       />
     </div>
   );
+}
+
+function inject_assets_source_to_vanilla(
+  rawsrc: string,
+  repo?: repo_assets.TransportableImageRepository
+) {
+  repo = repo || ImageHostingRepository.imageRepostory;
+  if (!rawsrc || !repo) {
+    return rawsrc;
+  }
+
+  const images = repo.images;
+  const default_asset_replacement_prefix = "grida://assets-reservation/images/";
+  const data_to_blob = (d) => {
+    const b = new Blob([d], { type: "image/png" });
+    return URL.createObjectURL(b);
+  };
+
+  const map = Object.fromEntries(
+    images.map((i) => [i.key, data_to_blob(i.data)]) ?? []
+  );
+
+  const _final = finalize_temporary_assets_with_prefixed_static_string_keys__dangerously(
+    rawsrc,
+    default_asset_replacement_prefix,
+    map,
+    {
+      fallback: k.image_smallest_fallback_source_base_64,
+    }
+  );
+  return _final;
 }
 
 const CopyCodeButton = styled.div`

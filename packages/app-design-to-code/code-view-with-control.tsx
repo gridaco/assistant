@@ -25,6 +25,7 @@ export function CodeViewWithControl({
   onUserOptionsChange,
   disabled,
   onGeneration,
+  onAssetsLoad,
   customMessages,
   automaticRemoteFormatting = false,
   cachedOnly = false,
@@ -37,6 +38,7 @@ export function CodeViewWithControl({
     src: string,
     vanilla_preview_source?: string
   ) => void;
+  onAssetsLoad?: (r: repo_assets.TransportableImageRepository) => void;
   customMessages?: string[];
   automaticRemoteFormatting?: boolean;
   disabled?: true;
@@ -161,6 +163,7 @@ export function CodeViewWithControl({
         case EK_IMAGE_ASSET_REPOSITORY_MAP:
           const imageRepo = msg.data as repo_assets.TransportableImageRepository;
           repo_assets.ImageHostingRepository.setRepository(imageRepo);
+          onAssetsLoad?.(imageRepo);
           break;
       }
     } else {

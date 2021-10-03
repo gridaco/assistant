@@ -1,3 +1,4 @@
+import { repo_assets } from "@design-sdk/core";
 import {
   ImageRepository,
   MainImageRepository,
@@ -6,12 +7,6 @@ import type { ReflectSceneNode } from "@design-sdk/figma-node";
 import { ImageRepositories } from "@design-sdk/figma/asset-repository";
 import { flutter, react, token, vanilla } from "@designto/code";
 import { output, react as react_config } from "@designto/config";
-
-// interface GenerationResultToUI {
-//   tokens?: any;
-//   widget: any;
-//   app: any;
-// }
 
 type O = output.ComponentOutput;
 
@@ -28,7 +23,9 @@ function setup_image_repository() {
   // ------------------------------------------------------------
 }
 
-type InterceptorJobProcessor = () => Promise<void>;
+type InterceptorJobProcessor = () => Promise<any>;
+type InterceptorAssetRepositoryJobProcessor = () => Promise<repo_assets.TransportableImageRepository>;
+
 export async function designToFlutter(
   reflectDesign: ReflectSceneNode,
   jobs: InterceptorJobProcessor
@@ -45,7 +42,8 @@ export async function designToFlutter(
 }
 
 export async function designToReact(
-  reflectDesign: ReflectSceneNode
+  reflectDesign: ReflectSceneNode,
+  jobs?: InterceptorJobProcessor
 ): Promise<O> {
   setup_image_repository();
   const tokens = token.tokenize(reflectDesign);
@@ -60,13 +58,15 @@ export async function designToReact(
 }
 
 export async function designToVanilla(
-  reflectDesign: ReflectSceneNode
+  reflectDesign: ReflectSceneNode,
+  jobs?: InterceptorAssetRepositoryJobProcessor
 ): Promise<O> {
   setup_image_repository();
   const tokens = token.tokenize(reflectDesign);
   const widget = vanilla.buildVanillaWidget(tokens);
   const app = vanilla.buildVanillaFile(widget);
-  await Promise.resolve();
+  await jobs?.();
+
   return app;
 }
 
