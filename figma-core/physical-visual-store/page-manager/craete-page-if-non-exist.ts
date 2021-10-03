@@ -1,5 +1,6 @@
 import { creaateReadme } from "./create-readme";
-import { converters, FigmaColorFormat } from "@design-sdk/figma";
+import { FigmaColorFormat } from "@design-sdk/figma";
+import { reflectColorToFigmaColor } from "@design-sdk/figma-node-conversion";
 
 /**
  * the empty space is for hiding following text from figma's page hierarchy.
@@ -22,10 +23,7 @@ export function createPrimaryVisualStorePageIfNonExists() {
     page.backgrounds = [
       <SolidPaint>{
         type: "SOLID",
-        color: converters.reflectColorToFigmaColor(
-          "#1E1E1E",
-          FigmaColorFormat.rgb
-        ),
+        color: reflectColorToFigmaColor("#1E1E1E", FigmaColorFormat.rgb),
       },
     ];
 

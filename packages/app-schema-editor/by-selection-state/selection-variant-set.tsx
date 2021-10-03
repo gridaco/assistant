@@ -1,9 +1,9 @@
 import React from "react";
-import { nodes } from "@design-sdk/core";
+import * as nodes from "@design-sdk/figma-node";
 
 export default function (props: {
-  node?: nodes.light.IReflectNodeReference;
-  defaultComponent?: nodes.light.IReflectNodeReference;
+  node?: nodes.IReflectNodeReference;
+  defaultComponent?: nodes.IReflectNodeReference;
 }) {
   // TODO
   return (

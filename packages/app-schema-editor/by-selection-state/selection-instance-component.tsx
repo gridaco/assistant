@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { nodes } from "@design-sdk/core";
+import * as nodes from "@design-sdk/figma-node";
 import { ISingleLayerProperty } from "../types";
 import { NameCases, nameit } from "@coli.codes/naming";
 import { MappedPropertyStorage } from "../storage";
@@ -11,7 +11,7 @@ import { stringfy } from "coli";
 import { CodeStyleWrapper } from "./_shared-components";
 import { SingleLayerPropertyDefinition } from "../components/single-property";
 
-export default function (props: { node: nodes.light.IReflectNodeReference }) {
+export default function (props: { node: nodes.IReflectNodeReference }) {
   const [properties, setProperties] = useState<ISingleLayerProperty[]>([]);
 
   const master = props.node.mainComponent;

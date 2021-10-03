@@ -5,7 +5,7 @@ import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import { PluginSdk } from "@plugin-sdk/app";
 import { preview } from "@app/scene-view";
 import { NextUploadButton } from "./next-upload-button";
-import type { ReflectSceneNode } from "@design-sdk/core/nodes";
+import type { ReflectSceneNode } from "@design-sdk/figma-node";
 import { Framework } from "@grida/builder-platform-types";
 
 interface ICodeScreenFooter {
@@ -23,7 +23,7 @@ export function CodeScreenFooter(props: ICodeScreenFooter) {
     };
 
     setLoadingState(true);
-    preview("quicklook", props.app)
+    preview("quicklook", props.app.raw)
       .then((r) => {
         setLoadingState(false);
         PluginSdk.notify("quick look ready !");

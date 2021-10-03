@@ -36,7 +36,7 @@ import {
   target_platform,
   TargetPlatform,
 } from "@plugin-sdk/core";
-import type { ReflectSceneNode } from "@design-sdk/core/nodes";
+import type { ReflectSceneNode } from "@design-sdk/figma-node";
 import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "@core/constant";
 
 import { _SharedStorageCache } from "./_shared-storage-cache";

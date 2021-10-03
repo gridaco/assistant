@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { SingleLayerPropertyDefinition } from "../components/single-property";
 import { ISingleLayerProperty, IProperties } from "../types";
-import { nodes } from "@design-sdk/core";
+import * as nodes from "@design-sdk/figma-node";
 import { _FigmaVariantPropertyCompatType_to_string } from "@design-sdk/figma/features/variant";
 import { nameit, NameCases } from "@coli.codes/naming";
 import { CodeBox } from "@ui/codebox";
@@ -19,7 +19,7 @@ import { CodeStyleWrapper } from "./_shared-components";
 import { ISingleLayerPropertyMapping } from "../types/single-layer-property-type";
 import styled from "@emotion/styled";
 
-export default function (props: { node: nodes.light.IReflectNodeReference }) {
+export default function (props: { node: nodes.IReflectNodeReference }) {
   const { node } = props;
 
   const [localProperties, setLocalProperties] = useState<IProperties>([]);

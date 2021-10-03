@@ -12,7 +12,7 @@ export function PropertyFieldDocuemntationHoverCard(props: {
       contents={[
         <Wrapper>
           <PreviewWrap>
-            <Preview of={props.layer} />
+            <Preview type="static" of={props.layer} />
           </PreviewWrap>
           <Contents>
             {props.layer}

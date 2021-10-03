@@ -3,7 +3,7 @@
 
 // TOOD - make it universal
 import { keyAnnotations, Figma } from "@design-sdk/figma";
-import type { IReflectNodeReference } from "@design-sdk/core/nodes/lignt";
+import type { IReflectNodeReference } from "@design-sdk/figma-node";
 
 /**
  * currently only root level text are supported for data source node.

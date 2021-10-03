@@ -1,5 +1,5 @@
 import { NameCases, ScopedVariableNamer } from "@coli.codes/naming";
-import { IReflectNodeReference } from "@design-sdk/core/nodes/lignt";
+import { IReflectNodeReference } from "@design-sdk/figma-node";
 import { variant } from "@design-sdk/figma/features";
 import {
   FigmaBoolean,

@@ -42,7 +42,7 @@ export function UploadSteps() {
 
   return (
     <>
-      <Preview auto />
+      <Preview type="static" auto />
       {isLoading && <AnimatedProgressBar contorl={animateHandle} />}
       <InnerWrapper variants={fieldVariants} animate="make-active">
         {isLoading ? (

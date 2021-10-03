@@ -56,7 +56,7 @@ export function ComponentViewScreen() {
 
   return (
     <div>
-      <Preview auto />
+      <Preview type="static" auto />
 
       {/* {selection ? (
         <form key={JSON.stringify(data)}>
