@@ -33,7 +33,7 @@ export function MonacoEditor(props: { src: string; language: string }) {
         loading={<></>} // TODO: add loading state.
         theme="vs-dark"
         height="100%"
-        defaultLanguage={props.language}
+        defaultLanguage={monacolanguage(props.language)}
         defaultValue={props.src}
         value={props.src}
         options={{
@@ -66,4 +66,22 @@ export function MonacoEditor(props: { src: string; language: string }) {
       />
     </>
   );
+}
+
+function monacolanguage(lang: string) {
+  switch (lang) {
+    case "js":
+    case "jsx":
+    case "tsx":
+    case "ts":
+    case "javascript":
+    case "typescript":
+      return "typescript";
+    case "dart":
+      return "dart";
+    case "html":
+      return "html";
+    default:
+      return "typescript";
+  }
 }

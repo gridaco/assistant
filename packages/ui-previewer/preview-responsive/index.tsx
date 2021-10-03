@@ -1,3 +1,4 @@
+import styled from "@emotion/styled";
 import React from "react";
 
 export interface ResponsivePreviewProps {
@@ -15,7 +16,18 @@ export interface ResponsivePreviewProps {
 export function ResponsivePreview(props: ResponsivePreviewProps) {
   return (
     <>
-      <iframe sandbox="allow-same-origin" srcDoc={props.data} />
+      <PlainIframe
+        width="100%"
+        height="100%"
+        sandbox="allow-same-origin"
+        srcDoc={props.data}
+      />
     </>
   );
 }
+
+const PlainIframe = styled.iframe`
+  background: none;
+  outline: none;
+  border: none;
+`;
