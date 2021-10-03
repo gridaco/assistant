@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import Editor, { DiffEditor, useMonaco, loader } from "@monaco-editor/react";
 
+// TODO: add auto sizing - https://github.com/microsoft/monaco-editor/issues/794#issuecomment-688959283
 export function MonacoEditor(props: { src: string; language: string }) {
   const monaco = useMonaco();
 
@@ -34,8 +35,8 @@ export function MonacoEditor(props: { src: string; language: string }) {
         theme="vs-dark"
         height="100%"
         defaultLanguage={monacolanguage(props.language)}
-        defaultValue={props.src}
-        value={props.src}
+        defaultValue={extended_value(props.src)}
+        value={extended_value(props.src)}
         options={{
           fontFamily: `Menlo, Monaco, 'Courier New', monospace`,
           fontSize: 14,
@@ -84,4 +85,8 @@ function monacolanguage(lang: string) {
     default:
       return "typescript";
   }
+}
+
+function extended_value(value: string) {
+  return value + "\n".repeat(10);
 }
