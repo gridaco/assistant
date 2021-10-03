@@ -58,17 +58,17 @@ async function _handle_code_gen_request(req: CodeGenRequest) {
       figma.ui.postMessage({
         type: EK_GENERATED_CODE_PLAIN,
         data: {
-          code: flutterBuild.widget.build().finalize(),
-          app: flutterBuild.app.build().finalize(),
+          code: flutterBuild.code,
+          app: flutterBuild.scaffold,
         },
       });
     } else if (codePlatform == "react") {
-      const reactBuild = designToReact(rnode);
+      const reactBuild = await designToReact(rnode);
       figma.ui.postMessage({
         type: EK_GENERATED_CODE_PLAIN,
         data: {
-          code: reactBuild.app,
-          app: reactBuild.app,
+          code: reactBuild.code,
+          app: reactBuild.scaffold,
         },
       });
     }

@@ -99,7 +99,7 @@ const withTM = require("next-transpile-modules")([
   // -----------------------------
   // region builders - part of designto-code / coli
   // region flutter builder
-  "@bridged.xyz/flutter-builder",
+  "@flutter-builder/flutter",
   // endregion flutter builder
 
   // region web builders

@@ -1558,14 +1558,6 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@bridged.xyz/flutter-builder@^1.23.0-7.0.pre.42":
-  version "1.23.0-8.0.pre.42"
-  resolved "https://registry.yarnpkg.com/@bridged.xyz/flutter-builder/-/flutter-builder-1.23.0-8.0.pre.42.tgz#a8b578056198080681803958ccd9be25ff3444fa"
-  integrity sha512-3sxO7EFeMgeGQylM0r6HjebncDrDD/M+Xfk32Rf9e6L3z1ycxFYPIwUPMcT7j6XOyVQID+CmwMGfTg4B6B/9JQ==
-  dependencies:
-    "@abraham/reflection" "^0.8.0"
-    dart-style "^1.3.2-dev"
-
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"
@@ -2086,6 +2078,14 @@
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.4.0.tgz#becce788818d3f47f0ac1a74c3c061ac1dcf4f6d"
   integrity sha512-8cUA/mg0S+BxIZ72TdZRsXKBP5n5uRcE3k29TZhZw6oIiHBt9JA7CTb/4pE1uKtE/q5NeTY2tBDcagoZ+1zjXQ==
+
+"@flutter-builder/flutter@^2.5.0-f4":
+  version "2.5.0-f5"
+  resolved "https://registry.yarnpkg.com/@flutter-builder/flutter/-/flutter-2.5.0-f5.tgz#a0bd7a08ce5fede37d1321234bdca2275f21eb6b"
+  integrity sha512-PSZzzKMfILttfOh6/btrOUD+d73mmfjoB2kg3VRmnWUufevH8wGkd+4UQv4d0ShCu/uN15ak9GmA26P87zDjHw==
+  dependencies:
+    "@abraham/reflection" "^0.8.0"
+    dart-style "^1.3.2-dev"
 
 "@gar/promisify@^1.0.1":
   version "1.1.2"
