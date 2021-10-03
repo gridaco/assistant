@@ -8,7 +8,11 @@ import {
   _APP_EVENT_CODE_GEN_RESULT_EK,
   CodeGenRequest,
 } from "./events";
-import { designToFlutter, designToReact } from "./design-to-code";
+import {
+  designToFlutter,
+  designToReact,
+  designToVanilla,
+} from "./design-to-code";
 import { FigmaNodeCache } from "figma-core/node-cache";
 import { Framework } from "@grida/builder-platform-types";
 import { repo_assets } from "@design-sdk/core";
@@ -41,39 +45,66 @@ async function _handle_code_gen_request(req: CodeGenRequest) {
       throw `unrecognized user_interest givven "${req.option.framework}"`;
     })();
 
-    const hostingjob = async () => {
+    const asset_export_job = async (
+      mode: /**
+       * full fetch
+       */
+      | "full"
+        /**
+         * preview fetch - as the actual size.
+         */
+        | "preview-only" = "full"
+    ): Promise<repo_assets.TransportableImageRepository> => {
+      const transportable_config_map = {
+        full: undefined,
+        "preview-only": "original",
+      };
+      const transportable_config = { type: transportable_config_map[mode] };
       // host images
       const transportableImageAssetRepository = await repo_assets.MainImageRepository.instance
         .get("fill-later-assets")
-        .makeTransportable();
+        .makeTransportable(transportable_config);
       figma.ui.postMessage({
         type: EK_IMAGE_ASSET_REPOSITORY_MAP,
         data: transportableImageAssetRepository,
       });
+      return transportableImageAssetRepository;
     };
 
-    //@ts-ignore
+    // generate vanilla preview source ------------------
+    let vanilla_preview_source;
+    if (req.config.do_generate_vanilla_preview_source) {
+      const vanilla_res = await designToVanilla(rnode, () => {
+        return asset_export_job("preview-only");
+      });
+      vanilla_preview_source = vanilla_res.scaffold.raw;
+    }
+    // --------------------------------------------------
+
     if (codePlatform == "flutter") {
-      const flutterBuild = await designToFlutter(rnode, hostingjob);
-      figma.ui.postMessage({
-        type: EK_GENERATED_CODE_PLAIN,
-        data: {
-          code: flutterBuild.widget.build().finalize(),
-          app: flutterBuild.app.build().finalize(),
-        },
+      const flutterBuild = await designToFlutter(rnode, asset_export_job);
+      post_cb({
+        code: flutterBuild.code,
+        app: flutterBuild.scaffold,
+        vanilla_preview_source: vanilla_preview_source,
       });
     } else if (codePlatform == "react") {
-      const reactBuild = designToReact(rnode);
-      figma.ui.postMessage({
-        type: EK_GENERATED_CODE_PLAIN,
-        data: {
-          code: reactBuild.app,
-          app: reactBuild.app,
-        },
+      const reactBuild = await designToReact(rnode);
+      post_cb({
+        code: reactBuild.code,
+        app: reactBuild.scaffold,
+        vanilla_preview_source: vanilla_preview_source,
       });
     }
   } else {
     console.warn("user requested linting, but non selected to run lint on.");
   }
   //#endregion
+}
+
+function post_cb(data: { code; app; vanilla_preview_source }) {
+  figma.ui.postMessage({
+    type: EK_GENERATED_CODE_PLAIN,
+    data: data,
+  });
 }

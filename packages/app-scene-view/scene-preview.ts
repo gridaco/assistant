@@ -1,4 +1,4 @@
-import { Widget } from "@bridged.xyz/flutter-builder";
+import { Widget } from "@flutter-builder/flutter";
 import { features } from "@base-sdk/base";
 import { wrap_with_hosting__flutter } from "./_wrapping-for-hosting";
 export async function preview(id: string, app: Widget | string) {

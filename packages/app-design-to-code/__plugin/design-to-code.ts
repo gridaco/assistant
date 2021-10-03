@@ -1,16 +1,14 @@
+import { repo_assets } from "@design-sdk/core";
 import {
   ImageRepository,
   MainImageRepository,
 } from "@design-sdk/core/assets-repository";
 import type { ReflectSceneNode } from "@design-sdk/figma-node";
 import { ImageRepositories } from "@design-sdk/figma/asset-repository";
-import { flutter, react, token } from "@designto/code";
+import { flutter, react, token, vanilla } from "@designto/code";
+import { output, react as react_config } from "@designto/config";
 
-interface GenerationResultToUI {
-  tokens?: any;
-  widget: any;
-  app: any;
-}
+type O = output.ComponentOutput;
 
 function setup_image_repository() {
   // ------------------------------------------------------------
@@ -25,31 +23,28 @@ function setup_image_repository() {
   // ------------------------------------------------------------
 }
 
-type InterceptorJobProcessor = () => Promise<void>;
+type InterceptorJobProcessor = () => Promise<any>;
+type InterceptorAssetRepositoryJobProcessor = () => Promise<repo_assets.TransportableImageRepository>;
+
 export async function designToFlutter(
   reflectDesign: ReflectSceneNode,
   jobs: InterceptorJobProcessor
-) {
+): Promise<O> {
   setup_image_repository();
-  const buildResult = flutter.buildApp(reflectDesign);
-
+  const tokens = token.tokenize(reflectDesign);
+  const widget = flutter.buildFlutterWidget(tokens);
+  const app = flutter.buildFlutterApp(widget);
   // execution order matters.
   // this will be fixed by having a builder instance. (currently non available)
   await jobs();
 
-  const widget = buildResult.widget;
-  const app = flutter.makeApp({
-    widget: widget,
-    scrollable: buildResult.scrollable,
-  });
-
-  return <GenerationResultToUI>{
-    widget: widget,
-    app: app,
-  };
+  return app;
 }
 
-export function designToReact(reflectDesign: ReflectSceneNode) {
+export async function designToReact(
+  reflectDesign: ReflectSceneNode,
+  jobs?: InterceptorJobProcessor
+): Promise<O> {
   setup_image_repository();
   const tokens = token.tokenize(reflectDesign);
   const widget = react.buildReactWidget(tokens);
@@ -57,11 +52,22 @@ export function designToReact(reflectDesign: ReflectSceneNode) {
     template: "cra",
   });
 
-  return <GenerationResultToUI>{
-    tokens: tokens,
-    widget: widget,
-    app: app.code,
-  };
+  await Promise.resolve();
+
+  return app;
+}
+
+export async function designToVanilla(
+  reflectDesign: ReflectSceneNode,
+  jobs?: InterceptorAssetRepositoryJobProcessor
+): Promise<O> {
+  setup_image_repository();
+  const tokens = token.tokenize(reflectDesign);
+  const widget = vanilla.buildVanillaWidget(tokens);
+  const app = vanilla.buildVanillaFile(widget);
+  await jobs?.();
+
+  return app;
 }
 
 export function designToCode() {
