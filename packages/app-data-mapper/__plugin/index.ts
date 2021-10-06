@@ -1,4 +1,4 @@
-import { utils, keyAnnotations } from "@design-sdk/core";
+import { utils, flags } from "@design-sdk/core";
 import { variant } from "@design-sdk/figma/features";
 import { Figma } from "@design-sdk/figma";
 import { PluginSdk } from "@plugin-sdk/app";
@@ -103,15 +103,16 @@ function mapDataToSelection(selection: Figma.SceneNode, data: DataSchema) {
 
       // handle non componentized layers
       // check loosen name checking
-      if (propertyName == keyAnnotations.utils.normalizedName(c.name)) {
-        if (c.type == "TEXT") {
-          mapText(c, propertyValue);
-        } else {
-          console.warn(
-            `the type ${c.type} from "${c.name}", child of "${c.parent.name}" cannot be handled from data mapper`
-          );
-        }
-      }
+      // FIXME: temporarilly disabled.
+      // if (propertyName == assert - plus.utils.normalizedName(c.name)) {
+      //   if (c.type == "TEXT") {
+      //     mapText(c, propertyValue);
+      //   } else {
+      //     console.warn(
+      //       `the type ${c.type} from "${c.name}", child of "${c.parent.name}" cannot be handled from data mapper`
+      //     );
+      //   }
+      // }
     }
   });
 }

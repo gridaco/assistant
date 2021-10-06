@@ -55,11 +55,12 @@ const withTM = require("next-transpile-modules")([
   "@designto/react",
 
   "@code-features/assets",
+  "@code-features/flags",
   // -----------------------------
 
   // -----------------------------
   // design-sdk
-  "@design-sdk/key-annotations",
+  "@design-sdk/flags",
   "@design-sdk/core",
   "@design-sdk/core-types",
   "@design-sdk/universal",
