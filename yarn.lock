@@ -2456,10 +2456,10 @@
     prop-types "^15.6.1"
     react-lifecycles-compat "^3.0.4"
 
-"@reflect-ui/core@0.0.2-rc.7":
-  version "0.0.2-rc.7"
-  resolved "https://registry.yarnpkg.com/@reflect-ui/core/-/core-0.0.2-rc.7.tgz#9d531f5a0b9caab31e7563020044b753700e2bbc"
-  integrity sha512-EqF4SRU57bfa5DOPET1rv5lROFyMVHLv1xTEIlN6N2gDpXt71QceImWfQp3z3Khqnb4R/p9OhNK6DXGUpozWKw==
+"@reflect-ui/core@0.0.2-rc.7-local":
+  version "0.0.2-rc.7-local"
+  dependencies:
+    "@reflect-ui/uiutils" "^0.1.2-1"
 
 "@reflect-ui/namings@0.0.3":
   version "0.0.3"

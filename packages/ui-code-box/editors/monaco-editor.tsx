@@ -27,9 +27,25 @@ export function MonacoEditor(props: { src: string; language: string }) {
       });
     }
   }, [props.src]);
+  const width = 500;
+  const updateHeight = (editor) => {
+    const container = document.getElementById("editor-wrap");
+    let ignoreEvent = false;
+    const contentHeight = Math.min(1000, editor.getContentHeight());
+    container.style.width = `100%`;
+    container.style.height = `${contentHeight}px`;
+    console.log(contentHeight);
+    try {
+      ignoreEvent = true;
+      editor.layout({ width, height: contentHeight });
+    } finally {
+      ignoreEvent = false;
+    }
+  };
 
   return (
     <>
+      {/* <div id="editor-wrap"> */}
       <Editor
         loading={<></>} // TODO: add loading state.
         theme="vs-dark"
@@ -37,6 +53,7 @@ export function MonacoEditor(props: { src: string; language: string }) {
         defaultLanguage={monacolanguage(props.language)}
         defaultValue={extended_value(props.src)}
         value={extended_value(props.src)}
+        // onMount={updateHeight}
         options={{
           fontFamily: `Menlo, Monaco, 'Courier New', monospace`,
           fontSize: 14,
@@ -63,8 +80,13 @@ export function MonacoEditor(props: { src: string; language: string }) {
           scrollBeyondLastLine: false,
           readOnly: true,
           renderFinalNewline: true,
+          //
+          // wordWrap: "on",
+          // wrappingStrategy: "advanced",
+          // overviewRulerLanes: 0,
         }}
       />
+      {/* </div> */}
     </>
   );
 }
