@@ -13,6 +13,11 @@
 /* do not delete this line */ import "./event-handlers"; // NO REMOVE
 // ==========
 
+// ==========
+// init relaunch-data trigger
+/* do not delete this line */ import "./relaunch-data"; // NO REMOVE
+// ==========
+
 import { onfigmaselectionchange } from "./code-thread/selection";
 import { onfigmamessage } from "./code-thread/message-handler";
 import { MainImageRepository } from "@design-sdk/core/assets-repository";
