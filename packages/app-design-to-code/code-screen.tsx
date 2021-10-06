@@ -76,7 +76,7 @@ export function CodeScreen() {
         targetid={selection?.id}
         onGeneration={(app, src, vanilla_preview_source) => {
           setApp(app);
-          setSource(src);
+          setSource(src ?? app); // TODO: react only provides app. this needs to be fixed on the codegen side.
           handle_vanilla_preview_source(vanilla_preview_source);
         }}
         onAssetsLoad={(r) => {
