@@ -27,9 +27,9 @@ export function ResponsivePreview({
   const [scalefactor, setscalefactor] = useState(0);
   useEffect(() => {
     if (design) {
-      const iframeScale = (parentWidth - 24) / design.node["width"];
-
-      setscalefactor(iframeScale);
+      const _s = (parentWidth - 24) / design.node["width"];
+      const framescale = Math.min(_s, 1);
+      setscalefactor(framescale);
     }
   }, [design]);
   return (
@@ -51,5 +51,5 @@ const PlainIframe = styled.iframe<{ scale: number }>`
   outline: none;
   border: none;
   transform: ${(props) => `scale(${props.scale})`};
-  /* transform-origin: 0 0; */
+  transform-origin: 0 0;
 `;

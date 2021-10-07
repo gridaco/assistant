@@ -68,7 +68,7 @@ const Render = styled.div`
   position: relative;
   width: 100%;
   height: auto;
-  text-align: center;
+  /* text-align: center; */
 `;
 
 const Container = styled.div`
