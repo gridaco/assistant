@@ -22,13 +22,19 @@ interface PreviewProps {
 type Subscenario = StaticPreviewProps | ResponsivePreviewProps;
 type Props = PreviewProps & Subscenario;
 
-export function Preview({ ...props }: Props) {
+export function Preview(props: Props) {
+  const previewWidth =
+    document.getElementById("preview-wrapping")?.offsetWidth ?? 0;
+
+  // console.log("in");
+  // console.log(`%c preview ${previewWidth}`, "color:yellow");
+
   return (
     <Container>
-      <PreviewWrap>
+      <PreviewWrap id="preview-wrapping">
         <Render>
           {props.data || props.auto ? (
-            <Content {...props} />
+            <Content props={props} pW={previewWidth} />
           ) : (
             <div className="inner-render">{props.empty || <EmptyState />}</div>
           )}
@@ -38,10 +44,10 @@ export function Preview({ ...props }: Props) {
   );
 }
 
-function Content(props: Props) {
+function Content({ props, pW }: { props: Props; pW: number }) {
   switch (props.type) {
     case "responsive": {
-      return <ResponsivePreview {...props} />;
+      return <ResponsivePreview props={props} parentWidth={pW} />;
     }
     case "static": {
       return <StaticPreview {...props} />;
@@ -53,7 +59,8 @@ const PreviewWrap = styled.div`
   padding: 12px;
   background: #f1f1f1;
   height: calc(200px - 24px);
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 const Render = styled.div`
