@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
-import React from "react";
+import { useSingleSelection } from "plugin-app";
+import React, { useEffect, useState } from "react";
 
 export interface ResponsivePreviewProps {
   type: "responsive";
@@ -14,11 +15,13 @@ export interface ResponsivePreviewProps {
 }
 
 export function ResponsivePreview(props: ResponsivePreviewProps) {
+  // TEMPORARILY USAGE
+  const design = useSingleSelection();
   return (
     <>
       <PlainIframe
-        width="100%"
-        height="100%"
+        width={design?.node["width"] ?? 0}
+        height={design?.node["height"] ?? 0}
         sandbox="allow-same-origin"
         srcDoc={props.data}
       />

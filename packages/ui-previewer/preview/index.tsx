@@ -25,15 +25,15 @@ type Props = PreviewProps & Subscenario;
 export function Preview({ ...props }: Props) {
   return (
     <Container>
-      <div className="preview">
-        <div className="render">
+      <PreviewWrap>
+        <Render>
           {props.data || props.auto ? (
             <Content {...props} />
           ) : (
             <div className="inner-render">{props.empty || <EmptyState />}</div>
           )}
-        </div>
-      </div>
+        </Render>
+      </PreviewWrap>
     </Container>
   );
 }
@@ -49,7 +49,23 @@ function Content(props: Props) {
   }
 }
 
+const PreviewWrap = styled.div`
+  padding: 12px;
+  background: #f1f1f1;
+  height: calc(200px - 24px);
+  overflow: auto;
+`;
+
+const Render = styled.div`
+  position: relative;
+  width: 100%;
+  height: auto;
+  text-align: center;
+`;
+
 const Container = styled.div`
+  /* To be deleted later */
+
   .preview {
     padding: 12px;
     background: #f1f1f1;
