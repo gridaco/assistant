@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
 import {
   ResponsivePreview,
@@ -23,18 +23,19 @@ type Subscenario = StaticPreviewProps | ResponsivePreviewProps;
 type Props = PreviewProps & Subscenario;
 
 export function Preview(props: Props) {
-  const previewWidth =
-    document.getElementById("preview-wrapping")?.offsetWidth ?? 0;
-
-  // console.log("in");
-  // console.log(`%c preview ${previewWidth}`, "color:yellow");
-
+  const previewRefWrap = useRef<HTMLDivElement>();
+  const [size, setsize] = useState(undefined);
+  useEffect(() => {
+    if (previewRefWrap.current) {
+      setsize(previewRefWrap.current?.offsetWidth);
+    }
+  }, []);
   return (
     <Container>
-      <PreviewWrap id="preview-wrapping">
+      <PreviewWrap ref={previewRefWrap}>
         <Render>
           {props.data || props.auto ? (
-            <Content props={props} pW={previewWidth} />
+            <>{size && <Content props={props} pW={size} />}</>
           ) : (
             <div className="inner-render">{props.empty || <EmptyState />}</div>
           )}

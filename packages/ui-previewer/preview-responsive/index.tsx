@@ -24,25 +24,23 @@ export function ResponsivePreview({
   // TEMPORARILY USAGE
   const design = useSingleSelection();
 
-  const childWidth =
-    document.getElementById("preview-iframe")?.offsetWidth ?? 0;
+  const [scalefactor, setscalefactor] = useState(0);
+  useEffect(() => {
+    if (design) {
+      const iframeScale = (parentWidth - 24) / design.node["width"];
 
-  // console.log("%c ---", "color:red");
-  // console.log("parent", parentWidth);
-  // console.log("child", childWidth);
-
-  const iframeScale =
-    Math.round(((parentWidth - 24) / childWidth) * 1000) / 1000 ?? 1;
-  console.log(`iframeScale`, iframeScale);
+      setscalefactor(iframeScale);
+    }
+  }, [design]);
   return (
     <>
       <PlainIframe
         id="preview-iframe"
-        width={design?.node["width"] ?? 0}
+        min-width={design?.node["width"] ?? 0}
         height={design?.node["height"] ?? 0}
         sandbox="allow-same-origin"
         srcDoc={props.data}
-        scale={iframeScale}
+        scale={scalefactor}
       />
     </>
   );
@@ -53,5 +51,5 @@ const PlainIframe = styled.iframe<{ scale: number }>`
   outline: none;
   border: none;
   transform: ${(props) => `scale(${props.scale})`};
-  transform-origin: 0 0;
+  /* transform-origin: 0 0; */
 `;
