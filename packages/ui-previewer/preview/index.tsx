@@ -40,7 +40,7 @@ export function Preview(props: Props) {
   }, []);
 
   const initialPreviewHeight = 200;
-  const previewWrapPadding = 12;
+  const previewWrapPadding = 0;
   return (
     <Container>
       <PreviewWrap
@@ -100,7 +100,6 @@ const Container = styled.div`
   height: 100%;
 
   .preview {
-    padding: 12px;
     background: #f1f1f1;
     height: calc(200px - 24px);
   }

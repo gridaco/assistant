@@ -21,24 +21,26 @@ export function ResponsivePreview({
   props: ResponsivePreviewProps;
   parentWidth: number;
 }) {
-  // TEMPORARILY USAGE
+  // TODO: remove me - temporal use
   const design = useSingleSelection();
-
+  const margin = 12;
   const [scalefactor, setscalefactor] = useState(0);
   useEffect(() => {
     if (design) {
-      const _s = (parentWidth - 24) / design.node["width"];
-      const framescale = Math.min(_s, 1);
+      const _s = (parentWidth - margin * 2) / design.node["width"];
+      const framescale = _s; // Math.min(_s, 1); (disabled. - will be removed @softmarshamllow)
       setscalefactor(framescale);
     }
   }, [design]);
+
   return (
     <>
       <PlainIframe
         id="preview-iframe"
-        min-width={design?.node["width"] ?? 0}
+        width={design?.node["width"] ?? 0}
         height={design?.node["height"] ?? 0}
         sandbox="allow-same-origin"
+        margin={margin}
         srcDoc={props.data}
         scale={scalefactor}
       />
@@ -46,9 +48,12 @@ export function ResponsivePreview({
   );
 }
 
-const PlainIframe = styled.iframe<{ scale: number }>`
-  background: none;
+const PlainIframe = styled.iframe<{ scale: number; margin: number }>`
+  background: white;
+  box-shadow: 0px 4px 64px rgba(160, 160, 160, 0.18);
   outline: none;
+  overflow: hidden;
+  margin: ${(props) => props.margin}px;
   border: none;
   transform: ${(props) => `scale(${props.scale})`};
   transform-origin: 0 0;
