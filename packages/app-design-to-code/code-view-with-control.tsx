@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { CodeBox, SourceInput } from "@ui/codebox";
 import { CodeOptionsControl } from "./code-options-control";
 import styled from "@emotion/styled";
@@ -18,6 +18,7 @@ import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import { CodeSessionCacheStorage } from "./code-session-cache-storage";
 import { PreferFramework } from "@app/preferences";
 import { Framework } from "@grida/builder-platform-types";
+import { CodeViewResize } from "./code-view-resize";
 
 export function CodeViewWithControl({
   targetid,
@@ -46,6 +47,7 @@ export function CodeViewWithControl({
 }) {
   const [app, setApp] = useState<string>();
   const [source, setSource] = useState<SourceInput>();
+  const [inClickedBorder, setInClickedBorder] = useState<boolean>(false);
 
   const framework_preference = new PreferFramework();
   const initialPresetName = getDefaultPresetNameByFramework(
@@ -58,6 +60,12 @@ export function CodeViewWithControl({
   );
 
   const cacheStore = new CodeSessionCacheStorage(targetid, useroption);
+
+  const codeWrapRef = useRef<HTMLDivElement>(undefined);
+
+  // FIXME:
+  /* 292 is preview(200) + navigation(52+40) */
+  const codeWrapTop = 292;
 
   /** post to code thread about target framework change */
   useEffect(() => {
@@ -172,7 +180,8 @@ export function CodeViewWithControl({
   };
 
   return (
-    <CodeWrapper>
+    <CodeWrapper ref={codeWrapRef}>
+      <CodeViewResize codeWrapTop={codeWrapTop} codeWrapRef={codeWrapRef} />
       <CodeOptionsControl
         // key={JSON.stringify(useroption)} // FIXME: do not uncomment me
         // initialPreset="react_default" // FIXME: do not uncomment me
