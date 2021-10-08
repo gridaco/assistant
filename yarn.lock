@@ -1695,7 +1695,7 @@
   resolved "https://registry.yarnpkg.com/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.4.0.tgz#becce788818d3f47f0ac1a74c3c061ac1dcf4f6d"
   integrity sha512-8cUA/mg0S+BxIZ72TdZRsXKBP5n5uRcE3k29TZhZw6oIiHBt9JA7CTb/4pE1uKtE/q5NeTY2tBDcagoZ+1zjXQ==
 
-"@flutter-builder/flutter@^2.5.0-f5":
+"@flutter-builder/flutter@^2.5.0-f7":
   version "2.5.0-f7"
   resolved "https://registry.yarnpkg.com/@flutter-builder/flutter/-/flutter-2.5.0-f7.tgz#03ba57d70697a79459e0609bef670812b0928397"
   integrity sha512-PTFQrKRquPcC/KA+aDC6Pf7TUlMQL4+s4Z117JWLfDXcdxXgU0H5rs7mge7XlH3+dOsVKqWCbUC9XbUpk8S9TQ==
