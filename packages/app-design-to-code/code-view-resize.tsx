@@ -42,7 +42,7 @@ export function CodeViewResize(props: CodeViewResizeProps) {
     //   stopResizing();
     // }
     setCodeWrapY(e.clientY);
-    console.log("in mouse down");
+    // console.log("in mouse down");
     startResizing();
   }
 
