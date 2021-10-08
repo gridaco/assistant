@@ -71,7 +71,7 @@ const PreviewWrap = styled.div<{ padding: number; resizeHeight?: number }>`
   background: #f1f1f1;
   height: ${(props) =>
     props.resizeHeight
-      ? `calc(${props.resizeHeight} - ${props.padding * 2}px)`
+      ? `calc(${props.resizeHeight}px - ${props.padding * 2}px)`
       : `calc(200px - ${props.padding * 2}px)`};
   overflow-y: auto;
   overflow-x: hidden;
