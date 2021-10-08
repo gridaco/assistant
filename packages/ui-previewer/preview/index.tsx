@@ -19,8 +19,11 @@ interface PreviewProps {
    */
   background?: string;
   type?: string;
-  // using only like this - calc({resizeHeight}px - {previewWrap's padding*2}px)
-  resizeHeight?: number;
+  /**
+   * when used as a child of a resizable component.
+   * if not, set default height in preview 200px
+   */
+  isAutoSizable?: boolean;
 }
 
 type Subscenario = StaticPreviewProps | ResponsivePreviewProps;
@@ -29,19 +32,22 @@ type Props = PreviewProps & Subscenario;
 export function Preview(props: Props) {
   const previewRefWrap = useRef<HTMLDivElement>();
   const [size, setsize] = useState(undefined);
+
   useEffect(() => {
     if (previewRefWrap.current) {
       setsize(previewRefWrap.current?.offsetWidth);
     }
   }, []);
+
+  const initialPreviewHeight = 200;
   const previewWrapPadding = 12;
 
   return (
     <Container>
       <PreviewWrap
         padding={previewWrapPadding}
-        resizeHeight={props.resizeHeight}
-        ref={previewRefWrap}
+        isAutoSizable={props.isAutoSizable}
+        initialPreviewHeight={initialPreviewHeight}
       >
         <Render>
           {props.data || props.auto ? (
@@ -66,13 +72,17 @@ function Content({ props, pW }: { props: Props; pW: number }) {
   }
 }
 
-const PreviewWrap = styled.div<{ padding: number; resizeHeight?: number }>`
+const PreviewWrap = styled.div<{
+  padding: number;
+  initialPreviewHeight: number;
+  isAutoSizable: boolean;
+}>`
   padding: ${(props) => `${props.padding}px`};
   background: #f1f1f1;
   height: ${(props) =>
-    props.resizeHeight
-      ? `calc(${props.resizeHeight}px - ${props.padding * 2}px)`
-      : `calc(200px - ${props.padding * 2}px)`};
+    props.isAutoSizable
+      ? `calc(100% - ${props.padding * 2}px)`
+      : `calc(${props.initialPreviewHeight}px - ${props.padding * 2}px)`};
   overflow-y: auto;
   overflow-x: hidden;
 `;
@@ -86,6 +96,8 @@ const Render = styled.div`
 
 const Container = styled.div`
   /* To be deleted later */
+
+  height: 100%;
 
   .preview {
     padding: 12px;

@@ -18,7 +18,6 @@ import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import { CodeSessionCacheStorage } from "./code-session-cache-storage";
 import { PreferFramework } from "@app/preferences";
 import { Framework } from "@grida/builder-platform-types";
-import { CodeViewResize } from "./code-view-resize";
 
 export function CodeViewWithControl({
   targetid,
@@ -30,7 +29,6 @@ export function CodeViewWithControl({
   customMessages,
   automaticRemoteFormatting = false,
   cachedOnly = false,
-  previewSize,
 }: {
   targetid: string;
   editor?: "monaco" | "prism";
@@ -45,11 +43,9 @@ export function CodeViewWithControl({
   automaticRemoteFormatting?: boolean;
   disabled?: true;
   cachedOnly?: boolean;
-  previewSize: { height: number; setHeight: (number) => void };
 }) {
   const [app, setApp] = useState<string>();
   const [source, setSource] = useState<SourceInput>();
-  const [inClickedBorder, setInClickedBorder] = useState<boolean>(false);
 
   const framework_preference = new PreferFramework();
   const initialPresetName = getDefaultPresetNameByFramework(
@@ -62,12 +58,6 @@ export function CodeViewWithControl({
   );
 
   const cacheStore = new CodeSessionCacheStorage(targetid, useroption);
-
-  const codeWrapRef = useRef<HTMLDivElement>(undefined);
-  /* 292 is preview(200) + navigation(52+40) */
-  const [codeWrapTop, setCodeWrapTop] = useState<number>(292);
-  /* 292 is preview(200) + navigation(52+40) */
-  const [footerWrapHeight, setRooterWrapHeight] = useState<number>(74);
 
   /** post to code thread about target framework change */
   useEffect(() => {
@@ -111,11 +101,6 @@ export function CodeViewWithControl({
     framework_preference.set(op.framework); // save updated.
     setUseroption(op);
   };
-
-  useEffect(() => {
-    // 92 is navigation(52+40)
-    previewSize.setHeight(codeWrapTop - 92);
-  }, [codeWrapTop]);
 
   const __onGeneration__cb = (app, src, vanilla_preview_source) => {
     cacheStore.setCache(src);
@@ -186,19 +171,8 @@ export function CodeViewWithControl({
     }
   };
 
-  const codeWrap = {
-    top: codeWrapTop,
-    setTop: (n: number) => setCodeWrapTop(n),
-  };
-
   return (
-    <CodeWrapper
-      ref={codeWrapRef}
-      codeWrapTop={codeWrapTop}
-      footerWrapHeight={footerWrapHeight}
-    >
-      {/* FixME: add codeWrapHeight setter */}
-      <CodeViewResize codeWrap={codeWrap} codeWrapRef={codeWrapRef} />
+    <CodeWrapper>
       <CodeOptionsControl
         // key={JSON.stringify(useroption)} // FIXME: do not uncomment me
         // initialPreset="react_default" // FIXME: do not uncomment me
@@ -237,13 +211,10 @@ const _src_view_language = (framework: string): string => {
 
 const _VSCODE_DARK_BG = "#1e1e1e";
 
-const CodeWrapper = styled.div<{
-  codeWrapTop: number;
-  footerWrapHeight: number;
-}>`
-  /* codeWrapTop is preview(200) + navigation(52+40), footerWrapHeight is footer btn wrapper(74) height*/
-  height: ${(props) =>
-    `calc(100vh - (${props.codeWrapTop}px + ${props.footerWrapHeight}px) )`};
+const CodeWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  min-height: 1px;
+  overflow-y: auto;
   background: ${_VSCODE_DARK_BG};
-  overflow-y: hidden;
 `;

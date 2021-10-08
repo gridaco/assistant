@@ -18,6 +18,7 @@ import {
   ImageRepository,
   ImageHostingRepository,
 } from "@design-sdk/core/assets-repository";
+import { Resizable } from "re-resizable";
 
 export function CodeScreen() {
   const selection = useSingleSelection();
@@ -29,7 +30,6 @@ export function CodeScreen() {
   const [source, setSource] = useState<string>();
   const [app, setApp] = useState<string>();
   const [useroption, setUseroption] = useState<DesigntoCodeUserOptions>();
-  const [previewHeight, setPreviewHeight] = useState<number>();
 
   const onCopyClicked = (e) => {
     // const _code: SourceInput = _make_source();
@@ -48,59 +48,69 @@ export function CodeScreen() {
     set_vanilla_preview_source(inject_assets_source_to_vanilla(v, r));
   };
 
-  const previewSize = {
-    height: previewHeight,
-    setHeight: (n: number) => {
-      setPreviewHeight(n);
-    },
-  };
-
   return (
-    <div>
-      <Preview
-        key={vanilla_preview_source}
-        auto
-        type="responsive"
-        data={vanilla_preview_source}
-        resizeHeight={previewHeight}
-      />
-
+    <Wrap navigationHeight={navigationHeight}>
+      <Resizable
+        defaultSize={{ width: "100%", height: "200px" }}
+        handleStyles={{ bottom: { height: "5px" } }}
+        handleComponent={{ bottom: ResizeWrap() }}
+        enable={{
+          top: false,
+          right: false,
+          bottom: true,
+          left: false,
+          topRight: false,
+          bottomRight: false,
+          bottomLeft: false,
+          topLeft: false,
+        }}
+      >
+        <Preview
+          key={vanilla_preview_source}
+          auto
+          type="responsive"
+          data={vanilla_preview_source}
+          isAutoSizable={true}
+        />
+      </Resizable>
       {/* FIXME: add onCopyClicked to code-box */}
-      <CopyCodeButton onClick={onCopyClicked}>
-        <svg
-          width="19"
-          height="22"
-          viewBox="0 0 19 22"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M14 0H0V16H2V2H14V0ZM19 4H4V22H19V4ZM17 20H6V6H17V20Z"
-            fill="white"
-          />
-        </svg>
-      </CopyCodeButton>
-      <CodeViewWithControl
-        key={selection?.id}
-        targetid={selection?.id}
-        onGeneration={(app, src, vanilla_preview_source) => {
-          setApp(app);
-          setSource(src ?? app); // TODO: react only provides app. this needs to be fixed on the codegen side.
-          handle_vanilla_preview_source(vanilla_preview_source);
-        }}
-        onAssetsLoad={(r) => {
-          handle_vanilla_preview_source(vanilla_preview_source, r);
-        }}
-        onUserOptionsChange={setUseroption}
-        previewSize={previewSize}
-      />
+
+      <div>
+        <CopyCodeButton onClick={onCopyClicked}>
+          <svg
+            width="19"
+            height="22"
+            viewBox="0 0 19 22"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M14 0H0V16H2V2H14V0ZM19 4H4V22H19V4ZM17 20H6V6H17V20Z"
+              fill="white"
+            />
+          </svg>
+        </CopyCodeButton>
+        <CodeViewWithControl
+          key={selection?.id}
+          targetid={selection?.id}
+          onGeneration={(app, src, vanilla_preview_source) => {
+            setApp(app);
+            setSource(src ?? app); // TODO: react only provides app. this needs to be fixed on the codegen side.
+            handle_vanilla_preview_source(vanilla_preview_source);
+          }}
+          onAssetsLoad={(r) => {
+            handle_vanilla_preview_source(vanilla_preview_source, r);
+          }}
+          onUserOptionsChange={setUseroption}
+        />
+      </div>
       <CodeScreenFooter
         key={useroption?.framework}
         framework={useroption?.framework}
         app={app}
         scene={selection?.node as any}
       />
-    </div>
+    </Wrap>
   );
 }
 
@@ -135,6 +145,20 @@ function inject_assets_source_to_vanilla(
   return _final;
 }
 
+// navigation
+const navigationHeight = 52 + 40;
+
+const Wrap = styled.div<{ navigationHeight: number }>`
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: ${(props) => `calc(100vh - ${props.navigationHeight}px)`};
+`;
+
+const ResizeWrap = (props?: any) => (
+  <ResizableHandleBar>{props}</ResizableHandleBar>
+);
+
 const CopyCodeButton = styled.div`
   width: 24px;
   height: 24px;
@@ -143,4 +167,14 @@ const CopyCodeButton = styled.div`
   margin-top: 24px;
   margin-right: 20px;
   cursor: pointer;
+  z-index: 99999;
+`;
+
+const ResizableHandleBar = styled.div`
+  width: 100%;
+  height: 5px;
+
+  &:hover {
+    background-color: #2663ff;
+  }
 `;
