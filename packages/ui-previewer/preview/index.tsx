@@ -41,10 +41,10 @@ export function Preview(props: Props) {
 
   const initialPreviewHeight = 200;
   const previewWrapPadding = 12;
-
   return (
     <Container>
       <PreviewWrap
+        ref={previewRefWrap}
         padding={previewWrapPadding}
         isAutoSizable={props.isAutoSizable}
         initialPreviewHeight={initialPreviewHeight}
