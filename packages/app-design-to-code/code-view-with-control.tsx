@@ -66,6 +66,7 @@ export function CodeViewWithControl({
   // FIXME:
   /* 292 is preview(200) + navigation(52+40) */
   const codeWrapTop = 292;
+  const footerWrapHeight = 74;
 
   /** post to code thread about target framework change */
   useEffect(() => {
@@ -178,9 +179,12 @@ export function CodeViewWithControl({
       // ignore
     }
   };
-
   return (
-    <CodeWrapper ref={codeWrapRef}>
+    <CodeWrapper
+      ref={codeWrapRef}
+      codeWrapTop={codeWrapTop}
+      footerWrapHeight={footerWrapHeight}
+    >
       <CodeViewResize codeWrapTop={codeWrapTop} codeWrapRef={codeWrapRef} />
       <CodeOptionsControl
         // key={JSON.stringify(useroption)} // FIXME: do not uncomment me
@@ -220,9 +224,13 @@ const _src_view_language = (framework: string): string => {
 
 const _VSCODE_DARK_BG = "#1e1e1e";
 
-const CodeWrapper = styled.div`
-  /* 366px is preview(200) + navigation(52+40) + footer btn wrapper(74) height*/
-  height: calc(100vh - 366px);
+const CodeWrapper = styled.div<{
+  codeWrapTop: number;
+  footerWrapHeight: number;
+}>`
+  /* codeWrapTop is preview(200) + navigation(52+40), footerWrapHeight is footer btn wrapper(74) height*/
+  height: ${(props) =>
+    `calc(100vh - (${props.codeWrapTop}px + ${props.footerWrapHeight}px) )`};
   background: ${_VSCODE_DARK_BG};
   overflow-y: hidden;
 `;

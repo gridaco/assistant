@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { MutableRefObject, useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
+import { css } from "@emotion/react";
 import {
   ResponsivePreview,
   ResponsivePreviewProps,
 } from "../preview-responsive";
 import { StaticPreview, StaticPreviewProps } from "../preview-static";
 import { EmptyState } from "../components";
+import { calc } from "@web-builder/styles";
 
 interface PreviewProps {
   auto?: boolean;
@@ -17,6 +19,8 @@ interface PreviewProps {
    */
   background?: string;
   type?: string;
+  // using only like this - calc({resizeHeight}px - {previewWrap's padding*2}px)
+  resizeHeight?: number;
 }
 
 type Subscenario = StaticPreviewProps | ResponsivePreviewProps;
@@ -30,9 +34,15 @@ export function Preview(props: Props) {
       setsize(previewRefWrap.current?.offsetWidth);
     }
   }, []);
+  const previewWrapPadding = 12;
+
   return (
     <Container>
-      <PreviewWrap ref={previewRefWrap}>
+      <PreviewWrap
+        padding={previewWrapPadding}
+        resizeHeight={props.resizeHeight}
+        ref={previewRefWrap}
+      >
         <Render>
           {props.data || props.auto ? (
             <>{size && <Content props={props} pW={size} />}</>
@@ -56,10 +66,13 @@ function Content({ props, pW }: { props: Props; pW: number }) {
   }
 }
 
-const PreviewWrap = styled.div`
-  padding: 12px;
+const PreviewWrap = styled.div<{ padding: number; resizeHeight?: number }>`
+  padding: ${(props) => `${props.padding}px`};
   background: #f1f1f1;
-  height: calc(200px - 24px);
+  height: ${(props) =>
+    props.resizeHeight
+      ? `calc(${props.resizeHeight} - ${props.padding * 2}px)`
+      : `calc(200px - ${props.padding * 2}px)`};
   overflow-y: auto;
   overflow-x: hidden;
 `;

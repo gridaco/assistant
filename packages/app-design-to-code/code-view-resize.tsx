@@ -6,6 +6,7 @@ import React, {
 } from "react";
 import styled from "@emotion/styled";
 
+// FIXME: add preview resizeHeight set func
 interface CodeViewResizeProps {
   codeWrapTop: number;
   codeWrapRef: MutableRefObject<HTMLDivElement>;
@@ -14,6 +15,7 @@ interface CodeViewResizeProps {
 export function CodeViewResize(props: CodeViewResizeProps) {
   const [isResizing, setIsResizing] = useState<boolean>(false);
   const [codeWrapY, setCodeWrapY] = useState<number>(0);
+
   const startResizing = () => {
     setIsResizing(true);
   };
@@ -22,33 +24,23 @@ export function CodeViewResize(props: CodeViewResizeProps) {
     setIsResizing(false);
   };
 
+  // FIXME: add preview resizeHeight set func
   function resize(movementY: number) {
-    // props.codeWrapRef.current.style.height = codeWrapRefHeight + movementY;
-    // props.codeWrapRef.current.style.height = `${
-    //   codeWrapRefHeight + movementY
-    // }px`;
-    const codeWrapRefHeight = getComputedStyle(props.codeWrapRef.current, "")
-      .height;
-    // console.log("codeWrapY", codeWrapY);
-    // console.log("movementY", movementY);
-    // console.log("codeWrapRefHeight", codeWrapRefHeight);
+    const codeWrapRefHeight = parseInt(
+      getComputedStyle(props.codeWrapRef.current, "").height
+    );
+
+    // props.codeWrapRef.current.style.height = `${codeWrapRefHeight + -1}px`;
   }
 
   function handleEvent(e: MouseEvent<HTMLDivElement>) {
-    // const targetTop = e.clientY;
-    // if (targetTop < props.codeWrapTop + 4) {
-    //   startResizing();
-    // } else {
-    //   stopResizing();
-    // }
-    setCodeWrapY(e.clientY);
-    // console.log("in mouse down");
+    setCodeWrapY(e.currentTarget.clientHeight);
     startResizing();
   }
 
-  function handleResize(e: MouseEvent<HTMLDivElement>) {
+  function handleMove(e: MouseEvent<HTMLDivElement>) {
     if (isResizing) {
-      // props.codeWrapRef.current
+      // console.log(e.clientY);
       resize(e.movementY);
     } else {
       return;
@@ -65,7 +57,7 @@ export function CodeViewResize(props: CodeViewResizeProps) {
     // <ControlWrap>
     <ControlBar
       onMouseDown={handleEvent}
-      onMouseMove={handleResize}
+      onMouseMove={handleMove}
       codeWrapTop={props.codeWrapTop}
       onMouseUp={handleRemoveEvent}
     />

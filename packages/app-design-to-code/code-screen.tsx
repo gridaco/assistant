@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Preview } from "@ui/previewer";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import { DesigntoCodeUserOptions } from "./user-options";
@@ -29,6 +29,7 @@ export function CodeScreen() {
   const [source, setSource] = useState<string>();
   const [app, setApp] = useState<string>();
   const [useroption, setUseroption] = useState<DesigntoCodeUserOptions>();
+  const previewRef = useRef(undefined);
 
   const onCopyClicked = (e) => {
     // const _code: SourceInput = _make_source();
@@ -54,6 +55,7 @@ export function CodeScreen() {
         auto
         type="responsive"
         data={vanilla_preview_source}
+        // resizeHeight={}
       />
 
       {/* FIXME: add onCopyClicked to code-box */}
