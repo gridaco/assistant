@@ -20,6 +20,10 @@ import {
 } from "@design-sdk/core/assets-repository";
 import { Resizable } from "re-resizable";
 
+const resizeBarBase = 5;
+const resizeBarVerPadding = 5;
+const resizeBarSize = 5 + resizeBarVerPadding * 2;
+
 export function CodeScreen() {
   const selection = useSingleSelection();
 
@@ -52,7 +56,13 @@ export function CodeScreen() {
     <Wrap navigationHeight={navigationHeight}>
       <Resizable
         defaultSize={{ width: "100%", height: "200px" }}
-        handleStyles={{ bottom: { height: "5px" } }}
+        handleStyles={{
+          bottom: {
+            height: `${resizeBarSize}px`,
+            bottom: `${Math.floor(-resizeBarSize / 2)}px`,
+            zIndex: 999,
+          },
+        }}
         handleComponent={{ bottom: ResizeWrap() }}
         enable={{
           top: false,
@@ -178,9 +188,15 @@ const CopyCodeButton = styled.div`
 
 const ResizableHandleBar = styled.div`
   width: 100%;
-  height: 5px;
+  z-index: 9999;
+  height: ${resizeBarBase}px;
+  padding: ${resizeBarVerPadding}px 0;
 
-  &:hover {
+  &:hover,
+  &:active {
+    padding: 0;
+    margin-top: ${resizeBarVerPadding}px;
+    height: ${resizeBarBase}px;
     background-color: #2663ff;
   }
 `;
