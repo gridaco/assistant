@@ -29,7 +29,7 @@ export function CodeScreen() {
   const [source, setSource] = useState<string>();
   const [app, setApp] = useState<string>();
   const [useroption, setUseroption] = useState<DesigntoCodeUserOptions>();
-  const previewRef = useRef(undefined);
+  const [previewHeight, setPreviewHeight] = useState<number>();
 
   const onCopyClicked = (e) => {
     // const _code: SourceInput = _make_source();
@@ -48,6 +48,13 @@ export function CodeScreen() {
     set_vanilla_preview_source(inject_assets_source_to_vanilla(v, r));
   };
 
+  const previewSize = {
+    height: previewHeight,
+    setHeight: (n: number) => {
+      setPreviewHeight(n);
+    },
+  };
+
   return (
     <div>
       <Preview
@@ -55,7 +62,7 @@ export function CodeScreen() {
         auto
         type="responsive"
         data={vanilla_preview_source}
-        // resizeHeight={}
+        resizeHeight={previewHeight}
       />
 
       {/* FIXME: add onCopyClicked to code-box */}
@@ -85,6 +92,7 @@ export function CodeScreen() {
           handle_vanilla_preview_source(vanilla_preview_source, r);
         }}
         onUserOptionsChange={setUseroption}
+        previewSize={previewSize}
       />
       <CodeScreenFooter
         key={useroption?.framework}

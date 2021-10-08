@@ -8,40 +8,57 @@ import styled from "@emotion/styled";
 
 // FIXME: add preview resizeHeight set func
 interface CodeViewResizeProps {
-  codeWrapTop: number;
+  codeWrap: { top: number; setTop: (n: number) => void };
   codeWrapRef: MutableRefObject<HTMLDivElement>;
 }
 
 export function CodeViewResize(props: CodeViewResizeProps) {
   const [isResizing, setIsResizing] = useState<boolean>(false);
-  const [codeWrapY, setCodeWrapY] = useState<number>(0);
+  const [resizeY, setResizeY] = useState<number>(0);
 
   const startResizing = () => {
+    console.log("Start");
     setIsResizing(true);
   };
 
   const stopResizing = () => {
+    console.error("Stop");
     setIsResizing(false);
   };
 
-  // FIXME: add preview resizeHeight set func
-  function resize(movementY: number) {
-    const codeWrapRefHeight = parseInt(
-      getComputedStyle(props.codeWrapRef.current, "").height
-    );
+  useEffect(() => {
+    // console.log(isResizing);
+  });
 
-    // props.codeWrapRef.current.style.height = `${codeWrapRefHeight + -1}px`;
+  // FIXME: add preview resizeHeight set func
+  function resize(e: MouseEvent<HTMLDivElement>) {
+    // console.log("resizeY", resizeY);
+    // console.log("clientY", e.clientY);
+    const d_y = resizeY - e.clientY;
+    setResizeY(e.clientY);
+    // console.log("dy", d_y);
+
+    // console.log("codeWrapRefHeight", codeWrapRefHeight);
+    // console.log("d_y", d_y);
+    // console.log("clientY", e.clientY);
+    // console.log("resizeY", resizeY);
+    const codeWrapTop = props.codeWrap.top;
+    // console.log(codeWrapTop - d_y);
+    props.codeWrap.setTop(codeWrapTop - d_y);
   }
 
   function handleEvent(e: MouseEvent<HTMLDivElement>) {
-    setCodeWrapY(e.currentTarget.clientHeight);
-    startResizing();
+    e.preventDefault();
+    if (e.clientY < props.codeWrap.top + 4) {
+      setResizeY(e.clientY);
+      startResizing();
+    }
   }
 
   function handleMove(e: MouseEvent<HTMLDivElement>) {
+    e.preventDefault();
     if (isResizing) {
-      // console.log(e.clientY);
-      resize(e.movementY);
+      resize(e);
     } else {
       return;
     }
@@ -54,14 +71,13 @@ export function CodeViewResize(props: CodeViewResizeProps) {
   }
 
   return (
-    // <ControlWrap>
     <ControlBar
       onMouseDown={handleEvent}
       onMouseMove={handleMove}
-      codeWrapTop={props.codeWrapTop}
+      codeWrapTop={props.codeWrap.top}
       onMouseUp={handleRemoveEvent}
+      onMouseOut={handleRemoveEvent}
     />
-    // </ControlWrap>
   );
 }
 

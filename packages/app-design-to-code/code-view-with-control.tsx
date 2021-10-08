@@ -30,6 +30,7 @@ export function CodeViewWithControl({
   customMessages,
   automaticRemoteFormatting = false,
   cachedOnly = false,
+  previewSize,
 }: {
   targetid: string;
   editor?: "monaco" | "prism";
@@ -44,6 +45,7 @@ export function CodeViewWithControl({
   automaticRemoteFormatting?: boolean;
   disabled?: true;
   cachedOnly?: boolean;
+  previewSize: { height: number; setHeight: (number) => void };
 }) {
   const [app, setApp] = useState<string>();
   const [source, setSource] = useState<SourceInput>();
@@ -62,11 +64,10 @@ export function CodeViewWithControl({
   const cacheStore = new CodeSessionCacheStorage(targetid, useroption);
 
   const codeWrapRef = useRef<HTMLDivElement>(undefined);
-
-  // FIXME:
   /* 292 is preview(200) + navigation(52+40) */
-  const codeWrapTop = 292;
-  const footerWrapHeight = 74;
+  const [codeWrapTop, setCodeWrapTop] = useState<number>(292);
+  /* 292 is preview(200) + navigation(52+40) */
+  const [footerWrapHeight, setRooterWrapHeight] = useState<number>(74);
 
   /** post to code thread about target framework change */
   useEffect(() => {
@@ -110,6 +111,11 @@ export function CodeViewWithControl({
     framework_preference.set(op.framework); // save updated.
     setUseroption(op);
   };
+
+  useEffect(() => {
+    // 92 is navigation(52+40)
+    previewSize.setHeight(codeWrapTop - 92);
+  }, [codeWrapTop]);
 
   const __onGeneration__cb = (app, src, vanilla_preview_source) => {
     cacheStore.setCache(src);
@@ -179,13 +185,20 @@ export function CodeViewWithControl({
       // ignore
     }
   };
+
+  const codeWrap = {
+    top: codeWrapTop,
+    setTop: (n: number) => setCodeWrapTop(n),
+  };
+
   return (
     <CodeWrapper
       ref={codeWrapRef}
       codeWrapTop={codeWrapTop}
       footerWrapHeight={footerWrapHeight}
     >
-      <CodeViewResize codeWrapTop={codeWrapTop} codeWrapRef={codeWrapRef} />
+      {/* FixME: add codeWrapHeight setter */}
+      <CodeViewResize codeWrap={codeWrap} codeWrapRef={codeWrapRef} />
       <CodeOptionsControl
         // key={JSON.stringify(useroption)} // FIXME: do not uncomment me
         // initialPreset="react_default" // FIXME: do not uncomment me
