@@ -185,7 +185,7 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
             // marginBottom: "-8px",
           }}
         >
-          <Row>
+          <Row style={{ paddingTop: "22px" }}>
             <PrimaryWorkmodeSelect
               selection={workmode}
               set={workmodeSet}
