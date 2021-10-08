@@ -58,5 +58,4 @@ const CodeWrapper = styled.code<{ disabled?: boolean }>`
     opacity: ${(props) => (props.disabled ? 0.5 : 1)};
   }
   width: max-content;
-  height: auto;
 `;

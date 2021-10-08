@@ -213,8 +213,8 @@ const _VSCODE_DARK_BG = "#1e1e1e";
 
 const CodeWrapper = styled.div`
   width: 100%;
-  height: 100%;
   min-height: 1px;
-  overflow-y: auto;
+  overflow: auto;
+  height: 100%;
   background: ${_VSCODE_DARK_BG};
 `;

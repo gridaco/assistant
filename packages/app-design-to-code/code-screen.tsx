@@ -75,7 +75,13 @@ export function CodeScreen() {
       </Resizable>
       {/* FIXME: add onCopyClicked to code-box */}
 
-      <div>
+      {/**
+       * TEMPORALLY ELEMENT
+       * DON'T REMOVE IT!
+       * IF YOU DELETE IT,
+       * THE CodeViewWithControl HEIGHT INCREASES INDEFINITELY!
+       */}
+      <div style={{ height: "100%" }}>
         <CopyCodeButton onClick={onCopyClicked}>
           <svg
             width="19"
