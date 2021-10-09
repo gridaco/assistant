@@ -51,7 +51,7 @@ export function Preview(props: Props) {
       >
         <Render>
           {props.data || props.auto ? (
-            <>{size && <Content props={props} pW={size} />}</>
+            <>{size && <Content props={props} wrapWidth={size} />}</>
           ) : (
             <div className="inner-render">{props.empty || <EmptyState />}</div>
           )}
@@ -61,10 +61,10 @@ export function Preview(props: Props) {
   );
 }
 
-function Content({ props, pW }: { props: Props; pW: number }) {
+function Content({ props, wrapWidth }: { props: Props; wrapWidth: number }) {
   switch (props.type) {
     case "responsive": {
-      return <ResponsivePreview props={props} parentWidth={pW} />;
+      return <ResponsivePreview props={props} parentWidth={wrapWidth} />;
     }
     case "static": {
       return <StaticPreview {...props} />;
