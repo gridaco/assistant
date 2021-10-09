@@ -1,9 +1,22 @@
 import React, { useEffect } from "react";
-import Editor, { DiffEditor, useMonaco, loader } from "@monaco-editor/react";
+import Editor, { useMonaco } from "@monaco-editor/react";
+import { editor } from "monaco-editor";
 
 // TODO: add auto sizing - https://github.com/microsoft/monaco-editor/issues/794#issuecomment-688959283
-export function MonacoEditor(props: { src: string; language: string }) {
+export function MonacoEditor({
+  src,
+  language,
+  minHeight = 800,
+}: {
+  /**
+   * minheight is also a initial height.
+   */
+  minHeight?: number;
+  src: string;
+  language: string;
+}) {
   const monaco = useMonaco();
+  const [height, setHeight] = React.useState(minHeight);
 
   useEffect(() => {
     if (monaco) {
@@ -26,33 +39,27 @@ export function MonacoEditor(props: { src: string; language: string }) {
         noSyntaxValidation: false,
       });
     }
-  }, [props.src]);
-  const width = 500;
-  const updateHeight = (editor) => {
-    const container = document.getElementById("editor-wrap");
-    let ignoreEvent = false;
-    const contentHeight = Math.min(1000, editor.getContentHeight());
-    container.style.width = `100%`;
-    container.style.height = `${contentHeight}px`;
-    console.log(contentHeight);
-    try {
-      ignoreEvent = true;
-      editor.layout({ width, height: contentHeight });
-    } finally {
-      ignoreEvent = false;
-    }
+  }, [src]);
+
+  const updateHeight = (editor: editor.IStandaloneCodeEditor) => {
+    const contentHeight = Math.max(minHeight, editor.getContentHeight());
+    setHeight(contentHeight);
   };
 
   return (
     <>
-      {/* <div id="editor-wrap"> */}
       <Editor
         loading={<></>} // TODO: add loading state.
         theme="vs-dark"
-        height="1000px"
-        defaultLanguage={monacolanguage(props.language)}
-        defaultValue={extended_value(props.src)}
-        value={extended_value(props.src)}
+        height={height}
+        onMount={(editor) => {
+          editor.onDidContentSizeChange(() => {
+            updateHeight(editor);
+          });
+        }}
+        defaultLanguage={monacolanguage(language)}
+        defaultValue={extended_value(src)}
+        value={extended_value(src)}
         // onMount={updateHeight}
         options={{
           fontFamily: `Menlo, Monaco, 'Courier New', monospace`,
@@ -86,7 +93,6 @@ export function MonacoEditor(props: { src: string; language: string }) {
           // overviewRulerLanes: 0,
         }}
       />
-      {/* </div> */}
     </>
   );
 }
