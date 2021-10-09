@@ -2,13 +2,13 @@ import React from "react";
 import styled from "@emotion/styled";
 
 interface RefreshButtonProps {
-  isHoverEvent?: boolean;
+  onClick: () => void;
 }
 
 export function RefreshButton(props?: RefreshButtonProps) {
   function RefreshIcon() {
     return (
-      <IconWrap>
+      <IconWrap onClick={props.onClick}>
         <svg
           width="16"
           height="16"
@@ -32,7 +32,12 @@ export function RefreshButton(props?: RefreshButtonProps) {
   );
 }
 
-const IconWrap = styled.span`
+const IconWrap = styled.button`
+  /* clear button origin style */
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+
   opacity: 0;
   cursor: pointer;
 
