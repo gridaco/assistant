@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { BlackButtonStyle } from "@ui/core/button-style";
+import { BlackButtonStyle, BlueButtonStyle } from "@ui/core/button-style";
 import { registerScene } from "@app/scene-view";
 import { PluginSdk } from "@plugin-sdk/app";
 import type { IReflectNodeReference } from "@design-sdk/figma-node";
@@ -82,14 +82,6 @@ function buildOpenUrlForRegisteredScene(sceneId: string) {
 }
 
 const NextStepButton = styled.button`
-  ${BlackButtonStyle}
-
-  &:hover {
-    color: #fff;
-    background: #17181a;
-  }
-  &:disabled {
-    color: #bbbbbb;
-    background: #949494;
-  }
+  ${BlueButtonStyle}
+  min-width: 60%;
 `;

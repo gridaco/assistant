@@ -20,7 +20,7 @@ export const BlackButtonStyle = css`
   border: 1px solid #151617;
   background: #151617;
   color: #fff;
-  width: 61%;
+  min-width: 60%;
 
   // for reset material-ui button style
   &:hover {
@@ -35,12 +35,43 @@ export const BlackButtonStyle = css`
   }
 `;
 
-export const WhtieButtonStyle = css`
+export const TextButtonBase = css`
   ${ButtonStyle}
-  /* border: 1px solid #151617; */
   border: 0;
   color: #151617;
-  background: #fff;
+  background: transparent;
+  &:hover {
+    background: rgba(221, 221, 221, 0.2);
+  }
+`;
+
+export const BlackTextButtonStyle = css`
+  ${TextButtonBase}
+  color: #151617;
+  &:hover {
+    background: rgba(221, 221, 221, 0.2);
+  }
+`;
+
+export const WhiteTextButtonStyle = css`
+  ${TextButtonBase}
+  color: #FFFF;
+  &:hover {
+    background: rgba(221, 221, 221, 0.2);
+  }
+`;
+
+export const BlueButtonStyle = css`
+  ${ButtonStyle}
+  background: rgba(38, 99, 255, 1);
+  border: solid 1px rgba(68, 132, 255, 1);
+  color: #fff;
+  &:hover {
+    background: rgba(57, 112, 251, 1);
+  }
+  &:disabled {
+    opacity: 50%;
+  }
 `;
 
 export const TransparentButtonStyle = css`

@@ -85,7 +85,7 @@ export function MonacoEditor({
           lineDecorationsWidth: "12px",
           glyphMargin: false,
           scrollBeyondLastLine: false,
-          readOnly: true,
+          readOnly: false,
           renderFinalNewline: true,
           //
           // wordWrap: "on",

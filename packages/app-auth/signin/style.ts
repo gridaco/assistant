@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { BlackButtonStyle, WhtieButtonStyle } from "@ui/core/button-style";
+import { BlackButtonStyle, BlackTextButtonStyle } from "@ui/core/button-style";
 import { Column } from "@ui/core";
 
 export const Wrapper = styled.div`
@@ -46,7 +46,7 @@ export const SignInBtn = styled.button`
 `;
 
 export const SignUpBtn = styled.button`
-  ${WhtieButtonStyle}
+  ${BlackTextButtonStyle}
   width: calc(100vw - 54px);
   font-weight: bold;
   font-size: 14px;
