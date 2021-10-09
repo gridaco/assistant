@@ -58,8 +58,8 @@ export function MonacoEditor({
           });
         }}
         defaultLanguage={monacolanguage(language)}
-        defaultValue={extended_value(src)}
-        value={extended_value(src)}
+        defaultValue={src}
+        value={src}
         // onMount={updateHeight}
         options={{
           fontFamily: `Menlo, Monaco, 'Courier New', monospace`,
@@ -113,8 +113,4 @@ function monacolanguage(lang: string) {
     default:
       return "typescript";
   }
-}
-
-function extended_value(value: string) {
-  return value + "\n".repeat(10);
 }
