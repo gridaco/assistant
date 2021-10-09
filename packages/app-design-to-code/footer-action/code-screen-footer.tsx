@@ -62,15 +62,10 @@ export function CodeScreenFooter(props: ICodeScreenFooter) {
 }
 
 const CodeFooterCtaWrapper = styled.footer`
-  /* 32 is padding */
-  /* width: calc(100% - 32px); */
   width: 100%;
   padding: 12px 0;
   display: flex;
   background: #fff;
-  position: absolute;
-  left: 0;
-  bottom: 0;
   display: flex;
 
   button {

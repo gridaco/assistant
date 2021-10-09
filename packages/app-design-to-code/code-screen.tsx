@@ -53,45 +53,55 @@ export function CodeScreen() {
   };
 
   return (
-    <Wrap navigationHeight={navigationHeight}>
-      <Resizable
-        defaultSize={{ width: "100%", height: "200px" }}
-        handleStyles={{
-          bottom: {
-            height: `${resizeBarSize}px`,
-            bottom: `${Math.floor(-resizeBarSize / 2)}px`,
-            zIndex: 999,
-          },
-        }}
-        handleComponent={{ bottom: ResizeWrap() }}
-        enable={{
-          top: false,
-          right: false,
-          bottom: true,
-          left: false,
-          topRight: false,
-          bottomRight: false,
-          bottomLeft: false,
-          topLeft: false,
-        }}
-      >
-        <Preview
-          key={vanilla_preview_source}
-          auto
-          type="responsive"
-          data={vanilla_preview_source}
-          isAutoSizable={true}
-        />
-      </Resizable>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: 0,
+        flexGrow: 1,
+      }}
+    >
+      <div>
+        <Resizable
+          defaultSize={{ width: "100%", height: "200px" }}
+          handleStyles={{
+            bottom: {
+              height: `${resizeBarSize}px`,
+              bottom: `${Math.floor(-resizeBarSize / 2)}px`,
+              zIndex: 999,
+            },
+          }}
+          handleComponent={{ bottom: ResizeWrap() }}
+          enable={{
+            top: false,
+            right: false,
+            bottom: true,
+            left: false,
+            topRight: false,
+            bottomRight: false,
+            bottomLeft: false,
+            topLeft: false,
+          }}
+        >
+          <Preview
+            key={vanilla_preview_source}
+            auto
+            type="responsive"
+            data={vanilla_preview_source}
+            isAutoSizable={true}
+          />
+        </Resizable>
+      </div>
       {/* FIXME: add onCopyClicked to code-box */}
 
-      {/**
-       * TEMPORALLY ELEMENT
-       * DON'T REMOVE IT!
-       * IF YOU DELETE IT,
-       * THE CodeViewWithControl HEIGHT INCREASES INDEFINITELY!
-       */}
-      <div style={{ height: "100%" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          flexGrow: 1,
+          overflow: "auto",
+        }}
+      >
         <CopyCodeButton onClick={onCopyClicked}>
           <svg
             width="19"
@@ -120,13 +130,15 @@ export function CodeScreen() {
           onUserOptionsChange={setUseroption}
         />
       </div>
-      <CodeScreenFooter
-        key={useroption?.framework}
-        framework={useroption?.framework}
-        app={app}
-        scene={selection?.node as any}
-      />
-    </Wrap>
+      <div>
+        <CodeScreenFooter
+          key={useroption?.framework}
+          framework={useroption?.framework}
+          app={app}
+          scene={selection?.node as any}
+        />
+      </div>
+    </div>
   );
 }
 
@@ -160,16 +172,6 @@ function inject_assets_source_to_vanilla(
   );
   return _final;
 }
-
-// navigation
-const navigationHeight = 52 + 40;
-
-const Wrap = styled.div<{ navigationHeight: number }>`
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  height: ${(props) => `calc(100vh - ${props.navigationHeight}px)`};
-`;
 
 const ResizeWrap = (props?: any) => (
   <ResizableHandleBar>{props}</ResizableHandleBar>

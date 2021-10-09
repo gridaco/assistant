@@ -49,7 +49,7 @@ export function MonacoEditor(props: { src: string; language: string }) {
       <Editor
         loading={<></>} // TODO: add loading state.
         theme="vs-dark"
-        height="100%"
+        height="1000px"
         defaultLanguage={monacolanguage(props.language)}
         defaultValue={extended_value(props.src)}
         value={extended_value(props.src)}
