@@ -7,7 +7,7 @@ export function AppbarContainerMotion({
   children,
 }: {
   hidden: boolean;
-  children: JSX.Element;
+  children: JSX.Element | JSX.Element[];
 }) {
   /** add this const **/
   const variants_for_container = {

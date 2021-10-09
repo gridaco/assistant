@@ -96,71 +96,6 @@ function Screen(props: { screen: WorkScreen }) {
   }
 }
 
-function TabsLayout(props: {
-  workmode: WorkMode;
-  tabIndex: number;
-  isTabVisible: boolean;
-  onChange: (index: number, tab: WorkScreen) => void;
-}) {
-  const history = useHistory();
-  const { workmode, tabIndex, onChange } = props;
-  const tabs_as_page_configs = getWorkmodeTabLayout(workmode).map(
-    (screen, index) => {
-      const _ = get_page_config(screen);
-      return {
-        id: _.id,
-        name: _.title,
-        path: _.path,
-      };
-    }
-  );
-
-  useEffect(() => {
-    handleTabChange(tabIndex);
-  }, []);
-
-  const handleTabChange = (index: number) => {
-    const screen = tabs_as_page_configs[index];
-    onChange(index, screen.id);
-    history.replace(screen.path); // since it is a movement between tabs, we don't use push. we use replace to avoid the history stack to be too long.
-  };
-
-  return (
-    <>
-      {props.isTabVisible && (
-        <WorkmodeScreenTabs
-          key="workmode-tabs"
-          layout={tabs_as_page_configs}
-          tabIndex={tabIndex}
-          onSelect={handleTabChange}
-        />
-      )}
-
-      {/* the screen's wrapping layout */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          flexGrow: 1,
-          minHeight: "0px",
-        }}
-      >
-        <Switch>
-          {tabs_as_page_configs.map((v, i) => {
-            return (
-              <Route
-                key={v.id}
-                path={v.path}
-                render={() => <Screen screen={v.id} />}
-              />
-            );
-          })}
-        </Switch>
-      </div>
-    </>
-  );
-}
-
 // region global navigation animation state
 import { RecoilRoot, useRecoilState } from "recoil";
 import {
@@ -171,6 +106,7 @@ import { hide_navigation } from "./global-state-atoms";
 // endregion
 
 function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
+  const history = useHistory();
   const [workmode, setWorkmode] = useState<WorkMode>(
     props.savedLayout.currentWorkmode
   );
@@ -179,7 +115,7 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
   );
   const [tabIndex, setTabIndex] = useState<number>(0);
   const [expansion, setExpansion] = useState<boolean>(true);
-
+  const isTabVisible = expansion;
   const on_workmode_select = (workmode: WorkMode) => {
     setWorkmode(workmode);
     setTabIndex(0);
@@ -196,7 +132,28 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
   };
 
   // region animation state
-  const [hidden] = useRecoilState(hide_navigation);
+  const [whole_navigation_hidden] = useRecoilState(hide_navigation);
+
+  useEffect(() => {
+    handleTabChange(tabIndex);
+  }, []);
+
+  const handleTabChange = (index: number) => {
+    const screen = tabs_as_page_configs[index];
+    on_work_select(index, screen.id);
+    history.replace(screen.path); // since it is a movement between tabs, we don't use push. we use replace to avoid the history stack to be too long.
+  };
+
+  const tabs_as_page_configs = getWorkmodeTabLayout(workmode).map(
+    (screen, index) => {
+      const _ = get_page_config(screen);
+      return {
+        id: _.id,
+        name: _.title,
+        path: _.path,
+      };
+    }
+  );
 
   return (
     // root flex styled container for the whole app
@@ -207,39 +164,70 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
         height: "100vh",
       }}
     >
-      <AppbarWrapper>
-        <AppbarContainerMotion hidden={hidden}>
-          <Column
-            style={{
-              width: "100%",
-              justifyItems: "center",
-            }}
-          >
-            <AppbarContentMotion hidden={hidden}>
-              <Row style={{ paddingTop: "22px" }}>
-                <PrimaryWorkmodeSelect
-                  selection={workmode}
-                  set={workmodeSet}
-                  onSelect={on_workmode_select}
-                />
-                <NavigatorExpansionControlButton
-                  action={expansion ? "close" : "expand"}
-                  onClick={() => setExpansion(!expansion)}
-                />
-              </Row>
-              {!expansion && <SecondaryMenuDropdown />}
+      <AppbarContainerMotion hidden={whole_navigation_hidden}>
+        <div
+          style={{
+            zIndex: 99,
+            boxShadow: "0px 4px 24px rgba(0, 0, 0, 0.25)",
+          }}
+        >
+          <PrimaryWorkmodeWrapper>
+            <AppbarContentMotion hidden={whole_navigation_hidden}>
+              <Column
+                style={{
+                  width: "100%",
+                  justifyItems: "center",
+                }}
+              >
+                <Row style={{ paddingTop: "22px" }}>
+                  <PrimaryWorkmodeSelect
+                    selection={workmode}
+                    set={workmodeSet}
+                    onSelect={on_workmode_select}
+                  />
+                  <NavigatorExpansionControlButton
+                    action={expansion ? "close" : "expand"}
+                    onClick={() => setExpansion(!expansion)}
+                  />
+                </Row>
+                {!expansion && <SecondaryMenuDropdown />}
+                {isTabVisible && (
+                  <WorkmodeScreenTabs
+                    key="workmode-tabs"
+                    layout={tabs_as_page_configs}
+                    tabIndex={tabIndex}
+                    onSelect={handleTabChange}
+                  />
+                )}
+              </Column>
             </AppbarContentMotion>
-          </Column>
-        </AppbarContainerMotion>
-      </AppbarWrapper>
+          </PrimaryWorkmodeWrapper>
+        </div>
+      </AppbarContainerMotion>
 
-      <TabsLayout
-        key={workmode}
-        workmode={workmode}
-        tabIndex={tabIndex}
-        isTabVisible={expansion}
-        onChange={on_work_select}
-      />
+      <>
+        {/* the screen's wrapping layout */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            flexGrow: 1,
+            minHeight: "0px",
+          }}
+        >
+          <Switch>
+            {tabs_as_page_configs.map((v, i) => {
+              return (
+                <Route
+                  key={v.id}
+                  path={v.path}
+                  render={() => <Screen screen={v.id} />}
+                />
+              );
+            })}
+          </Switch>
+        </div>
+      </>
     </div>
   );
   //
@@ -358,7 +346,7 @@ function _update_focused_screen_ev(screen: WorkScreen) {
   );
 }
 
-const AppbarWrapper = styled.div`
+const PrimaryWorkmodeWrapper = styled.div`
   display: flex;
   padding: 0 16px;
   /* padding: 0 8px; */

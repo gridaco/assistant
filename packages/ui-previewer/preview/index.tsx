@@ -6,9 +6,8 @@ import {
 } from "../preview-responsive";
 import { StaticPreview, StaticPreviewProps } from "../preview-static";
 import { EmptyState } from "../components";
-import { useElementScroll } from "framer-motion";
-import { useRecoilState } from "recoil";
-import { update_hide_by_scroll_position_and_velocity } from "app/lib/components/motions";
+import { useScrollTriggeredAnimation } from "app/lib/components/motions";
+import { useSetRecoilState } from "recoil";
 import { hide_navigation } from "app/lib/main/global-state-atoms";
 
 interface PreviewProps {
@@ -34,30 +33,13 @@ type Props = PreviewProps & Subscenario;
 export function Preview(props: Props) {
   const previewRefWrap = useRef<HTMLDivElement>();
   const [size, setsize] = useState(undefined);
-  const { scrollYProgress } = useElementScroll(previewRefWrap);
 
   // region navigation animation global state handling by preview's scolling.
-  const [, set_hide_navigation_state] = useRecoilState(hide_navigation);
-  let is_animating_by_intense_scrolling = false;
+  const set_hide_navigation_state = useSetRecoilState(hide_navigation);
+  const hide = useScrollTriggeredAnimation(previewRefWrap);
   useEffect(() => {
-    return scrollYProgress.onChange(() =>
-      update_hide_by_scroll_position_and_velocity({
-        scrollYProgress,
-        is_animating_by_intense_scrolling,
-        on_animating_by_intense_scrolling: () => {
-          is_animating_by_intense_scrolling = true;
-        },
-        on_change: (hide) => {
-          set_hide_navigation_state(hide);
-        },
-        options: {
-          top_sensitivity: 0.05,
-          bottom_sensitivity: 0.04,
-          define_intense_velocity: 50,
-        },
-      })
-    );
-  });
+    set_hide_navigation_state(hide);
+  }, [hide]);
   // endregion
 
   useEffect(() => {
@@ -108,7 +90,6 @@ const PreviewWrap = styled.div<{
   isAutoSizable: boolean;
 }>`
   padding: ${(props) => `${props.padding}px`};
-  background: #f1f1f1;
   height: ${(props) =>
     props.isAutoSizable
       ? `calc(100% - ${props.padding * 2}px)`
@@ -120,8 +101,7 @@ const PreviewWrap = styled.div<{
 const Render = styled.div`
   position: relative;
   width: 100%;
-  height: auto;
-  /* text-align: center; */
+  height: 100%;
 `;
 
 // const Container = styled.div`
