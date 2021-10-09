@@ -50,9 +50,14 @@ export function Preview(props: Props) {
         on_change: (hide) => {
           set_hide_navigation_state(hide);
         },
+        options: {
+          top_sensitivity: 0.05,
+          bottom_sensitivity: 0.04,
+          define_intense_velocity: 50,
+        },
       })
     );
-  }, []);
+  });
   // endregion
 
   useEffect(() => {
