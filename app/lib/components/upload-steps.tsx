@@ -5,8 +5,8 @@ import {
   TransparentButtonStyle,
 } from "@ui/core/button-style";
 import { Button } from "@material-ui/core";
-import { AnimatedProgressBar } from "./animation/animated-progress-bar";
-import { AnimatedCheckIcon } from "./animation/animated-check-icon";
+import { AnimatedProgressBar } from "./animated/animated-progress-bar";
+import { AnimatedCheckIcon } from "./animated/animated-check-icon";
 import { motion } from "framer-motion";
 import { Preview } from "@ui/previewer";
 import CheckIcon from "@assistant/icons/check";

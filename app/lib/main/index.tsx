@@ -41,7 +41,7 @@ import {
   saveLayout,
   updateLayout,
   get_page_config_by_path,
-} from "../navigation";
+} from "../routing";
 
 import {
   WorkmodeScreenTabs,

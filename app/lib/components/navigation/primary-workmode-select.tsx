@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import React from "react";
-import { PrimaryWorkmodeSet, WorkMode } from "../../navigation";
+import { PrimaryWorkmodeSet, WorkMode } from "../../routing";
 
 export function PrimaryWorkmodeSelect(props: {
   set: PrimaryWorkmodeSet;
