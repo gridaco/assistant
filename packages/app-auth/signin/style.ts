@@ -10,12 +10,6 @@ export const Wrapper = styled.div`
   padding: 25px 21px;
 `;
 
-export const BackIcon = styled.div`
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-`;
-
 export const Inner = styled.div`
   margin-top: 60px;
 

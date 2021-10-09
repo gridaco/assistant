@@ -24,9 +24,9 @@ import { FontReplacerScreen } from "@toolbox/font-replacer";
 import { CodeScreen } from "@app/design-to-code";
 import { AboutScreen } from "../pages/about";
 import { SigninScreen } from "@app/auth";
+import { ToolboxHome } from "@app/toolbox";
 import { DesignTextCdoeSyntaxHighligherScreen } from "@app/design-text-code-syntax-highlight";
 // endregion screens import
-//
 
 import {
   getDedicatedRouter,
@@ -73,6 +73,8 @@ function Screen(props: { screen: WorkScreen }) {
       return <GlobalizationScreen />;
     case WorkScreen.exporter:
       return <ExporterScreen />;
+    case WorkScreen.tool_home:
+      return <ToolboxHome />;
     case WorkScreen.tool_desing_button_maker:
       return <ButtonMakerScreen />;
     case WorkScreen.tool_font_replacer:

@@ -52,7 +52,9 @@ export function SecondaryMenuDropdown() {
       id: WorkMode.tools,
       name: WorkMode.tools,
       stage: "development",
-      onSelect: () => {},
+      onSelect: () => {
+        history.push("/toolbox/home");
+      },
     },
     {
       id: WorkMode.settings,

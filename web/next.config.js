@@ -29,6 +29,7 @@ const withTM = require("next-transpile-modules")([
   "@app/schema-editor",
 
   // @toolbox
+  "@app/toolbox",
   "@toolbox/font-replacer",
 
   // cores
