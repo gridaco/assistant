@@ -11,6 +11,7 @@ export function update_hide_by_scroll_position_and_velocity({
     top_sensitivity: 0.01,
     bottom_sensitivity: 0.01,
     define_intense_velocity: 1,
+    do_show_on_bottom_hit: true,
   },
 }: {
   scrollYProgress: ScrollMotionValues["scrollYProgress"];
@@ -21,6 +22,7 @@ export function update_hide_by_scroll_position_and_velocity({
     top_sensitivity: number;
     bottom_sensitivity: number;
     define_intense_velocity: number;
+    do_show_on_bottom_hit: boolean;
   };
 }) {
   const velocity = scrollYProgress.getVelocity();
@@ -37,8 +39,10 @@ export function update_hide_by_scroll_position_and_velocity({
   const scroll_progress_percentage = scrollYProgress.get();
 
   if (scroll_progress_percentage >= 1 - options.bottom_sensitivity) {
-    // bottom = show
-    on_change(false);
+    if (options.do_show_on_bottom_hit) {
+      // bottom = show
+      on_change(false);
+    }
   } else if (scroll_progress_percentage <= options.top_sensitivity) {
     switch (direction) {
       // top + down = hide
@@ -90,6 +94,7 @@ export function useScrollTriggeredAnimation(el: RefObject<HTMLElement>) {
           setHide(hide);
         },
         options: {
+          do_show_on_bottom_hit: false,
           top_sensitivity: 0.05,
           bottom_sensitivity: 0.1,
           define_intense_velocity: 50,

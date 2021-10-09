@@ -114,6 +114,7 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
     props.savedLayout.workmodeSet
   );
   const [tabIndex, setTabIndex] = useState<number>(0);
+  const [screen, setScreen] = useState<WorkScreen>();
   const [expansion, setExpansion] = useState<boolean>(true);
   const isTabVisible = expansion;
   const on_workmode_select = (workmode: WorkMode) => {
@@ -140,6 +141,7 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
 
   const handleTabChange = (index: number) => {
     const screen = tabs_as_page_configs[index];
+    setScreen(screen.id);
     on_work_select(index, screen.id);
     history.replace(screen.path); // since it is a movement between tabs, we don't use push. we use replace to avoid the history stack to be too long.
   };
@@ -155,6 +157,8 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
     }
   );
 
+  const shadow_required = screen == WorkScreen.code || !isTabVisible;
+
   return (
     // root flex styled container for the whole app
     <div
@@ -167,8 +171,10 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
       <AppbarContainerMotion hidden={whole_navigation_hidden}>
         <div
           style={{
-            zIndex: 99,
-            boxShadow: "0px 4px 24px rgba(0, 0, 0, 0.25)",
+            zIndex: 1,
+            boxShadow: shadow_required
+              ? "0px 4px 24px rgba(0, 0, 0, 0.25)"
+              : undefined,
           }}
         >
           <PrimaryWorkmodeWrapper>

@@ -58,4 +58,5 @@ const PlainIframe = styled.iframe<{ scale: number; margin: number }>`
   border: none;
   transform: ${(props) => `scale(${props.scale})`};
   transform-origin: 0 0;
+  z-index: -1;
 `;

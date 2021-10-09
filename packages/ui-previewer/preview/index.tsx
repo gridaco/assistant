@@ -51,7 +51,6 @@ export function Preview(props: Props) {
   const initialPreviewHeight = 200;
   const previewWrapPadding = 0;
   return (
-    // <Container>
     <PreviewWrap
       id="preview-wrap"
       ref={previewRefWrap}
@@ -71,7 +70,6 @@ export function Preview(props: Props) {
     </PreviewWrap>
   );
 }
-// {/* </Container> */}
 
 function Content({ props, wrapWidth }: { props: Props; wrapWidth: number }) {
   switch (props.type) {
