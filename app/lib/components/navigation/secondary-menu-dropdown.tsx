@@ -1,6 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { WorkMode, WorkScreen } from "../../navigation";
+import { WorkMode, WorkScreen } from "../../routing";
 import { SecondaryWorkmodeMenu } from "./secondary-workmode-menu";
 
 type Stage = "production" | "development" | string;

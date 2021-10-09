@@ -41,7 +41,7 @@ import {
   saveLayout,
   updateLayout,
   get_page_config_by_path,
-} from "../navigation";
+} from "../routing";
 
 import {
   WorkmodeScreenTabs,
@@ -96,72 +96,17 @@ function Screen(props: { screen: WorkScreen }) {
   }
 }
 
-function TabsLayout(props: {
-  workmode: WorkMode;
-  tabIndex: number;
-  isTabVisible: boolean;
-  onChange: (index: number, tab: WorkScreen) => void;
-}) {
-  const history = useHistory();
-  const { workmode, tabIndex, onChange } = props;
-  const tabs_as_page_configs = getWorkmodeTabLayout(workmode).map(
-    (screen, index) => {
-      const _ = get_page_config(screen);
-      return {
-        id: _.id,
-        name: _.title,
-        path: _.path,
-      };
-    }
-  );
-
-  useEffect(() => {
-    handleTabChange(tabIndex);
-  }, []);
-
-  const handleTabChange = (index: number) => {
-    const screen = tabs_as_page_configs[index];
-    onChange(index, screen.id);
-    history.replace(screen.path); // since it is a movement between tabs, we don't use push. we use replace to avoid the history stack to be too long.
-  };
-
-  return (
-    <>
-      {props.isTabVisible && (
-        <WorkmodeScreenTabs
-          key="workmode-tabs"
-          layout={tabs_as_page_configs}
-          tabIndex={tabIndex}
-          onSelect={handleTabChange}
-        />
-      )}
-
-      {/* the screen's wrapping layout */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          flexGrow: 1,
-          minHeight: "0px",
-        }}
-      >
-        <Switch>
-          {tabs_as_page_configs.map((v, i) => {
-            return (
-              <Route
-                key={v.id}
-                path={v.path}
-                render={() => <Screen screen={v.id} />}
-              />
-            );
-          })}
-        </Switch>
-      </div>
-    </>
-  );
-}
+// region global navigation animation state
+import { RecoilRoot, useRecoilState } from "recoil";
+import {
+  AppbarContainerMotion,
+  AppbarContentMotion,
+} from "../components/navigation/navigation-motions";
+import { hide_navigation } from "./global-state-atoms";
+// endregion
 
 function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
+  const history = useHistory();
   const [workmode, setWorkmode] = useState<WorkMode>(
     props.savedLayout.currentWorkmode
   );
@@ -169,8 +114,9 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
     props.savedLayout.workmodeSet
   );
   const [tabIndex, setTabIndex] = useState<number>(0);
+  const [screen, setScreen] = useState<WorkScreen>();
   const [expansion, setExpansion] = useState<boolean>(true);
-
+  const isTabVisible = expansion;
   const on_workmode_select = (workmode: WorkMode) => {
     setWorkmode(workmode);
     setTabIndex(0);
@@ -186,6 +132,33 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
     });
   };
 
+  // region animation state
+  const [whole_navigation_hidden] = useRecoilState(hide_navigation);
+
+  useEffect(() => {
+    handleTabChange(tabIndex);
+  }, []);
+
+  const handleTabChange = (index: number) => {
+    const screen = tabs_as_page_configs[index];
+    setScreen(screen.id);
+    on_work_select(index, screen.id);
+    history.replace(screen.path); // since it is a movement between tabs, we don't use push. we use replace to avoid the history stack to be too long.
+  };
+
+  const tabs_as_page_configs = getWorkmodeTabLayout(workmode).map(
+    (screen, index) => {
+      const _ = get_page_config(screen);
+      return {
+        id: _.id,
+        name: _.title,
+        path: _.path,
+      };
+    }
+  );
+
+  const shadow_required = screen == WorkScreen.code || !isTabVisible;
+
   return (
     // root flex styled container for the whole app
     <div
@@ -195,35 +168,72 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
         height: "100vh",
       }}
     >
-      <AppbarWrapper>
-        <Column
+      <AppbarContainerMotion hidden={whole_navigation_hidden}>
+        <div
           style={{
-            width: "100%",
-            justifyItems: "center",
+            zIndex: 1,
+            boxShadow: shadow_required
+              ? "0px 4px 24px rgba(0, 0, 0, 0.25)"
+              : undefined,
           }}
         >
-          <Row style={{ paddingTop: "22px" }}>
-            <PrimaryWorkmodeSelect
-              selection={workmode}
-              set={workmodeSet}
-              onSelect={on_workmode_select}
-            />
-            <NavigatorExpansionControlButton
-              action={expansion ? "close" : "expand"}
-              onClick={() => setExpansion(!expansion)}
-            />
-          </Row>
-          {!expansion && <SecondaryMenuDropdown />}
-        </Column>
-      </AppbarWrapper>
+          <PrimaryWorkmodeWrapper>
+            <AppbarContentMotion hidden={whole_navigation_hidden}>
+              <Column
+                style={{
+                  width: "100%",
+                  justifyItems: "center",
+                }}
+              >
+                <Row style={{ paddingTop: "22px" }}>
+                  <PrimaryWorkmodeSelect
+                    selection={workmode}
+                    set={workmodeSet}
+                    onSelect={on_workmode_select}
+                  />
+                  <NavigatorExpansionControlButton
+                    action={expansion ? "close" : "expand"}
+                    onClick={() => setExpansion(!expansion)}
+                  />
+                </Row>
+                {!expansion && <SecondaryMenuDropdown />}
+                {isTabVisible && (
+                  <WorkmodeScreenTabs
+                    key="workmode-tabs"
+                    layout={tabs_as_page_configs}
+                    tabIndex={tabIndex}
+                    onSelect={handleTabChange}
+                  />
+                )}
+              </Column>
+            </AppbarContentMotion>
+          </PrimaryWorkmodeWrapper>
+        </div>
+      </AppbarContainerMotion>
 
-      <TabsLayout
-        key={workmode}
-        workmode={workmode}
-        tabIndex={tabIndex}
-        isTabVisible={expansion}
-        onChange={on_work_select}
-      />
+      <>
+        {/* the screen's wrapping layout */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            flexGrow: 1,
+            minHeight: "0px",
+          }}
+        >
+          <Switch>
+            {tabs_as_page_configs.map((v, i) => {
+              return (
+                <Route
+                  key={v.id}
+                  path={v.path}
+                  render={() => <Screen screen={v.id} />}
+                />
+              );
+            })}
+          </Switch>
+        </div>
+      </>
     </div>
   );
   //
@@ -300,30 +310,32 @@ export default function App(props: { platform: TargetPlatform }) {
 
   const Router = getDedicatedRouter();
   return (
-    <PluginApp platform={props.platform}>
-      {/* @ts-ignore */}
-      <Router>
-        <Switch>
-          {/* # region unique route section */}
-          {standalone_pages.map((p) => {
-            return (
-              <Route
-                key={p.id}
-                path={p.path}
-                render={() => {
-                  return <Screen screen={p.id} />;
-                }}
-              />
-            );
-          })}
-          {/* # endregion unique route section */}
-          {/* dynamic route shall be placed at the last point, since it overwrites other routes */}
-          <Route path="/:workmode/:work" component={RouterTabNavigationApp} />
-          <Route path="/" component={Home} />
-          {/* 👆 this is for preventing blank page on book up. this will be fixed and removed.*/}
-        </Switch>
-      </Router>
-    </PluginApp>
+    <RecoilRoot>
+      <PluginApp platform={props.platform}>
+        {/* @ts-ignore */}
+        <Router>
+          <Switch>
+            {/* # region unique route section */}
+            {standalone_pages.map((p) => {
+              return (
+                <Route
+                  key={p.id}
+                  path={p.path}
+                  render={() => {
+                    return <Screen screen={p.id} />;
+                  }}
+                />
+              );
+            })}
+            {/* # endregion unique route section */}
+            {/* dynamic route shall be placed at the last point, since it overwrites other routes */}
+            <Route path="/:workmode/:work" component={RouterTabNavigationApp} />
+            <Route path="/" component={Home} />
+            {/* 👆 this is for preventing blank page on book up. this will be fixed and removed.*/}
+          </Switch>
+        </Router>
+      </PluginApp>
+    </RecoilRoot>
   );
 }
 
@@ -340,7 +352,7 @@ function _update_focused_screen_ev(screen: WorkScreen) {
   );
 }
 
-const AppbarWrapper = styled.div`
+const PrimaryWorkmodeWrapper = styled.div`
   display: flex;
   padding: 0 16px;
   /* padding: 0 8px; */

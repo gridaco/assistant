@@ -1,6 +1,6 @@
+import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { useSingleSelection } from "plugin-app";
-import React, { useEffect, useState } from "react";
 
 export interface ResponsivePreviewProps {
   type: "responsive";
@@ -14,6 +14,8 @@ export interface ResponsivePreviewProps {
   of?: string;
 }
 
+const margin = 12;
+
 export function ResponsivePreview({
   props,
   parentWidth,
@@ -23,7 +25,6 @@ export function ResponsivePreview({
 }) {
   // TODO: remove me - temporal use
   const design = useSingleSelection();
-  const margin = 12;
   const [scalefactor, setscalefactor] = useState(0);
   useEffect(() => {
     if (design) {
@@ -57,4 +58,5 @@ const PlainIframe = styled.iframe<{ scale: number; margin: number }>`
   border: none;
   transform: ${(props) => `scale(${props.scale})`};
   transform-origin: 0 0;
+  z-index: -1;
 `;

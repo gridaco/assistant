@@ -19,6 +19,9 @@ import {
   ImageHostingRepository,
 } from "@design-sdk/core/assets-repository";
 import { Resizable } from "re-resizable";
+import { useScrollTriggeredAnimation } from "app/lib/components/motions";
+import { useSetRecoilState } from "recoil";
+import { hide_navigation } from "app/lib/main/global-state-atoms";
 
 const resizeBarBase = 5;
 const resizeBarVerPadding = 5;
@@ -51,6 +54,13 @@ export function CodeScreen() {
   ) => {
     set_vanilla_preview_source(inject_assets_source_to_vanilla(v, r));
   };
+
+  const code_scrolling_area_ref = useRef<HTMLDivElement>(null);
+  const set_hide_navigation_state = useSetRecoilState(hide_navigation);
+  const hide = useScrollTriggeredAnimation(code_scrolling_area_ref);
+  useEffect(() => {
+    set_hide_navigation_state(hide);
+  }, [hide]);
 
   return (
     <div
@@ -92,9 +102,9 @@ export function CodeScreen() {
           />
         </Resizable>
       </div>
-      {/* FIXME: add onCopyClicked to code-box */}
-
       <div
+        ref={code_scrolling_area_ref}
+        id="code-area"
         style={{
           display: "flex",
           flexDirection: "column",

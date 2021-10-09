@@ -10,8 +10,8 @@ export let targetNodeId: string;
 
 export function onfigmaselectionchange() {
   // clear the console for better debugging
-  console.clear();
-  console.warn("log cleared. optimized for new build");
+  // console.clear();
+  // console.warn("log cleared. optimized for new build");
   const rawSelections = figma.currentPage.selection;
   console.log("selection", rawSelections);
   const selectionType = analyzeSelection(rawSelections);
