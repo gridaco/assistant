@@ -161,6 +161,15 @@ function TabsLayout(props: {
   );
 }
 
+// region global navigation animation state
+import { RecoilRoot, useRecoilState } from "recoil";
+import {
+  AppbarContainerMotion,
+  AppbarContentMotion,
+} from "../components/navigation/navigation-motions";
+import { hide_navigation } from "./global-state-atoms";
+// endregion
+
 function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
   const [workmode, setWorkmode] = useState<WorkMode>(
     props.savedLayout.currentWorkmode
@@ -186,6 +195,9 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
     });
   };
 
+  // region animation state
+  const [hidden] = useRecoilState(hide_navigation);
+
   return (
     // root flex styled container for the whole app
     <div
@@ -196,25 +208,29 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
       }}
     >
       <AppbarWrapper>
-        <Column
-          style={{
-            width: "100%",
-            justifyItems: "center",
-          }}
-        >
-          <Row style={{ paddingTop: "22px" }}>
-            <PrimaryWorkmodeSelect
-              selection={workmode}
-              set={workmodeSet}
-              onSelect={on_workmode_select}
-            />
-            <NavigatorExpansionControlButton
-              action={expansion ? "close" : "expand"}
-              onClick={() => setExpansion(!expansion)}
-            />
-          </Row>
-          {!expansion && <SecondaryMenuDropdown />}
-        </Column>
+        <AppbarContainerMotion hidden={hidden}>
+          <Column
+            style={{
+              width: "100%",
+              justifyItems: "center",
+            }}
+          >
+            <AppbarContentMotion hidden={hidden}>
+              <Row style={{ paddingTop: "22px" }}>
+                <PrimaryWorkmodeSelect
+                  selection={workmode}
+                  set={workmodeSet}
+                  onSelect={on_workmode_select}
+                />
+                <NavigatorExpansionControlButton
+                  action={expansion ? "close" : "expand"}
+                  onClick={() => setExpansion(!expansion)}
+                />
+              </Row>
+              {!expansion && <SecondaryMenuDropdown />}
+            </AppbarContentMotion>
+          </Column>
+        </AppbarContainerMotion>
       </AppbarWrapper>
 
       <TabsLayout
@@ -300,30 +316,32 @@ export default function App(props: { platform: TargetPlatform }) {
 
   const Router = getDedicatedRouter();
   return (
-    <PluginApp platform={props.platform}>
-      {/* @ts-ignore */}
-      <Router>
-        <Switch>
-          {/* # region unique route section */}
-          {standalone_pages.map((p) => {
-            return (
-              <Route
-                key={p.id}
-                path={p.path}
-                render={() => {
-                  return <Screen screen={p.id} />;
-                }}
-              />
-            );
-          })}
-          {/* # endregion unique route section */}
-          {/* dynamic route shall be placed at the last point, since it overwrites other routes */}
-          <Route path="/:workmode/:work" component={RouterTabNavigationApp} />
-          <Route path="/" component={Home} />
-          {/* 👆 this is for preventing blank page on book up. this will be fixed and removed.*/}
-        </Switch>
-      </Router>
-    </PluginApp>
+    <RecoilRoot>
+      <PluginApp platform={props.platform}>
+        {/* @ts-ignore */}
+        <Router>
+          <Switch>
+            {/* # region unique route section */}
+            {standalone_pages.map((p) => {
+              return (
+                <Route
+                  key={p.id}
+                  path={p.path}
+                  render={() => {
+                    return <Screen screen={p.id} />;
+                  }}
+                />
+              );
+            })}
+            {/* # endregion unique route section */}
+            {/* dynamic route shall be placed at the last point, since it overwrites other routes */}
+            <Route path="/:workmode/:work" component={RouterTabNavigationApp} />
+            <Route path="/" component={Home} />
+            {/* 👆 this is for preventing blank page on book up. this will be fixed and removed.*/}
+          </Switch>
+        </Router>
+      </PluginApp>
+    </RecoilRoot>
   );
 }
 

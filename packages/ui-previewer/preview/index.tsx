@@ -1,13 +1,15 @@
 import React, { MutableRefObject, useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
-import { css } from "@emotion/react";
 import {
   ResponsivePreview,
   ResponsivePreviewProps,
 } from "../preview-responsive";
 import { StaticPreview, StaticPreviewProps } from "../preview-static";
 import { EmptyState } from "../components";
-import { calc } from "@web-builder/styles";
+import { useElementScroll } from "framer-motion";
+import { useRecoilState } from "recoil";
+import { update_hide_by_scroll_position_and_velocity } from "app/lib/components/motions";
+import { hide_navigation } from "app/lib/main/global-state-atoms";
 
 interface PreviewProps {
   auto?: boolean;
@@ -32,6 +34,26 @@ type Props = PreviewProps & Subscenario;
 export function Preview(props: Props) {
   const previewRefWrap = useRef<HTMLDivElement>();
   const [size, setsize] = useState(undefined);
+  const { scrollYProgress } = useElementScroll(previewRefWrap);
+
+  // region navigation animation global state handling by preview's scolling.
+  const [, set_hide_navigation_state] = useRecoilState(hide_navigation);
+  let is_animating_by_intense_scrolling = false;
+  useEffect(() => {
+    return scrollYProgress.onChange(() =>
+      update_hide_by_scroll_position_and_velocity({
+        scrollYProgress,
+        is_animating_by_intense_scrolling,
+        on_animating_by_intense_scrolling: () => {
+          is_animating_by_intense_scrolling = true;
+        },
+        on_change: (hide) => {
+          set_hide_navigation_state(hide);
+        },
+      })
+    );
+  }, []);
+  // endregion
 
   useEffect(() => {
     if (previewRefWrap.current) {
@@ -42,29 +64,32 @@ export function Preview(props: Props) {
   const initialPreviewHeight = 200;
   const previewWrapPadding = 0;
   return (
-    <Container>
-      <PreviewWrap
-        ref={previewRefWrap}
-        padding={previewWrapPadding}
-        isAutoSizable={props.isAutoSizable}
-        initialPreviewHeight={initialPreviewHeight}
-      >
-        <Render>
+    // <Container>
+    <PreviewWrap
+      id="preview-wrap"
+      ref={previewRefWrap}
+      padding={previewWrapPadding}
+      isAutoSizable={props.isAutoSizable}
+      initialPreviewHeight={initialPreviewHeight}
+    >
+      <Render id="render">
+        <>
           {props.data || props.auto ? (
             <>{size && <Content props={props} wrapWidth={size} />}</>
           ) : (
             <div className="inner-render">{props.empty || <EmptyState />}</div>
           )}
-        </Render>
-      </PreviewWrap>
-    </Container>
+        </>
+      </Render>
+    </PreviewWrap>
   );
 }
+// {/* </Container> */}
 
 function Content({ props, wrapWidth }: { props: Props; wrapWidth: number }) {
   switch (props.type) {
     case "responsive": {
-      return <ResponsivePreview props={props} parentWidth={wrapWidth} />;
+      return <ResponsivePreview props={props as any} parentWidth={wrapWidth} />;
     }
     case "static": {
       return <StaticPreview {...props} />;
@@ -94,38 +119,39 @@ const Render = styled.div`
   /* text-align: center; */
 `;
 
-const Container = styled.div`
-  /* To be deleted later */
+// const Container = styled.div`
+//   /* To be deleted later */
 
-  height: 100%;
+//   /* height: 100%; */
+//   /*
+//   .preview {
+//     background: #f1f1f1;
+//     height: calc(200px - 24px);
+//   } */
+//   /*
+//   .preview-loading {
+//     width: 100%;
+//     background-color: gray;
+//   } */
+//   /*
+//   .render {
+//     .render height equal .preview height
+//     width: 100%;
+//     height: calc(200px - 24px);
+//     text-align: center;
+//     object-fit: contain;
+//     display: table;
+//   }
+//   */
 
-  .preview {
-    background: #f1f1f1;
-    height: calc(200px - 24px);
-  }
-
-  .preview-loading {
-    width: 100%;
-    background-color: gray;
-  }
-
-  .render {
-    /* .render height equal .preview height */
-    width: 100%;
-    height: calc(200px - 24px);
-    text-align: center;
-    object-fit: contain;
-    display: table;
-  }
-
-  .inner-render {
-    margin: 0 auto;
-    display: table-cell;
-    vertical-align: middle;
-  }
-
-  .rendering-notify {
-    color: #adaeb2;
-    font-size: 18px;
-  }
-`;
+//   /* .inner-render {
+//     margin: 0 auto;
+//     display: table-cell;
+//     vertical-align: middle;
+//   } */
+//   /*
+//   .rendering-notify {
+//     color: #adaeb2;
+//     font-size: 18px;
+//   } */
+// `;
