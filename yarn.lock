@@ -1254,10 +1254,10 @@
   dependencies:
     "@tippyjs/react" "^4.2.5"
 
-"@code-ui/token@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@code-ui/token/-/token-0.0.6.tgz#429fd3e56f21872d26bfbcab99758115ae90898a"
-  integrity sha512-i2+bJ+KMtvvavpYMjywuM6VuDNs8qbt8iRIkwSY5+8I1VK0+S6DlhwCIhwdRU9drfo/sJVnjl1gyB4GYbXgfFg==
+"@code-ui/token@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@code-ui/token/-/token-0.0.7.tgz#def0237057116d8c3fc1914fb1354faf959f24cb"
+  integrity sha512-lo05EWYBpJ59/eiLpanzfKlbJw4a3OV8O/zvuuEZBN84ZCMxLlVM6PhrJXDBO/1/vID/13iQMSbkpH74qH0rOw==
   dependencies:
     "@code-ui/color-scheme" "0.0.2"
     "@code-ui/hover" "0.0.2"
@@ -1695,10 +1695,10 @@
   resolved "https://registry.yarnpkg.com/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.4.0.tgz#becce788818d3f47f0ac1a74c3c061ac1dcf4f6d"
   integrity sha512-8cUA/mg0S+BxIZ72TdZRsXKBP5n5uRcE3k29TZhZw6oIiHBt9JA7CTb/4pE1uKtE/q5NeTY2tBDcagoZ+1zjXQ==
 
-"@flutter-builder/flutter@^2.5.0-f5":
-  version "2.5.0-f5"
-  resolved "https://registry.yarnpkg.com/@flutter-builder/flutter/-/flutter-2.5.0-f5.tgz#a0bd7a08ce5fede37d1321234bdca2275f21eb6b"
-  integrity sha512-PSZzzKMfILttfOh6/btrOUD+d73mmfjoB2kg3VRmnWUufevH8wGkd+4UQv4d0ShCu/uN15ak9GmA26P87zDjHw==
+"@flutter-builder/flutter@^2.5.0-f7":
+  version "2.5.0-f7"
+  resolved "https://registry.yarnpkg.com/@flutter-builder/flutter/-/flutter-2.5.0-f7.tgz#03ba57d70697a79459e0609bef670812b0928397"
+  integrity sha512-PTFQrKRquPcC/KA+aDC6Pf7TUlMQL4+s4Z117JWLfDXcdxXgU0H5rs7mge7XlH3+dOsVKqWCbUC9XbUpk8S9TQ==
   dependencies:
     "@abraham/reflection" "^0.8.0"
     dart-style "^1.3.2-dev"
@@ -3316,6 +3316,11 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
   integrity sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==
 
+"@types/assert@^1.5.6":
+  version "1.5.6"
+  resolved "https://registry.yarnpkg.com/@types/assert/-/assert-1.5.6.tgz#a8b5a94ce5fb8f4ba65fdc37fc9507609114189e"
+  integrity sha512-Y7gDJiIqb9qKUHfBQYOWGngUpLORtirAVPuj/CWJrU2C6ZM4/y3XLwuwfGMF8s7QzW746LQZx23m0+1FSgjfug==
+
 "@types/babel__core@^7.0.0", "@types/babel__core@^7.1.14":
   version "7.1.16"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.16.tgz#bc12c74b7d65e82d29876b5d0baf5c625ac58702"
@@ -3447,7 +3452,7 @@
     jest-diff "^26.0.0"
     pretty-format "^26.0.0"
 
-"@types/jest@^27.0.1":
+"@types/jest@^27.0.1", "@types/jest@^27.0.2":
   version "27.0.2"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-27.0.2.tgz#ac383c4d4aaddd29bbf2b916d8d105c304a5fcd7"
   integrity sha512-4dRxkS/AFX0c5XW6IPMNOydLn2tEhNhJV7DnYK+0bjoJZ+QTmfucBlihX7aoEsh/ocYtkLC73UbnBXBXIxsULA==
@@ -3518,6 +3523,11 @@
   version "15.14.9"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-15.14.9.tgz#bc43c990c3c9be7281868bbc7b8fdd6e2b57adfa"
   integrity sha512-qjd88DrCxupx/kJD5yQgZdcYKZKSIGBVDIBE1/LTGcNm3d2Np/jxojkdePDdfnBHJc5W7vSMpbJ1aB7p/Py69A==
+
+"@types/node@^16.10.3":
+  version "16.10.3"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.10.3.tgz#7a8f2838603ea314d1d22bb3171d899e15c57bd5"
+  integrity sha512-ho3Ruq+fFnBrZhUYI46n/bV2GjwzSkwuT4dTf0GkuNFmnb8nq4ny2z9JEVemFi6bdEJanHLlYfy9c6FN9B9McQ==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.1"
@@ -6650,6 +6660,11 @@ fast-levenshtein@~2.0.6:
   resolved "https://registry.yarnpkg.com/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
   integrity sha1-PYpcZog6FqMMqGQ+hR8Zuqd5eRc=
 
+fast-memoize@^2.5.1:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/fast-memoize/-/fast-memoize-2.5.2.tgz#79e3bb6a4ec867ea40ba0e7146816f6cdce9b57e"
+  integrity sha512-Ue0LwpDYErFbmNnZSF0UH6eImUwDmogUO1jyE+JbN2gsQz/jICm1Ve7t9QT0rNSsfJt+Hs4/S3GnsDVjL4HVrw==
+
 fastest-levenshtein@^1.0.12:
   version "1.0.12"
   resolved "https://registry.yarnpkg.com/fastest-levenshtein/-/fastest-levenshtein-1.0.12.tgz#9990f7d3a88cc5a9ffd1f1745745251700d497e2"
@@ -8896,7 +8911,7 @@ jest-worker@^27.2.4:
     merge-stream "^2.0.0"
     supports-color "^8.0.0"
 
-jest@^27.0.3, jest@^27.0.4, jest@^27.0.6, jest@^27.1.0, jest@^27.2.0:
+jest@^27.0.3, jest@^27.0.4, jest@^27.0.6, jest@^27.1.0, jest@^27.2.0, jest@^27.2.4:
   version "27.2.4"
   resolved "https://registry.yarnpkg.com/jest/-/jest-27.2.4.tgz#70e27bef873138afc123aa4769f7124c50ad3efb"
   integrity sha512-h4uqb1EQLfPulWyUFFWv9e9Nn8sCqsJ/j3wk/KCY0p4s4s0ICCfP3iMf6hRf5hEhsDyvyrCgKiZXma63gMz16A==
@@ -10997,6 +11012,13 @@ raw-loader@^4.0.2:
   dependencies:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
+
+re-resizable@^6.9.1:
+  version "6.9.1"
+  resolved "https://registry.yarnpkg.com/re-resizable/-/re-resizable-6.9.1.tgz#6be082b55d02364ca4bfee139e04feebdf52441c"
+  integrity sha512-KRYAgr9/j1PJ3K+t+MBhlQ+qkkoLDJ1rs0z1heIWvYbCW/9Vq4djDU+QumJ3hQbwwtzXF6OInla6rOx6hhgRhQ==
+  dependencies:
+    fast-memoize "^2.5.1"
 
 react-colorful@^5.1.2:
   version "5.5.0"

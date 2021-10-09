@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { WhtieButtonStyle } from "@ui/core/button-style";
+import {
+  BlackTextButtonStyle,
+  WhiteTextButtonStyle,
+} from "@ui/core/button-style";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import { PluginSdk } from "@plugin-sdk/app";
 import { preview } from "@app/scene-view";
@@ -62,15 +65,11 @@ export function CodeScreenFooter(props: ICodeScreenFooter) {
 }
 
 const CodeFooterCtaWrapper = styled.footer`
-  /* 32 is padding */
-  /* width: calc(100% - 32px); */
   width: 100%;
   padding: 12px 0;
   display: flex;
-  background: #fff;
-  position: absolute;
-  left: 0;
-  bottom: 0;
+  /* vscode dark theme */
+  background: #1e1e1e;
   display: flex;
 
   button {
@@ -85,7 +84,7 @@ const InnerWrapper = styled.div`
   margin: 0 16px;
 `;
 const PreviewButton = styled.button`
-  ${WhtieButtonStyle}
+  ${WhiteTextButtonStyle}
   /* temp before add button component */
   width: 36%;
 `;

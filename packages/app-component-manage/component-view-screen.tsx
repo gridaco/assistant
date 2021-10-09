@@ -55,7 +55,13 @@ export function ComponentViewScreen() {
   }
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        flex: 1,
+      }}
+    >
       <Preview type="static" auto />
 
       {/* {selection ? (
@@ -102,7 +108,13 @@ export function ComponentViewScreen() {
       ) : (
         <></>
       )} */}
-      <ComponentSchemaEditor />
+      <div
+        style={{
+          flex: 1,
+        }}
+      >
+        <ComponentSchemaEditor />
+      </div>
     </div>
   );
 }

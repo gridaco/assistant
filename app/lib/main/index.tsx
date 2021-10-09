@@ -24,9 +24,9 @@ import { FontReplacerScreen } from "@toolbox/font-replacer";
 import { CodeScreen } from "@app/design-to-code";
 import { AboutScreen } from "../pages/about";
 import { SigninScreen } from "@app/auth";
+import { ToolboxHome } from "@app/toolbox";
 import { DesignTextCdoeSyntaxHighligherScreen } from "@app/design-text-code-syntax-highlight";
 // endregion screens import
-//
 
 import {
   getDedicatedRouter,
@@ -73,6 +73,8 @@ function Screen(props: { screen: WorkScreen }) {
       return <GlobalizationScreen />;
     case WorkScreen.exporter:
       return <ExporterScreen />;
+    case WorkScreen.tool_home:
+      return <ToolboxHome />;
     case WorkScreen.tool_desing_button_maker:
       return <ButtonMakerScreen />;
     case WorkScreen.tool_font_replacer:
@@ -124,29 +126,38 @@ function TabsLayout(props: {
   };
 
   return (
-    <div className="outer-ui">
+    <>
       {props.isTabVisible && (
-        <div className="tabs-wrapper">
-          <WorkmodeScreenTabs
-            layout={tabs_as_page_configs}
-            tabIndex={tabIndex}
-            onSelect={handleTabChange}
-          />
-        </div>
+        <WorkmodeScreenTabs
+          key="workmode-tabs"
+          layout={tabs_as_page_configs}
+          tabIndex={tabIndex}
+          onSelect={handleTabChange}
+        />
       )}
 
-      <Switch>
-        {tabs_as_page_configs.map((v, i) => {
-          return (
-            <Route
-              key={v.id}
-              path={v.path}
-              render={() => <Screen screen={v.id} />}
-            />
-          );
-        })}
-      </Switch>
-    </div>
+      {/* the screen's wrapping layout */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          flexGrow: 1,
+          minHeight: "0px",
+        }}
+      >
+        <Switch>
+          {tabs_as_page_configs.map((v, i) => {
+            return (
+              <Route
+                key={v.id}
+                path={v.path}
+                render={() => <Screen screen={v.id} />}
+              />
+            );
+          })}
+        </Switch>
+      </div>
+    </>
   );
 }
 
@@ -176,16 +187,22 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
   };
 
   return (
-    <>
-      <Wrapper>
+    // root flex styled container for the whole app
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh",
+      }}
+    >
+      <AppbarWrapper>
         <Column
           style={{
             width: "100%",
             justifyItems: "center",
-            // marginBottom: "-8px",
           }}
         >
-          <Row>
+          <Row style={{ paddingTop: "22px" }}>
             <PrimaryWorkmodeSelect
               selection={workmode}
               set={workmodeSet}
@@ -198,9 +215,8 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
           </Row>
           {!expansion && <SecondaryMenuDropdown />}
         </Column>
-      </Wrapper>
+      </AppbarWrapper>
 
-      {/* {expansion && ( */}
       <TabsLayout
         key={workmode}
         workmode={workmode}
@@ -208,8 +224,7 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
         isTabVisible={expansion}
         onChange={on_work_select}
       />
-      {/* )} */}
-    </>
+    </div>
   );
   //
 }
@@ -325,7 +340,7 @@ function _update_focused_screen_ev(screen: WorkScreen) {
   );
 }
 
-const Wrapper = styled.div`
+const AppbarWrapper = styled.div`
   display: flex;
   padding: 0 16px;
   /* padding: 0 8px; */

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Preview } from "@ui/previewer";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import { DesigntoCodeUserOptions } from "./user-options";
@@ -18,6 +18,11 @@ import {
   ImageRepository,
   ImageHostingRepository,
 } from "@design-sdk/core/assets-repository";
+import { Resizable } from "re-resizable";
+
+const resizeBarBase = 5;
+const resizeBarVerPadding = 5;
+const resizeBarSize = 5 + resizeBarVerPadding * 2;
 
 export function CodeScreen() {
   const selection = useSingleSelection();
@@ -48,48 +53,93 @@ export function CodeScreen() {
   };
 
   return (
-    <div>
-      <Preview
-        key={vanilla_preview_source}
-        auto
-        type="responsive"
-        data={vanilla_preview_source}
-      />
-
-      {/* FIXME: add onCopyClicked to code-box */}
-      <CopyCodeButton onClick={onCopyClicked}>
-        <svg
-          width="19"
-          height="22"
-          viewBox="0 0 19 22"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: 0,
+        flexGrow: 1,
+      }}
+    >
+      <div>
+        <Resizable
+          defaultSize={{ width: "100%", height: "200px" }}
+          handleStyles={{
+            bottom: {
+              height: `${resizeBarSize}px`,
+              bottom: `${Math.floor(-resizeBarSize / 2)}px`,
+              zIndex: 999,
+            },
+          }}
+          handleComponent={{ bottom: ResizeWrap() }}
+          enable={{
+            top: false,
+            right: false,
+            bottom: true,
+            left: false,
+            topRight: false,
+            bottomRight: false,
+            bottomLeft: false,
+            topLeft: false,
+          }}
         >
-          <path
-            d="M14 0H0V16H2V2H14V0ZM19 4H4V22H19V4ZM17 20H6V6H17V20Z"
-            fill="white"
+          <Preview
+            key={vanilla_preview_source}
+            auto
+            type="responsive"
+            data={vanilla_preview_source}
+            isAutoSizable={true}
           />
-        </svg>
-      </CopyCodeButton>
-      <CodeViewWithControl
-        key={selection?.id}
-        targetid={selection?.id}
-        onGeneration={(app, src, vanilla_preview_source) => {
-          setApp(app);
-          setSource(src);
-          handle_vanilla_preview_source(vanilla_preview_source);
+        </Resizable>
+      </div>
+      {/* FIXME: add onCopyClicked to code-box */}
+
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          flexGrow: 1,
+          overflow: "auto",
+          /* vscode dark bg color */
+          background: "#1e1e1e",
         }}
-        onAssetsLoad={(r) => {
-          handle_vanilla_preview_source(vanilla_preview_source, r);
-        }}
-        onUserOptionsChange={setUseroption}
-      />
-      <CodeScreenFooter
-        key={useroption?.framework}
-        framework={useroption?.framework}
-        app={app}
-        scene={selection?.node as any}
-      />
+      >
+        <CopyCodeButton onClick={onCopyClicked}>
+          <svg
+            width="19"
+            height="22"
+            viewBox="0 0 19 22"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M14 0H0V16H2V2H14V0ZM19 4H4V22H19V4ZM17 20H6V6H17V20Z"
+              fill="white"
+            />
+          </svg>
+        </CopyCodeButton>
+        <CodeViewWithControl
+          key={selection?.id}
+          targetid={selection?.id}
+          onGeneration={(app, src, vanilla_preview_source) => {
+            setApp(app);
+            setSource(src ?? app); // TODO: react only provides app. this needs to be fixed on the codegen side.
+            handle_vanilla_preview_source(vanilla_preview_source);
+          }}
+          onAssetsLoad={(r) => {
+            handle_vanilla_preview_source(vanilla_preview_source, r);
+          }}
+          onUserOptionsChange={setUseroption}
+        />
+      </div>
+      <div>
+        <CodeScreenFooter
+          key={useroption?.framework}
+          framework={useroption?.framework}
+          app={app}
+          scene={selection?.node as any}
+        />
+      </div>
     </div>
   );
 }
@@ -125,6 +175,10 @@ function inject_assets_source_to_vanilla(
   return _final;
 }
 
+const ResizeWrap = (props?: any) => (
+  <ResizableHandleBar>{props}</ResizableHandleBar>
+);
+
 const CopyCodeButton = styled.div`
   width: 24px;
   height: 24px;
@@ -133,4 +187,20 @@ const CopyCodeButton = styled.div`
   margin-top: 24px;
   margin-right: 20px;
   cursor: pointer;
+  z-index: 99999;
+`;
+
+const ResizableHandleBar = styled.div`
+  width: 100%;
+  z-index: 9999;
+  height: ${resizeBarBase}px;
+  padding: ${resizeBarVerPadding}px 0;
+
+  &:hover,
+  &:active {
+    padding: 0;
+    margin-top: ${resizeBarVerPadding}px;
+    height: ${resizeBarBase}px;
+    background-color: #2663ff;
+  }
 `;

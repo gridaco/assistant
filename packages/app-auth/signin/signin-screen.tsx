@@ -9,7 +9,6 @@ import { AuthProxySessionStartResult } from "@base-sdk-fp/auth";
 import { ButtonStyle } from "@ui/core/button-style";
 import { useHistory } from "react-router";
 import {
-  BackIcon,
   BtnWrapper,
   Contents,
   Inner,
@@ -21,7 +20,7 @@ import {
   Wrapper,
 } from "./style";
 import { PluginSdk } from "@plugin-sdk/app";
-import BackArrow from "@assistant/icons/back-arrow";
+import { RouteBackButton } from "app/lib/components/navigation/route-back-button";
 
 function InitialStateContent() {
   return (
@@ -100,9 +99,7 @@ export function SigninScreen() {
 
   return (
     <Wrapper>
-      <BackIcon onClick={close}>
-        <BackArrow />
-      </BackIcon>
+      <RouteBackButton />
       <Inner>
         {!isAuthenticated ? (
           !isLoading ? (

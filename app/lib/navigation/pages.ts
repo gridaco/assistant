@@ -64,6 +64,12 @@ const page_about: PageConfig = {
   path: "/about",
 };
 
+const page_toolbox_home: PageConfig = {
+  id: WorkScreen.tool_home,
+  title: "Tools",
+  path: "/toolbox/home",
+};
+
 const page_toolbox_font_replacer: PageConfig = {
   id: WorkScreen.tool_font_replacer,
   title: "Font replacer",
@@ -98,7 +104,7 @@ const page_toolbox_code_syntax_highlight: PageConfig = {
   id: WorkScreen.tool_code_syntax_highlighter,
   title: "Code syntax highlighter",
   /** this is temporarily under design workmode. - change under toolbox after workmode preference switch is ready. */
-  path: "/design/code-syntax-highlight",
+  path: "/toolbox/code-syntax-highlight",
 };
 
 const page_scene_upload_steps_final: PageConfig = {
@@ -117,11 +123,6 @@ const page_signup: PageConfig = {
  * list of all pages
  */
 const all_pages: PageConfig[] = [
-  page_toolbox_data_mapper,
-  page_toolbox_batch_meta_editor,
-  page_toolbox_meta_editor,
-  page_toolbox_desing_button_maker,
-  page_toolbox_font_replacer,
   page_content_g11n,
   page_design_lint,
   page_design_layout,
@@ -130,17 +131,34 @@ const all_pages: PageConfig[] = [
   page_code_preview,
   page_code_component,
   page_code_lint,
-  page_toolbox_code_syntax_highlight /** temporarily under design workmode */,
   // standalones
   page_signup,
   page_about,
   page_scene_upload_steps_final,
+  // tools
+  page_toolbox_home,
+  page_toolbox_data_mapper,
+  page_toolbox_batch_meta_editor,
+  page_toolbox_meta_editor,
+  page_toolbox_desing_button_maker,
+  page_toolbox_font_replacer,
+  page_toolbox_home,
+  page_toolbox_code_syntax_highlight,
 ];
 
 export const standalone_pages: PageConfig[] = [
   page_signup,
   page_about,
   page_scene_upload_steps_final,
+  // tools
+  page_toolbox_home,
+  page_toolbox_data_mapper,
+  page_toolbox_batch_meta_editor,
+  page_toolbox_meta_editor,
+  page_toolbox_desing_button_maker,
+  page_toolbox_font_replacer,
+  page_toolbox_home,
+  page_toolbox_code_syntax_highlight,
 ];
 
 export function get_page_config(id: WorkScreen): PageConfig {
