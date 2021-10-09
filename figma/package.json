@@ -10,6 +10,7 @@
     "scripts": {
         "build": "webpack -p --mode=production",
         "build:dev": "webpack --mode=development",
-        "watch": "webpack --watch"
+        "watch": "webpack --watch",
+        "dev": "yarn watch"
     }
 }

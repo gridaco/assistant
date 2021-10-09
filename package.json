@@ -34,7 +34,7 @@
     "figma-native": "yarn workspace figma-native run webpack:watch",
     "figma": "yarn workspace figma run build:dev && yarn web",
     "figma:onlyweb": "yarn workspace web run dev",
-    "figma:onlyplugin": "yarn workspace figma run build:dev",
+    "figma:onlyplugin": "yarn workspace figma run dev",
     "build:figma:prod": "yarn workspace figma run build",
     "sketch": "yarn workspace sketch run render",
     "web": "yarn workspace web run dev",
