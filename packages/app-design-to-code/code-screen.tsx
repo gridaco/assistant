@@ -112,6 +112,11 @@ export function CodeScreen() {
             auto
             type="responsive"
             data={vanilla_preview_source}
+            id={selection?.id}
+            origin_size={{
+              width: selection?.node?.width,
+              height: selection?.node?.height,
+            }}
             isAutoSizable={true}
             height={previewHeight} //FIXME:
           />

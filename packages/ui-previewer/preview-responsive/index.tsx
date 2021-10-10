@@ -12,6 +12,16 @@ export interface ResponsivePreviewProps {
    * show responsive view of.
    */
   of?: string;
+
+  id: string;
+
+  /**
+   * the origin size of the design
+   */
+  origin_size: {
+    width: number;
+    height: number;
+  };
 }
 interface ParentSizeProps {
   w: number;
@@ -27,18 +37,16 @@ export function ResponsivePreview({
   previewInfo: ResponsivePreviewProps;
   parentSize: ParentSizeProps;
 }) {
-  // TODO: remove me - temporal use
-  const design = useSingleSelection();
   const [scalefactor, setscalefactor] = useState(0);
   const iframeRef = useRef<HTMLIFrameElement>(undefined);
   useEffect(() => {
     const parent = iframeRef.current.parentElement;
-    if (design) {
-      if (!(parentSize.h > design.node["height"])) {
+    if (previewInfo) {
+      if (!(parentSize.h > previewInfo.origin_size.height)) {
         parent.style.height = "min-content";
       }
-      if (parentSize.w < design.node["width"]) {
-        const _s = (parentSize.w - margin * 2) / design.node["width"];
+      if (parentSize.w < previewInfo.origin_size.width) {
+        const _s = (parentSize.w - margin * 2) / previewInfo.origin_size.width;
         const framescale = _s; // Math.min(_s, 1); (disabled. - will be removed @softmarshamllow)
         setscalefactor(framescale);
       } else {
@@ -49,7 +57,7 @@ export function ResponsivePreview({
         parent.style.flexWrap = "wrap";
       }
     }
-  }, [design, parentSize.w]);
+  }, [parentSize.w]);
 
   // dangerously remove scrolling for inner ifram html
   // ask: @softmarshmallow
@@ -57,15 +65,15 @@ export function ResponsivePreview({
     if (iframeRef.current) {
       __dangerously_disable_scroll_in_html_body(iframeRef.current);
     }
-  }, [iframeRef, previewInfo.data, design?.node?.id]);
+  }, [iframeRef, previewInfo.data, previewInfo?.id]);
 
   return (
     <>
       <PlainIframe
         id="preview-iframe"
         ref={iframeRef}
-        width={design?.node["width"] ?? 0}
-        height={design?.node["height"] ?? 0}
+        width={previewInfo?.origin_size?.width ?? 0}
+        height={previewInfo?.origin_size?.height ?? 0}
         sandbox="allow-same-origin"
         margin={margin}
         srcDoc={previewInfo.data}
