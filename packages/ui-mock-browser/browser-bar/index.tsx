@@ -39,14 +39,14 @@ export function BrowserBar({
         />
       </AddressBarWrap>
       <Trailing>
-        <IconsMdiIosShare
+        {/* <IconsMdiIosShare
           src="https://s3-us-west-2.amazonaws.com/figma-alpha-api/img/da99/bb53/d07b48d9862132562382bf46a02ca50a"
           alt="image of IconsMdiIosShare"
         ></IconsMdiIosShare>
         <IconsMdiAdd
           src="https://s3-us-west-2.amazonaws.com/figma-alpha-api/img/e318/b488/9d87f48c0287cd06fb9565de35a44892"
           alt="image of IconsMdiAdd"
-        ></IconsMdiAdd>
+        ></IconsMdiAdd> */}
       </Trailing>
     </Wrapper>
   );
@@ -88,8 +88,6 @@ const AddressBarWrap = styled.div`
 `;
 
 const Trailing = styled.div`
-  width: 52px;
-  height: 20px;
   position: relative;
 `;
 

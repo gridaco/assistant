@@ -14,7 +14,7 @@ export function AddressBar(props: AddressBarProps) {
     <Wrapper>
       <Frame168>
         <RefreshButton onClick={props.onRefreshClick} />
-        <MoreHoriz />
+        {/* <MoreHoriz /> */}
       </Frame168>
       <Frame167>
         {props.icon}
