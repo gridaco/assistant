@@ -356,4 +356,7 @@ const PrimaryWorkmodeWrapper = styled.div`
   display: flex;
   padding: 0 16px;
   /* padding: 0 8px; */
+  > div {
+    width: 100%;
+  }
 `;
