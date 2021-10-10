@@ -127,7 +127,8 @@ function _social_icon(
 }
 
 const BackIcon = styled.div`
-  margin-bottom: 24px;
+  margin-top: 24px;
+  margin-left: 24px;
 `;
 
 const AboutTitleSection = styled.div`
