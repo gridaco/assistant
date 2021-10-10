@@ -346,7 +346,7 @@ function _update_focused_screen_ev(screen: WorkScreen) {
 const PrimaryWorkmodeWrapper = styled.div<{ shadow_required: boolean }>`
   display: flex;
   padding: 0 16px;
-  /* padding: 0 8px; */
+  background-color: #fff;
 
   box-shadow: ${(props) =>
     props.shadow_required ? "0px 4px 24px rgba(0,0,0,0.25)" : "none"};
