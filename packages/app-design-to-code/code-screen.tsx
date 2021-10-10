@@ -40,8 +40,6 @@ export function CodeScreen() {
   const [useroption, setUseroption] = useState<DesigntoCodeUserOptions>();
 
   const onCopyClicked = (e) => {
-    // const _code: SourceInput = _make_source();
-    // const raw = typeof _code == "string" ? _code : _code.raw;
     copy(source);
     PluginSdk.notifyCopied();
 
@@ -152,7 +150,7 @@ export function CodeScreen() {
           targetid={selection?.id}
           onGeneration={(app, src, vanilla_preview_source) => {
             setApp(app);
-            setSource(src ?? app); // TODO: react only provides app. this needs to be fixed on the codegen side.
+            setSource(src);
             handle_vanilla_preview_source(vanilla_preview_source);
           }}
           onAssetsLoad={(r) => {

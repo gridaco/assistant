@@ -44,7 +44,6 @@ export function CodeViewWithControl({
   disabled?: true;
   cachedOnly?: boolean;
 }) {
-  const [app, setApp] = useState<string>();
   const [source, setSource] = useState<SourceInput>();
 
   const framework_preference = new PreferFramework();
@@ -104,7 +103,7 @@ export function CodeViewWithControl({
 
   const __onGeneration__cb = (app, src, vanilla_preview_source) => {
     cacheStore.setCache(src);
-    const _source = typeof src == "string" ? source : src?.raw;
+    const _source = typeof src == "string" ? src : src?.raw;
     onGeneration?.(app, _source, vanilla_preview_source);
   };
 
@@ -121,7 +120,6 @@ export function CodeViewWithControl({
       app,
       useroption.language,
       (s) => {
-        setApp(s);
         __onGeneration__cb(s, source, vanilla_preview_source);
       },
       {
