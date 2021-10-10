@@ -54,6 +54,7 @@ const PlainIframe = styled.iframe<{ scale: number; margin: number }>`
   box-shadow: 0px 4px 64px rgba(160, 160, 160, 0.18);
   outline: none;
   overflow: hidden;
+  border-radius: 4px;
   margin: ${(props) => props.margin}px;
   border: none;
   transform: ${(props) => `scale(${props.scale})`};
