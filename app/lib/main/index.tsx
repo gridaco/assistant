@@ -137,7 +137,7 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
 
   useEffect(() => {
     handleTabChange(tabIndex);
-  }, []);
+  }, [tabIndex, workmode]);
 
   const handleTabChange = (index: number) => {
     const screen = tabs_as_page_configs[index];
