@@ -37,29 +37,26 @@ export function WorkmodeScreenTabs(props: {
           userSelect: "none",
         },
       }}
+      style={{
+        marginLeft: "-16px",
+        marginRight: "16px",
+      }}
     >
-      <InnerWrap>
-        {layout.map((v, i) => {
-          return (
-            <StyledTab
-              key={v.id}
-              label={v.name}
-              {...a11yProps(i)}
-              classes={{ root: "root", selected: "selected" }}
-            />
-          );
-        })}
-      </InnerWrap>
+      {layout.map((v, i) => {
+        return (
+          <StyledTab
+            key={v.id}
+            label={v.name}
+            {...a11yProps(i)}
+            classes={{ root: "root", selected: "selected" }}
+          />
+        );
+      })}
     </Tabs>
   );
 
   return <>{tabs}</>;
 }
-
-const InnerWrap = styled.div`
-  margin-left: -16px;
-  margin-right: 16px;
-`;
 
 const StyledTab = styled(Tab)`
   // for reset @material-ui style
