@@ -93,5 +93,5 @@ const PlainIframe = styled.iframe<{ scale: number; margin: number }>`
   margin: ${(props) => props.margin}px;
   border: none;
   transform: ${(props) => `scale(${props.scale})`};
-  transform-origin: 0 0;
+  transform-origin: center top;
 `;
