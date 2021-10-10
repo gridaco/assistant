@@ -100,9 +100,9 @@ const PlainIframe = styled.iframe<{
   margin: ${(props) => props.margin}px;
   border: none;
   transform: ${(props) => `scale(${props.scale})`};
-  transform-origin: center top;
   /* when height smaller, center center */
   /* else, center top */
   /* TODO: the logic is incomplete */
+  transform-origin: center top;
   /* transform-origin: center ${(p) => (p.scale < 1 ? "center" : "top")}; */
 `;

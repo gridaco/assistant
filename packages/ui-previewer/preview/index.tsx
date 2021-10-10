@@ -139,4 +139,5 @@ const Render = styled.div<{ heightscale: number }>`
     - https://stackoverflow.com/questions/51288769/scaling-a-flexbox-child-with-transform-leaves-empty-space
     - https://www.reddit.com/r/css/comments/q5cvei/css_fitcontent_on_parent_wont_work_for_scaled_item/
   */
+  min-height: 100%;
 `;
