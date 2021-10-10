@@ -6,14 +6,25 @@ export class CodeSessionCacheStorage {
     readonly node: string,
     readonly preference: DesigntoCodeUserOptions
   ) {
-    this.key = `${node}-${preference?.framework}-${preference?.language}`;
+    if (!node || !preference) {
+      // both required
+      this.key = null;
+    } else {
+      this.key = `${node}-${preference?.framework}-${preference?.language}`;
+    }
   }
 
   setCache(code: string) {
-    window.localStorage.setItem(this.key, code);
+    if (this.key) {
+      window.localStorage.setItem(this.key, code);
+    }
   }
 
   getCache(): string | null {
-    return window.localStorage.getItem(this.key);
+    if (this.key) {
+      return window.localStorage.getItem(this.key);
+    }
+    // using null return since localstorage return is also optional<null>
+    return null;
   }
 }
