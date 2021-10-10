@@ -121,33 +121,31 @@ export const LintScreen = () => {
 
         {ErrorLineItem()}
         <FooterActionsWrapper>
-          <InnerWrapper>
-            {feedbacks.length === 0 ? (
-              <RunLintButtton
-                disabled={!selection}
-                onClick={requestLintOnCurrentSelection}
+          {feedbacks.length === 0 ? (
+            <RunLintButtton
+              disabled={!selection}
+              onClick={requestLintOnCurrentSelection}
+            >
+              Run lint
+            </RunLintButtton>
+          ) : (
+            <>
+              <FirstErrorButton
+                onClick={() => {
+                  setIsFixingMode(true);
+                }}
               >
-                Run lint
-              </RunLintButtton>
-            ) : (
-              <>
-                <FirstErrorButton
-                  onClick={() => {
-                    setIsFixingMode(true);
-                  }}
-                >
-                  Jump to first error
-                </FirstErrorButton>
-                <ClearButton
-                  onClick={() => {
-                    setFeedbacks([]); // clear feedbacks
-                  }}
-                >
-                  Clear
-                </ClearButton>
-              </>
-            )}
-          </InnerWrapper>
+                Jump to first error
+              </FirstErrorButton>
+              <ClearButton
+                onClick={() => {
+                  setFeedbacks([]); // clear feedbacks
+                }}
+              >
+                Clear
+              </ClearButton>
+            </>
+          )}
         </FooterActionsWrapper>
       </Wrapper>
       <Dialog open={isFixingMode} fullScreen>
@@ -168,7 +166,7 @@ function _makeshortname(origin: string, cut?: number): string {
 }
 
 const Wrapper = styled.div`
-  margin: 0 8px;
+  margin: 0 16px;
 `;
 
 const ErrorTitle = styled.h6`
@@ -222,16 +220,12 @@ const ErrorList = styled.ul`
 `;
 
 const FooterActionsWrapper = styled.div`
-  width: 100%;
+  position: fixed;
   display: flex;
-  position: absolute;
-  bottom: 16px;
-  left: 0;
-`;
-
-const InnerWrapper = styled.div`
-  width: 100%;
   margin: 0 16px;
+  bottom: 16px;
+  right: 0;
+  left: 0;
 `;
 
 const RunLintButtton = styled.button`
