@@ -204,14 +204,7 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
 
       <>
         {/* the screen's wrapping layout */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            flexGrow: 1,
-            minHeight: "0px",
-          }}
-        >
+        <ScreenWrapLayout>
           <Switch>
             {tabs_as_page_configs.map((v, i) => {
               return (
@@ -223,7 +216,7 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
               );
             })}
           </Switch>
-        </div>
+        </ScreenWrapLayout>
       </>
     </div>
   );
@@ -342,6 +335,12 @@ function _update_focused_screen_ev(screen: WorkScreen) {
     "*"
   );
 }
+const ScreenWrapLayout = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 0px;
+`;
 
 const PrimaryWorkmodeWrapper = styled.div<{ shadow_required: boolean }>`
   display: flex;

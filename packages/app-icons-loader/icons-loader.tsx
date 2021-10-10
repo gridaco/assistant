@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { icons } from "@base-sdk/resources";
 import { NamedDefaultOssIconConfig } from "@reflect-ui/core";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -26,6 +26,7 @@ export function IconsLoader() {
   >(undefined);
   const [queryTerm, setQueryTerm] = useState<string>(undefined);
   const [iconLoadLimit, setIconLoadLimit] = useState(100);
+  const iconRef = useRef<HTMLUListElement>(undefined);
   const [iconProperty, setIconProperty] = useState<{
     default_size: string;
     variant: string;
@@ -52,6 +53,33 @@ export function IconsLoader() {
   useEffect(() => {
     setIconLoadLimit(100);
   }, [iconProperty, queryTerm]);
+
+  function IconList(props: { icons: [string, NamedDefaultOssIconConfig][] }) {
+    const { icons } = props;
+
+    return (
+      <>
+        {/* <ListWrap> */}
+        <GridList
+          cellHeight="auto"
+          cols={5}
+          style={{ marginRight: 0, marginLeft: 0 }}
+          ref={iconRef}
+        >
+          {icons.map((i) => {
+            const key = i[0];
+            const config = i[1];
+            return (
+              <GridItem key={key} classes={{ tile: "tile" }}>
+                <IconItem key={key} name={key} config={config} />
+              </GridItem>
+            );
+          })}
+        </GridList>
+        {/* </ListWrap> */}
+      </>
+    );
+  }
 
   let list;
   if (configs) {
@@ -93,7 +121,7 @@ export function IconsLoader() {
     list = <StyledLinearProgress />;
   }
 
-  const handleScroll = () => {
+  const handleScroll = (e) => {
     const scrollHeight = document.documentElement.scrollHeight;
     const scrollTop = document.documentElement.scrollTop;
     const clientHeight = document.documentElement.clientHeight;
@@ -107,7 +135,7 @@ export function IconsLoader() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  });
+  }, [handleScroll]);
 
   return (
     <>
@@ -115,7 +143,7 @@ export function IconsLoader() {
         onChange={setQueryTerm}
         onSelectIconProperty={setIconProperty}
       />
-      {list}
+      <>{list}</>
     </>
   );
 }
@@ -233,26 +261,6 @@ function filterIcons(
   return defaultIcons;
 }
 
-function IconList(props: { icons: [string, NamedDefaultOssIconConfig][] }) {
-  const { icons } = props;
-
-  return (
-    <>
-      <GridList cellHeight="auto" cols={5}>
-        {icons.map((i) => {
-          const key = i[0];
-          const config = i[1];
-          return (
-            <GridItem key={key} classes={{ tile: "tile" }}>
-              <IconItem key={key} name={key} config={config} />
-            </GridItem>
-          );
-        })}
-      </GridList>
-    </>
-  );
-}
-
 function IconItem(props: { name: string; config: NamedDefaultOssIconConfig }) {
   const { name, config } = props;
   const [downloading, setDownloading] = useState<boolean>(false);
@@ -362,6 +370,11 @@ function sort_icon(icons: [string, any]) {
     }
   });
 }
+
+const ListWrap = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
 
 const Wrapper = styled.div`
   padding-top: 14px;
