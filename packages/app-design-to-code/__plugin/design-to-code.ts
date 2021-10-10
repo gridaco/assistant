@@ -5,8 +5,8 @@ import {
 } from "@design-sdk/core/assets-repository";
 import type { ReflectSceneNode } from "@design-sdk/figma-node";
 import { ImageRepositories } from "@design-sdk/figma/asset-repository";
-import { flutter, react, token, vanilla } from "@designto/code";
-import { output, react as react_config } from "@designto/config";
+import { flutter, react, token, vanilla, designToCode } from "@designto/code";
+import { config, output, react as react_config } from "@designto/config";
 
 type O = output.ComponentOutput;
 
@@ -57,19 +57,36 @@ export async function designToReact(
   return app;
 }
 
-export async function designToVanilla(
+/**
+ * returns vanilla html code with fixed size with no overflow
+ * @param reflectDesign
+ * @param jobs
+ * @returns
+ */
+export async function designToFixedPreviewVanilla(
   reflectDesign: ReflectSceneNode,
   jobs?: InterceptorAssetRepositoryJobProcessor
 ): Promise<O> {
   setup_image_repository();
-  const tokens = token.tokenize(reflectDesign);
-  const widget = vanilla.buildVanillaWidget(tokens);
-  const app = vanilla.buildVanillaFile(widget);
+  const vanilla = await designToCode({
+    input: {
+      name: reflectDesign.name,
+      id: reflectDesign.id,
+      design: reflectDesign,
+    },
+    framework: <config.VanillaFrameworkConfig>{
+      framework: "vanilla",
+      language: "html",
+    },
+    build_config: {
+      force_root_widget_fixed_size_no_scroll: true,
+    },
+    asset_config: {
+      // the asset replacement on assistant is handled on ui thread.
+      skip_asset_replacement: true,
+    },
+  });
   await jobs?.();
 
-  return app;
-}
-
-export function designToCode() {
-  throw "not implemented";
+  return vanilla;
 }
