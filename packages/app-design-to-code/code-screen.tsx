@@ -109,7 +109,7 @@ export function CodeScreen() {
         >
           <Preview
             key={vanilla_preview_source}
-            auto
+            // auto
             type="responsive"
             data={vanilla_preview_source}
             id={selection?.id}
