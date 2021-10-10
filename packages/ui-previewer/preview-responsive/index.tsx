@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
 import { useSingleSelection } from "plugin-app";
 
@@ -26,6 +26,7 @@ export function ResponsivePreview({
   // TODO: remove me - temporal use
   const design = useSingleSelection();
   const [scalefactor, setscalefactor] = useState(0);
+  const iframeRef = useRef<HTMLIFrameElement>(undefined);
   useEffect(() => {
     if (design) {
       if (parentWidth < design.node["width"]) {
@@ -34,6 +35,7 @@ export function ResponsivePreview({
         setscalefactor(framescale);
       } else {
         setscalefactor(1);
+        iframeRef.current.parentElement.style.textAlign = "center";
       }
     }
   }, [design, parentWidth]);
@@ -42,6 +44,7 @@ export function ResponsivePreview({
     <>
       <PlainIframe
         id="preview-iframe"
+        ref={iframeRef}
         width={design?.node["width"] ?? 0}
         height={design?.node["height"] ?? 0}
         sandbox="allow-same-origin"
