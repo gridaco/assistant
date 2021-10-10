@@ -32,7 +32,7 @@ export function ResponsivePreview({
       const framescale = _s; // Math.min(_s, 1); (disabled. - will be removed @softmarshamllow)
       setscalefactor(framescale);
     }
-  }, [design]);
+  }, [design, parentWidth]);
 
   return (
     <>

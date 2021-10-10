@@ -35,27 +35,26 @@ export function Preview(props: Props) {
   const previewRefWrap = useRef<HTMLDivElement>();
   const [size, setsize] = useState(undefined);
 
-  // region editor content size global state handling by editor's resizing
-  const [editorSize, setEditorSize] = useRecoilState(editor_size);
-
   // region navigation animation global state handling by preview's scolling.
   const set_hide_navigation_state = useSetRecoilState(hide_navigation);
   const hide = useScrollTriggeredAnimation(previewRefWrap);
-  useEffect(() => {
-    set_hide_navigation_state(hide);
-  }, [hide]);
-  // endregion
 
   useEffect(() => {
-    setsize(editorSize.width);
-    console.log(editorSize.width);
-  }, [editorSize]);
+    window.addEventListener("resize", () => {
+      setsize(window.innerWidth);
+    });
+  }, []);
 
   useEffect(() => {
     if (previewRefWrap.current) {
       setsize(previewRefWrap.current?.offsetWidth);
     }
-  }, []);
+  }, [previewRefWrap]);
+
+  useEffect(() => {
+    set_hide_navigation_state(hide);
+  }, [hide]);
+  // endregion
 
   const initialPreviewHeight = 200;
   const previewWrapPadding = 0;
