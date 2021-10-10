@@ -1,12 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
-import { css } from "@emotion/react";
 import {
   ResponsivePreview,
   ResponsivePreviewProps,
 } from "../preview-responsive";
 import { StaticPreview, StaticPreviewProps } from "../preview-static";
-import { PreviewStaticEmpty } from "../components";
+import { handle_wrap_bg_color, PreviewEmpty } from "../components";
 import { useScrollTriggeredAnimation } from "app/lib/components/motions";
 import { useSetRecoilState, useRecoilState } from "recoil";
 import { hide_navigation } from "app/lib/main/global-state-atoms";
@@ -61,13 +60,13 @@ export function Preview(props: Props) {
       padding={previewWrapPadding}
       isAutoSizable={props.isAutoSizable}
       initialPreviewHeight={initialPreviewHeight}
-      hasBgColor={!(!!props.data || props.auto)}
+      bgColor={handle_wrap_bg_color(props.type, !(!!props.data || props.auto))}
     >
       <>
         {props.data || props.auto ? (
           <Content previewInfo={props} />
         ) : (
-          <> {props.empty || <PreviewStaticEmpty />}</>
+          <> {props.empty || <PreviewEmpty type={props.type} />}</>
         )}
       </>
     </PreviewWrap>
@@ -117,19 +116,16 @@ const PreviewWrap = styled.div<{
   padding: number;
   initialPreviewHeight: number;
   isAutoSizable: boolean;
-  hasBgColor: boolean;
+  bgColor: string;
 }>`
   padding: ${(props) => `${props.padding}px`};
   height: ${(props) =>
     props.isAutoSizable
       ? `calc(100% - ${props.padding * 2}px)`
       : `calc(${props.initialPreviewHeight}px - ${props.padding * 2}px)`};
-  ${(props) =>
-    props.hasBgColor
-      ? css`
-          background-color: rgba(241, 241, 241, 1);
-        `
-      : ""}
+
+  background-color: ${(props) => props.bgColor};
+
   overflow-y: auto;
   overflow-x: hidden;
 `;
