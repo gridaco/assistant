@@ -36,7 +36,7 @@ export function NextUploadButton(props: {
       preview: imageRes.data,
       code: {
         flutter: {
-          raw: props.app,
+          app: props.app,
         },
       },
     });

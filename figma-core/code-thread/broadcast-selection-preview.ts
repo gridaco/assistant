@@ -25,5 +25,11 @@ export async function exportImage(
   }
 ): Promise<Uint8Array> {
   const config = preset(options?.preset ?? "small");
-  return await target.exportAsync(config);
+  try {
+    return await (target as ExportMixin).exportAsync(config);
+  } catch (_) {
+    console.warn(
+      "update required. seems figma started to support `WidgetNode`"
+    );
+  }
 }

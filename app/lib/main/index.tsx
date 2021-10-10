@@ -169,58 +169,42 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
       }}
     >
       <AppbarContainerMotion hidden={whole_navigation_hidden}>
-        <div
-          style={{
-            zIndex: 1,
-            boxShadow: shadow_required
-              ? "0px 4px 24px rgba(0, 0, 0, 0.25)"
-              : undefined,
-          }}
-        >
-          <PrimaryWorkmodeWrapper>
-            <AppbarContentMotion hidden={whole_navigation_hidden}>
-              <Column
-                style={{
-                  width: "100%",
-                  justifyItems: "center",
-                }}
-              >
-                <Row style={{ paddingTop: "22px" }}>
-                  <PrimaryWorkmodeSelect
-                    selection={workmode}
-                    set={workmodeSet}
-                    onSelect={on_workmode_select}
-                  />
-                  <NavigatorExpansionControlButton
-                    action={expansion ? "close" : "expand"}
-                    onClick={() => setExpansion(!expansion)}
-                  />
-                </Row>
-                {!expansion && <SecondaryMenuDropdown />}
-                {isTabVisible && (
-                  <WorkmodeScreenTabs
-                    key="workmode-tabs"
-                    layout={tabs_as_page_configs}
-                    tabIndex={tabIndex}
-                    onSelect={handleTabChange}
-                  />
-                )}
-              </Column>
-            </AppbarContentMotion>
+        <AppbarContentMotion hidden={whole_navigation_hidden}>
+          <PrimaryWorkmodeWrapper shadow_required={shadow_required}>
+            <Column
+              style={{
+                width: "100%",
+                justifyItems: "center",
+              }}
+            >
+              <Row style={{ paddingTop: "22px" }}>
+                <PrimaryWorkmodeSelect
+                  selection={workmode}
+                  set={workmodeSet}
+                  onSelect={on_workmode_select}
+                />
+                <NavigatorExpansionControlButton
+                  action={expansion ? "close" : "expand"}
+                  onClick={() => setExpansion(!expansion)}
+                />
+              </Row>
+              {!expansion && <SecondaryMenuDropdown />}
+              {isTabVisible && (
+                <WorkmodeScreenTabs
+                  key="workmode-tabs"
+                  layout={tabs_as_page_configs}
+                  tabIndex={tabIndex}
+                  onSelect={handleTabChange}
+                />
+              )}
+            </Column>
           </PrimaryWorkmodeWrapper>
-        </div>
+        </AppbarContentMotion>
       </AppbarContainerMotion>
 
       <>
         {/* the screen's wrapping layout */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            flexGrow: 1,
-            minHeight: "0px",
-          }}
-        >
+        <ScreenWrapLayout>
           <Switch>
             {tabs_as_page_configs.map((v, i) => {
               return (
@@ -232,7 +216,7 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
               );
             })}
           </Switch>
-        </div>
+        </ScreenWrapLayout>
       </>
     </div>
   );
@@ -351,9 +335,22 @@ function _update_focused_screen_ev(screen: WorkScreen) {
     "*"
   );
 }
+const ScreenWrapLayout = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 0px;
+`;
 
-const PrimaryWorkmodeWrapper = styled.div`
+const PrimaryWorkmodeWrapper = styled.div<{ shadow_required: boolean }>`
   display: flex;
   padding: 0 16px;
-  /* padding: 0 8px; */
+  background-color: #fff;
+
+  box-shadow: ${(props) =>
+    props.shadow_required ? "0px 4px 24px rgba(0,0,0,0.25)" : "none"};
+
+  > div {
+    width: 100%;
+  }
 `;

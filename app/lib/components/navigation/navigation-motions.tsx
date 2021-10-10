@@ -19,6 +19,9 @@ export function AppbarContainerMotion({
     <motion.div
       variants={variants_for_container}
       animate={hidden ? "hidden" : "visible"}
+      style={{
+        zIndex: 1,
+      }}
       transition={smooth_damping_hide_motion_transition}
     >
       {children}
@@ -35,7 +38,7 @@ export function AppbarContentMotion({
 }) {
   const variants_for_child = {
     visible: { y: 0 },
-    hidden: { y: -40 },
+    hidden: { y: -100 },
   };
 
   return (

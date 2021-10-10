@@ -26,6 +26,7 @@ import { hide_navigation } from "app/lib/main/global-state-atoms";
 const resizeBarBase = 5;
 const resizeBarVerPadding = 5;
 const resizeBarSize = 5 + resizeBarVerPadding * 2;
+const default_responsive_preview_height_for_code_screen = 300;
 
 export function CodeScreen() {
   const selection = useSingleSelection();
@@ -39,8 +40,6 @@ export function CodeScreen() {
   const [useroption, setUseroption] = useState<DesigntoCodeUserOptions>();
 
   const onCopyClicked = (e) => {
-    // const _code: SourceInput = _make_source();
-    // const raw = typeof _code == "string" ? _code : _code.raw;
     copy(source);
     PluginSdk.notifyCopied();
 
@@ -62,6 +61,10 @@ export function CodeScreen() {
     set_hide_navigation_state(hide);
   }, [hide]);
 
+  const [previewHeight, setPreviewHeight] = useState<number>(
+    default_responsive_preview_height_for_code_screen
+  );
+
   return (
     <div
       style={{
@@ -73,13 +76,19 @@ export function CodeScreen() {
     >
       <div>
         <Resizable
-          defaultSize={{ width: "100%", height: "200px" }}
+          defaultSize={{
+            width: "100%",
+            height: `${default_responsive_preview_height_for_code_screen}px`,
+          }}
           handleStyles={{
             bottom: {
               height: `${resizeBarSize}px`,
               bottom: `${Math.floor(-resizeBarSize / 2)}px`,
-              zIndex: 999,
+              zIndex: 1,
             },
+          }}
+          onResize={(e, d, el) => {
+            setPreviewHeight(el.offsetHeight);
           }}
           handleComponent={{ bottom: ResizeWrap() }}
           enable={{
@@ -92,13 +101,22 @@ export function CodeScreen() {
             bottomLeft: false,
             topLeft: false,
           }}
+          minHeight="30px"
+          // calc not supported.
+          maxHeight="75vh"
         >
           <Preview
             key={vanilla_preview_source}
-            auto
+            // auto
             type="responsive"
             data={vanilla_preview_source}
+            id={selection?.id}
+            origin_size={{
+              width: selection?.node?.width,
+              height: selection?.node?.height,
+            }}
             isAutoSizable={true}
+            height={previewHeight} //FIXME:
           />
         </Resizable>
       </div>
@@ -110,8 +128,7 @@ export function CodeScreen() {
           flexDirection: "column",
           flexGrow: 1,
           overflow: "auto",
-          /* vscode dark bg color */
-          background: "#1e1e1e",
+          backgroundColor: "#1e1e1e",
         }}
       >
         <CopyCodeButton onClick={onCopyClicked}>
@@ -133,7 +150,7 @@ export function CodeScreen() {
           targetid={selection?.id}
           onGeneration={(app, src, vanilla_preview_source) => {
             setApp(app);
-            setSource(src ?? app); // TODO: react only provides app. this needs to be fixed on the codegen side.
+            setSource(src);
             handle_vanilla_preview_source(vanilla_preview_source);
           }}
           onAssetsLoad={(r) => {
@@ -197,12 +214,12 @@ const CopyCodeButton = styled.div`
   margin-top: 24px;
   margin-right: 20px;
   cursor: pointer;
-  z-index: 99999;
+  z-index: 1;
 `;
 
 const ResizableHandleBar = styled.div`
   width: 100%;
-  z-index: 9999;
+  z-index: 1;
   height: ${resizeBarBase}px;
   padding: ${resizeBarVerPadding}px 0;
 

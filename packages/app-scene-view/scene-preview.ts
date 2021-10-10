@@ -1,7 +1,7 @@
 import { Widget } from "@flutter-builder/flutter";
 import { features } from "@base-sdk/base";
 import { wrap_with_hosting__flutter } from "./_wrapping-for-hosting";
-export async function preview(id: string, app: Widget | string) {
+export async function preview(id: string, app: { raw: string }) {
   console.log("quicklook starting..");
 
   // replace url as real one

@@ -1466,10 +1466,10 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
-"@figma/plugin-typings@^1.33.0":
-  version "1.36.0"
-  resolved "https://registry.yarnpkg.com/@figma/plugin-typings/-/plugin-typings-1.36.0.tgz#c001ccf96d2cf6606deddd22e51336ae440404ae"
-  integrity sha512-ovtx6azyArlAN+y+a62yp+SWrQITcYNMLXcNzzygINGO5vAO8h1mM+8brDgXnKds8QyPgDgC9jgydZrM5dzGBw==
+"@figma/plugin-typings@^1.37.0":
+  version "1.37.0"
+  resolved "https://registry.yarnpkg.com/@figma/plugin-typings/-/plugin-typings-1.37.0.tgz#0eecf4972db9f321127b519a917ea4b3a40714dd"
+  integrity sha512-PfZWzRazevtDp6nfaypxS7jfkbLATTM6dLi0tIJiDvd27vYhX3wBiW1AeTqxtxjBdYY2QV1T34IJYjrOybr5wg==
 
 "@firebase/analytics-types@0.4.0":
   version "0.4.0"
@@ -11236,6 +11236,11 @@ react-transition-group@^4.4.0:
     dom-helpers "^5.0.1"
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
+
+react-use-size@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/react-use-size/-/react-use-size-2.0.4.tgz#14f513e310d8962a30919e64fdd746b8211a3f0d"
+  integrity sha512-vMfResvkZwkXngdbytZbDNkDySJqXrEdPa882kTqIQZylxHA6PSf2NC67wJJIMpmZjGyTwV7wyG5YY1SwId1xw==
 
 react@17.0.2, react@^17.0.1:
   version "17.0.2"
