@@ -50,21 +50,21 @@ export function ResponsivePreview({
       const framescale = Math.min(_s, 1);
       setscalefactor(framescale);
     }
-  }, [parent.width, previewInfo?.id]);
+  }, [parent.width, parent.height, previewInfo?.id]);
 
   return (
-    <>
-      <PlainIframe
-        id="preview-iframe"
-        ref={iframeRef}
-        width={previewInfo?.origin_size?.width ?? 0}
-        height={previewInfo?.origin_size?.height ?? 0}
-        sandbox="allow-same-origin"
-        margin={margin}
-        srcDoc={previewInfo.data}
-        scale={scalefactor}
-      />
-    </>
+    <PlainIframe
+      key={previewInfo.id}
+      id="preview-iframe"
+      ref={iframeRef}
+      width={previewInfo?.origin_size?.width ?? 0}
+      height={previewInfo?.origin_size?.height ?? 0}
+      sandbox="allow-same-origin"
+      margin={margin}
+      inner_view_ready={previewInfo.data !== undefined}
+      srcDoc={previewInfo.data}
+      scale={scalefactor}
+    />
   );
 }
 
@@ -84,8 +84,12 @@ function __dangerously_disable_scroll_in_html_body(iframe: HTMLIFrameElement) {
   }
 }
 
-const PlainIframe = styled.iframe<{ scale: number; margin: number }>`
-  background: white;
+const PlainIframe = styled.iframe<{
+  scale: number;
+  margin: number;
+  inner_view_ready: boolean;
+}>`
+  background: ${(p) => (p.inner_view_ready ? "white" : "transparent")};
   box-shadow: 0px 4px 64px rgba(160, 160, 160, 0.18);
   outline: none;
   overflow: hidden;
@@ -94,4 +98,8 @@ const PlainIframe = styled.iframe<{ scale: number; margin: number }>`
   border: none;
   transform: ${(props) => `scale(${props.scale})`};
   transform-origin: center top;
+  /* when height smaller, center center */
+  /* else, center top */
+  /* TODO: the logic is incomplete */
+  /* transform-origin: center ${(p) => (p.scale < 1 ? "center" : "top")}; */
 `;
