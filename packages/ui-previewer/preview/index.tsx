@@ -9,7 +9,6 @@ import { EmptyState } from "../components";
 import { useScrollTriggeredAnimation } from "app/lib/components/motions";
 import { useSetRecoilState, useRecoilState } from "recoil";
 import { hide_navigation } from "app/lib/main/global-state-atoms";
-import { editor_size } from "app/lib/main/global-state-atoms";
 
 interface PreviewProps {
   auto?: boolean;
