@@ -11,7 +11,7 @@ import {
 import {
   designToFlutter,
   designToReact,
-  designToVanilla,
+  designToFixedPreviewVanilla,
 } from "./design-to-code";
 import { FigmaNodeCache } from "figma-core/node-cache";
 import { Framework } from "@grida/builder-platform-types";
@@ -74,7 +74,7 @@ async function _handle_code_gen_request(req: CodeGenRequest) {
     // generate vanilla preview source ------------------
     let vanilla_preview_source;
     if (req.config.do_generate_vanilla_preview_source) {
-      const vanilla_res = await designToVanilla(rnode, () => {
+      const vanilla_res = await designToFixedPreviewVanilla(rnode, () => {
         return asset_export_job("preview-only");
       });
       vanilla_preview_source = vanilla_res.scaffold.raw;
