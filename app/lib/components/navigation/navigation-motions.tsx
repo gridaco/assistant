@@ -38,7 +38,7 @@ export function AppbarContentMotion({
 }) {
   const variants_for_child = {
     visible: { y: 0 },
-    hidden: { y: -40 },
+    hidden: { y: -80 },
   };
 
   return (
