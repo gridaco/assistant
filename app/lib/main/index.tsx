@@ -169,8 +169,8 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
       }}
     >
       <AppbarContainerMotion hidden={whole_navigation_hidden}>
-        <PrimaryWorkmodeWrapper shadow_required={shadow_required}>
-          <AppbarContentMotion hidden={whole_navigation_hidden}>
+        <AppbarContentMotion hidden={whole_navigation_hidden}>
+          <PrimaryWorkmodeWrapper shadow_required={shadow_required}>
             <Column
               style={{
                 width: "100%",
@@ -198,8 +198,8 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
                 />
               )}
             </Column>
-          </AppbarContentMotion>
-        </PrimaryWorkmodeWrapper>
+          </PrimaryWorkmodeWrapper>
+        </AppbarContentMotion>
       </AppbarContainerMotion>
 
       <>
