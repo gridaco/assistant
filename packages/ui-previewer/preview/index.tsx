@@ -5,7 +5,7 @@ import {
   ResponsivePreviewProps,
 } from "../preview-responsive";
 import { StaticPreview, StaticPreviewProps } from "../preview-static";
-import { EmptyState } from "../components";
+import { PreviewStaticEmpty } from "../components";
 import { useScrollTriggeredAnimation } from "app/lib/components/motions";
 import { useSetRecoilState, useRecoilState } from "recoil";
 import { hide_navigation } from "app/lib/main/global-state-atoms";
@@ -65,7 +65,7 @@ export function Preview(props: Props) {
         {props.data || props.auto ? (
           <Content previewInfo={props} />
         ) : (
-          <div className="inner-render">{props.empty || <EmptyState />}</div>
+          <> {props.empty || <PreviewStaticEmpty />}</>
         )}
       </>
     </PreviewWrap>
