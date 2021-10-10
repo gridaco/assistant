@@ -29,7 +29,9 @@ const margin = 12;
 export function ResponsivePreview({
   previewInfo,
   parent,
+  onScaleChange,
 }: {
+  onScaleChange: (scale: number) => void;
   previewInfo: ResponsivePreviewProps;
   parent: { width: number; height: number };
 }) {
@@ -48,6 +50,7 @@ export function ResponsivePreview({
     if (previewInfo && parent.width) {
       const _s = (parent.width - margin * 2) / previewInfo.origin_size.width;
       const framescale = Math.min(_s, 1);
+      onScaleChange(framescale);
       setscalefactor(framescale);
     }
   }, [parent.width, parent.height, previewInfo?.id]);
