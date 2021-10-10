@@ -40,7 +40,6 @@ type Props = PreviewProps & Subscenario;
 
 export function Preview(props: Props) {
   const previewRefWrap = useRef<HTMLDivElement>();
-  const { ref: sizingref, height, width } = useComponentSize();
 
   // region navigation animation global state handling by preview's scolling.
   const set_hide_navigation_state = useSetRecoilState(hide_navigation);
@@ -62,34 +61,54 @@ export function Preview(props: Props) {
       isAutoSizable={props.isAutoSizable}
       initialPreviewHeight={initialPreviewHeight}
     >
-      <Render id="render" ref={sizingref}>
-        <>
-          {props.data || props.auto ? (
-            <Content previewInfo={props} parent={{ width, height }} />
-          ) : (
-            <div className="inner-render">{props.empty || <EmptyState />}</div>
-          )}
-        </>
-      </Render>
+      <>
+        {props.data || props.auto ? (
+          <Content previewInfo={props} />
+        ) : (
+          <div className="inner-render">{props.empty || <EmptyState />}</div>
+        )}
+      </>
     </PreviewWrap>
   );
 }
 
-function Content({
-  previewInfo,
-  parent,
-}: {
-  previewInfo: Props;
-  parent: { width: number; height: number };
-}) {
+function Content({ previewInfo }: { previewInfo: Props }) {
   switch (previewInfo.type) {
     case "responsive": {
-      return <ResponsivePreview previewInfo={previewInfo} parent={parent} />;
+      return <ResponsiveRender {...previewInfo} />;
     }
     case "static": {
-      return <StaticPreview {...previewInfo} />;
+      return (
+        <Render heightscale={1}>
+          <StaticPreview {...previewInfo} />
+        </Render>
+      );
     }
   }
+}
+
+function ResponsiveRender(props: ResponsivePreviewProps) {
+  const { ref: sizingref, height, width } = useComponentSize();
+  // TODO: do not remove comments here. these are required for below height calculation.
+  // DON'T REMOVE
+  // const [renderheightScaleFactor, setRenderheightScaleFactor] = useState(1);
+
+  return (
+    <Render
+      ref={sizingref}
+      heightscale={1}
+      // DON'T REMOVE
+      // heightscale={renderheightScaleFactor}
+    >
+      <ResponsivePreview
+        previewInfo={props}
+        parent={{ width, height }}
+        onScaleChange={() => {}}
+        // DON'T REMOVE
+        // onScaleChange={setRenderheightScaleFactor}
+      />
+    </Render>
+  );
 }
 
 const PreviewWrap = styled.div<{
@@ -106,12 +125,18 @@ const PreviewWrap = styled.div<{
   overflow-x: hidden;
 `;
 
-const Render = styled.div`
+const Render = styled.div<{ heightscale: number }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   align-content: center;
   justify-content: center;
-  position: relative;
-  min-height: 100%;
+  flex: 0 1 0;
+  /* FIXME: this should be a height
+  // this should work, but the flex is making inner iframe height to shrink.
+  height: max(${(props) => props.heightscale * 100}%, 100%);
+    ref:
+    - https://stackoverflow.com/questions/51288769/scaling-a-flexbox-child-with-transform-leaves-empty-space
+    - https://www.reddit.com/r/css/comments/q5cvei/css_fitcontent_on_parent_wont_work_for_scaled_item/
+  */
 `;
