@@ -26,6 +26,7 @@ import { hide_navigation } from "app/lib/main/global-state-atoms";
 const resizeBarBase = 5;
 const resizeBarVerPadding = 5;
 const resizeBarSize = 5 + resizeBarVerPadding * 2;
+const default_responsive_preview_height_for_code_screen = 300;
 
 export function CodeScreen() {
   const selection = useSingleSelection();
@@ -62,8 +63,9 @@ export function CodeScreen() {
     set_hide_navigation_state(hide);
   }, [hide]);
 
-  const defaultHeight = 200;
-  const [previewHeight, setPreviewHeight] = useState<number>(defaultHeight);
+  const [previewHeight, setPreviewHeight] = useState<number>(
+    default_responsive_preview_height_for_code_screen
+  );
 
   return (
     <div
@@ -76,7 +78,10 @@ export function CodeScreen() {
     >
       <div>
         <Resizable
-          defaultSize={{ width: "100%", height: `${defaultHeight}px` }}
+          defaultSize={{
+            width: "100%",
+            height: `${default_responsive_preview_height_for_code_screen}px`,
+          }}
           handleStyles={{
             bottom: {
               height: `${resizeBarSize}px`,
