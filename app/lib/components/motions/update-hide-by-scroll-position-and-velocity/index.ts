@@ -3,6 +3,7 @@ import { ScrollMotionValues } from "framer-motion";
 import { useElementScroll } from "framer-motion";
 
 export function update_hide_by_scroll_position_and_velocity({
+  scrollY,
   scrollYProgress,
   is_animating_by_intense_scrolling,
   on_animating_by_intense_scrolling,
@@ -14,6 +15,7 @@ export function update_hide_by_scroll_position_and_velocity({
     do_show_on_bottom_hit: true,
   },
 }: {
+  scrollY: ScrollMotionValues["scrollY"];
   scrollYProgress: ScrollMotionValues["scrollYProgress"];
   is_animating_by_intense_scrolling: boolean;
   on_animating_by_intense_scrolling: (v?: true) => void;
@@ -25,6 +27,18 @@ export function update_hide_by_scroll_position_and_velocity({
     do_show_on_bottom_hit: boolean;
   };
 }) {
+  const scroll_progress_percentage = scrollYProgress.get();
+  const ydiff = Math.abs(scrollY.get() - scrollY.getPrevious());
+  if (
+    // don't execute if diff is `<=` than 2. - this is a really small scroll
+    ydiff <= 2 &&
+    // except for bottom / top
+    scroll_progress_percentage !== 0 &&
+    scroll_progress_percentage !== 1
+  ) {
+    return;
+  }
+
   const velocity = scrollYProgress.getVelocity();
   const velocity_abs = Math.abs(velocity);
   if (
@@ -36,7 +50,6 @@ export function update_hide_by_scroll_position_and_velocity({
   }
   const is_intense_scrolling = velocity_abs > options.define_intense_velocity;
   const direction = velocity > 0 ? "down" : "up"; // this is ok. velocity can't be 0.
-  const scroll_progress_percentage = scrollYProgress.get();
 
   if (scroll_progress_percentage >= 1 - options.bottom_sensitivity) {
     if (options.do_show_on_bottom_hit) {
@@ -86,6 +99,7 @@ export function useScrollTriggeredAnimation(el: RefObject<HTMLElement>) {
     return scrollYProgress.onChange(() =>
       update_hide_by_scroll_position_and_velocity({
         scrollYProgress,
+        scrollY,
         is_animating_by_intense_scrolling,
         on_animating_by_intense_scrolling: () => {
           is_animating_by_intense_scrolling = true;
