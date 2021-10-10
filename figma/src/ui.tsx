@@ -3,7 +3,6 @@ import * as ReactDOM from "react-dom";
 import { AppSkeleton } from "@ui/skeleton";
 import { handle } from "./handle-proxy-requests";
 import { useSetRecoilState } from "recoil";
-import { editor_size } from "app/lib/main/global-state-atoms";
 
 ReactDOM.render(
   <LiteHostedAppConnector />,
@@ -16,12 +15,9 @@ export function Resizable() {
   const resizableRef = useRef<SVGSVGElement>();
 
   const [size, setSize] = useState({ w: 0, h: 0 });
-  const set_editor_size = useSetRecoilState(editor_size);
 
   useEffect(() => {
     console.log(size.w);
-    // FIXME:
-    // set_editor_size(size);
   }, [size]);
 
   function resizeWindow(e) {
