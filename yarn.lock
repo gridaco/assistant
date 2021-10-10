@@ -11237,6 +11237,11 @@ react-transition-group@^4.4.0:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
+react-use-size@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/react-use-size/-/react-use-size-2.0.4.tgz#14f513e310d8962a30919e64fdd746b8211a3f0d"
+  integrity sha512-vMfResvkZwkXngdbytZbDNkDySJqXrEdPa882kTqIQZylxHA6PSf2NC67wJJIMpmZjGyTwV7wyG5YY1SwId1xw==
+
 react@17.0.2, react@^17.0.1:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react/-/react-17.0.2.tgz#d0b5cc516d29eb3eee383f75b62864cfb6800037"
