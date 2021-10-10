@@ -169,15 +169,12 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
       }}
     >
       <AppbarContainerMotion hidden={whole_navigation_hidden}>
-        <PrimaryWorkmodeWrapper>
+        <PrimaryWorkmodeWrapper shadow_required={shadow_required}>
           <AppbarContentMotion hidden={whole_navigation_hidden}>
             <Column
               style={{
                 width: "100%",
                 justifyItems: "center",
-                boxShadow: shadow_required
-                  ? "0px 4px 24px rgba(0, 0, 0, 0.25)"
-                  : undefined,
               }}
             >
               <Row style={{ paddingTop: "22px" }}>
@@ -346,10 +343,14 @@ function _update_focused_screen_ev(screen: WorkScreen) {
   );
 }
 
-const PrimaryWorkmodeWrapper = styled.div`
+const PrimaryWorkmodeWrapper = styled.div<{ shadow_required: boolean }>`
   display: flex;
   padding: 0 16px;
   /* padding: 0 8px; */
+
+  box-shadow: ${(props) =>
+    props.shadow_required ? "0px 4px 24px rgba(0,0,0,0.25)" : "none"};
+
   > div {
     width: 100%;
   }
