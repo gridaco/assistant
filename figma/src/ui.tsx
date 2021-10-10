@@ -9,60 +9,6 @@ ReactDOM.render(
   document.getElementById("react-page")
 );
 
-// ReactDOM.render(<Resizable />, document.getElementById("main"));
-
-export function Resizable() {
-  const resizableRef = useRef<SVGSVGElement>();
-
-  const [size, setSize] = useState({ w: 0, h: 0 });
-
-  useEffect(() => {
-    console.log(size.w);
-  }, [size]);
-
-  function resizeWindow(e) {
-    setSize({
-      w: Math.max(50, Math.floor(e.clientX + 5)),
-      h: Math.max(50, Math.floor(e.clientY + 5)),
-    });
-
-    parent.postMessage({ pluginMessage: { type: "resize", size: size } }, "*");
-  }
-
-  return (
-    <svg
-      id={"resize-knob"}
-      ref={resizableRef}
-      onPointerDown={(e) => {
-        resizableRef.current.onpointermove = resizeWindow;
-        resizableRef.current.setPointerCapture(e.pointerId);
-      }}
-      onPointerUp={(e) => {
-        resizableRef.current.onpointermove = null;
-        resizableRef.current.releasePointerCapture(e.pointerId);
-      }}
-      style={{
-        position: "fixed",
-        right: "1px",
-        bottom: "2px",
-        cursor: "nw-resize",
-      }}
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path d="M16 0V16H0L16 0Z" fill="white" />
-      <path d="M6.22577 16H3L16 3V6.22576L6.22577 16Z" fill="#8C8C8C" />
-      <path
-        d="M11.8602 16H8.63441L16 8.63441V11.8602L11.8602 16Z"
-        fill="#8C8C8C"
-      />
-    </svg>
-  );
-}
-
 export function LiteHostedAppConnector() {
   const frame = useRef<HTMLIFrameElement>();
   const resizableRef = useRef<SVGSVGElement>();
@@ -111,8 +57,6 @@ export function LiteHostedAppConnector() {
   // <AppSkeleton/>
   return (
     <>
-      {/* FIXME: */}
-      {/* <Resizable /> */}
       <div
         id="frame-host"
         style={{
