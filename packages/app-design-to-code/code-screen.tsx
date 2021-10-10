@@ -125,8 +125,7 @@ export function CodeScreen() {
           flexDirection: "column",
           flexGrow: 1,
           overflow: "auto",
-          /* vscode dark bg color */
-          background: "#1e1e1e",
+          backgroundColor: "#1e1e1e",
         }}
       >
         <CopyCodeButton onClick={onCopyClicked}>

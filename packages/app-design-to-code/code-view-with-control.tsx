@@ -211,5 +211,4 @@ const _src_view_language = (framework: string): string => {
 
 const CodeWrapper = styled.div`
   /* vscode dark bg color */
-  background: "#1e1e1e";
 `;
