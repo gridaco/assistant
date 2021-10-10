@@ -214,12 +214,12 @@ const CopyCodeButton = styled.div`
   margin-top: 24px;
   margin-right: 20px;
   cursor: pointer;
-  z-index: 99999;
+  z-index: 1;
 `;
 
 const ResizableHandleBar = styled.div`
   width: 100%;
-  z-index: 9999;
+  z-index: 1;
   height: ${resizeBarBase}px;
   padding: ${resizeBarVerPadding}px 0;
 
