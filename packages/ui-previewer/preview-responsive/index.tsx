@@ -28,9 +28,13 @@ export function ResponsivePreview({
   const [scalefactor, setscalefactor] = useState(0);
   useEffect(() => {
     if (design) {
-      const _s = (parentWidth - margin * 2) / design.node["width"];
-      const framescale = _s; // Math.min(_s, 1); (disabled. - will be removed @softmarshamllow)
-      setscalefactor(framescale);
+      if (parentWidth < design.node["width"]) {
+        const _s = (parentWidth - margin * 2) / design.node["width"];
+        const framescale = _s; // Math.min(_s, 1); (disabled. - will be removed @softmarshamllow)
+        setscalefactor(framescale);
+      } else {
+        setscalefactor(1);
+      }
     }
   }, [design, parentWidth]);
 
