@@ -81,13 +81,10 @@ export function ResponsivePreview({
  * @param iframe
  */
 function __dangerously_disable_scroll_in_html_body(iframe: HTMLIFrameElement) {
-  console.log("iframe", iframe);
   try {
     iframe.contentDocument.getElementsByTagName("body")[0].style.overflow =
       "hidden";
-  } catch (_) {
-    console.log("error", _);
-  }
+  } catch (_) {}
 }
 
 const PlainIframe = styled.iframe<{ scale: number; margin: number }>`
