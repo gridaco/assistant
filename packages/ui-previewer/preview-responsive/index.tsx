@@ -13,32 +13,43 @@ export interface ResponsivePreviewProps {
    */
   of?: string;
 }
+interface ParentSizeProps {
+  w: number;
+  h: number;
+}
 
 const margin = 12;
 
 export function ResponsivePreview({
-  props,
-  parentWidth,
+  previewInfo,
+  parentSize,
 }: {
-  props: ResponsivePreviewProps;
-  parentWidth: number;
+  previewInfo: ResponsivePreviewProps;
+  parentSize: ParentSizeProps;
 }) {
   // TODO: remove me - temporal use
   const design = useSingleSelection();
   const [scalefactor, setscalefactor] = useState(0);
   const iframeRef = useRef<HTMLIFrameElement>(undefined);
   useEffect(() => {
+    const parent = iframeRef.current.parentElement;
     if (design) {
-      if (parentWidth < design.node["width"]) {
-        const _s = (parentWidth - margin * 2) / design.node["width"];
+      if (!(parentSize.h > design.node["height"])) {
+        parent.style.height = "min-content";
+      }
+      if (parentSize.w < design.node["width"]) {
+        const _s = (parentSize.w - margin * 2) / design.node["width"];
         const framescale = _s; // Math.min(_s, 1); (disabled. - will be removed @softmarshamllow)
         setscalefactor(framescale);
       } else {
         setscalefactor(1);
-        iframeRef.current.parentElement.style.textAlign = "center";
+        parent.style.display = "flex";
+        parent.style.justifyContent = "center";
+        parent.style.alignItems = "center";
+        parent.style.flexWrap = "wrap";
       }
     }
-  }, [design, parentWidth]);
+  }, [design, parentSize.w]);
 
   return (
     <>
@@ -49,7 +60,7 @@ export function ResponsivePreview({
         height={design?.node["height"] ?? 0}
         sandbox="allow-same-origin"
         margin={margin}
-        srcDoc={props.data}
+        srcDoc={previewInfo.data}
         scale={scalefactor}
       />
     </>
