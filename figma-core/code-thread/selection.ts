@@ -33,7 +33,6 @@ export function onfigmaselectionchange() {
       // by reading through the remote components, we can preload the remote data wich will enalbe use to do the code gen in time.
       const remote_components = raw.findChildren((n) => {
         const t2 = new Date();
-        console.log(n, t2.getTime() - t1.getTime());
         if (t2.getTime() - t1.getTime() > timeout) {
           // if reading the components took more than 10 seconds, cancel the process.
           breakit = true;
