@@ -78,7 +78,7 @@ export function CodeScreen() {
             bottom: {
               height: `${resizeBarSize}px`,
               bottom: `${Math.floor(-resizeBarSize / 2)}px`,
-              zIndex: 999,
+              zIndex: 1,
             },
           }}
           handleComponent={{ bottom: ResizeWrap() }}
@@ -92,6 +92,9 @@ export function CodeScreen() {
             bottomLeft: false,
             topLeft: false,
           }}
+          minHeight="30px"
+          // calc not supported.
+          maxHeight="75vh"
         >
           <Preview
             key={vanilla_preview_source}
