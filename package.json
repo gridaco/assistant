@@ -36,7 +36,7 @@
     "figma:onlyweb": "yarn workspace web run dev",
     "figma:onlyplugin": "yarn workspace figma run dev",
     "figma:build:prod": "yarn workspace figma run build && yarn workspace web build",
-    "figma:start:prod": "yarn workspace web start",
+    "figma:build:staging": "yarn workspace figma run build:staging && yarn workspace web build",
     "sketch": "yarn workspace sketch run render",
     "web": "yarn workspace web run dev",
     "xd": "yarn workspace xd run build",
