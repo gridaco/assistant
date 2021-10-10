@@ -7,8 +7,9 @@ import {
 import { StaticPreview, StaticPreviewProps } from "../preview-static";
 import { EmptyState } from "../components";
 import { useScrollTriggeredAnimation } from "app/lib/components/motions";
-import { useSetRecoilState } from "recoil";
+import { useSetRecoilState, useRecoilState } from "recoil";
 import { hide_navigation } from "app/lib/main/global-state-atoms";
+import { editor_size } from "app/lib/main/global-state-atoms";
 
 interface PreviewProps {
   auto?: boolean;
@@ -34,6 +35,9 @@ export function Preview(props: Props) {
   const previewRefWrap = useRef<HTMLDivElement>();
   const [size, setsize] = useState(undefined);
 
+  // region editor content size global state handling by editor's resizing
+  const [editorSize, setEditorSize] = useRecoilState(editor_size);
+
   // region navigation animation global state handling by preview's scolling.
   const set_hide_navigation_state = useSetRecoilState(hide_navigation);
   const hide = useScrollTriggeredAnimation(previewRefWrap);
@@ -43,6 +47,11 @@ export function Preview(props: Props) {
   // endregion
 
   useEffect(() => {
+    setsize(editorSize.width);
+    console.log(editorSize.width);
+  }, [editorSize]);
+
+  useEffect(() => {
     if (previewRefWrap.current) {
       setsize(previewRefWrap.current?.offsetWidth);
     }
@@ -50,6 +59,7 @@ export function Preview(props: Props) {
 
   const initialPreviewHeight = 200;
   const previewWrapPadding = 0;
+
   return (
     <PreviewWrap
       id="preview-wrap"
