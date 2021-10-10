@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
 import { useSingleSelection } from "plugin-app";
 
@@ -23,49 +23,34 @@ export interface ResponsivePreviewProps {
     height: number;
   };
 }
-interface ParentSizeProps {
-  w: number;
-  h: number;
-}
 
 const margin = 12;
 
 export function ResponsivePreview({
   previewInfo,
-  parentSize,
+  parent,
 }: {
   previewInfo: ResponsivePreviewProps;
-  parentSize: ParentSizeProps;
+  parent: { width: number; height: number };
 }) {
-  const [scalefactor, setscalefactor] = useState(0);
+  const [scalefactor, setscalefactor] = useState(1);
   const iframeRef = useRef<HTMLIFrameElement>(undefined);
-  useEffect(() => {
-    const parent = iframeRef.current.parentElement;
-    if (previewInfo) {
-      if (!(parentSize.h > previewInfo.origin_size.height)) {
-        parent.style.height = "min-content";
-      }
-      if (parentSize.w < previewInfo.origin_size.width) {
-        const _s = (parentSize.w - margin * 2) / previewInfo.origin_size.width;
-        const framescale = _s; // Math.min(_s, 1); (disabled. - will be removed @softmarshamllow)
-        setscalefactor(framescale);
-      } else {
-        setscalefactor(1);
-        parent.style.display = "flex";
-        parent.style.justifyContent = "center";
-        parent.style.alignItems = "center";
-        parent.style.flexWrap = "wrap";
-      }
-    }
-  }, [parentSize.w]);
 
   // dangerously remove scrolling for inner ifram html
   // ask: @softmarshmallow
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (iframeRef.current) {
       __dangerously_disable_scroll_in_html_body(iframeRef.current);
     }
-  }, [iframeRef, previewInfo.data, previewInfo?.id]);
+  }, [iframeRef, previewInfo.data]);
+
+  useEffect(() => {
+    if (previewInfo && parent.width) {
+      const _s = (parent.width - margin * 2) / previewInfo.origin_size.width;
+      const framescale = Math.min(_s, 1);
+      setscalefactor(framescale);
+    }
+  }, [parent.width, previewInfo?.id]);
 
   return (
     <>
@@ -92,7 +77,11 @@ function __dangerously_disable_scroll_in_html_body(iframe: HTMLIFrameElement) {
   try {
     iframe.contentDocument.getElementsByTagName("body")[0].style.overflow =
       "hidden";
-  } catch (_) {}
+  } catch (_) {
+    if (process.env.NODE_ENV === "development") {
+      console.error("__dangerously_disable_scroll_in_html_body", _);
+    }
+  }
 }
 
 const PlainIframe = styled.iframe<{ scale: number; margin: number }>`
@@ -104,5 +93,5 @@ const PlainIframe = styled.iframe<{ scale: number; margin: number }>`
   margin: ${(props) => props.margin}px;
   border: none;
   transform: ${(props) => `scale(${props.scale})`};
-  transform-origin: 0 0;
+  transform-origin: center top;
 `;
