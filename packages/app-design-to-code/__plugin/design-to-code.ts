@@ -31,14 +31,27 @@ export async function designToFlutter(
   jobs: InterceptorJobProcessor
 ): Promise<O> {
   setup_image_repository();
-  const tokens = token.tokenize(reflectDesign);
-  const widget = flutter.buildFlutterWidget(tokens);
-  const app = flutter.buildFlutterApp(widget);
+  const flutter = await designToCode({
+    input: {
+      name: reflectDesign.name,
+      id: reflectDesign.id,
+      design: reflectDesign,
+    },
+    framework: <config.FlutterFrameworkConfig>{
+      framework: "flutter",
+      language: "dart",
+    },
+    asset_config: {
+      // the asset replacement on assistant is handled on ui thread.
+      skip_asset_replacement: true,
+    },
+  });
+
   // execution order matters.
   // this will be fixed by having a builder instance. (currently non available)
   await jobs();
 
-  return app;
+  return flutter;
 }
 
 export async function designToReact(
