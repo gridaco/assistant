@@ -104,10 +104,7 @@ function Content({
   switch (previewInfo.type) {
     case "responsive": {
       return (
-        <ResponsivePreview
-          previewInfo={previewInfo as any}
-          parentSize={parentSize}
-        />
+        <ResponsivePreview previewInfo={previewInfo} parentSize={parentSize} />
       );
     }
     case "static": {
