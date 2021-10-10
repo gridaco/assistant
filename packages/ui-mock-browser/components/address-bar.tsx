@@ -55,15 +55,9 @@ const Frame167 = styled.div`
   top: calc(50% - 7px);
 `;
 
-const BrowserTabsIndicationPlaceholder = styled.img`
-  object-fit: cover;
-`;
-
 const Address = styled.span`
   color: rgba(0, 0, 0, 1);
-  text-overflow: ellipsis;
   font-size: 12px;
-  font-family: "Helvetica Neue", sans-serif;
   font-weight: 400;
   line-height: 100%;
   text-align: center;

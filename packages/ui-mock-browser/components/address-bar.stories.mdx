@@ -8,9 +8,17 @@ import { AddressBar } from "./address-bar";
 <Preview>
   <Story name="based">
     <div style={{ height: "30px" }}>
-      <AddressBar />
+      <AddressBar
+        address="loading..."
+        icon={<></>}
+        onRefreshClick={() => {
+          console.log("refresh");
+        }}
+      />
     </div>
   </Story>
 </Preview>
 
 # Props
+
+<Props of={AddressBar} />

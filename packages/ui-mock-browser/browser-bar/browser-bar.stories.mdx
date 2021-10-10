@@ -7,10 +7,21 @@ import { BrowserBar } from "../browser-bar";
 
 <Preview>
   <Story name="based">
-    <div style={{ height: "50px", width: "100vw" }}>
-      <BrowserBar />
+    <div style={{ height: "50px", width: "100%" }}>
+      <BrowserBar
+        closeHistory={{ forward: true, back: true }}
+        handleHistory={(isBack) => {
+          console.log(`clicked isBack : ${isBack}`);
+        }}
+        address="loading"
+        handleRefresh={() => {
+          console.log("refresh");
+        }}
+      />
     </div>
   </Story>
 </Preview>
 
 # Props
+
+<Props of={BrowserBar} />

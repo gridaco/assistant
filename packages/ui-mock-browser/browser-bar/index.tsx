@@ -1,35 +1,41 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import styled from "@emotion/styled";
-import { css } from "@emotion/react";
 import { AddressBar, BrowserNavigationBfButtonGroup } from "../components";
 
-interface BrowserBarProps {
-  history?: any;
-}
+type BrowserBarSize = "xl" | "xs";
 
-// FIXME: handling xl xs size default xl
-export function BrowserBar() {
+export function BrowserBar({
+  closeHistory,
+  handleHistory,
+  size = "xl",
+  pageFavicon,
+  address,
+  handleRefresh,
+}: {
+  closeHistory: {
+    forward: boolean;
+    back: boolean;
+  };
+  handleHistory: (isBack: boolean) => void;
+  size?: BrowserBarSize;
+  pageFavicon: ReactNode;
+  address: string;
+  handleRefresh: () => void;
+}) {
   return (
-    <Wrapper>
+    <Wrapper size={size}>
       <BrowserNavigationBfButtonGroupWrap>
         <BrowserNavigationBfButtonGroup
-          forwardEnable={true}
-          backEnable={true}
-          handleClick={(isBack) => {
-            console.log(isBack);
-          }}
+          forwardEnable={closeHistory.forward}
+          backEnable={closeHistory.forward}
+          handleClick={handleHistory}
         />
       </BrowserNavigationBfButtonGroupWrap>
       <AddressBarWrap>
         <AddressBar
-          address="loading..."
-          icon={
-            <img
-              src="https://s3-us-west-2.amazonaws.com/figma-alpha-api/img/76df/255d/0979e7ab815d6ca528f8d9dcd1781acf"
-              alt="icon"
-            />
-          }
-          onRefreshClick={() => console.log("click refresh")}
+          address={address}
+          icon={pageFavicon}
+          onRefreshClick={handleRefresh}
         />
       </AddressBarWrap>
       <Trailing>
@@ -46,16 +52,18 @@ export function BrowserBar() {
   );
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ size: BrowserBarSize }>`
   display: flex;
   justify-content: flex-start;
   flex-direction: row;
   align-items: center;
-  gap: 351px;
   min-height: 100vh;
   background-color: rgba(255, 255, 255, 1);
   box-sizing: border-box;
   padding: 12px 16px;
+
+  // checking size xl is 351px xs is 24px
+  gap: ${(props) => (props.size === "xl" ? "351px" : "24px")};
 `;
 
 const BrowserNavigationBfButtonGroupWrap = styled.div`
