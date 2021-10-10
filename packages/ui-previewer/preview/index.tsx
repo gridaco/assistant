@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
+import { css } from "@emotion/react";
 import {
   ResponsivePreview,
   ResponsivePreviewProps,
@@ -60,6 +61,7 @@ export function Preview(props: Props) {
       padding={previewWrapPadding}
       isAutoSizable={props.isAutoSizable}
       initialPreviewHeight={initialPreviewHeight}
+      hasBgColor={!(!!props.data || props.auto)}
     >
       <>
         {props.data || props.auto ? (
@@ -115,12 +117,19 @@ const PreviewWrap = styled.div<{
   padding: number;
   initialPreviewHeight: number;
   isAutoSizable: boolean;
+  hasBgColor: boolean;
 }>`
   padding: ${(props) => `${props.padding}px`};
   height: ${(props) =>
     props.isAutoSizable
       ? `calc(100% - ${props.padding * 2}px)`
       : `calc(${props.initialPreviewHeight}px - ${props.padding * 2}px)`};
+  ${(props) =>
+    props.hasBgColor
+      ? css`
+          background-color: rgba(241, 241, 241, 1);
+        `
+      : ""}
   overflow-y: auto;
   overflow-x: hidden;
 `;

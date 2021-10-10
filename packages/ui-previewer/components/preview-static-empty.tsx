@@ -4,13 +4,13 @@ import styled from "@emotion/styled";
 export function PreviewStaticEmpty() {
   return (
     <RootWrapperPreviewStaticEmpty>
-      <Frame57>
+      <InnerWrap>
         <ArtworkEmptystateRectAndCursorArtwork
           src="https://s3-us-west-2.amazonaws.com/figma-alpha-api/img/c9e8/a3c5/d8dbfe0d870988f5f8999399cb0eede7"
           alt="image of ArtworkEmptystateRectAndCursorArtwork"
         ></ArtworkEmptystateRectAndCursorArtwork>
         <NothingIsSelected>Nothing is selected</NothingIsSelected>
-      </Frame57>
+      </InnerWrap>
     </RootWrapperPreviewStaticEmpty>
   );
 }
@@ -27,7 +27,7 @@ const RootWrapperPreviewStaticEmpty = styled.div`
   box-sizing: border-box;
 `;
 
-const Frame57 = styled.div`
+const InnerWrap = styled.div`
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
@@ -44,7 +44,6 @@ const ArtworkEmptystateRectAndCursorArtwork = styled.img`
 `;
 
 const NothingIsSelected = styled.span`
-  color: rgba(173, 174, 178, 1);
   text-overflow: ellipsis;
   font-size: 18px;
   font-family: "Helvetica Neue", sans-serif;
