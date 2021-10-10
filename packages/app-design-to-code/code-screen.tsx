@@ -62,6 +62,9 @@ export function CodeScreen() {
     set_hide_navigation_state(hide);
   }, [hide]);
 
+  const defaultHeight = 200;
+  const [previewHeight, setPreviewHeight] = useState<number>(defaultHeight);
+
   return (
     <div
       style={{
@@ -73,13 +76,16 @@ export function CodeScreen() {
     >
       <div>
         <Resizable
-          defaultSize={{ width: "100%", height: "200px" }}
+          defaultSize={{ width: "100%", height: `${defaultHeight}px` }}
           handleStyles={{
             bottom: {
               height: `${resizeBarSize}px`,
               bottom: `${Math.floor(-resizeBarSize / 2)}px`,
               zIndex: 1,
             },
+          }}
+          onResize={(e, d, el) => {
+            setPreviewHeight(el.offsetHeight);
           }}
           handleComponent={{ bottom: ResizeWrap() }}
           enable={{
@@ -102,6 +108,7 @@ export function CodeScreen() {
             type="responsive"
             data={vanilla_preview_source}
             isAutoSizable={true}
+            height={previewHeight} //FIXME:
           />
         </Resizable>
       </div>

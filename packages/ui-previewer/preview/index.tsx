@@ -26,6 +26,13 @@ interface PreviewProps {
    * if not, set default height in preview 200px
    */
   isAutoSizable?: boolean;
+  // TODO: remove
+  height?: number;
+}
+
+interface SizeProps {
+  w?: number;
+  h?: number;
 }
 
 type Subscenario = StaticPreviewProps | ResponsivePreviewProps;
@@ -33,7 +40,10 @@ type Props = PreviewProps & Subscenario;
 
 export function Preview(props: Props) {
   const previewRefWrap = useRef<HTMLDivElement>();
-  const [size, setsize] = useState(undefined);
+  const [size, setsize] = useState<SizeProps>({
+    w: window.innerWidth,
+    h: props.height,
+  });
 
   // region navigation animation global state handling by preview's scolling.
   const set_hide_navigation_state = useSetRecoilState(hide_navigation);
@@ -41,15 +51,20 @@ export function Preview(props: Props) {
 
   useEffect(() => {
     window.addEventListener("resize", () => {
-      setsize(window.innerWidth);
+      setsize({
+        ...size,
+        w: window.innerWidth,
+        h: props.height,
+      });
     });
   }, []);
 
   useEffect(() => {
-    if (previewRefWrap.current) {
-      setsize(previewRefWrap.current?.offsetWidth);
-    }
-  }, [previewRefWrap]);
+    setsize({
+      ...size,
+      h: props.height,
+    });
+  }, [props.height]);
 
   useEffect(() => {
     set_hide_navigation_state(hide);
@@ -70,7 +85,7 @@ export function Preview(props: Props) {
       <Render id="render">
         <>
           {props.data || props.auto ? (
-            <>{size && <Content props={props} wrapWidth={size} />}</>
+            <>{size && <Content previewInfo={props} parentSize={size} />}</>
           ) : (
             <div className="inner-render">{props.empty || <EmptyState />}</div>
           )}
@@ -80,13 +95,24 @@ export function Preview(props: Props) {
   );
 }
 
-function Content({ props, wrapWidth }: { props: Props; wrapWidth: number }) {
-  switch (props.type) {
+function Content({
+  previewInfo,
+  parentSize,
+}: {
+  previewInfo: Props;
+  parentSize: any;
+}) {
+  switch (previewInfo.type) {
     case "responsive": {
-      return <ResponsivePreview props={props as any} parentWidth={wrapWidth} />;
+      return (
+        <ResponsivePreview
+          previewInfo={previewInfo as any}
+          parentSize={parentSize}
+        />
+      );
     }
     case "static": {
-      return <StaticPreview {...props} />;
+      return <StaticPreview {...previewInfo} />;
     }
   }
 }
