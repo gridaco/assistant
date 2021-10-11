@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "@emotion/styled";
-import EmptyIcon from "../assets/images/empty-state-icon.png";
 
 interface PreviewEmptyProps {
   type: "static" | "responsive";
@@ -18,21 +17,12 @@ export function handle_wrap_bg_color(type: string, hasBg: boolean): string {
   }
 }
 
-function baseUrl(url: string): string {
-  const _host =
-    process.env.NODE_ENV === "production"
-      ? "https://assistant-serve.grida.co"
-      : "http://localhost:3303";
-
-  return _host + url;
-}
-
 export function PreviewEmpty(props: PreviewEmptyProps) {
   return (
     <RootWrapperPreviewStaticEmpty>
       <InnerWrap>
         <ArtworkEmptystateRectAndCursorArtwork
-          src={baseUrl(EmptyIcon.src)}
+          src={"/assets/images/empty-state-icon.png"}
           alt="image of empty state icon"
         ></ArtworkEmptystateRectAndCursorArtwork>
         <Notice>
