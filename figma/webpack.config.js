@@ -63,8 +63,16 @@ module.exports = (env, argv) => {
 
     // minimize
     optimization: {
-      minimize: false,
-      minimizer: [new TerserPlugin()],
+      minimize: true,
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            format: { comments: false },
+            // required for @flutter-builder annotion based code gen.
+            keep_classnames: true,
+          },
+        }),
+      ],
     },
 
     // Tells Webpack to generate "ui.html" and to inline "ui.ts" into it
@@ -72,6 +80,7 @@ module.exports = (env, argv) => {
       new webpack.EnvironmentPlugin({
         HOST: get_host(argv.host),
       }),
+      // https://www.figma.com/plugin-docs/bundling-webpack/
       new HtmlWebpackPlugin({
         template: "./src/ui.html",
         filename: "ui.html",
