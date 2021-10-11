@@ -52,8 +52,10 @@ function main() {
   provideFigma(figma);
   showUI();
 
+  // disabled on staging ----
   // create primary visual store
-  createPrimaryVisualStorePageIfNonExists();
+  // createPrimaryVisualStorePageIfNonExists();
+  // ------------------------
 }
 
 main();
