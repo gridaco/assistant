@@ -46,10 +46,7 @@ export function LiteHostedAppConnector() {
     }
   }, [frame]);
 
-  const _host =
-    process.env.NODE_ENV === "production"
-      ? "https://assistant-serve.grida.co"
-      : "http://localhost:3303";
+  const _host = process.env.HOST;
 
   // use opacity
   // if (initialized) => show iframe only

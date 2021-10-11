@@ -8,8 +8,9 @@
         "@ui/skeleton": "0.0.0"
     },
     "scripts": {
-        "build": "webpack -p --mode=production",
-        "build:dev": "webpack --mode=development",
+        "build": "webpack --mode=production --host=production",
+        "build:staging": "webpack --mode=development --host=staging",
+        "build:dev": "webpack --mode=development --host=dev",
         "watch": "webpack --watch",
         "dev": "yarn watch"
     }
