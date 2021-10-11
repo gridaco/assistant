@@ -58,7 +58,7 @@ const InnerWrap = styled.div`
 
 const ArtworkEmptystateRectAndCursorArtwork = styled.img`
   object-fit: cover;
-  margin-left: 4px;
+  margin-left: 14px; // visual adjustment
 `;
 
 const Notice = styled.span`
