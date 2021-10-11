@@ -8,8 +8,9 @@
         "@ui/skeleton": "0.0.0"
     },
     "scripts": {
-        "build": "webpack --mode=production --host=production",
-        "build:staging": "webpack --mode=development --host=staging",
+        "clean": "rimraf dist",
+        "build": "yarn clean && webpack --mode=production --host=production",
+        "build:staging": "yarn clean && webpack --mode=development --host=staging",
         "build:dev": "webpack --mode=development --host=dev",
         "watch": "webpack --watch",
         "dev": "yarn watch"
