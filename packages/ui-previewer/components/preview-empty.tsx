@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "@emotion/styled";
+import EmptyIcon from "../assets/images/empty-state-icon.png";
 
 interface PreviewEmptyProps {
   type: "static" | "responsive";
@@ -17,13 +18,23 @@ export function handle_wrap_bg_color(type: string, hasBg: boolean): string {
   }
 }
 
+function baseUrl(url: string): string {
+  const _host =
+    process.env.NODE_ENV === "production"
+      ? "https://assistant-serve.grida.co"
+      : "http://localhost:3303";
+
+  return _host + url;
+}
+
 export function PreviewEmpty(props: PreviewEmptyProps) {
+  console.log(EmptyIcon);
   return (
     <RootWrapperPreviewStaticEmpty>
       <InnerWrap>
         <ArtworkEmptystateRectAndCursorArtwork
-          src="https://s3-us-west-2.amazonaws.com/figma-alpha-api/img/c9e8/a3c5/d8dbfe0d870988f5f8999399cb0eede7"
-          alt="image of ArtworkEmptystateRectAndCursorArtwork"
+          src={baseUrl(EmptyIcon.src)}
+          alt="image of empty state icon"
         ></ArtworkEmptystateRectAndCursorArtwork>
         <Notice>
           {props.type === "static" ? "Nothing is selected" : "No Selection"}
@@ -58,6 +69,7 @@ const InnerWrap = styled.div`
 
 const ArtworkEmptystateRectAndCursorArtwork = styled.img`
   object-fit: cover;
+  margin-left: 4px;
 `;
 
 const Notice = styled.span`
