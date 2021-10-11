@@ -28,7 +28,6 @@ function baseUrl(url: string): string {
 }
 
 export function PreviewEmpty(props: PreviewEmptyProps) {
-  console.log(EmptyIcon);
   return (
     <RootWrapperPreviewStaticEmpty>
       <InnerWrap>
