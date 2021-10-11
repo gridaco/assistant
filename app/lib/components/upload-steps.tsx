@@ -5,8 +5,8 @@ import {
   TransparentButtonStyle,
 } from "@ui/core/button-style";
 import { Button } from "@material-ui/core";
-import { AnimatedProgressBar } from "./animation/animated-progress-bar";
-import { AnimatedCheckIcon } from "./animation/animated-check-icon";
+import { AnimatedProgressBar } from "./animated/animated-progress-bar";
+import { AnimatedCheckIcon } from "./animated/animated-check-icon";
 import { motion } from "framer-motion";
 import { Preview } from "@ui/previewer";
 import CheckIcon from "@assistant/icons/check";
@@ -42,7 +42,7 @@ export function UploadSteps() {
 
   return (
     <>
-      <Preview auto />
+      <Preview type="static" auto />
       {isLoading && <AnimatedProgressBar contorl={animateHandle} />}
       <InnerWrapper variants={fieldVariants} animate="make-active">
         {isLoading ? (
@@ -142,7 +142,7 @@ const Item = styled(motion.h5)`
 
 const FooterButtonWrapper = styled.div`
   position: absolute;
-  bottom: 8px;
+  bottom: 16px;
   width: calc(100% - 40px);
 `;
 const IconBox = styled.div`

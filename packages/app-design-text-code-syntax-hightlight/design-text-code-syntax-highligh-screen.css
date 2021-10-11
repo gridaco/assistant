@@ -1,0 +1,26 @@
+.box {
+  margin: 8px 0 16px;
+}
+
+.flex {
+  display: flex;
+  padding-bottom: 8px;
+}
+
+.flexChild:first-child {
+  width: 50%;
+  padding-right: 4px;
+}
+
+.flexChild:last-child {
+  width: 50%;
+  padding-left: 4px;
+}
+
+.boxPadding {
+  padding: 16px 0;
+}
+
+.cursor {
+  cursor: pointer;
+}

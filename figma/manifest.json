@@ -6,5 +6,12 @@
   "ui": "dist/ui.html",
   "editorType": [
     "figma"
+  ],
+  "relaunchButtons": [
+    {
+      "command": "open",
+      "name": "Open Assistant",
+      "multipleSelection": true
+    }
   ]
 }

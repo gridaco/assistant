@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { icons } from "@base-sdk/resources";
-import { IconConfig } from "@reflect-ui/core/lib";
+import { NamedDefaultOssIconConfig } from "@reflect-ui/core";
 import Tooltip from "@material-ui/core/Tooltip";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
@@ -19,12 +19,19 @@ import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import styled from "@emotion/styled";
 
 // cached icons configs
-let CONFIGS: Map<string, IconConfig>;
+let CONFIGS: Map<string, NamedDefaultOssIconConfig>;
 export function IconsLoader() {
-  const [configs, setConfigs] = useState<Map<string, IconConfig>>(undefined);
+  const [configs, setConfigs] = useState<
+    Map<string, NamedDefaultOssIconConfig>
+  >(undefined);
   const [queryTerm, setQueryTerm] = useState<string>(undefined);
   const [iconLoadLimit, setIconLoadLimit] = useState(100);
-  const [iconProperty, setIconProperty] = useState<IconConfig>({
+  const iconRef = useRef<HTMLUListElement>(undefined);
+  const [iconProperty, setIconProperty] = useState<{
+    default_size: string;
+    variant: string;
+    host: string;
+  }>({
     default_size: "size",
     variant: "variant",
     host: "material",
@@ -46,6 +53,33 @@ export function IconsLoader() {
   useEffect(() => {
     setIconLoadLimit(100);
   }, [iconProperty, queryTerm]);
+
+  function IconList(props: { icons: [string, NamedDefaultOssIconConfig][] }) {
+    const { icons } = props;
+
+    return (
+      <>
+        {/* <ListWrap> */}
+        <GridList
+          cellHeight="auto"
+          cols={5}
+          style={{ marginRight: 0, marginLeft: 0 }}
+          ref={iconRef}
+        >
+          {icons.map((i) => {
+            const key = i[0];
+            const config = i[1];
+            return (
+              <GridItem key={key} classes={{ tile: "tile" }}>
+                <IconItem key={key} name={key} config={config} />
+              </GridItem>
+            );
+          })}
+        </GridList>
+        {/* </ListWrap> */}
+      </>
+    );
+  }
 
   let list;
   if (configs) {
@@ -87,7 +121,7 @@ export function IconsLoader() {
     list = <StyledLinearProgress />;
   }
 
-  const handleScroll = () => {
+  const handleScroll = (e) => {
     const scrollHeight = document.documentElement.scrollHeight;
     const scrollTop = document.documentElement.scrollTop;
     const clientHeight = document.documentElement.clientHeight;
@@ -101,7 +135,7 @@ export function IconsLoader() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  });
+  }, [handleScroll]);
 
   return (
     <>
@@ -109,7 +143,7 @@ export function IconsLoader() {
         onChange={setQueryTerm}
         onSelectIconProperty={setIconProperty}
       />
-      {list}
+      <>{list}</>
     </>
   );
 }
@@ -203,15 +237,15 @@ function IconSearch(props: {
 }
 
 function filterIcons(
-  configs: Map<string, IconConfig>,
+  configs: Map<string, NamedDefaultOssIconConfig>,
   options: {
     includes?: string;
   }
-): [string, IconConfig][] {
+): [string, NamedDefaultOssIconConfig][] {
   const keys = Object.keys(configs);
   const defaultIcons = keys
-    .map<[string, IconConfig]>((k) => {
-      const item = configs[k] as IconConfig;
+    .map<[string, NamedDefaultOssIconConfig]>((k) => {
+      const item = configs[k] as NamedDefaultOssIconConfig;
 
       if (options.includes) {
         if (k.includes(options.includes)) {
@@ -227,27 +261,7 @@ function filterIcons(
   return defaultIcons;
 }
 
-function IconList(props: { icons: [string, IconConfig][] }) {
-  const { icons } = props;
-
-  return (
-    <>
-      <GridList cellHeight="auto" cols={5}>
-        {icons.map((i) => {
-          const key = i[0];
-          const config = i[1];
-          return (
-            <GridItem key={key} classes={{ tile: "tile" }}>
-              <IconItem key={key} name={key} config={config} />
-            </GridItem>
-          );
-        })}
-      </GridList>
-    </>
-  );
-}
-
-function IconItem(props: { name: string; config: IconConfig }) {
+function IconItem(props: { name: string; config: NamedDefaultOssIconConfig }) {
   const { name, config } = props;
   const [downloading, setDownloading] = useState<boolean>(false);
 
@@ -357,6 +371,11 @@ function sort_icon(icons: [string, any]) {
   });
 }
 
+const ListWrap = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
+
 const Wrapper = styled.div`
   padding-top: 14px;
   padding-bottom: 15px;
@@ -367,12 +386,12 @@ const SearchBar = styled.div`
   width: 100%;
   font-size: 14px;
   height: 55px;
+  padding: 8px;
   display: flex;
   align-items: center;
 
   svg {
-    margin: 10px;
-    margin-left: 8px;
+    margin: 10px 10px 10px 8px;
     font-size: 20px;
   }
 `;
@@ -429,7 +448,6 @@ const SizeCheck = styled.div`
 
 const StyledLinearProgress = styled(LinearProgress)`
   /* for reset body margin */
-  margin: 0 -8px;
 
   /* reset material-ui style */
   &.color-primary {

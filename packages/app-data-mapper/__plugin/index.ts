@@ -1,4 +1,4 @@
-import { utils, keyAnnotations } from "@design-sdk/core";
+import { utils, flags } from "@design-sdk/core";
 import { variant } from "@design-sdk/figma/features";
 import { Figma } from "@design-sdk/figma";
 import { PluginSdk } from "@plugin-sdk/app";
@@ -103,15 +103,16 @@ function mapDataToSelection(selection: Figma.SceneNode, data: DataSchema) {
 
       // handle non componentized layers
       // check loosen name checking
-      if (propertyName == keyAnnotations.utils.normalizedName(c.name)) {
-        if (c.type == "TEXT") {
-          mapText(c, propertyValue);
-        } else {
-          console.warn(
-            `the type ${c.type} from "${c.name}", child of "${c.parent.name}" cannot be handled from data mapper`
-          );
-        }
-      }
+      // FIXME: temporarilly disabled.
+      // if (propertyName == assert - plus.utils.normalizedName(c.name)) {
+      //   if (c.type == "TEXT") {
+      //     mapText(c, propertyValue);
+      //   } else {
+      //     console.warn(
+      //       `the type ${c.type} from "${c.name}", child of "${c.parent.name}" cannot be handled from data mapper`
+      //     );
+      //   }
+      // }
     }
   });
 }
@@ -183,18 +184,18 @@ function mapVariant_try(
     const set = variant.extractTypeFromVariantNames_Figma(_names);
 
     for (const s of set) {
-      const value = data[s.name];
-      const _isConpat =
-        value && typeof s.type == "string"
+      const value = data[s.key];
+      const _isCompat =
+        value && typeof s.type == "symbol"
           ? s.type == value
-          : s.type.includes(value);
+          : (s.type as variant.FigmaEnum).values.includes(value);
 
-      if (_isConpat) {
+      if (_isCompat) {
         // 4. map the variant
 
         const swappingName = variant.buildVariantNameIncluding_Figma({
           including: {
-            swapPropertyName: s.name,
+            swapPropertyName: s.key,
             swapPropertyValue: value,
             thisOriginName: thisVariantName,
           },

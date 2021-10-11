@@ -2,8 +2,8 @@
 /// if node with name pattern "@//data-source/*", it means it contians data for logic representation.
 
 // TOOD - make it universal
-import { keyAnnotations, Figma } from "@design-sdk/figma";
-import type { IReflectNodeReference } from "@design-sdk/core/nodes/lignt";
+import { flags, Figma } from "@design-sdk/figma";
+import type { IReflectNodeReference } from "@design-sdk/figma-node";
 
 /**
  * currently only root level text are supported for data source node.
@@ -42,17 +42,18 @@ export function findDatasourceNodeAndOthers(
   };
 
   all.forEach((v) => {
-    const ignoranceType = keyAnnotations.utils.specialKeyTypeFrom(v.name);
-    if (ignoranceType) {
-      if (ignoranceType == keyAnnotations.SpecialKeys.KEY_DATA_SOURCE) {
-        if (res.datasource) {
-          throw "multiple datasource node was selected. this is not allowed and assistant cannot identify how to handle this form of input.";
-        }
-        res.datasource = v;
-      }
-    } else {
-      res.others.push(v);
-    }
+    // FIXME: temporarilly disabled.
+    // const ignoranceType = flags.utils.specialKeyTypeFrom(v.name);
+    // if (ignoranceType) {
+    //   if (ignoranceType == flags.SpecialKeys.KEY_DATA_SOURCE) {
+    //     if (res.datasource) {
+    //       throw "multiple datasource node was selected. this is not allowed and assistant cannot identify how to handle this form of input.";
+    //     }
+    //     res.datasource = v;
+    //   }
+    // } else {
+    //   res.others.push(v);
+    // }
   });
 
   return res;

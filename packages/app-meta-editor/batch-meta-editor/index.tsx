@@ -26,6 +26,7 @@ export function BatchMetaEditor() {
 
   const handleUpdateClick = () => {
     const data: BatchMetaUpdateRequest = {
+      type: "batch-meta-update-request",
       targetType: targetType,
       custom: {},
       key: propertyName,

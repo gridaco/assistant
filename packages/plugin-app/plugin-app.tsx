@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useSetRecoilState } from "recoil";
 import Axios from "axios";
 import {
   PLC_REMOTE_API_RES,
@@ -11,7 +10,6 @@ import {
 import { NetworkRequest } from "@plugin-sdk/core";
 import { PluginSdk } from "@plugin-sdk/app";
 import type { TargetPlatform } from "@plugin-sdk/core";
-import { currentlySelectedPrimaryNodeId } from "./states/canvas";
 import { initialize as cid_initialize, client_id } from "./client-id";
 
 export function PluginApp(props: {
@@ -97,9 +95,9 @@ function registerPluginGlobalStateHandler(message: TransportPluginEvent) {
   if (message.namespace == PLUGIN_SDK_NS_GENERAL_STATE_DATA) {
     if (message.key == "general.canvas.selection-change") {
       // update selection change
-      const setCrrentSelection = useSetRecoilState(
-        currentlySelectedPrimaryNodeId
-      );
+      // const setCrrentSelection = useSetRecoilState(
+      //   currentlySelectedPrimaryNodeId
+      // );
       // ...
     }
   }

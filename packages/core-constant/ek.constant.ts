@@ -4,7 +4,8 @@
 export const EK_GENERATED_CODE_PLAIN = "EK_GENERATED_CODE_PLAIN";
 export const EK_IMAGE_ASSET_REPOSITORY_MAP = "EK_IMAGE_ASSET_REPOSITORY_MAP";
 export const EK_VANILLA_TRANSPORT = "EK_VANILLA_TRANSPORT";
-export const EK_PREVIEW_SOURCE = "EK_PREVIEW_SOURCE";
+export const EK_CURRENT_SELECTION_PREVIEW_SOURCE_CHANGED =
+  "EK_CURRENT_SELECTION_PREVIEW_SOURCE_CHANGED";
 // icon related
 export const EK_ICON_DRAG_AND_DROPPED = "assistant/design/icons/add/dropped";
 export const EK_CREATE_ICON = "assistant/design/icons/add/create";

@@ -1,5 +1,8 @@
 {
     "name": "@ui/previewer",
     "version": "0.0.0",
-    "private": false
+    "private": false,
+    "dependencies": {
+        "react-use-size": "^2.0.4"
+    }
 }

@@ -21,9 +21,9 @@
       "packages/base-sdk/_firstparty/*",
       "packages/reflect-core/packages/*",
       "packages/design-to-code/packages/designto-*",
-      "packages/design-to-code/packages/builder-config",
+      "packages/design-to-code/packages/builder-*",
+      "packages/design-to-code/packages/support-*",
       "packages/design-to-code/packages/coli/packages/*",
-      "packages/design-to-code/packages/coli-web-builder/*",
       "packages/design-to-code/packages/reflect-detection"
     ]
   },
@@ -33,7 +33,10 @@
     "pull:all": "git submodule update --init --recursive",
     "figma-native": "yarn workspace figma-native run webpack:watch",
     "figma": "yarn workspace figma run build:dev && yarn web",
-    "build:figma:prod": "yarn workspace figma run build",
+    "figma:onlyweb": "yarn workspace web run dev",
+    "figma:onlyplugin": "yarn workspace figma run dev",
+    "figma:build:prod": "yarn workspace figma run build && yarn workspace web build",
+    "figma:build:staging": "yarn workspace figma run build:staging && yarn workspace web build",
     "sketch": "yarn workspace sketch run render",
     "web": "yarn workspace web run dev",
     "xd": "yarn workspace xd run build",
@@ -43,8 +46,8 @@
   },
   "collective": {
     "type": "opencollective",
-    "url": "https://opencollective.com/bridged",
-    "logo": "https://opencollective.com/bridged/logo.txt"
+    "url": "https://opencollective.com/grida",
+    "logo": "https://opencollective.com/grida/logo.txt"
   },
   "engines": {
     "node": ">=12.0.0"

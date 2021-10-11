@@ -37,6 +37,10 @@ export function WorkmodeScreenTabs(props: {
           userSelect: "none",
         },
       }}
+      style={{
+        marginLeft: "-16px",
+        marginRight: "16px",
+      }}
     >
       {layout.map((v, i) => {
         return (
