@@ -28,6 +28,21 @@
 - [Flutter] Poligon Node support with XImage (svg)
 - [Lint] Primal naming & grouping linting for better code export quality. this is tracked sperately on [lint](https://github.com/bridgedxyz/lint)
 
+## [2021.8.0b] - 2021-8-26
+
+**What's new**
+
+- Speed
+- Navigation UX Renewal
+- The code
+- Code interaction
+- Figma to Flutter
+- Figma to React (React as preview feature)
+- Icons loader
+- Design Lint now on beta channel
+
+[Read thw full release notes from medium blog](https://blog.grida.co/d-figma-assistant-by-grida-supercharge-your-design-development-workflow-e6b2989216e2)
+
 ## [2021.0.2f0] - 2021-5-21
 
 > Deisgn to code logical separation. Design to code is now imported from [designto.codes](https://designto.codes)
