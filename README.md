@@ -11,7 +11,7 @@ title: Grida assistant for figma, sketch, xd
 
 <div style="text-align:center"><a href="https://www.producthunt.com/posts/grida-assistant-figma-2-flutter-react?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-grida-assistant-figma-2-flutter-react" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=310028&theme=light" alt="Grida Assistant - Figma 2 Flutter &React - Free & Opensource Design2Code Plugin with lot more features. | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a></div>
 
-# Grdia Assistant plugin (figma to flutter)
+# Grdia Assistant plugin (figma to flutter & react)
 
 > Any design to high quality code, with live preview.
 
