@@ -46,14 +46,14 @@ figma.on("currentpagechange", () => {
 // MAIN INITIALIZATION
 import { showUI } from "./code-thread/show-ui";
 import { provideFigma } from "@design-sdk/figma";
-import { createPrimaryVisualStorePageIfNonExists } from "./physical-visual-store/page-manager/craete-page-if-non-exist";
+
 function main() {
   MainImageRepository.instance = new ImageRepositories();
   provideFigma(figma);
   showUI();
-
   // disabled on staging ----
   // create primary visual store
+  // import { createPrimaryVisualStorePageIfNonExists } from "./physical-visual-store/page-manager/craete-page-if-non-exist";
   // createPrimaryVisualStorePageIfNonExists();
   // ------------------------
 }
