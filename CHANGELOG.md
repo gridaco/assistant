@@ -28,6 +28,10 @@
 - [Flutter] Poligon Node support with XImage (svg)
 - [Lint] Primal naming & grouping linting for better code export quality. this is tracked sperately on [lint](https://github.com/bridgedxyz/lint)
 
+## (Draft) [2021.9.1] - 2021-11-3
+
+> Live session support with experimental components support
+
 ## [2021.9.1] - 2021-10-11
 
 > 2021.9 is a cold release
@@ -41,6 +45,10 @@
 - (fix) wrong cache loading issue on boot
 - prevent thread lock on big screen
 - prevent thread lock on too many remote component screen
+
+### [2021.9.1f1] - 2021-10-26
+
+- Fix icons loader cors issue
 
 ## [2021.8.0b] - 2021-8-26
 
