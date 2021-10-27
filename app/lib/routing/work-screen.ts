@@ -9,6 +9,7 @@ export enum WorkScreen {
   component = "component",
   layout = "layout",
   icon = "icon",
+  live = "live",
   lint = "lint",
   g11n = "g11n",
   dev = "dev",
@@ -23,4 +24,5 @@ export enum WorkScreen {
   tool_data_mapper = "tool_data_mapper",
   scene_upload_steps_final = "scene_upload_steps_final",
   signin = "signin",
+  figma_checksum = "figma-checksum",
 }

@@ -11,7 +11,8 @@ export function getWorkmodeTabLayout(workspaceMode: WorkMode): TabLayout {
         return [
           WorkScreen.code,
           WorkScreen.component,
-          WorkScreen.layout,
+          WorkScreen.live,
+          // WorkScreen.layout,
           WorkScreen.lint,
         ];
       case WorkMode.design:
@@ -47,6 +48,8 @@ export function workScreenToName(appMode: WorkScreen): string {
       return "react";
     case WorkScreen.component:
       return "component";
+    case WorkScreen.live:
+      return "live";
     case WorkScreen.layout:
       return "layout";
     case WorkScreen.tool_home:

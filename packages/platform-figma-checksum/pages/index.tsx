@@ -6,7 +6,7 @@ import { LinkInput } from "../components";
  * ![](https://www.figma.com/file/4hqwYFw6FKw1njvzEl3VUh/assistant?node-id=4473%3A37403)
  * @returns
  */
-function FigmaFileChecksum() {
+export function FigmaFileChecksum() {
   return (
     <RootWrapperFigmaFileChecksum>
       <MdiArrowBack
@@ -209,5 +209,3 @@ const Content = styled.span`
   text-align: left;
   width: 371px;
 `;
-
-export default FigmaFileChecksum;
