@@ -36,6 +36,9 @@ const withTM = require("next-transpile-modules")([
   // cores
   "@core/code-formatter",
 
+  // dedicated platform
+  "@platform-dedicated/figma-checksum",
+
   // Plugin sdk
   "@plugin-sdk/app",
   "@plugin-sdk/core",
