@@ -1,5 +1,7 @@
 import {
   BasePluginEvent,
+  PLUGIN_SDK_EK_UI_ALIAS,
+  PLUGIN_SDK_NS_UI_API,
   PLUGIN_SDK_EK_DRAG_AND_DROPPED,
   PLUGIN_SDK_EK_REQUEST_FETCH_NODE_MAIN_COMPONENT_LAYER_META,
   PLUGIN_SDK_EK_REQUEST_FETCH_NODE_MAIN_COMPONENT_META,
@@ -35,6 +37,7 @@ import {
   ImageExportResponse,
   target_platform,
   TargetPlatform,
+  UIControlRequest,
 } from "@plugin-sdk/core";
 import type { ReflectSceneNode } from "@design-sdk/figma-node";
 import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "@core/constant";
@@ -53,6 +56,18 @@ export class PluginSdk {
   }
   static initializeWindow(window: Window) {
     this._window = window;
+  }
+
+  static resizeHost(size: { width: number; height: number }) {
+    // figma.ui.resize()
+    this.request({
+      namespace: PLUGIN_SDK_NS_UI_API,
+      key: PLUGIN_SDK_EK_UI_ALIAS.resize,
+      data: <UIControlRequest>{
+        type: "resize",
+        size,
+      },
+    });
   }
 
   /**
