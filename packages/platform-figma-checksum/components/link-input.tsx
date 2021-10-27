@@ -34,31 +34,37 @@ export function LinkInput({
 
   const validate = (e) => {
     const url = e.target.value;
-    const _ = analyze(url);
-    switch (_) {
-      case FigmaUrlType.empty:
-        whenInvalid("Please enter a valid Figma URL");
-        return;
-      case FigmaUrlType.node:
-      case FigmaUrlType.file:
-      case FigmaUrlType.embed:
-      case FigmaFileOrNodeIdType.fileid:
-      case FigmaFileOrNodeIdType.maybe_fileid:
-      case FigmaFileOrNodeIdType.maybe_nodeid:
-      case FigmaFileOrNodeIdType.nodeid:
-        try {
-          const parsed = parseFileAndNodeId(url);
-          setError(null);
-          setValid(true);
-          onValidLink(parsed.file, parsed.node, url, _);
-        } catch (_) {
+    try {
+      new URL(url); // for url format validation
+
+      const _ = analyze(url);
+      switch (_) {
+        case FigmaUrlType.empty:
           whenInvalid("Please enter a valid Figma URL");
-        }
-        return;
-      default:
-        whenInvalid("Please enter a valid Figma URL");
-        console.error("Unhandled case", _);
-        break;
+          return;
+        case FigmaUrlType.node:
+        case FigmaUrlType.file:
+        case FigmaUrlType.embed:
+        case FigmaFileOrNodeIdType.fileid:
+        case FigmaFileOrNodeIdType.maybe_fileid:
+        case FigmaFileOrNodeIdType.maybe_nodeid:
+        case FigmaFileOrNodeIdType.nodeid:
+          try {
+            const parsed = parseFileAndNodeId(url);
+            setError(null);
+            setValid(true);
+            onValidLink(parsed.file, parsed.node, url, _);
+          } catch (_) {
+            whenInvalid("Please enter a valid Figma URL");
+          }
+          return;
+        default:
+          whenInvalid("Please enter a valid Figma URL");
+          console.error("Unhandled case", _);
+          break;
+      }
+    } catch (_) {
+      whenInvalid("Please enter a valid Figma URL");
     }
   };
 
