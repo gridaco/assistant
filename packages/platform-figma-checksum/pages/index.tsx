@@ -1,15 +1,21 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { LinkInput } from "../components";
+import { useHistory } from "react-router";
+import { FigmaRootNodeStoreVerification } from "@design-sdk/figma-checksum";
 
 /**
  * ![](https://www.figma.com/file/4hqwYFw6FKw1njvzEl3VUh/assistant?node-id=4473%3A37403)
  * @returns
  */
 export function FigmaFileChecksum() {
+  const history = useHistory();
   return (
     <RootWrapperFigmaFileChecksum>
       <MdiArrowBack
+        onClick={() => {
+          history.goBack();
+        }}
         src="grida://assets-reservation/images/4473:37442"
         alt="image of MdiArrowBack"
       ></MdiArrowBack>
@@ -20,7 +26,11 @@ export function FigmaFileChecksum() {
         </Header>
         <Spacer></Spacer>
         <InputSection>
-          <LinkInput />
+          <LinkInput
+            onValidLink={(filekey) => {
+              console.log(filekey);
+            }}
+          />
         </InputSection>
         <Spacer_0001></Spacer_0001>
         <HowToArea>
