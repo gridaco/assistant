@@ -69,7 +69,7 @@ export function LiteHostedAppConnector() {
           // style={{ zoom: "80%" }} // use this to zoom inner content
           width="100%"
           height={`${initialized ? "100%" : "0px"}`}
-          sandbox="allow-scripts allow-same-origin allow-popups"
+          sandbox="allow-scripts allow-same-origin allow-popups allow-modals"
           frameBorder="0"
           allowFullScreen
           src={`${_host}/init-figma`} //?platform=figma
