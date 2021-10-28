@@ -48,9 +48,9 @@ export function FigmaFileChecksum() {
             ></FigmaDesktopWhereIsShareButtonArtwork>
             <Description>
               <Content>
-                On browser, simply copy-paste the current link below. On Figma
-                desktop app, click Share - Copy link, paste the copied url
-                below. (You don’t need to change sharing options)
+                On browser, simply copy-paste the current link. On Figma desktop
+                app, click <b>Share - Copy link</b>, paste the copied link. (You
+                don’t need to change sharing options)
               </Content>
             </Description>
           </GraphicsAndDescription>
