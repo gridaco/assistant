@@ -14,6 +14,10 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [".ts", ".js"],
+    extensions: [
+      ".ts",
+      ".js",
+      ".json", // <-- without this, pusher will throw error while resolving. https://github.com/pusher/pusher-http-node/issues/66#issuecomment-389370561
+    ],
   },
 };
