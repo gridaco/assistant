@@ -37,12 +37,12 @@ functions:
     handler: handler.handler
     events:
       - http:
-          path: /
-          method: GET
+          path: /{proxy+}
+          method: any
           cors:
             origin: "*"
       - http:
-          path: /format
-          method: POST
+          path: /
+          method: get
           cors:
             origin: "*"
