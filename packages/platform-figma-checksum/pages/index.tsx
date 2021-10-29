@@ -5,6 +5,7 @@ import { useHistory } from "react-router";
 import { FigmaRootNodeStoreVerification } from "@design-sdk/figma-checksum";
 import { fromApp } from "../__plugin/events";
 import { nanoid } from "nanoid/non-secure";
+import { isAuthenticated } from "@assistant-fp/auth";
 
 /**
  * ![](https://www.figma.com/file/4hqwYFw6FKw1njvzEl3VUh/assistant?node-id=4473%3A37403)
@@ -23,6 +24,9 @@ export function FigmaFileChecksum() {
     });
 
     // 2. check if app assistant is authenticated
+    if (await isAuthenticated()) {
+      //
+    }
     // TODO:
     // 3. check if assistant contains figma access key authenticated by user
     // TODO:
