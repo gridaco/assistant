@@ -13,6 +13,7 @@ export class AssistantLiveSession {
 
     this.pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_KEY, {
       cluster: process.env.NEXT_PUBLIC_PUSHER_APP_CLUSTER,
+      authEndpoint: "http://localhost:33031/dev/pusher/auth",
     });
   }
 
@@ -27,18 +28,10 @@ export class AssistantLiveSession {
       // now able to send client origin events
       console.info("subscription succeeded");
     });
-    this.channel.bind_global((e) => {
-      console.log("e", e);
-    });
-    this.channel.bind("client-select", () => {
-      console.log("channel bind ev recvd");
-    });
   }
 
-  emmitSelect() {
-    this.channel.trigger("client-select", <SelectionPayload>{
-      filekey: this.filekey,
-    });
+  emmitSelect(selesction: SelectionPayload) {
+    this.channel.trigger("client-select", selesction);
   }
 }
 
