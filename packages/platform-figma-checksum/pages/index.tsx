@@ -3,6 +3,8 @@ import styled from "@emotion/styled";
 import { LinkInput } from "../components";
 import { useHistory } from "react-router";
 import { FigmaRootNodeStoreVerification } from "@design-sdk/figma-checksum";
+import { fromApp } from "../__plugin/events";
+import { nanoid } from "nanoid/non-secure";
 
 /**
  * ![](https://www.figma.com/file/4hqwYFw6FKw1njvzEl3VUh/assistant?node-id=4473%3A37403)
@@ -10,6 +12,34 @@ import { FigmaRootNodeStoreVerification } from "@design-sdk/figma-checksum";
  */
 export function FigmaFileChecksum() {
   const history = useHistory();
+  const signature = nanoid();
+
+  const startValidation = async ({ filekey }: { filekey: string }) => {
+    // 1. seed the signature to design
+    fromApp({
+      type: "seed-signature-request",
+      filekey,
+      signature,
+    });
+
+    // 2. check if app assistant is authenticated
+    // TODO:
+    // 3. check if assistant contains figma access key authenticated by user
+    // TODO:
+    // 4. validate figma file checksum
+    const verified = await new FigmaRootNodeStoreVerification({
+      signature,
+      filekey,
+    }).verify();
+    if (verified) {
+      //
+      // TODO:
+    } else {
+      //
+      // TODO:
+    }
+  };
+
   return (
     <RootWrapperFigmaFileChecksum>
       <MdiArrowBack
@@ -28,7 +58,7 @@ export function FigmaFileChecksum() {
         <InputSection>
           <LinkInput
             onValidLink={(filekey) => {
-              console.log(filekey);
+              startValidation({ filekey });
             }}
           />
         </InputSection>
