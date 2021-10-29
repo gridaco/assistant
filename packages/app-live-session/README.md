@@ -10,6 +10,10 @@ Assistant Live session support
 2. one room per one owner (owner id is the id) - can't perform multiple sessions
 3. wip.
 
+## Setup & Contribution
+
+Read [contributing](./CONTRIBUTING.md)
+
 ## References
 
 - https://code.visualstudio.com/learn/collaboration/live-share

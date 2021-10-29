@@ -4,5 +4,7 @@
     "authors": "Grida.co",
     "version": "0.0.0",
     "private": false,
-    "dependencies": {}
+    "dependencies": {
+        "pusher-js": "^7.0.3"
+    }
 }
