@@ -1,0 +1,48 @@
+service: assistant-live-session-pingpong-server
+useDotenv: true
+
+plugins:
+  - serverless-webpack
+  - serverless-plugin-warmup
+  - serverless-offline
+  - serverless-domain-manager
+
+custom:
+  webpack:
+    webpackConfig: webpack.config.js
+    packager: "yarn"
+  serverless-offline:
+    httpPort: 33031
+  warmup:
+    - production
+    - staging
+  customDomain:
+    # domainName: code-format.functions.grida.cc
+    domainName: assistant-live-session.functions.bridged.cc
+    basePath: ""
+    stage: production
+    createRoute53Record: true
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  memorySize: 128
+  region: us-west-1
+  apiGateway:
+    shouldStartNameWithService: true
+  lambdaHashingVersion: "20201221"
+
+functions:
+  api:
+    handler: handler.handler
+    events:
+      - http:
+          path: /
+          method: GET
+          cors:
+            origin: "*"
+      - http:
+          path: /format
+          method: POST
+          cors:
+            origin: "*"
