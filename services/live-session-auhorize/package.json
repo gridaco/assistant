@@ -2,6 +2,7 @@
     "name": "assistant-live-session-pingpong-server",
     "version": "0.0.0",
     "scripts": {
+        "dev": "serverless offline",
         "clean": "rimraf .build .webpack",
         "deploy:prod": "yarn clean && sls deploy --stage=production",
         "deploy": "yarn clean && sls deploy",
@@ -21,6 +22,7 @@
         "@types/jest": "^26.0.24",
         "axios": "^0.21.1",
         "jest": "^27.0.6",
+        "serverless": "^2.64.1",
         "serverless-domain-manager": "^5.1.0",
         "serverless-offline": "^8.2.0",
         "serverless-plugin-optimize": "^4.2.1-rc.1",
