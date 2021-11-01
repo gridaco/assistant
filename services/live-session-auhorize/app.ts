@@ -20,7 +20,7 @@ app.use(
 );
 
 app.get("/", (req, res) => {
-  res.send("service is running");
+  res.json({ msg: "service is running" });
 });
 
 app.post("/pusher/auth", (req, res) => {
@@ -31,9 +31,10 @@ app.post("/pusher/auth", (req, res) => {
     res.send(auth);
   } catch (_) {
     console.error(_);
-    res
-      .status(400)
-      .send("Cannot authorize connection outside of pusher interface");
+    res.status(400).json({
+      error: true,
+      msg: "Cannot authorize connection outside of pusher interface",
+    });
   }
 });
 
