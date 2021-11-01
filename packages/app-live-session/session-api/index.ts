@@ -21,16 +21,24 @@ export class AssistantLiveSession {
   }
 
   get entered(): boolean {
-    return Boolean(this.channel);
+    return this._entered;
   }
+
+  private _entered: boolean = false;
 
   enter() {
     const cname = channelname(this.uid);
     this.channel = this.pusher.subscribe(cname);
     this.channel.bind("pusher:subscription_succeeded", () => {
       // now able to send client origin events
-      console.info("subscription succeeded");
+      this._entered = true;
+      this._onEnter?.();
     });
+  }
+
+  private _onEnter: (() => void) | null = null;
+  onEnter(cb: () => void) {
+    this._onEnter = cb;
   }
 
   emmitSelect(selesction: SelectionPayload) {

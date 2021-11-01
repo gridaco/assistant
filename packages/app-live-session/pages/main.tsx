@@ -1,7 +1,8 @@
+import React, { useState } from "react";
 import { SelectionType, useSelection } from "plugin-app";
-import React from "react";
 import { useHistory } from "react-router";
 import { AssistantLiveSession } from "../session-api";
+import { ConnectedStateMinimized } from "../layouts";
 
 const session = new AssistantLiveSession({
   uid: "",
@@ -9,6 +10,7 @@ const session = new AssistantLiveSession({
 });
 
 export function LiveSessionPage() {
+  const [connected, setConnected] = useState<boolean>(false);
   const history = useHistory();
   const selection = useSelection();
 
@@ -19,7 +21,11 @@ export function LiveSessionPage() {
 
   const connect = () => {
     session.enter();
+    session.onEnter(() => {
+      setConnected(true);
+    });
     // trigger last selection
+    // move to connected page
   };
 
   if (session.entered && selection) {
@@ -37,8 +43,14 @@ export function LiveSessionPage() {
 
   return (
     <>
-      <button onClick={startChecksumProcess}>file cheksum</button>
-      <button onClick={connect}>connect</button>
+      {connected ? (
+        <ConnectedStateMinimized />
+      ) : (
+        <>
+          <button onClick={startChecksumProcess}>file cheksum</button>
+          <button onClick={connect}>connect</button>
+        </>
+      )}
     </>
   );
 }

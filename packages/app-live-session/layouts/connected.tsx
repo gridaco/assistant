@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { PluginSdk } from "@plugin-sdk/app";
 
-export function ConnectedScreen() {
+export function ConnectedStateMinimized() {
   useEffect(() => {
     // minimize the window, disable the resizing knob
     PluginSdk.resizeHost({
-      width: 200,
-      height: 68,
+      width: 212,
+      height: 100,
     });
     // disable resizing knob
     return () => {
