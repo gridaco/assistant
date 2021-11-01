@@ -1,4 +1,4 @@
-service: assistant-live-session-pingpong-server
+service: assistant-live-session
 useDotenv: true
 
 plugins:
@@ -29,8 +29,7 @@ custom:
       seed: false
       convertEmptyValues: true
   customDomain:
-    # domainName: code-format.functions.grida.cc
-    domainName: assistant-live-session.functions.bridged.cc
+    domainName: assistant-live-session.grida.cc
     basePath: ""
     stage: production
     createRoute53Record: true
