@@ -1,5 +1,7 @@
 import { addEventHandler } from "./message-handler";
 
+/// Note.
+/// Figma's min size is 100x100. size smaller than 100x100 will be ignored by figma, the full size will be (w100)x(h41+100) where as 41 is a default handle's size
 export function __register__() {
   addEventHandler("resize", (msg) => {
     const MIN_WIDTH = 320;
