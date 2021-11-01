@@ -24,6 +24,7 @@
         "jest": "^27.0.6",
         "serverless": "^2.64.1",
         "serverless-domain-manager": "^5.1.0",
+        "serverless-dynamodb-local": "^0.2.40",
         "serverless-offline": "^8.2.0",
         "serverless-plugin-optimize": "^4.2.1-rc.1",
         "serverless-plugin-warmup": "^5.3.1",
