@@ -13,7 +13,10 @@ export class AssistantLiveSession {
 
     this.pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_KEY, {
       cluster: process.env.NEXT_PUBLIC_PUSHER_APP_CLUSTER,
-      authEndpoint: "http://localhost:33031/dev/pusher/auth",
+      // authEndpoint:
+      // "https://ahzdf5x4q3.execute-api.us-west-1.amazonaws.com/production/pusher/auth",
+      // authEndpoint: "http://localhost:33031/dev/pusher/auth",
+      authEndpoint: "https://assistant-live-session.grida.cc/pusher/auth",
     });
   }
 

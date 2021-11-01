@@ -19,11 +19,22 @@ app.use(
   })
 );
 
+app.get("/", (req, res) => {
+  res.send("service is running");
+});
+
 app.post("/pusher/auth", (req, res) => {
-  const socketId = req.body.socket_id;
-  const channel = req.body.channel_name;
-  const auth = pusher.authenticate(socketId, channel);
-  res.send(auth);
+  try {
+    const socketId = req.body.socket_id;
+    const channel = req.body.channel_name;
+    const auth = pusher.authenticate(socketId, channel);
+    res.send(auth);
+  } catch (_) {
+    console.error(_);
+    res
+      .status(400)
+      .send("Cannot authorize connection outside of pusher interface");
+  }
 });
 
 export default app;
