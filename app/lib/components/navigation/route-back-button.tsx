@@ -3,11 +3,11 @@ import styled from "@emotion/styled";
 import { useHistory } from "react-router";
 import BackArrow from "@assistant/icons/back-arrow";
 
-export function RouteBackButton() {
+export function RouteBackButton({ onClick }: { onClick?: () => void }) {
   const history = useHistory();
 
   const close = () => {
-    history.goBack();
+    onClick ? onClick() : history.goBack();
   };
 
   return (

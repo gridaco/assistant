@@ -6,6 +6,7 @@ import {
   FilekeySetupRequiredLayout,
   loadFilekey,
   OnboardingLayout,
+  SigninRequiredLayout,
   StartLayout,
 } from "../layouts";
 import { isAuthenticated } from "@assistant-fp/auth";
@@ -86,8 +87,13 @@ export function LiveSessionPage() {
   }
 
   if (authenticated === false) {
-    //
-    // show signin toggle page
+    return (
+      <SigninRequiredLayout
+        onSignin={() => {
+          setAuthenticated(true);
+        }}
+      />
+    );
   }
 
   if (filekey === FILE_KEY_NON_SET_SPECIAL_KEY) {
@@ -103,11 +109,18 @@ export function LiveSessionPage() {
           }}
         />
       ) : (
-        <StartLayout
-          onStartClick={() => {
-            connect();
-          }}
-        />
+        <>
+          {authenticated && filekey ? (
+            <StartLayout
+              onStartClick={() => {
+                connect();
+              }}
+            />
+          ) : (
+            // Don't display anything. this state won't last long.
+            <></>
+          )}
+        </>
       )}
     </>
   );
