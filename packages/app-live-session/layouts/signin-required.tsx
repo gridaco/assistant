@@ -28,6 +28,7 @@ export function SigninRequiredLayout({ onSignin }: { onSignin: () => void }) {
       {
         <Dialog open={open} fullScreen>
           <SigninScreen
+            onSignin={onSignin}
             onClose={() => {
               setOpen(false);
             }}
