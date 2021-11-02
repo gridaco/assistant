@@ -2,6 +2,7 @@ service: assistant-live-session
 useDotenv: true
 
 plugins:
+  - serverless-dotenv-plugin
   - serverless-webpack
   - serverless-plugin-warmup
   - serverless-dynamodb-local
@@ -9,6 +10,12 @@ plugins:
   - serverless-domain-manager
 
 custom:
+  dotenv:
+    include:
+      - PUSHER_APP_ID
+      - PUSHER_APP_KEY
+      - PUSHER_APP_SECRET
+      - PUSHER_APP_CLUSTER
   webpack:
     webpackConfig: webpack.config.js
     packager: "yarn"
@@ -57,7 +64,6 @@ provider:
   region: us-west-1
   apiGateway:
     shouldStartNameWithService: true
-    minimumCompressionSize: 1024
   lambdaHashingVersion: "20201221"
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"

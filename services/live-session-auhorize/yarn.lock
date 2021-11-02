@@ -8598,6 +8598,15 @@ serverless-domain-manager@^5.1.0:
     aws-sdk "^2.948.0"
     chalk "^4.1.1"
 
+serverless-dotenv-plugin@^3.10.0:
+  version "3.10.0"
+  resolved "https://registry.yarnpkg.com/serverless-dotenv-plugin/-/serverless-dotenv-plugin-3.10.0.tgz#6a41dddef7fafd249ed04eeb11be7d1fafc692d8"
+  integrity sha512-u4/Yh/61alhkd3d/aF2+wNwRGgGgrN1KpMz8IhwsMNS0AsoJDhmRl/BTuDqHCCdYcteQw9d4crgEIGVPDlc8jw==
+  dependencies:
+    chalk "^4.1.2"
+    dotenv "^10.0.0"
+    dotenv-expand "^5.1.0"
+
 serverless-dynamodb-local@^0.2.40:
   version "0.2.40"
   resolved "https://registry.yarnpkg.com/serverless-dynamodb-local/-/serverless-dynamodb-local-0.2.40.tgz#1c97f678244bfb581e5850d6d43335d3131b59ee"
