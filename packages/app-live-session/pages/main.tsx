@@ -5,6 +5,7 @@ import {
   ConnectedStateMinimized,
   FilekeySetupRequiredLayout,
   loadFilekey,
+  OnboardingLayout,
 } from "../layouts";
 import { isAuthenticated } from "@assistant-fp/auth";
 
@@ -75,10 +76,16 @@ export function LiveSessionPage() {
         />
       ) : (
         <>
-          {!filekey && <FilekeySetupRequiredLayout onKeySetup={setFilekey} />}
-          {!session?.entered && <button onClick={connect}>connect</button>}
+          <OnboardingLayout />
         </>
       )}
     </>
   );
 }
+
+// {
+//   !filekey && <FilekeySetupRequiredLayout onKeySetup={setFilekey} />;
+// }
+// {
+//   !session?.entered && <button onClick={connect}>connect</button>;
+// }
