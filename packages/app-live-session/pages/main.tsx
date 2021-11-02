@@ -1,54 +1,82 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SelectionType, useSelection } from "plugin-app";
-import { useHistory } from "react-router";
 import { AssistantLiveSession } from "../session-api";
-import { ConnectedStateMinimized } from "../layouts";
-
-const session = new AssistantLiveSession({
-  uid: "",
-  filekey: "",
-});
+import {
+  ConnectedStateMinimized,
+  FilekeySetupRequiredLayout,
+  loadFilekey,
+} from "../layouts";
+import { isAuthenticated } from "@assistant-fp/auth";
 
 export function LiveSessionPage() {
-  const [connected, setConnected] = useState<boolean>(false);
-  const history = useHistory();
+  const [authenticated, setAuthenticated] = useState<boolean>(null);
+  const [filekey, setFilekey] = useState<string>(null);
+  const [focused, setFocused] = useState<boolean>(false);
+  const [session, setSession] = useState<AssistantLiveSession | null>(null);
   const selection = useSelection();
 
-  const startChecksumProcess = () => {
-    //
-    history.push("/checksum");
-  };
+  useEffect(() => {
+    isAuthenticated().then((v) => {
+      setAuthenticated(v);
+    });
+
+    // load filekey
+    loadFilekey().then((v) => {
+      console.log("filekey", v);
+      if (v) {
+        setFilekey(v);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!session && filekey) {
+      setSession(
+        new AssistantLiveSession({
+          uid: "", // TODO:
+          filekey: filekey,
+        })
+      );
+    }
+  }, [filekey, authenticated]);
 
   const connect = () => {
     session.enter();
-    session.onEnter(() => {
-      setConnected(true);
-    });
-    // trigger last selection
-    // move to connected page
+
+    session.entered
+      ? setFocused(true)
+      : session.onEnter(() => {
+          setFocused(true);
+        });
   };
 
-  if (session.entered && selection) {
-    switch (selection.type) {
-      case SelectionType.single: {
-        session.emmitSelect({
-          event: "select",
-          selectionType: selection.type,
-          filekey: "", // TODO:
-          node: selection.id,
-        });
+  useEffect(() => {
+    if (session && session.entered && selection) {
+      switch (selection.type) {
+        case SelectionType.single: {
+          session.emmitSelect({
+            event: "select",
+            selectionType: selection.type,
+            filekey: filekey, // TODO:
+            node: selection.id,
+          });
+        }
       }
     }
-  }
+  }, [selection, focused, session]);
 
   return (
     <>
-      {connected ? (
-        <ConnectedStateMinimized />
+      {focused ? (
+        <ConnectedStateMinimized
+          onClose={() => {
+            setFocused(false);
+          }}
+        />
       ) : (
         <>
-          <button onClick={startChecksumProcess}>file cheksum</button>
-          <button onClick={connect}>connect</button>
+          {!filekey && <FilekeySetupRequiredLayout onKeySetup={setFilekey} />}
+          {!session?.entered && <button onClick={connect}>connect</button>}
         </>
       )}
     </>

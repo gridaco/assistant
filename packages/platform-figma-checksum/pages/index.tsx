@@ -1,58 +1,73 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { LinkInput } from "../components";
-import { useHistory } from "react-router";
 import { FigmaRootNodeStoreVerification } from "@design-sdk/figma-checksum";
 import { fromApp } from "../__plugin/events";
 import { nanoid } from "nanoid/non-secure";
 import { isAuthenticated } from "@assistant-fp/auth";
+import BackArrowIcon from "@assistant/icons/back-arrow";
+
+type VerificationMode = "only-url-scheme" | "figma-node-store-verification";
 
 /**
  * ![](https://www.figma.com/file/4hqwYFw6FKw1njvzEl3VUh/assistant?node-id=4473%3A37403)
  * @returns
  */
-export function FigmaFileChecksum() {
-  const history = useHistory();
+export function FigmaFileChecksum({
+  onClose,
+  mode = "only-url-scheme",
+  onVerify,
+}: {
+  onClose: () => void;
+  mode?: VerificationMode;
+  onVerify: (valid: boolean, filekey?: string) => void;
+}) {
   const signature = nanoid();
 
-  const startValidation = async ({ filekey }: { filekey: string }) => {
-    // 1. seed the signature to design
-    fromApp({
-      type: "seed-signature-request",
-      filekey,
-      signature,
-    });
+  const startVerification = async ({ filekey }: { filekey: string }) => {
+    switch (mode) {
+      case "only-url-scheme": {
+        // the url scheme is already validated by previous step, we can skip to final callback.
+        onVerify(true, filekey);
+        return;
+      }
+      case "figma-node-store-verification": {
+        // 1. seed the signature to design
+        fromApp({
+          type: "seed-signature-request",
+          filekey,
+          signature,
+        });
 
-    // 2. check if app assistant is authenticated
-    if (await isAuthenticated()) {
-      //
-    }
-    // TODO:
-    // 3. check if assistant contains figma access key authenticated by user
-    // TODO:
-    // 4. validate figma file checksum
-    const verified = await new FigmaRootNodeStoreVerification({
-      signature,
-      filekey,
-    }).verify();
-    if (verified) {
-      //
-      // TODO:
-    } else {
-      //
-      // TODO:
+        // 2. check if app assistant is authenticated
+        if (await isAuthenticated()) {
+          //
+        }
+        // TODO:
+        // 3. check if assistant contains figma access key authenticated by user
+        // TODO:
+        // 4. validate figma file checksum
+        const verified = await new FigmaRootNodeStoreVerification({
+          signature,
+          filekey,
+        }).verify();
+        if (verified) {
+          //
+          // TODO:
+        } else {
+          //
+          // TODO:
+        }
+        return;
+      }
     }
   };
 
   return (
     <RootWrapperFigmaFileChecksum>
-      <MdiArrowBack
-        onClick={() => {
-          history.goBack();
-        }}
-        src="grida://assets-reservation/images/4473:37442"
-        alt="image of MdiArrowBack"
-      ></MdiArrowBack>
+      <BackButton onClick={onClose}>
+        <BackArrowIcon />
+      </BackButton>
       <ContentBody>
         <Header>
           <Title>Allow us to access this file.</Title>
@@ -62,7 +77,7 @@ export function FigmaFileChecksum() {
         <InputSection>
           <LinkInput
             onValidLink={(filekey) => {
-              startValidation({ filekey });
+              startVerification({ filekey });
             }}
           />
         </InputSection>
@@ -100,10 +115,9 @@ const RootWrapperFigmaFileChecksum = styled.div`
   position: relative;
 `;
 
-const MdiArrowBack = styled.img`
+const BackButton = styled.div`
   width: 24px;
   height: 24px;
-  object-fit: cover;
   position: absolute;
   left: 21px;
   top: 25px;

@@ -125,12 +125,6 @@ const page_signup: PageConfig = {
   path: "/signin",
 };
 
-const page_figma_checksum: PageConfig = {
-  id: WorkScreen.figma_checksum,
-  title: "Checksum",
-  path: "/checksum",
-};
-
 /**
  * list of all pages
  */
@@ -148,7 +142,6 @@ const all_pages: PageConfig[] = [
   page_signup,
   page_about,
   page_scene_upload_steps_final,
-  page_figma_checksum,
   // tools
   page_toolbox_home,
   page_toolbox_data_mapper,
@@ -164,7 +157,6 @@ export const standalone_pages: PageConfig[] = [
   page_signup,
   page_about,
   page_scene_upload_steps_final,
-  page_figma_checksum,
   // tools
   page_toolbox_home,
   page_toolbox_data_mapper,

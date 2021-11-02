@@ -26,7 +26,6 @@ import { AboutScreen } from "../pages/about";
 import { SigninScreen } from "@app/auth";
 import { ToolboxHome } from "@app/toolbox";
 import { LiveSessionPage } from "@app/live";
-import { FigmaFileChecksum } from "@platform-dedicated/figma-checksum";
 import { DesignTextCdoeSyntaxHighligherScreen } from "@app/design-text-code-syntax-highlight";
 // endregion screens import
 
@@ -93,8 +92,6 @@ function Screen(props: { screen: WorkScreen }) {
       return <DesignTextCdoeSyntaxHighligherScreen />;
     case WorkScreen.scene_upload_steps_final:
       return <UploadSteps />;
-    case WorkScreen.figma_checksum:
-      return <FigmaFileChecksum />;
     case WorkScreen.signin:
       return <SigninScreen />;
     default:

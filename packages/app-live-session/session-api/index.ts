@@ -1,6 +1,10 @@
 import { SelectionType } from "plugin-app";
 import Pusher, { Channel } from "pusher-js";
 
+const _base_url =
+  "https://ahzdf5x4q3.execute-api.us-west-1.amazonaws.com/production";
+// https://assistant-live-session.grida.cc
+
 export class AssistantLiveSession {
   private readonly pusher: Pusher;
   private channel: Channel;
@@ -13,10 +17,7 @@ export class AssistantLiveSession {
 
     this.pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_KEY, {
       cluster: process.env.NEXT_PUBLIC_PUSHER_APP_CLUSTER,
-      // authEndpoint:
-      // "https://ahzdf5x4q3.execute-api.us-west-1.amazonaws.com/production/pusher/auth",
-      // authEndpoint: "http://localhost:33031/dev/pusher/auth",
-      authEndpoint: "https://assistant-live-session.grida.cc/pusher/auth",
+      authEndpoint: _base_url + "/pusher/auth",
     });
   }
 
@@ -33,6 +34,10 @@ export class AssistantLiveSession {
       // now able to send client origin events
       this._entered = true;
       this._onEnter?.();
+    });
+
+    this.channel.bind("pusher:subscription_error", () => {
+      this._entered = false;
     });
   }
 
