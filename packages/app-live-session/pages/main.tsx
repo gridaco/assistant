@@ -11,6 +11,8 @@ import {
 } from "../layouts";
 import { isAuthenticated, getUserProfile } from "@assistant-fp/auth";
 import { needToShowOnboarding, setOnboardingShown } from "../storage";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import { RevealWhenVisible } from "app/lib/components/animated";
 
 const FILE_KEY_NON_SET_SPECIAL_KEY = "non-set";
 
@@ -57,7 +59,7 @@ export function LiveSessionPage() {
         })
       );
     }
-  }, [filekey, authenticated]);
+  }, [filekey, authenticated, uid]);
 
   const connect = () => {
     session.enter();
@@ -119,15 +121,19 @@ export function LiveSessionPage() {
         />
       ) : (
         <>
-          {authenticated && filekey ? (
-            <StartLayout
-              onStartClick={() => {
-                connect();
-              }}
-            />
+          {session ? (
+            <RevealWhenVisible>
+              <StartLayout
+                onStartClick={() => {
+                  connect();
+                }}
+              />
+            </RevealWhenVisible>
           ) : (
             // Don't display anything. this state won't last long.
-            <></>
+            <>
+              <LinearProgress variant="indeterminate" />
+            </>
           )}
         </>
       )}
