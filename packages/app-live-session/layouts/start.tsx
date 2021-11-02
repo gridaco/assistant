@@ -3,6 +3,8 @@ import styled from "@emotion/styled";
 import CaretDownIcon from "@assistant/icons/caret-down";
 
 export function StartLayout({ onStartClick }: { onStartClick: () => void }) {
+  const [clicked, setClicked] = React.useState(false);
+
   return (
     <RootWrapperBody>
       <ActoinSection>
@@ -17,7 +19,13 @@ export function StartLayout({ onStartClick }: { onStartClick: () => void }) {
           </ConnectToAssistantLiveAndIntegrateYourDesignDirectlyOnVsCodeAndMore>
         </Header>
         <InputSection>
-          <Button onClick={onStartClick}>
+          <Button
+            disabled={clicked}
+            onClick={() => {
+              setClicked(true);
+              onStartClick();
+            }}
+          >
             <Label>Start Session</Label>
           </Button>
         </InputSection>
@@ -137,6 +145,9 @@ const Button = styled.button`
   box-sizing: border-box;
   max-height: 48px;
   padding: 14px 36px;
+  :disabled {
+    opacity: 50%;
+  }
 `;
 
 const Label = styled.span`
