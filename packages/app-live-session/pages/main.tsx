@@ -6,6 +6,7 @@ import {
   FilekeySetupRequiredLayout,
   loadFilekey,
   OnboardingLayout,
+  StartLayout,
 } from "../layouts";
 import { isAuthenticated } from "@assistant-fp/auth";
 import { needToShowOnboarding, setOnboardingShown } from "../storage";
@@ -102,15 +103,12 @@ export function LiveSessionPage() {
           }}
         />
       ) : (
-        <></>
+        <StartLayout
+          onStartClick={() => {
+            connect();
+          }}
+        />
       )}
     </>
   );
 }
-
-// {
-//   !filekey && ;
-// }
-// {
-//   !session?.entered && <button onClick={connect}>connect</button>;
-// }

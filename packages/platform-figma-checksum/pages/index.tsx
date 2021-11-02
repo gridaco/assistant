@@ -6,7 +6,7 @@ import { fromApp } from "../__plugin/events";
 import { nanoid } from "nanoid/non-secure";
 import { isAuthenticated } from "@assistant-fp/auth";
 import BackArrowIcon from "@assistant/icons/back-arrow";
-import ExpandDownIcon from "@assistant/icons/expand-down";
+import CaretDownIcon from "@assistant/icons/caret-down";
 
 type VerificationMode = "only-url-scheme" | "figma-node-store-verification";
 
@@ -86,7 +86,7 @@ export function FigmaFileChecksum({
         <HowToArea>
           <ScrollDownIndication>
             <HowToGetTheLink>How to get the link</HowToGetTheLink>
-            <ExpandDownIcon />
+            <CaretDownIcon />
           </ScrollDownIndication>
           <GraphicsAndDescription>
             <FigmaDesktopWhereIsShareButtonArtwork
@@ -222,12 +222,6 @@ const HowToGetTheLink = styled.span`
   font-family: Roboto, sans-serif;
   font-weight: 500;
   text-align: left;
-`;
-
-const IconsMdiKeyboardArrowDown = styled.img`
-  width: 24px;
-  height: 24px;
-  object-fit: cover;
 `;
 
 const GraphicsAndDescription = styled.div`
