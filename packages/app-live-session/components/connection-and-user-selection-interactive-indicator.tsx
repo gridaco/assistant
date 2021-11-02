@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 
 type AnimationState = "normal" | "disconnected" | "selected";
-const booster_animation_duration = 1;
+const booster_animation_duration = 0.8;
 
 export function InteractiveIndicator({ size }: { size: number }) {
   const [animation, setAnimation] = React.useState<AnimationState>("normal");
