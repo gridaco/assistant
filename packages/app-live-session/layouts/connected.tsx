@@ -29,9 +29,15 @@ export function ConnectedStateMinimized({ onClose }: { onClose: () => void }) {
     return () => {
       // restore size
       const size = loadSize() ?? { width: 300, height: 500 };
+      // additional size safety - sometimes the saved size is invalid and smaller than last layout's size.
+      // keep this value synced with `figma-core/code-thread/resize-screen.ts`
+      const MIN_WIDTH = 320;
+      const MIN_HEIGHT = 568;
+      const w = Math.max(MIN_WIDTH, size.width);
+      const h = Math.max(MIN_HEIGHT, size.height);
       PluginSdk.resizeHost({
-        width: size.width,
-        height: size.height,
+        width: w,
+        height: h,
       });
       // enable back resizing knob
       // ----
