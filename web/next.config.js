@@ -88,6 +88,7 @@ const withTM = require("next-transpile-modules")([
   "@base-sdk/resources",
 
   // baes sdk fp
+  "@base-sdk-fp/core",
   "@base-sdk-fp/auth",
 
   // -----------------------------
