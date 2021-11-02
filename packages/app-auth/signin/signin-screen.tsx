@@ -17,7 +17,7 @@ import {
   SignInBtn,
   SignUpBtn,
   Title,
-  Wrapper,
+  ContentWrap,
 } from "./style";
 import { PluginSdk } from "@plugin-sdk/app";
 import { RouteBackButton } from "app/lib/components/navigation/route-back-button";
@@ -104,90 +104,90 @@ export function SigninScreen({
   };
 
   return (
-    <Wrapper>
-      <RouteBackButton onClick={close} />
-      <Inner>
-        {!isAuthenticated ? (
-          !isLoading ? (
-            <InitialStateContent />
-          ) : (
-            <LoadingContents
-              authUrl={sessionInfo?.authUrl}
-              showUserOptions={sessionStarted}
-              onCheckAuth={() => {
-                PluginSdk.notify(
-                  "Checking if you signed in via browser..",
-                  1.5
-                );
-                checkAuthSession(sessionInfo.id).then((authenticated) => {
-                  if (authenticated) {
-                    setIsAuthenticated(true);
-                  }
-                });
-              }}
-            />
-          )
-        ) : (
-          <FinishCheckingAuth username="" /> // TODO: change with authenticated user name (use fetch user profile)
-        )}
-        <BtnWrapper>
-          {isAuthenticated ? (
-            <>
-              <StyledButton
-                onClick={() => {
-                  onSignin?.();
-                  close();
-                }}
-              >
-                Aaaallll Right !
-              </StyledButton>
-            </>
-          ) : (
-            <>
-              <SignInBtn
-                disabled={isLoading}
-                onClick={() => {
-                  setSessionStarted(false); // session is not yet started. (session start triggered.)
-                  setIsLoading(true);
-                  startAuthenticationSession()
-                    .then((s) => {
-                      setSessionStarted(true);
-                      open(s.authUrl); // open browser initially.
-                      setSessionInfo(s);
-                      startAuthenticationWithSession(s).then((d) => {
-                        setIsAuthenticated(true);
-                      });
-                    })
-                    .catch((_) => {
-                      console.log(
-                        "error occured while requesting proxy auth session start",
-                        _
-                      );
-                      PluginSdk.notify(
-                        "please try again. (check your internet connection)"
-                      );
-                      setIsLoading(false);
-                    });
-                }}
-              >
-                {!isLoading ? "Sign in" : "Sign in ..."}
-              </SignInBtn>
-              <SignUpBtn
-                onClick={() => {
-                  open(
-                    "https://accounts.grida.co/signup?redirect_uri=figma://"
+    <>
+      <ContentWrap>
+        <RouteBackButton onClick={close} />
+        <Inner>
+          {!isAuthenticated ? (
+            !isLoading ? (
+              <InitialStateContent />
+            ) : (
+              <LoadingContents
+                authUrl={sessionInfo?.authUrl}
+                showUserOptions={sessionStarted}
+                onCheckAuth={() => {
+                  PluginSdk.notify(
+                    "Checking if you signed in via browser..",
+                    1.5
                   );
-                  // clear states
-                  setIsLoading(false);
+                  checkAuthSession(sessionInfo.id).then((authenticated) => {
+                    if (authenticated) {
+                      setIsAuthenticated(true);
+                    }
+                  });
                 }}
-              >
-                Sign Up
-              </SignUpBtn>
-            </>
+              />
+            )
+          ) : (
+            <FinishCheckingAuth username="" /> // TODO: change with authenticated user name (use fetch user profile)
           )}
-        </BtnWrapper>
-      </Inner>
-    </Wrapper>
+        </Inner>
+      </ContentWrap>
+      <BtnWrapper>
+        {isAuthenticated ? (
+          <>
+            <StyledButton
+              onClick={() => {
+                onSignin?.();
+                close();
+              }}
+            >
+              Aaaallll Right !
+            </StyledButton>
+          </>
+        ) : (
+          <>
+            <SignInBtn
+              disabled={isLoading}
+              onClick={() => {
+                setSessionStarted(false); // session is not yet started. (session start triggered.)
+                setIsLoading(true);
+                startAuthenticationSession()
+                  .then((s) => {
+                    setSessionStarted(true);
+                    open(s.authUrl); // open browser initially.
+                    setSessionInfo(s);
+                    startAuthenticationWithSession(s).then((d) => {
+                      setIsAuthenticated(true);
+                    });
+                  })
+                  .catch((_) => {
+                    console.log(
+                      "error occured while requesting proxy auth session start",
+                      _
+                    );
+                    PluginSdk.notify(
+                      "please try again. (check your internet connection)"
+                    );
+                    setIsLoading(false);
+                  });
+              }}
+            >
+              {!isLoading ? "Sign in" : "Sign in ..."}
+            </SignInBtn>
+            <SignUpBtn
+              onClick={() => {
+                open("https://accounts.grida.co/signup?redirect_uri=figma://");
+                // clear states
+                setIsLoading(false);
+              }}
+            >
+              Sign Up
+            </SignUpBtn>
+          </>
+        )}
+      </BtnWrapper>
+    </>
   );
 }
 
@@ -204,8 +204,6 @@ function fetchUserProfile(): {
 
 const StyledButton = styled.button`
   ${ButtonStyle}
-  /* 58 is body margin 8*2 + parent padding 21*2 */
-  width: calc(100vw - 58px);
   font-weight: bold;
   font-size: 14px;
   line-height: 17px;
