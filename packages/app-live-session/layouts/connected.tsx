@@ -55,7 +55,7 @@ export function ConnectedStateMinimized({ onClose }: { onClose: () => void }) {
           display: "flex",
           alignSelf: "center",
           alignItems: "center",
-          gap: 12,
+          gap: 20,
         }}
       >
         <InteractiveIndicator size={animation_size} />
