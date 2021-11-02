@@ -9,13 +9,14 @@ import {
   SigninRequiredLayout,
   StartLayout,
 } from "../layouts";
-import { isAuthenticated } from "@assistant-fp/auth";
+import { isAuthenticated, getUserProfile } from "@assistant-fp/auth";
 import { needToShowOnboarding, setOnboardingShown } from "../storage";
 
 const FILE_KEY_NON_SET_SPECIAL_KEY = "non-set";
 
 export function LiveSessionPage() {
   const [authenticated, setAuthenticated] = useState<boolean>(null);
+  const [uid, setUid] = useState<string>(null);
   const [filekey, setFilekey] = useState<string>(null);
   const [focused, setFocused] = useState<boolean>(false);
   const [session, setSession] = useState<AssistantLiveSession | null>(null);
@@ -26,11 +27,19 @@ export function LiveSessionPage() {
   useEffect(() => {
     isAuthenticated().then((v) => {
       setAuthenticated(v);
+      getUserProfile()
+        .then((p) => {
+          const uid = p.id;
+          setUid(uid);
+        })
+        .catch(() => {
+          // connection problem or token expired
+          setAuthenticated(false);
+        });
     });
 
     // load filekey
     loadFilekey().then((v) => {
-      console.log("filekey loaded", v);
       if (v) {
         setFilekey(v);
       } else {
@@ -40,10 +49,10 @@ export function LiveSessionPage() {
   }, []);
 
   useEffect(() => {
-    if (!session && filekey) {
+    if (!session && filekey && authenticated && uid) {
       setSession(
         new AssistantLiveSession({
-          uid: "", // TODO:
+          uid: uid,
           filekey: filekey,
         })
       );

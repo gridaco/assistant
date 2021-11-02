@@ -52,7 +52,10 @@ export class AssistantLiveSession {
 }
 
 function channelname(uid: string): string {
-  return "private-live-session"; //+ uid;
+  if (!uid) {
+    throw "cannot create channel name with anonymouse user";
+  }
+  return "private-live-session-" + uid;
 }
 
 interface SelectionPayload {
