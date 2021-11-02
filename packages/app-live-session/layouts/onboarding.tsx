@@ -3,7 +3,11 @@ import styled from "@emotion/styled";
 import { RevealWhenVisible } from "app/lib/components/animated";
 import { BlackButtonStyle } from "@ui/core/button-style";
 
-export function OnboardingLayout() {
+export function OnboardingLayout({
+  onPrimaryActionclick,
+}: {
+  onPrimaryActionclick: () => void;
+}) {
   return (
     <RootWrapperBody>
       <InnderContent>
@@ -14,14 +18,14 @@ export function OnboardingLayout() {
               alt="image of ArtworkAppGroupedFigmaGridaVscodeArtwork"
             ></ArtworkAppGroupedFigmaGridaVscodeArtwork>
             <CheckYourInternetConnectionAndTryAgainIfThisKeepContinuesToHappenTellUs>
-              Setup for Assistant Live session and integrate your design
-              directly on VSCode and more.
+              <i>(Beta)</i> Setup for <b>Assistant Live</b> and integrate your
+              design directly on <b>VSCode</b> and more.
             </CheckYourInternetConnectionAndTryAgainIfThisKeepContinuesToHappenTellUs>
           </GraphicsAndDescription>
         </RevealWhenVisible>
         <div style={{ alignSelf: "stretch" }}>
           <RevealWhenVisible initialOpacity={0} initialY={10}>
-            <MainButton>Setup now</MainButton>
+            <MainButton onClick={onPrimaryActionclick}>Setup now</MainButton>
           </RevealWhenVisible>
         </div>
       </InnderContent>

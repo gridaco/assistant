@@ -6,6 +6,7 @@ import { fromApp } from "../__plugin/events";
 import { nanoid } from "nanoid/non-secure";
 import { isAuthenticated } from "@assistant-fp/auth";
 import BackArrowIcon from "@assistant/icons/back-arrow";
+import ExpandDownIcon from "@assistant/icons/expand-down";
 
 type VerificationMode = "only-url-scheme" | "figma-node-store-verification";
 
@@ -85,14 +86,13 @@ export function FigmaFileChecksum({
         <HowToArea>
           <ScrollDownIndication>
             <HowToGetTheLink>How to get the link</HowToGetTheLink>
-            <IconsMdiKeyboardArrowDown
-              src="grida://assets-reservation/images/4473:37447"
-              alt="image of IconsMdiKeyboardArrowDown"
-            ></IconsMdiKeyboardArrowDown>
+            <ExpandDownIcon />
           </ScrollDownIndication>
           <GraphicsAndDescription>
             <FigmaDesktopWhereIsShareButtonArtwork
-              src="grida://assets-reservation/images/4473:37479"
+              src={
+                "/assets/images/artwork-figma-desktop-where-is-share-button.png"
+              }
               alt="image of FigmaDesktopWhereIsShareButtonArtwork"
             ></FigmaDesktopWhereIsShareButtonArtwork>
             <Description>
@@ -244,6 +244,7 @@ const GraphicsAndDescription = styled.div`
 const FigmaDesktopWhereIsShareButtonArtwork = styled.img`
   height: 295px;
   object-fit: cover;
+  object-position: top right;
   align-self: stretch;
 `;
 

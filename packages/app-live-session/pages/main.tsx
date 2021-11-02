@@ -8,6 +8,9 @@ import {
   OnboardingLayout,
 } from "../layouts";
 import { isAuthenticated } from "@assistant-fp/auth";
+import { needToShowOnboarding, setOnboardingShown } from "../storage";
+
+const FILE_KEY_NON_SET_SPECIAL_KEY = "non-set";
 
 export function LiveSessionPage() {
   const [authenticated, setAuthenticated] = useState<boolean>(null);
@@ -15,7 +18,9 @@ export function LiveSessionPage() {
   const [focused, setFocused] = useState<boolean>(false);
   const [session, setSession] = useState<AssistantLiveSession | null>(null);
   const selection = useSelection();
-
+  const [showOnboarding, setShowOnboarding] = useState<boolean>(
+    needToShowOnboarding()
+  );
   useEffect(() => {
     isAuthenticated().then((v) => {
       setAuthenticated(v);
@@ -23,9 +28,11 @@ export function LiveSessionPage() {
 
     // load filekey
     loadFilekey().then((v) => {
-      console.log("filekey", v);
+      console.log("filekey loaded", v);
       if (v) {
         setFilekey(v);
+      } else {
+        setFilekey(FILE_KEY_NON_SET_SPECIAL_KEY);
       }
     });
   }, []);
@@ -58,13 +65,33 @@ export function LiveSessionPage() {
           session.emmitSelect({
             event: "select",
             selectionType: selection.type,
-            filekey: filekey, // TODO:
+            filekey: filekey,
             node: selection.id,
           });
         }
       }
     }
   }, [selection, focused, session]);
+
+  if (showOnboarding) {
+    return (
+      <OnboardingLayout
+        onPrimaryActionclick={() => {
+          setOnboardingShown(); // save data
+          setShowOnboarding(false);
+        }}
+      />
+    );
+  }
+
+  if (authenticated === false) {
+    //
+    // show signin toggle page
+  }
+
+  if (filekey === FILE_KEY_NON_SET_SPECIAL_KEY) {
+    return <FilekeySetupRequiredLayout onKeySetup={setFilekey} />;
+  }
 
   return (
     <>
@@ -75,16 +102,14 @@ export function LiveSessionPage() {
           }}
         />
       ) : (
-        <>
-          <OnboardingLayout />
-        </>
+        <></>
       )}
     </>
   );
 }
 
 // {
-//   !filekey && <FilekeySetupRequiredLayout onKeySetup={setFilekey} />;
+//   !filekey && ;
 // }
 // {
 //   !session?.entered && <button onClick={connect}>connect</button>;
