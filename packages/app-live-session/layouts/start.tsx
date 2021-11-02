@@ -26,7 +26,7 @@ export function StartLayout({ onStartClick }: { onStartClick: () => void }) {
               onStartClick();
             }}
           >
-            <Label>Start Session</Label>
+            <Label>{clicked ? "Connecting.." : "Start Session"}</Label>
           </Button>
         </InputSection>
       </ActoinSection>
@@ -147,6 +147,7 @@ const Button = styled.button`
   padding: 14px 36px;
   :disabled {
     opacity: 50%;
+    cursor: wait; // for conviniency - should'nt do this really.
   }
 `;
 
