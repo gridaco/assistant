@@ -5,8 +5,13 @@ import {
 } from "@design-sdk/core/assets-repository";
 import type { ReflectSceneNode } from "@design-sdk/figma-node";
 import { ImageRepositories } from "@design-sdk/figma/asset-repository";
-import { flutter, react, token, vanilla, designToCode } from "@designto/code";
-import { config, output, react as react_config } from "@designto/config";
+import { designToCode } from "@designto/code";
+import { output } from "@designto/config";
+import {
+  react_presets,
+  flutter_presets,
+  vanilla_presets,
+} from "@grida/builder-config-preset";
 
 type O = output.ComponentOutput;
 
@@ -35,11 +40,11 @@ export async function designToFlutter(
     input: {
       name: reflectDesign.name,
       id: reflectDesign.id,
-      design: reflectDesign,
+      entry: reflectDesign,
     },
-    framework: <config.FlutterFrameworkConfig>{
-      framework: "flutter",
-      language: "dart",
+    framework: flutter_presets.flutter_default,
+    build_config: {
+      disable_components: true,
     },
     asset_config: {
       // the asset replacement on assistant is handled on ui thread.
@@ -59,15 +64,25 @@ export async function designToReact(
   jobs?: InterceptorJobProcessor
 ): Promise<O> {
   setup_image_repository();
-  const tokens = token.tokenize(reflectDesign);
-  const widget = react.buildReactWidget(tokens);
-  const app = react.buildReactApp(widget, {
-    template: "cra",
-  });
 
+  const reactapp = await designToCode({
+    input: {
+      name: reflectDesign.name,
+      id: reflectDesign.id,
+      entry: reflectDesign,
+    },
+    framework: react_presets.react_default,
+    build_config: {
+      disable_components: true,
+    },
+    asset_config: {
+      // the asset replacement on assistant is handled on ui thread.
+      skip_asset_replacement: true,
+    },
+  });
   await Promise.resolve();
 
-  return app;
+  return reactapp;
 }
 
 /**
@@ -85,12 +100,9 @@ export async function designToFixedPreviewVanilla(
     input: {
       name: reflectDesign.name,
       id: reflectDesign.id,
-      design: reflectDesign,
+      entry: reflectDesign,
     },
-    framework: <config.VanillaFrameworkConfig>{
-      framework: "vanilla",
-      language: "html",
-    },
+    framework: vanilla_presets.vanilla_default,
     build_config: {
       force_root_widget_fixed_size_no_scroll: true,
     },

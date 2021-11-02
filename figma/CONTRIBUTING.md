@@ -12,3 +12,11 @@
 ## Good to know - Somethings leart from mistakes
 
 - figma's node does return property until they are referenced
+
+## Clearing the cache
+
+Clearing the cache to work with figma plugin api storage. on MacOS,
+
+```sh
+rm -rf "$HOME/Library/Application Support/Figma/"{Desktop,DesktopProfile}
+```

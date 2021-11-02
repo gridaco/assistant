@@ -25,6 +25,7 @@ import { CodeScreen } from "@app/design-to-code";
 import { AboutScreen } from "../pages/about";
 import { SigninScreen } from "@app/auth";
 import { ToolboxHome } from "@app/toolbox";
+import { LiveSessionPage } from "@app/live";
 import { DesignTextCdoeSyntaxHighligherScreen } from "@app/design-text-code-syntax-highlight";
 // endregion screens import
 
@@ -67,6 +68,8 @@ function Screen(props: { screen: WorkScreen }) {
       return <IconsScreen />;
     case WorkScreen.lint:
       return <LintScreen />;
+    case WorkScreen.live:
+      return <LiveSessionPage />;
     case WorkScreen.dev:
       return <ToolboxScreen />;
     case WorkScreen.g11n:

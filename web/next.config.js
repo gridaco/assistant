@@ -13,6 +13,7 @@ const withTM = require("next-transpile-modules")([
   // @app
   "app",
   "@app/design-to-code",
+  "@app/live",
   "@app/auth",
   "@app/i18n",
   "@app/component-manage",
@@ -34,6 +35,9 @@ const withTM = require("next-transpile-modules")([
 
   // cores
   "@core/code-formatter",
+
+  // dedicated platform
+  "@platform-dedicated/figma-checksum",
 
   // Plugin sdk
   "@plugin-sdk/app",
@@ -90,6 +94,7 @@ const withTM = require("next-transpile-modules")([
   // baes sdk fp
   "@base-sdk-fp/core",
   "@base-sdk-fp/auth",
+  "@base-sdk-fp/accounts",
 
   // -----------------------------
   // region coli

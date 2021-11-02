@@ -1,0 +1,96 @@
+service: assistant-live-session
+useDotenv: true
+
+plugins:
+  - serverless-dotenv-plugin
+  - serverless-webpack
+  - serverless-plugin-warmup
+  - serverless-dynamodb-local
+  - serverless-offline
+  - serverless-domain-manager
+
+custom:
+  dotenv:
+    include:
+      - PUSHER_APP_ID
+      - PUSHER_APP_KEY
+      - PUSHER_APP_SECRET
+      - PUSHER_APP_CLUSTER
+  webpack:
+    webpackConfig: webpack.config.js
+    packager: "yarn"
+  serverless-offline:
+    httpPort: 33031
+  warmup:
+    - production
+    - staging
+  dynamodb:
+    stages:
+      - dev
+    start:
+      port: 33032
+      inMemory: true
+      heapInitial: 200m
+      heapMax: 1g
+      migrate: flase
+      seed: false
+      convertEmptyValues: true
+  customDomain:
+    domainName: assistant-live-session.grida.cc
+    basePath: ""
+    stage: production
+    createRoute53Record: true
+
+resources:
+  Resources:
+    rawAssetsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: "${self:provider.environment.DYNAMODB_TABLE_SELECTION_HISTORY}"
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  memorySize: 128
+  region: us-west-1
+  apiGateway:
+    shouldStartNameWithService: true
+  lambdaHashingVersion: "20201221"
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
+    DYNAMODB_TABLE_SELECTION_HISTORY: "${self:service}-selection-history-${opt:stage, self:provider.stage}"
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:DescribeTable
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE_SELECTION_HISTORY}"
+
+functions:
+  api:
+    handler: handler.handler
+    events:
+      - http:
+          path: /{proxy+}
+          method: any
+          cors:
+            origin: "*"
+      - http:
+          path: /
+          method: get
+          cors:
+            origin: "*"

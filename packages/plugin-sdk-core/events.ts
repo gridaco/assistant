@@ -77,6 +77,20 @@ export const PLUGIN_SDK_EK_SIMPLE_NOTIFY = "notify";
 export const PLUGIN_SDK_EK_NOTIFY_COPIED = "notify-copied";
 // endregion notify
 
+// region ui
+export const PLUGIN_SDK_NS_UI_API = `${__PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/ui`;
+export const PLUGIN_SDK_EK_UI_RESIZE = "resize";
+export const PLUGIN_SDK_EK_UI_CLOSE = "close";
+export const PLUGIN_SDK_EK_UI_SHOW = "show";
+export const PLUGIN_SDK_EK_UI_HIDE = "hide";
+export const PLUGIN_SDK_EK_UI_ALIAS = {
+  close: PLUGIN_SDK_EK_UI_CLOSE,
+  resize: PLUGIN_SDK_EK_UI_RESIZE,
+  show: PLUGIN_SDK_EK_UI_SHOW,
+  hide: PLUGIN_SDK_EK_UI_HIDE,
+};
+// endregion notify
+
 // region focus
 export const PLUGIN_SDK_NS_FOCUS_API = `${__PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/focus`;
 export const PLUGIN_SDK_EK_SIMPLE_FOCUS = "focus";

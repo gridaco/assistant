@@ -86,7 +86,13 @@ function FinishCheckingAuth(props: { username: string }) {
   );
 }
 
-export function SigninScreen() {
+export function SigninScreen({
+  onClose,
+  onSignin,
+}: {
+  onClose?: () => void;
+  onSignin?: () => void;
+}) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [sessionInfo, setSessionInfo] = useState<AuthProxySessionStartResult>();
@@ -94,12 +100,12 @@ export function SigninScreen() {
   const history = useHistory();
 
   const close = () => {
-    history.goBack();
+    onClose ? onClose?.() : history.goBack();
   };
 
   return (
     <Wrapper>
-      <RouteBackButton />
+      <RouteBackButton onClick={close} />
       <Inner>
         {!isAuthenticated ? (
           !isLoading ? (
@@ -127,7 +133,14 @@ export function SigninScreen() {
         <BtnWrapper>
           {isAuthenticated ? (
             <>
-              <StyledButton onClick={close}>Aaaallll Right !</StyledButton>
+              <StyledButton
+                onClick={() => {
+                  onSignin?.();
+                  close();
+                }}
+              >
+                Aaaallll Right !
+              </StyledButton>
             </>
           ) : (
             <>

@@ -1,4 +1,4 @@
-import { __HOSTS } from "@base-sdk/core";
+import { cors, __HOSTS } from "@base-sdk/core";
 import {
   __auth_proxy,
   ProxyAuthenticationMode,
@@ -7,6 +7,7 @@ import {
 } from "@base-sdk-fp/auth";
 import { client_id } from "plugin-app";
 import { AuthStorage } from "./storage";
+import Axios from "axios";
 
 const PROXY_AUTH_REQUEST_SECRET =
   process.env.GRIDA_FIRST_PARTY_PROXY_AUTH_REQUEST_TOTP_SECRET ??
@@ -68,4 +69,27 @@ export async function checkAuthSession(session: string): Promise<boolean> {
     AuthStorage.save(res.access_token);
   }
   return success;
+}
+
+const secure_axios = async () => {
+  const axios = Axios.create({
+    baseURL: "https://accounts.services.grida.co",
+    headers: {
+      Authorization: `Bearer ${await getAccessToken()}`,
+    },
+  });
+  cors.useAxiosCors(axios, {
+    apikey: process.env.NEXT_PUBLIC_CORS_GRIDA_API_KEY,
+  });
+  return axios;
+};
+
+export async function getUserProfile() {
+  try {
+    const resp = await (await secure_axios()).get(`profile`);
+    return resp.data;
+  } catch (error) {
+    console.log("Error while fetching my profile ", error);
+    throw error;
+  }
 }
