@@ -1,7 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { PluginSdk } from "@plugin-sdk/app";
 import { hide_navigation } from "app/lib/main/global-state-atoms";
 import { useSetRecoilState } from "recoil";
+import { motion } from "framer-motion";
+import { InteractiveIndicator } from "../components";
+import styled from "@emotion/styled";
+
+const animation_size = 12;
 
 export function ConnectedStateMinimized({ onClose }: { onClose: () => void }) {
   const set_hide_navigation_state = useSetRecoilState(hide_navigation);
@@ -36,8 +41,68 @@ export function ConnectedStateMinimized({ onClose }: { onClose: () => void }) {
     };
   }, []);
 
-  return <button onClick={onClose}>close</button>;
+  return (
+    <div
+      style={{
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          alignSelf: "center",
+          alignItems: "center",
+          gap: 12,
+        }}
+      >
+        <InteractiveIndicator size={animation_size} />
+        <p style={{ color: "#ACACAC", fontSize: animation_size }}>connected</p>
+      </div>
+      <motion.div
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          display: "flex",
+          background: "rgba(0, 0, 0, 0.4)",
+          alignSelf: "stretch",
+          opacity: 0,
+          flex: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        whileHover={{
+          opacity: 1,
+          scale: 1,
+          transition: { duration: 0.3 },
+        }}
+      >
+        <HoverStateView onClose={onClose} />
+      </motion.div>
+    </div>
+  );
 }
+
+const HoverStateView = ({ onClose }: { onClose: () => void }) => {
+  return <BackToMenuButton onClick={onClose}>Back to menu</BackToMenuButton>;
+};
+
+const BackToMenuButton = styled.button`
+  color: white;
+  border-radius: 4px;
+  background: black;
+  border: none;
+  height: 24px;
+  min-width: 100px;
+  :hover {
+    background: #2f2f2f;
+  }
+`;
 
 const saveSize = () => {
   const width =
