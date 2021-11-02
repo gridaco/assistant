@@ -2,7 +2,7 @@ import React from "react";
 import { FigmaFileChecksum } from "@platform-dedicated/figma-checksum";
 import { Dialog } from "@material-ui/core";
 import { PluginSdk } from "@plugin-sdk/app";
-import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "@core/constant";
+import { NS_FILE_ROOT_METADATA } from "@core/constant";
 
 export function FilekeySetupRequiredLayout({
   onKeySetup,
@@ -56,7 +56,7 @@ export const saveFilekey = async (filekey: string) => {
     id: "0:0", // 0:0 stands for root node
     key: "filekey",
     value: filekey,
-    namespace: ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE,
+    namespace: NS_FILE_ROOT_METADATA,
   });
 };
 
