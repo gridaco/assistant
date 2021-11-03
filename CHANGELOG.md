@@ -32,6 +32,8 @@
 
 > Live session support with experimental components support
 
+- Assistant Live - [#174](https://github.com/gridaco/assistant/pull/174)
+
 ## [2021.9.1] - 2021-10-11
 
 > 2021.9 is a cold release
