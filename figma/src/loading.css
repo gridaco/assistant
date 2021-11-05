@@ -1,0 +1,91 @@
+.baseBox {
+  background-color: #dbdbdb;
+  position: relative;
+  border-radius: 2px;
+}
+
+@keyframes shine {
+  0% {
+    transform: skewX(-1deg) translateX(-200%);
+  }
+  100% {
+    transform: skewX(-10deg) translateX(180%);
+  }
+}
+.baseBox::before {
+  content: "";
+  position: absolute;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.9),
+    transparent
+  );
+  width: 50%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  animation: shine 1s infinite;
+}
+
+.wrapper {
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+
+  max-height: 100%;
+  margin: 22px 16px;
+}
+.row {
+  display: flex;
+  flex-direction: row;
+}
+.nav {
+  width: 54px;
+  height: 21px !important;
+}
+.nav:first-child {
+  margin-right: 8px;
+}
+.tabWrap {
+  margin-top: 10px;
+}
+.tab {
+  width: 54px;
+  height: 13px !important;
+  margin-right: 8px;
+}
+.tab:last-child {
+  margin-right: 0;
+}
+
+.preview {
+  width: 100vw;
+  height: 200px !important;
+  margin: 0 -23px;
+  margin-top: 10px;
+}
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.contentsWrap {
+  margin-top: 10px;
+}
+.contents {
+  width: 137px;
+  height: 8px !important;
+  margin-bottom: 4px;
+}
+.contents:last-child {
+  margin-bottom: 0;
+}
+.button {
+  width: calc(100vw - 32px);
+  height: 48px !important;
+  position: fixed;
+  bottom: 12px;
+  left: 16px;
+}
