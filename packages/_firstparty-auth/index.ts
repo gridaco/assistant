@@ -13,6 +13,14 @@ const PROXY_AUTH_REQUEST_SECRET =
   process.env.GRIDA_FIRST_PARTY_PROXY_AUTH_REQUEST_TOTP_SECRET ??
   process.env.NEXT_PUBLIC_GRIDA_FIRST_PARTY_PROXY_AUTH_REQUEST_TOTP_SECRET;
 
+// pre configuration - this is required
+__auth_proxy.api.preconfigure({
+  useRetry: true,
+  useCors: {
+    apiKey: process.env.NEXT_PUBLIC_CORS_GRIDA_API_KEY,
+  },
+});
+
 function _make_request(): AuthProxySessionStartRequest {
   return {
     appId: "co.grida.assistant",
