@@ -1219,6 +1219,13 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@code-editor/vanilla-preview@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@code-editor/vanilla-preview/-/vanilla-preview-0.0.1.tgz#951285ec71506a17549198a22f3e57770c38b646"
+  integrity sha512-ogKp4x69BeJ0hlW/5kQE5KmKAM+X1bIjUhUELM6+7zDMHVzgxmz3f+w9DKR69SbRLZwMWbwlovqS0FWdyGUXSg==
+  dependencies:
+    react-use-size "^2.0.4"
+
 "@code-ui/color-scheme@0.0.0", "@code-ui/color-scheme@^0.0.0":
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/@code-ui/color-scheme/-/color-scheme-0.0.0.tgz#9f7b1d32e33193166c2958dec999c9fbf9009c8d"

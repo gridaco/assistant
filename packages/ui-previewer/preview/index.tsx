@@ -1,15 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import styled from "@emotion/styled";
-import {
-  ResponsivePreview,
-  ResponsivePreviewProps,
-} from "../preview-responsive";
+import VanillaPreview, {
+  ResponsiveContentIframeProps,
+} from "@code-editor/vanilla-preview";
 import { StaticPreview, StaticPreviewProps } from "../preview-static";
 import { handle_wrap_bg_color, PreviewEmpty } from "../components";
 import { useScrollTriggeredAnimation } from "app/lib/components/motions";
 import { useSetRecoilState } from "recoil";
 import { hide_navigation } from "app/lib/main/global-state-atoms";
-import { useComponentSize } from "react-use-size";
 
 interface PreviewProps {
   auto?: boolean;
@@ -30,12 +28,7 @@ interface PreviewProps {
   height?: number;
 }
 
-interface SizeProps {
-  w?: number;
-  h?: number;
-}
-
-type Subscenario = StaticPreviewProps | ResponsivePreviewProps;
+type Subscenario = StaticPreviewProps | ResponsiveContentIframeProps;
 type Props = PreviewProps & Subscenario;
 
 export function Preview(props: Props) {
@@ -76,40 +69,27 @@ export function Preview(props: Props) {
 function Content({ previewInfo }: { previewInfo: Props }) {
   switch (previewInfo.type) {
     case "responsive": {
-      return <ResponsiveRender {...previewInfo} />;
+      const _DEFAULT_MARGIN = 12;
+      const _DEFAULT_SHADOW = "0px 4px 64px rgba(160, 160, 160, 0.18)";
+      const _DEFAULT_BORDER_RADIUS = 4;
+
+      return (
+        <VanillaPreview
+          {...previewInfo}
+          margin={_DEFAULT_MARGIN}
+          borderRadius={_DEFAULT_BORDER_RADIUS}
+          boxShadow={_DEFAULT_SHADOW}
+        />
+      );
     }
     case "static": {
       return (
-        <Render heightscale={1}>
+        <StaticContainer heightscale={1}>
           <StaticPreview {...previewInfo} />
-        </Render>
+        </StaticContainer>
       );
     }
   }
-}
-
-function ResponsiveRender(props: ResponsivePreviewProps) {
-  const { ref: sizingref, height, width } = useComponentSize();
-  // TODO: do not remove comments here. these are required for below height calculation.
-  // DON'T REMOVE
-  // const [renderheightScaleFactor, setRenderheightScaleFactor] = useState(1);
-
-  return (
-    <Render
-      ref={sizingref}
-      heightscale={1}
-      // DON'T REMOVE
-      // heightscale={renderheightScaleFactor}
-    >
-      <ResponsivePreview
-        previewInfo={props}
-        parent={{ width, height }}
-        onScaleChange={() => {}}
-        // DON'T REMOVE
-        // onScaleChange={setRenderheightScaleFactor}
-      />
-    </Render>
-  );
 }
 
 const PreviewWrap = styled.div<{
@@ -130,19 +110,12 @@ const PreviewWrap = styled.div<{
   overflow-x: hidden;
 `;
 
-const Render = styled.div<{ heightscale: number }>`
+const StaticContainer = styled.div<{ heightscale: number }>`
   display: flex;
   flex-direction: column;
   align-items: center;
   align-content: center;
   justify-content: center;
   flex: 0 1 0;
-  /* FIXME: this should be a height
-  // this should work, but the flex is making inner iframe height to shrink.
-  height: max(${(props) => props.heightscale * 100}%, 100%);
-    ref:
-    - https://stackoverflow.com/questions/51288769/scaling-a-flexbox-child-with-transform-leaves-empty-space
-    - https://www.reddit.com/r/css/comments/q5cvei/css_fitcontent_on_parent_wont_work_for_scaled_item/
-  */
   min-height: 100%;
 `;
