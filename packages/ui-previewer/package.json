@@ -3,6 +3,6 @@
     "version": "0.0.0",
     "private": false,
     "dependencies": {
-        "@code-editor/vanilla-preview": "^0.0.1"
+        "@code-editor/vanilla-preview": "^0.0.2"
     }
 }
