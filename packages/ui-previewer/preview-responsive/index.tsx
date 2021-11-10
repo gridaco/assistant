@@ -1,6 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
-import { useSingleSelection } from "plugin-app";
 
 export interface ResponsivePreviewProps {
   type: "responsive";

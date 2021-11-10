@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "@emotion/styled";
 import {
   ResponsivePreview,
@@ -7,7 +7,7 @@ import {
 import { StaticPreview, StaticPreviewProps } from "../preview-static";
 import { handle_wrap_bg_color, PreviewEmpty } from "../components";
 import { useScrollTriggeredAnimation } from "app/lib/components/motions";
-import { useSetRecoilState, useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { hide_navigation } from "app/lib/main/global-state-atoms";
 import { useComponentSize } from "react-use-size";
 
