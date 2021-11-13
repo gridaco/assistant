@@ -2,6 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import { RevealWhenVisible } from "app/lib/components/animated";
 import { BlackButtonStyle } from "@ui/core/button-style";
+import * as k from "../k";
 
 export function OnboardingLayout({
   onPrimaryActionclick,
@@ -19,7 +20,11 @@ export function OnboardingLayout({
             ></ArtworkAppGroupedFigmaGridaVscodeArtwork>
             <CheckYourInternetConnectionAndTryAgainIfThisKeepContinuesToHappenTellUs>
               <i>(Beta)</i> Setup for <b>Assistant Live</b> and integrate your
-              design directly on <b>VSCode</b> and more.
+              design directly on&nbsp;
+              <a href={k.VSCODE_MARKET_URL} target="_blank">
+                <b>VSCode</b>
+              </a>{" "}
+              and more.
             </CheckYourInternetConnectionAndTryAgainIfThisKeepContinuesToHappenTellUs>
           </GraphicsAndDescription>
         </RevealWhenVisible>
@@ -71,6 +76,7 @@ const ArtworkAppGroupedFigmaGridaVscodeArtwork = styled.img`
 `;
 
 const CheckYourInternetConnectionAndTryAgainIfThisKeepContinuesToHappenTellUs = styled.span`
+  white-space: pre-wrap;
   color: rgba(149, 149, 149, 1);
   text-overflow: ellipsis;
   font-size: 16px;

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 import CaretDownIcon from "@assistant/icons/caret-down";
+import * as k from "../k";
 
 export function StartLayout({ onStartClick }: { onStartClick: () => void }) {
   const [clicked, setClicked] = React.useState(false);
@@ -14,8 +15,11 @@ export function StartLayout({ onStartClick }: { onStartClick: () => void }) {
             alt="image of ArtworkAppGroupedFigmaGridaVscodeArtwork"
           ></ArtworkAppGroupedFigmaGridaVscodeArtwork>
           <ConnectToAssistantLiveAndIntegrateYourDesignDirectlyOnVsCodeAndMore>
-            Connect to Assistant Live and integrate your design directly on
-            VSCode and more.
+            Connect to Assistant Live and integrate your design directly on{" "}
+            <a href={k.VSCODE_MARKET_URL} target="_blank">
+              VSCode
+            </a>{" "}
+            and more.
           </ConnectToAssistantLiveAndIntegrateYourDesignDirectlyOnVsCodeAndMore>
         </Header>
         <InputSection>
@@ -43,9 +47,11 @@ export function StartLayout({ onStartClick }: { onStartClick: () => void }) {
           ></MacIconVscodeArtwork>
           <Description>
             <Content>
-              (Beta) To get strated with VSCode integration, install the vscode
-              extension from here, signin and select your design from this
-              assistant plugin.
+              (Beta) To get strated with VSCode integration,{" "}
+              <a href={k.VSCODE_MARKET_URL} target="_blank">
+                install the vscode extension from here
+              </a>
+              , signin and select your design from this assistant plugin.
             </Content>
           </Description>
         </GraphicsAndDescriptionVscode>
@@ -233,6 +239,7 @@ const Description = styled.div`
 `;
 
 const Content = styled.span`
+  white-space: pre-wrap;
   color: rgba(141, 141, 141, 1);
   text-overflow: ellipsis;
   font-size: 14px;
