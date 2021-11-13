@@ -45,6 +45,7 @@ const RootWrapperPreviewStaticEmpty = styled.div`
 `;
 
 const InnerWrap = styled.div`
+  pointer-events: none;
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
