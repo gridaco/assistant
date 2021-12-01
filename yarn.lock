@@ -1165,11 +1165,6 @@
     axios-retry "^3.1.9"
     otplib "^12.0.1"
 
-"@base-sdk-fp/core@0.0.0":
-  version "0.0.0"
-  resolved "https://registry.yarnpkg.com/@base-sdk-fp/core/-/core-0.0.0.tgz#f3660da51726dd8dc00a1949867f89f831ce0fa2"
-  integrity sha512-8hEzpg9om+Iz1hvhX11mVerfYCB1ViKM7ugDYBLOs8y/AmzvrEOeWNkug2Rnj+iMeOWL0qtOrVfe+cIznk8DOg==
-
 "@base-sdk/core@0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@base-sdk/core/-/core-0.1.0.tgz#865eb7373b77d367dd57dc7660452a889d6bb139"
@@ -1744,18 +1739,18 @@
   resolved "https://registry.yarnpkg.com/@firebase/webchannel-wrapper/-/webchannel-wrapper-0.4.0.tgz#becce788818d3f47f0ac1a74c3c061ac1dcf4f6d"
   integrity sha512-8cUA/mg0S+BxIZ72TdZRsXKBP5n5uRcE3k29TZhZw6oIiHBt9JA7CTb/4pE1uKtE/q5NeTY2tBDcagoZ+1zjXQ==
 
-"@flutter-builder/flutter-material-icons@0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@flutter-builder/flutter-material-icons/-/flutter-material-icons-0.0.4.tgz#98fddb0f0295f99c8952c9b214c9755de7c6333e"
-  integrity sha512-kfzmpVnOJysPBfvrtDuuNJZvpUoO7tGXncRi4WYtoHkmG1ll635D88Ze6OUYhaRLoT7+TXpVl0lk8CDESE/Ykw==
+"@flutter-builder/flutter-material-icons@0.0.5":
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/@flutter-builder/flutter-material-icons/-/flutter-material-icons-0.0.5.tgz#2a2d4b1fc691a038135c33b38ceedda3c9c27362"
+  integrity sha512-7oUuWvwSoGXEtZPKqYcjI6mmRR6MkqYn96NmMZRS4l2IAEsqd5tl8WPjYi6zxfCKrN5quZI6/NPzzTRSoceNYA==
 
-"@flutter-builder/flutter@2.5.0-f13":
-  version "2.5.0-f13"
-  resolved "https://registry.yarnpkg.com/@flutter-builder/flutter/-/flutter-2.5.0-f13.tgz#ed7f304a7709111cdb3c9ba98752f353d7cb5bb8"
-  integrity sha512-LTL4Ng6HORj6Z7MAekr24W/IlDXbAGCFjqpaXX3zwOyqT7vx2XJmgsRqiigFrL3w/juHV4TDWDTuQjZU9USF2Q==
+"@flutter-builder/flutter@2.5.0-f18":
+  version "2.5.0-f18"
+  resolved "https://registry.yarnpkg.com/@flutter-builder/flutter/-/flutter-2.5.0-f18.tgz#c3712d853899f7bf049fbfeab3b4a293f37536ea"
+  integrity sha512-Gqe5nTvSNJWXLxkCnv5+SK1Jz9rNC2NBwj9oCSsZzINQVoJdAV2YLYNUzWSEeIJC5D50VMD0Vi/aYFMOBQpu+Q==
   dependencies:
     "@abraham/reflection" "^0.8.0"
-    "@flutter-builder/flutter-material-icons" "0.0.4"
+    "@flutter-builder/flutter-material-icons" "0.0.5"
     dart-style "^1.3.2-dev"
 
 "@gar/promisify@^1.0.1":
