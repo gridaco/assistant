@@ -276,7 +276,9 @@ function IconItem(props: { name: string; config: NamedDefaultOssIconConfig }) {
     _onUserLoadIconToCanvas();
     try {
       setDownloading(true);
-      const svg = await icons.loadSvg(name, config);
+      const svg = await icons.loadSvg(name, config, {
+        disable_cache: true,
+      });
       const data = {
         key: name,
         svg: svg,
