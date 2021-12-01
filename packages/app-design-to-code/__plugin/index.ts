@@ -12,6 +12,7 @@ import {
   designToFlutter,
   designToReact,
   designToFixedPreviewVanilla,
+  designToVanilla,
 } from "./design-to-code";
 import { FigmaNodeCache } from "figma-core/node-cache";
 import { Framework } from "@grida/builder-platform-types";
@@ -39,6 +40,8 @@ async function _handle_code_gen_request(req: CodeGenRequest) {
           return "react";
         case Framework.flutter:
           return "flutter";
+        case Framework.vanilla:
+          return "vanilla";
         default:
           return "flutter"; // currently default mode is flutter due to flutter is default legacy.
       }
@@ -80,21 +83,34 @@ async function _handle_code_gen_request(req: CodeGenRequest) {
       vanilla_preview_source = vanilla_res.scaffold.raw;
     }
     // --------------------------------------------------
-
-    if (codePlatform == "flutter") {
-      const flutterBuild = await designToFlutter(rnode, asset_export_job);
-      post_cb({
-        code: flutterBuild.code,
-        app: flutterBuild.scaffold,
-        vanilla_preview_source: vanilla_preview_source,
-      });
-    } else if (codePlatform == "react") {
-      const reactBuild = await designToReact(rnode);
-      post_cb({
-        code: reactBuild.code,
-        app: reactBuild.scaffold,
-        vanilla_preview_source: vanilla_preview_source,
-      });
+    switch (codePlatform) {
+      case "vanilla": {
+        const vanillaBuild = await designToVanilla(rnode);
+        post_cb({
+          code: vanillaBuild.code,
+          app: vanillaBuild.scaffold,
+          vanilla_preview_source: vanilla_preview_source,
+        });
+        break;
+      }
+      case "react": {
+        const reactBuild = await designToReact(rnode);
+        post_cb({
+          code: reactBuild.code,
+          app: reactBuild.scaffold,
+          vanilla_preview_source: vanilla_preview_source,
+        });
+        break;
+      }
+      case "flutter": {
+        const flutterBuild = await designToFlutter(rnode, asset_export_job);
+        post_cb({
+          code: flutterBuild.code,
+          app: flutterBuild.scaffold,
+          vanilla_preview_source: vanilla_preview_source,
+        });
+        break;
+      }
     }
   } else {
     console.warn("user requested linting, but non selected to run lint on.");

@@ -18,7 +18,7 @@ export function _formatter_type(formatter: Formatter): FormatterType {
   } else if (typeof formatter === "object") {
     return "smart";
   } else {
-    throw "unsopported formatter type";
+    throw `unsopported formatter type "${typeof formatter}"`;
   }
 }
 
@@ -45,6 +45,18 @@ export const formatter_by_lang = (lang: Language): Formatter => {
             lang: "ts",
           }),
       };
+    case Language.html:
+      return {
+        sync: _noop_formatter,
+        async: (s) =>
+          remote_format({
+            code: s,
+            lang: "html",
+          }),
+      };
+    default: {
+      return _noop_formatter;
+    }
   }
 };
 

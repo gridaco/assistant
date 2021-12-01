@@ -85,6 +85,32 @@ export async function designToReact(
   return reactapp;
 }
 
+export async function designToVanilla(
+  reflectDesign: ReflectSceneNode,
+  jobs?: InterceptorJobProcessor
+): Promise<O> {
+  setup_image_repository();
+
+  const vanillaApp = await designToCode({
+    input: {
+      name: reflectDesign.name,
+      id: reflectDesign.id,
+      entry: reflectDesign,
+    },
+    framework: vanilla_presets.vanilla_default,
+    build_config: {
+      disable_components: true,
+    },
+    asset_config: {
+      // the asset replacement on assistant is handled on ui thread.
+      skip_asset_replacement: true,
+    },
+  });
+  await Promise.resolve();
+
+  return vanillaApp;
+}
+
 /**
  * returns vanilla html code with fixed size with no overflow
  * @param reflectDesign

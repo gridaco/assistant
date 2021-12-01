@@ -8,6 +8,7 @@ import {
   all_preset_options_map__prod,
   lang_by_framework,
   ReactOption,
+  VanillaOption,
   FlutterOption,
   react_styles,
 } from "./framework-option";
@@ -46,6 +47,11 @@ export function CodeOptionsControl(props: CodeOptionsControlProps) {
         name: "Flutter",
         value: "flutter_default",
         description: "flutter",
+      },
+      {
+        name: "Vanilla",
+        value: "vanilla_default",
+        description: "vanilla Html",
       },
     ];
 
@@ -122,6 +128,7 @@ export function CodeOptionsControl(props: CodeOptionsControlProps) {
   const fields_config = {
     react: [platform_field_config, lang_field_config, react_style_field_config],
     flutter: [platform_field_config, lang_field_config],
+    vanilla: [platform_field_config, lang_field_config],
   };
 
   function onChagne(field: string, value: string) {
@@ -150,6 +157,14 @@ export function CodeOptionsControl(props: CodeOptionsControlProps) {
             ...useroption,
             language: Language.dart,
           } as FlutterOption;
+          setUseroption(op); // FIXME: state from p
+          props.onUseroptionChange(op);
+          break;
+        case "html":
+          op = {
+            ...useroption,
+            language: Language.html,
+          } as VanillaOption;
           setUseroption(op); // FIXME: state from p
           props.onUseroptionChange(op);
           break;
