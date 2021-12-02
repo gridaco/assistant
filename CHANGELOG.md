@@ -36,6 +36,7 @@
 
 ## [2021.11.1] - 2021-12-1
 
+- Add Vanilla Html codegen support (preview feature)
 - Fix ReactJS Codegen bugs
 - Fix Icons loading failure with 200 (caused by cors)
 
