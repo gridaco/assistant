@@ -3,6 +3,6 @@
     "version": "0.0.0",
     "private": false,
     "dependencies": {
-        "react-use-size": "^2.0.4"
+        "@code-editor/vanilla-preview": "^0.0.2"
     }
 }

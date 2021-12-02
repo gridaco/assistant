@@ -3,6 +3,11 @@ import { NS_FILE_ROOT_METADATA } from "@core/constant/ns.constant";
 import {
   PLUGIN_SDK_EK_BATCH_META_UPDATE,
   PLUGIN_SDK_EK_DRAG_AND_DROPPED,
+  PLUGIN_SDK_NS_UI_API,
+  PLUGIN_SDK_EK_UI_RESIZE,
+  PLUGIN_SDK_EK_UI_SHOW,
+  PLUGIN_SDK_EK_UI_HIDE,
+  PLUGIN_SDK_EK_UI_CLOSE,
   PLUGIN_SDK_EK_REQUEST_FETCH_NODE_MAIN_COMPONENT_META,
   PLUGIN_SDK_EK_REQUEST_FETCH_NODE_META,
   PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META,
@@ -41,6 +46,7 @@ import {
   target_platform,
   MetaRequest,
   makeExportSetting,
+  UIControlRequest,
 } from "@plugin-sdk/core";
 
 import {
@@ -182,6 +188,11 @@ export class PluginSdkService {
       handleNotify(handerProps);
       return true;
     }
+    // ui api
+    else if (event.namespace == PLUGIN_SDK_NS_UI_API) {
+      handleUiApiEvent(event);
+      return true;
+    }
 
     // focus to target layer
     else if (event.namespace == PLUGIN_SDK_NS_FOCUS_API) {
@@ -313,6 +324,37 @@ function handleNotify(props: HanderProps<NotifyRequest>) {
         figma?.notify(props.data.message, {
           timeout: props.data.duration ?? 1,
         });
+      }
+    }
+  }
+  response(props.id, true);
+}
+
+function handleUiApiEvent(props: HanderProps<UIControlRequest>) {
+  switch (target_platform.get()) {
+    case TargetPlatform.webdev: {
+      break;
+      // not handled
+    }
+
+    case TargetPlatform.figma: {
+      switch (props.data.type) {
+        case PLUGIN_SDK_EK_UI_CLOSE: {
+          figma?.ui.close();
+          break;
+        }
+        case PLUGIN_SDK_EK_UI_SHOW: {
+          figma?.ui.show();
+          break;
+        }
+        case PLUGIN_SDK_EK_UI_HIDE: {
+          figma?.ui.hide();
+          break;
+        }
+        case PLUGIN_SDK_EK_UI_RESIZE: {
+          figma?.ui.resize(props.data.size.width, props.data.size.height);
+          break;
+        }
       }
     }
   }

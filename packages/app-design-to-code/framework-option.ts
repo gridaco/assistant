@@ -4,6 +4,7 @@ export enum Language {
   jsx = "jsx",
   tsx = "tsx",
   dart = "dart",
+  html = "html",
 }
 
 export type ReactStylingStrategy = "css" | "styled-components" | "css-in-jsx";
@@ -19,7 +20,12 @@ export interface ReactOption {
   styling: ReactStylingStrategy;
 }
 
-export type FrameworkOption = ReactOption | FlutterOption;
+export interface VanillaOption {
+  framework: Framework.vanilla;
+  language: Language.html;
+}
+
+export type FrameworkOption = ReactOption | FlutterOption | VanillaOption;
 
 export const react_presets = {
   react_default: <ReactOption>{
@@ -51,15 +57,24 @@ export const flutter_presets = {
   },
 };
 
+export const vanilla_presets = {
+  vanilla_default: <VanillaOption>{
+    framework: Framework.vanilla,
+    language: Language.html,
+  },
+};
+
 export const presets = {
   react: react_presets,
   flutter: flutter_presets,
+  vanilla: vanilla_presets,
 };
 
 export const all_preset_options__prod = [
   flutter_presets.flutter_default,
   react_presets.react_default,
   react_presets.react_with_styled_components,
+  vanilla_presets.vanilla_default,
   // react_with_css_in_jsx // NOT ON PRODUCTION
   // react_with_css // NOT ON PRODUCTION
 ];
@@ -69,6 +84,7 @@ export const all_preset_options_map__prod = {
   flutter_default: flutter_presets.flutter_default,
   react_default: react_presets.react_default,
   react_with_styled_components: react_presets.react_with_styled_components,
+  vanilla_default: vanilla_presets.vanilla_default,
   // react_with_css_in_jsx // NOT ON PRODUCTION
   // react_with_css // NOT ON PRODUCTION
 };
@@ -76,6 +92,7 @@ export const all_preset_options_map__prod = {
 export const lang_by_framework = {
   flutter: [Language.dart],
   react: [Language.jsx, Language.tsx],
+  vanilla: [Language.html],
 };
 
 export const react_styles: ReactStylingStrategy[] = [
@@ -98,6 +115,8 @@ export const getDefaultPresetNameByFramework = (frameowrk: Framework) => {
       return "flutter_default";
     case Framework.react:
       return "react_default";
+    case Framework.vanilla:
+      return "vanilla_default";
   }
 };
 

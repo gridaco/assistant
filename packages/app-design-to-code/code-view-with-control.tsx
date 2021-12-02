@@ -154,6 +154,7 @@ export function CodeViewWithControl({
           });
           // analytics
           analytics.event_selection_to_code({
+            //@ts-ignore
             framework: useroption.framework,
           });
 
@@ -202,6 +203,8 @@ const _src_view_language = (framework: string): string => {
       return "dart";
     case "react":
       return "jsx";
+    case "vanilla":
+      return "html";
     default:
       throw `default language for code display on framework "${framework}" is not supported`;
   }

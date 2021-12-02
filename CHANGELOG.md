@@ -28,6 +28,18 @@
 - [Flutter] Poligon Node support with XImage (svg)
 - [Lint] Primal naming & grouping linting for better code export quality. this is tracked sperately on [lint](https://github.com/bridgedxyz/lint)
 
+## (Draft) [2021.11.1] - 2021-12-1
+
+> Live session support with experimental components support
+
+- Assistant Live - [#174](https://github.com/gridaco/assistant/pull/174)
+
+## [2021.11.1] - 2021-12-1
+
+- Add Vanilla Html codegen support (preview feature)
+- Fix ReactJS Codegen bugs
+- Fix Icons loading failure with 200 (caused by cors)
+
 ## [2021.9.1] - 2021-10-11
 
 > 2021.9 is a cold release
@@ -41,6 +53,10 @@
 - (fix) wrong cache loading issue on boot
 - prevent thread lock on big screen
 - prevent thread lock on too many remote component screen
+
+### [2021.9.1f1] - 2021-10-26
+
+- Fix icons loader cors issue
 
 ## [2021.8.0b] - 2021-8-26
 

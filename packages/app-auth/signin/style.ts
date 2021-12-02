@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { BlackButtonStyle, BlackTextButtonStyle } from "@ui/core/button-style";
 import { Column } from "@ui/core";
 
-export const Wrapper = styled.div`
+export const ContentWrap = styled.div`
   // 66 is body margin 8*2, wrapper padding 25*2
   height: calc(100vh - 66px);
 
@@ -31,6 +31,12 @@ export const BtnWrapper = styled.div`
   /* margin-top: 391px; */
   position: absolute;
   bottom: 60px;
+  left: 21px;
+  right: 21px;
+
+  button {
+    width: 100%;
+  }
 
   @media (min-height: 800px) {
     bottom: 120px;
@@ -39,7 +45,7 @@ export const BtnWrapper = styled.div`
 
 export const SignInBtn = styled.button`
   ${BlackButtonStyle}
-  width: calc(100vw - 54px);
+
   font-weight: bold;
   font-size: 14px;
   line-height: 17px;
@@ -47,7 +53,7 @@ export const SignInBtn = styled.button`
 
 export const SignUpBtn = styled.button`
   ${BlackTextButtonStyle}
-  width: calc(100vw - 54px);
+
   font-weight: bold;
   font-size: 14px;
   line-height: 17px;

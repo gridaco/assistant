@@ -34,6 +34,12 @@ const page_code_lint: PageConfig = {
   path: "/code/lint",
 };
 
+const page_live_session: PageConfig = {
+  id: WorkScreen.live,
+  title: "Live",
+  path: "/code/live",
+};
+
 const page_design_icon: PageConfig = {
   id: WorkScreen.icon,
   title: "Icon",
@@ -131,6 +137,7 @@ const all_pages: PageConfig[] = [
   page_code_preview,
   page_code_component,
   page_code_lint,
+  page_live_session,
   // standalones
   page_signup,
   page_about,

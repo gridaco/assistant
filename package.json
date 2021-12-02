@@ -15,7 +15,6 @@
       "webdev",
       "xd",
       "packages/*",
-      "packages/reflect-core/packages/*",
       "packages/design-sdk/*",
       "packages/base-sdk/*",
       "packages/base-sdk/_firstparty/*",
@@ -23,8 +22,8 @@
       "packages/design-to-code/packages/designto-*",
       "packages/design-to-code/packages/builder-*",
       "packages/design-to-code/packages/support-*",
-      "packages/design-to-code/packages/coli/packages/*",
-      "packages/design-to-code/packages/reflect-detection"
+      "packages/design-to-code/packages/reflect-detection",
+      "packages/design-to-code/externals/coli/packages/*"
     ]
   },
   "repository": "https://github.com/gridaco/assistant",
