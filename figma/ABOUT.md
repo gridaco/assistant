@@ -9,39 +9,43 @@ _ContentLastPublished:_ `2021/12/15`
 
 --------
 
-[Free And Open source] Works with React / Flutter .
+**⚡The fastest tool to transform your design into developer-friendly code.**
 
-We generate usable & readable code for production instantly with a click. Select your design, Simply click your design, and we will give you a instant feedback of your design with a working code, along with realtime executable / responsive preview.
+**✅ Supports Flutter, React and more.**
+
+**👩‍💻 Free and Open Source. Democratizing front-end development.**
 
 
 
-**Works with**
+The Grida Assistant is a design to code tool that generates readable & usable code from your design. Design context is understood; a button will be recognized as a button.
 
-- Flutter
-- ReactJS
-- VueJS
-- Vanilla (html/css)
-- Svelte
+
+
+**Features:**
+
+- Modularized, usable Flutter & React code generation
+- Design lint
+- Live preview
+- 5000+ material icons & ant design icons 
+- Cloud resource copy
+
+
+**How to use:**
+
+- Install the Grida Assistant plugin
+- Run the plugin
+- Select your design on a component level
+- Transform the design into ready-to-use Flutter & React code
+
+
+You can also convert the whole figma file to code at code.grida.co
 
 
 watch the demo on [grida.co](https://grida.co)
 
-Run this plugin, Select any design of yours, It will generate ready-to-use formatted native flutter code for you.
-
 contribute on [github](https://github.com/gridaco/assistant)
 
 
-extra features
-- more than 5000 + material icons & ant design icons supported
-- design lint
-- translation support
-- font replacer
-- handoff
-- cloud sync your design
-
-**Not working?**
-
-No matter how big and complex frame you select, it will generate the code. Anyway we recommend you to use it on a component level for best experience. Code may not be manageable if you are tring to build full-screen level code in one single code base.
 
 
 **Grida is a opensource project.**
