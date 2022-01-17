@@ -1,13 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
-import VanillaPreview, {
-  ResponsiveContentIframeProps,
-} from "@code-editor/vanilla-preview";
-import { StaticPreview, StaticPreviewProps } from "../preview-static";
+import { ResponsiveContentIframeProps } from "@code-editor/vanilla-preview";
+import { StaticPreview, StaticPreviewProps } from "../preview-static-snapshot";
 import { handle_wrap_bg_color, PreviewEmpty } from "../components";
 import { useScrollTriggeredAnimation } from "app/lib/components/motions";
 import { useSetRecoilState } from "recoil";
 import { hide_navigation } from "app/lib/main/global-state-atoms";
+import { InteractiveCanvas } from "../components/interactive-canvas";
 
 interface PreviewProps {
   auto?: boolean;
@@ -18,7 +17,6 @@ interface PreviewProps {
    * @deprecated not implemented
    */
   background?: string;
-  type?: string;
   /**
    * when used as a child of a resizable component.
    * if not, set default height in preview 200px
@@ -57,7 +55,7 @@ export function Preview(props: Props) {
     >
       <>
         {props.data || props.auto ? (
-          <Content previewInfo={props} />
+          <Content {...props} />
         ) : (
           <> {props.empty || <PreviewEmpty type={props.type} />}</>
         )}
@@ -66,26 +64,34 @@ export function Preview(props: Props) {
   );
 }
 
-function Content({ previewInfo }: { previewInfo: Props }) {
-  switch (previewInfo.type) {
+function Content(props: Props) {
+  switch (props.type) {
     case "responsive": {
-      const _DEFAULT_MARGIN = 12;
       const _DEFAULT_SHADOW = "0px 4px 64px rgba(160, 160, 160, 0.18)";
       const _DEFAULT_BORDER_RADIUS = 4;
 
       return (
-        <VanillaPreview
-          {...previewInfo}
-          margin={_DEFAULT_MARGIN}
-          borderRadius={_DEFAULT_BORDER_RADIUS}
-          boxShadow={_DEFAULT_SHADOW}
-        />
+        // TODO: replace InteractiveCanvas from module designto-code/@editor-packages
+        <InteractiveCanvas defaultSize={props.origin_size}>
+          <iframe
+            srcDoc={props.data}
+            width={"100%"}
+            height={"100%"}
+            style={{
+              borderRadius: _DEFAULT_BORDER_RADIUS,
+              boxShadow: _DEFAULT_SHADOW,
+              outline: "none",
+              overflow: "hidden",
+              border: "none",
+            }}
+          />
+        </InteractiveCanvas>
       );
     }
     case "static": {
       return (
         <StaticContainer heightscale={1}>
-          <StaticPreview {...previewInfo} />
+          <StaticPreview {...props} />
         </StaticContainer>
       );
     }

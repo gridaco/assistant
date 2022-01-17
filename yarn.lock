@@ -5965,6 +5965,11 @@ data-urls@^2.0.0:
     whatwg-mimetype "^2.3.0"
     whatwg-url "^8.0.0"
 
+debounce@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/debounce/-/debounce-1.2.1.tgz#38881d8f4166a5c5848020c11827b834bcb3e0a5"
+  integrity sha512-XRRe6Glud4rd/ZGQfiV1ruXSfbvfJedlV9Y6zOlP+2K04vBYiJEte6stfFkCP03aMnY5tsipamumUjL14fofug==
+
 debug@2, debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
@@ -11390,6 +11395,13 @@ react-transition-group@^4.4.0:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
+react-use-measure@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/react-use-measure/-/react-use-measure-2.1.1.tgz#5824537f4ee01c9469c45d5f7a8446177c6cc4ba"
+  integrity sha512-nocZhN26cproIiIduswYpV5y5lQpSQS1y/4KuvUCjSKmw7ZWIS/+g3aFnX3WdBkyuGUtTLif3UTqnLLhbDoQig==
+  dependencies:
+    debounce "^1.2.1"
+
 react-use-size@^2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/react-use-size/-/react-use-size-2.0.4.tgz#14f513e310d8962a30919e64fdd746b8211a3f0d"
@@ -12893,6 +12905,11 @@ tr46@~0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/tr46/-/tr46-0.0.3.tgz#8184fd347dac9cdc185992f3a6622e14b9d9ab6a"
   integrity sha1-gYT9NH2snNwYWZLzpmIuFLnZq2o=
+
+tree-visit@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/tree-visit/-/tree-visit-0.1.0.tgz#ec35cfc13548b41ca5eabd5cbd7f83b574a8ed83"
+  integrity sha512-5lARH0BoZY70TwE+MV7v0KRtApSP4LSxC2JLRCUyK6KUCb8f/Qv9dS+PaWx9h3yKyNYjX2/JHwDx8DyQHHFzlw==
 
 trim-trailing-lines@^1.0.0:
   version "1.1.4"
