@@ -6,7 +6,7 @@ import {
 import type { ReflectSceneNode } from "@design-sdk/figma-node";
 import { ImageRepositories } from "@design-sdk/figma/asset-repository";
 import { designToCode } from "@designto/code";
-import { output } from "@designto/config";
+import { config, output } from "@designto/config";
 import {
   react_presets,
   flutter_presets,
@@ -29,7 +29,8 @@ function setup_image_repository() {
 }
 
 type InterceptorJobProcessor = () => Promise<any>;
-type InterceptorAssetRepositoryJobProcessor = () => Promise<repo_assets.TransportableImageRepository>;
+type InterceptorAssetRepositoryJobProcessor =
+  () => Promise<repo_assets.TransportableImageRepository>;
 
 export async function designToFlutter(
   reflectDesign: ReflectSceneNode,
@@ -122,6 +123,12 @@ export async function designToFixedPreviewVanilla(
   jobs?: InterceptorAssetRepositoryJobProcessor
 ): Promise<O> {
   setup_image_repository();
+
+  const build_config = {
+    ...config.default_build_configuration,
+    disable_components: true,
+  };
+
   const vanilla = await designToCode({
     input: {
       name: reflectDesign.name,
@@ -129,9 +136,7 @@ export async function designToFixedPreviewVanilla(
       entry: reflectDesign,
     },
     framework: vanilla_presets.vanilla_default,
-    build_config: {
-      force_root_widget_fixed_size_no_scroll: true,
-    },
+    build_config: build_config,
     asset_config: {
       // the asset replacement on assistant is handled on ui thread.
       skip_asset_replacement: true,
