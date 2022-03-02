@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { FigmaFileChecksum } from "@platform-dedicated/figma-checksum";
+import {
+  FigmaFileChecksum,
+  saveFilekey,
+} from "@platform-dedicated/figma-checksum";
 import { Dialog } from "@material-ui/core";
-import { PluginSdk } from "@plugin-sdk/app";
-import { NS_FILE_ROOT_METADATA } from "@core/constant";
 
 export function FilekeySetupRequiredLayout({
   onKeySetup,
@@ -64,20 +65,6 @@ export function FilekeySetupRequiredLayout({
     </>
   );
 }
-
-export const saveFilekey = async (filekey: string) => {
-  return PluginSdk.updateMetadata({
-    type: "node-meta-update-request",
-    id: "0:0", // 0:0 stands for root node
-    key: "filekey",
-    value: filekey,
-    namespace: NS_FILE_ROOT_METADATA,
-  });
-};
-
-export const loadFilekey = async (): Promise<string> => {
-  return await PluginSdk.fetchRootMetadata("filekey");
-};
 
 const RootWrapperBody = styled.div`
   display: flex;

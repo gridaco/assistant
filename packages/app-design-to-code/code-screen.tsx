@@ -3,21 +3,15 @@ import { Preview } from "@ui/previewer";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import { DesigntoCodeUserOptions } from "./user-options";
 import styled from "@emotion/styled";
-// import { make_empty_selection_state_text_content } from "./constants";
-
 import copy from "copy-to-clipboard";
 import { PluginSdk } from "@plugin-sdk/app";
 import { CodeScreenFooter } from "./footer-action/code-screen-footer";
-
 import { useSingleSelection } from "plugin-app";
 import { CodeViewWithControl } from "./code-view-with-control";
 import { finalize_temporary_assets_with_prefixed_static_string_keys__dangerously } from "@code-features/assets";
 import { repo_assets } from "@design-sdk/core";
 import { k } from "@web-builder/core";
-import {
-  ImageRepository,
-  ImageHostingRepository,
-} from "@design-sdk/core/assets-repository";
+import { ImageHostingRepository } from "@design-sdk/core/assets-repository";
 import { Resizable } from "re-resizable";
 import { useScrollTriggeredAnimation } from "app/lib/components/motions";
 import { useSetRecoilState } from "recoil";
@@ -31,10 +25,8 @@ const default_responsive_preview_height_for_code_screen = 300;
 export function CodeScreen() {
   const selection = useSingleSelection();
 
-  const [
-    vanilla_preview_source,
-    set_vanilla_preview_source,
-  ] = useState<string>();
+  const [vanilla_preview_source, set_vanilla_preview_source] =
+    useState<string>();
   const [source, setSource] = useState<string>();
   const [app, setApp] = useState<string>();
   const [useroption, setUseroption] = useState<DesigntoCodeUserOptions>();
@@ -191,14 +183,15 @@ function inject_assets_source_to_vanilla(
     images.map((i) => [i.key, data_to_blob(i.data)]) ?? []
   );
 
-  const _final = finalize_temporary_assets_with_prefixed_static_string_keys__dangerously(
-    rawsrc,
-    default_asset_replacement_prefix,
-    map,
-    {
-      fallback: k.image_smallest_fallback_source_base_64,
-    }
-  );
+  const _final =
+    finalize_temporary_assets_with_prefixed_static_string_keys__dangerously(
+      rawsrc,
+      default_asset_replacement_prefix,
+      map,
+      {
+        fallback: k.image_smallest_fallback_source_base_64,
+      }
+    );
   return _final;
 }
 
