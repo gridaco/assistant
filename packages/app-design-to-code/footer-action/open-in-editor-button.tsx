@@ -101,7 +101,8 @@ function buildOpenUrlForEditor({
 }) {
   // https://staging-branch-code.grida.co/files/~
   // https://code.grida.co/files/~
-  return `https://staging-branch-code.grida.co/files/${filekey}?node=${id}&framework=${framework}`;
+  // &mode=isolate
+  return `https://staging-branch-code.grida.co/files/${filekey}?node=${id}&framework=${framework}&mode=isolate`;
 }
 
 const OpenButton = styled.button`
