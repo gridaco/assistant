@@ -99,7 +99,9 @@ function buildOpenUrlForEditor({
   id: string;
   framework: string;
 }) {
-  return `https://code.grida.co/files/${filekey}?node=${id}&framework=${framework}`;
+  // https://staging-branch-code.grida.co/files/~
+  // https://code.grida.co/files/~
+  return `https://staging-branch-code.grida.co/files/${filekey}?node=${id}&framework=${framework}`;
 }
 
 const OpenButton = styled.button`
