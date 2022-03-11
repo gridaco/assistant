@@ -175,6 +175,7 @@ function inject_assets_source_to_vanilla(
   const images = repo.images;
   const default_asset_replacement_prefix = "grida://assets-reservation/images/";
   const data_to_blob = (d) => {
+    // @ts-ignore blob
     const b = new Blob([d], { type: "image/png" });
     return URL.createObjectURL(b);
   };

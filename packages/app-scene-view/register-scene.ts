@@ -30,6 +30,7 @@ export async function registerScene(scene: {
 
   // upload preview image
   const previewImageUploaded = await upload({
+    // @ts-ignore blob
     file: new Blob([scene.preview], {
       type: "image/png",
     }),

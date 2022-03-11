@@ -63,6 +63,7 @@ export function StaticPreview(props: StaticPreviewProps) {
 
   function makeUrl() {
     if (data) {
+      // @ts-ignore blob
       var blob = new Blob([data], { type: "image/png" });
       var url = URL.createObjectURL(blob);
       return url;
