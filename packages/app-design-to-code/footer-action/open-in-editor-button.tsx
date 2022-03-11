@@ -99,10 +99,11 @@ function buildOpenUrlForEditor({
   id: string;
   framework: string;
 }) {
-  // https://staging-branch-code.grida.co/files/~
-  // https://code.grida.co/files/~
+  // local: http://localhost:6626/files/~
+  // staging: https://staging-branch-code.grida.co/files/~
+  // production: https://code.grida.co/files/~
   // &mode=isolate
-  return `https://staging-branch-code.grida.co/files/${filekey}?node=${id}&framework=${framework}&mode=isolate`;
+  return `https://code.grida.co/files/${filekey}?node=${id}&framework=${framework}&mode=isolate`;
 }
 
 const OpenButton = styled.button`
