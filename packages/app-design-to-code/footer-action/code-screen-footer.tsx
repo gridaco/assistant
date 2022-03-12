@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import {
-  BlackTextButtonStyle,
-  WhiteTextButtonStyle,
-} from "@ui/core/button-style";
+import { WhiteTextButtonStyle } from "@ui/core/button-style";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import { PluginSdk } from "@plugin-sdk/app";
 import { preview } from "@app/scene-view";
-import { NextUploadButton } from "./next-upload-button";
+// import { Legacy__NextUploadButton } from "./legacy-next-upload-button";
 import type { ReflectSceneNode } from "@design-sdk/figma-node";
 import { Framework } from "@grida/builder-platform-types";
+import { OpenInEditorButton } from "./open-in-editor-button";
 
 interface ICodeScreenFooter {
   framework: Framework;
@@ -42,14 +40,15 @@ export function CodeScreenFooter(props: ICodeScreenFooter) {
   };
 
   /** currently we only support uploading & preview for flutter */
-  const _can_enable_next = props.framework == Framework.flutter && !!props.app;
+  const _can_open_in_editor = props.framework && !!props.app;
   const _can_show_preview = props.framework == Framework.flutter && !!props.app;
 
   return (
     <CodeFooterCtaWrapper>
       {
         <InnerWrapper>
-          <NextUploadButton disabled={!_can_enable_next} {...props} />
+          <OpenInEditorButton disabled={!_can_open_in_editor} {...props} />
+          {/* <Legacy__NextUploadButton disabled={!_can_enable_next} {...props} /> */}
           {_can_show_preview && (
             <PreviewButton
               disabled={isLaunchingConsole}

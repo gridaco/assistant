@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
-import { BlackButtonStyle, BlueButtonStyle } from "@ui/core/button-style";
+import { BlueButtonStyle } from "@ui/core/button-style";
 import { registerScene } from "@app/scene-view";
 import { PluginSdk } from "@plugin-sdk/app";
 import type { IReflectNodeReference } from "@design-sdk/figma-node";
 import { isAuthenticated } from "@assistant-fp/auth";
 import { useHistory } from "react-router-dom";
 
-export function NextUploadButton(props: {
+/**
+ * @deprecated
+ * Next upload button to register the scene to the backend, view via https://app.grida.co/scenes/:id
+ */
+export function Legacy__NextUploadButton(props: {
   disabled?: boolean;
   scene?: IReflectNodeReference;
   app?: any;

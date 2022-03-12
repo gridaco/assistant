@@ -4,7 +4,6 @@ import { AssistantLiveSession } from "../session-api";
 import {
   ConnectedStateMinimized,
   FilekeySetupRequiredLayout,
-  loadFilekey,
   OnboardingLayout,
   SigninRequiredLayout,
   StartLayout,
@@ -13,6 +12,7 @@ import { isAuthenticated, getUserProfile } from "@assistant-fp/auth";
 import { needToShowOnboarding, setOnboardingShown } from "../storage";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { RevealWhenVisible } from "app/lib/components/animated";
+import { loadFilekey } from "@platform-dedicated/figma-checksum";
 
 const FILE_KEY_NON_SET_SPECIAL_KEY = "non-set";
 
