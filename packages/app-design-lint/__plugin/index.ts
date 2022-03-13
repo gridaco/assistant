@@ -19,12 +19,16 @@ function _handle_lint_request() {
   //#region  run linter
   const rnode = FigmaNodeCache.getLastConverted();
   if (rnode) {
-    const feedbacks = runLints(rnode);
-    console.warn(feedbacks);
-    figma.ui.postMessage({
-      type: _APP_EVENT_LINT_RESULT_EK,
-      data: feedbacks,
-    });
+    try {
+      const feedbacks = runLints(rnode);
+      console.info("feedbacks:", feedbacks);
+      figma.ui.postMessage({
+        type: _APP_EVENT_LINT_RESULT_EK,
+        data: feedbacks,
+      });
+    } catch (e) {
+      console.error(e);
+    }
   } else {
     console.warn("user requested linting, but non selected to run lint on.");
   }
