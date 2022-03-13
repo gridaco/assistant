@@ -13,6 +13,7 @@ const SCREEN_VISIBILITY_PREFERENCE: Map<WorkScreen, ReleaseChannel> = new Map([
   [WorkScreen.component, "beta"],
   [WorkScreen.layout, "beta"],
   [WorkScreen.icon, "release"],
+  [WorkScreen.preview, "release"],
   [WorkScreen.live, "beta"],
   [WorkScreen.lint, "release"],
   [WorkScreen.g11n, "beta"],

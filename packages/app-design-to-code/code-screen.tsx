@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Preview } from "@ui/previewer";
+import { Preview, utils } from "@ui/previewer";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import { DesigntoCodeUserOptions } from "./user-options";
 import styled from "@emotion/styled";
@@ -8,10 +8,7 @@ import { PluginSdk } from "@plugin-sdk/app";
 import { CodeScreenFooter } from "./footer-action/code-screen-footer";
 import { useSingleSelection } from "plugin-app";
 import { CodeViewWithControl } from "./code-view-with-control";
-import { finalize_temporary_assets_with_prefixed_static_string_keys__dangerously } from "@code-features/assets";
 import { repo_assets } from "@design-sdk/core";
-import { k } from "@web-builder/core";
-import { ImageHostingRepository } from "@design-sdk/core/assets-repository";
 import { Resizable } from "re-resizable";
 import { useScrollTriggeredAnimation } from "app/lib/components/motions";
 import { useSetRecoilState } from "recoil";
@@ -43,7 +40,7 @@ export function CodeScreen() {
     v: string,
     r?: repo_assets.TransportableImageRepository
   ) => {
-    set_vanilla_preview_source(inject_assets_source_to_vanilla(v, r));
+    set_vanilla_preview_source(utils.inject_assets_source_to_vanilla(v, r));
   };
 
   const code_scrolling_area_ref = useRef<HTMLDivElement>(null);
@@ -161,39 +158,6 @@ export function CodeScreen() {
       </div>
     </div>
   );
-}
-
-function inject_assets_source_to_vanilla(
-  rawsrc: string,
-  repo?: repo_assets.TransportableImageRepository
-) {
-  repo = repo || ImageHostingRepository.imageRepostory;
-  if (!rawsrc || !repo) {
-    return rawsrc;
-  }
-
-  const images = repo.images;
-  const default_asset_replacement_prefix = "grida://assets-reservation/images/";
-  const data_to_blob = (d) => {
-    // @ts-ignore blob
-    const b = new Blob([d], { type: "image/png" });
-    return URL.createObjectURL(b);
-  };
-
-  const map = Object.fromEntries(
-    images.map((i) => [i.key, data_to_blob(i.data)]) ?? []
-  );
-
-  const _final =
-    finalize_temporary_assets_with_prefixed_static_string_keys__dangerously(
-      rawsrc,
-      default_asset_replacement_prefix,
-      map,
-      {
-        fallback: k.image_smallest_fallback_source_base_64,
-      }
-    );
-  return _final;
 }
 
 const ResizeWrap = (props?: any) => (
