@@ -28,6 +28,12 @@
 - [Flutter] Poligon Node support with XImage (svg)
 - [Lint] Primal naming & grouping linting for better code export quality. this is tracked sperately on [lint](https://github.com/bridgedxyz/lint)
 
+## [2022.3.1] - 2022-03-14
+
+- Lint updates
+- D2C Module Update
+- Add instant preview to designers' mode
+
 ## (Draft) [2022.0.1] - 2022-01-20
 
 > (Draft)
@@ -35,9 +41,7 @@
 - Flags editor
 - Components & Property Editor
 - Responsive & Resizable Preview
-- Lint updates
 - Icons DnD Fix
-- D2C Module Update
 
 ## (Draft) [2021.11.1] - 2021-12-1
 
