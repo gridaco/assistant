@@ -14,6 +14,7 @@ import { ButtonMakerScreen } from "@app/button-maker";
 import { LayoutViewScreen } from "../pages/layout-view";
 import { ComponentViewScreen } from "@app/component-manage";
 import { LintScreen } from "@app/design-lint";
+import { PreviewScreen } from "@app/design-preview";
 import { IconsScreen } from "@app/icons-loader";
 import { MetaEditorScreen, BatchMetaEditor } from "@app/meta-editor";
 import { ExporterScreen } from "@app/export-scene-as-json";
@@ -64,6 +65,8 @@ function Screen(props: { screen: WorkScreen }) {
       return <ComponentViewScreen />;
     case WorkScreen.layout:
       return <LayoutViewScreen />;
+    case WorkScreen.preview:
+      return <PreviewScreen />;
     case WorkScreen.icon:
       return <IconsScreen />;
     case WorkScreen.lint:
@@ -248,9 +251,8 @@ function RouterTabNavigationApp(props) {
 
 function Home() {
   const history = useHistory();
-  const [savedLayout, setSavedLayout] = useState<NavigationStoreState>(
-    undefined
-  );
+  const [savedLayout, setSavedLayout] =
+    useState<NavigationStoreState>(undefined);
 
   useEffect(() => {
     loadLayout()

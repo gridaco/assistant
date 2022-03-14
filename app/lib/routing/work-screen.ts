@@ -7,6 +7,7 @@ export enum WorkScreen {
   /** @deprecated only used for sendig event */
   code_react = "code/react",
   component = "component",
+  preview = "preview",
   layout = "layout",
   icon = "icon",
   live = "live",

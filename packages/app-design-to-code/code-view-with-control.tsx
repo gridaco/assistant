@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { CodeBox, SourceInput } from "@ui/codebox";
 import { CodeOptionsControl } from "./code-options-control";
 import styled from "@emotion/styled";
@@ -12,7 +12,7 @@ import { DesigntoCodeUserOptions } from "./user-options";
 import {
   EK_GENERATED_CODE_PLAIN,
   EK_IMAGE_ASSET_REPOSITORY_MAP,
-} from "@core/constant/ek.constant";
+} from "@core/constant";
 import { repo_assets } from "@design-sdk/core";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import { CodeSessionCacheStorage } from "./code-session-cache-storage";
@@ -46,17 +46,19 @@ export function CodeViewWithControl({
 }) {
   const [source, setSource] = useState<SourceInput>();
 
-  const framework_preference = new PreferFramework();
+  const framework_preference = useMemo(() => new PreferFramework(), []);
   const initialPresetName = getDefaultPresetNameByFramework(
-    framework_preference.get() ?? Framework.flutter
+    framework_preference.get() ?? Framework.react
   );
-
   const initialPreset = getPresetByName(initialPresetName);
-  const [useroption, setUseroption] = useState<DesigntoCodeUserOptions>(
-    initialPreset
-  );
 
-  const cacheStore = new CodeSessionCacheStorage(targetid, useroption);
+  const [useroption, setUseroption] =
+    useState<DesigntoCodeUserOptions>(initialPreset);
+
+  const cacheStore = useMemo(
+    () => new CodeSessionCacheStorage(targetid, useroption),
+    [targetid, useroption]
+  );
 
   /** post to code thread about target framework change */
   useEffect(() => {
@@ -83,7 +85,7 @@ export function CodeViewWithControl({
         return;
       }
       window.addEventListener("message", onMessage);
-      return function cleaup() {
+      return () => {
         window.removeEventListener("message", onMessage);
       };
     },
@@ -160,7 +162,8 @@ export function CodeViewWithControl({
 
           break;
         case EK_IMAGE_ASSET_REPOSITORY_MAP:
-          const imageRepo = msg.data as repo_assets.TransportableImageRepository;
+          const imageRepo =
+            msg.data as repo_assets.TransportableImageRepository;
           repo_assets.ImageHostingRepository.setRepository(imageRepo);
           onAssetsLoad?.(imageRepo);
           break;

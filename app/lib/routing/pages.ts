@@ -52,6 +52,12 @@ const page_design_layout: PageConfig = {
   path: "/design/layout",
 };
 
+const page_design_preview: PageConfig = {
+  id: WorkScreen.preview,
+  title: "Preview",
+  path: "/design/preview",
+};
+
 const page_design_lint: PageConfig = {
   id: WorkScreen.lint,
   title: "Lint",
@@ -131,6 +137,7 @@ const page_signup: PageConfig = {
 const all_pages: PageConfig[] = [
   page_content_g11n,
   page_design_lint,
+  page_design_preview,
   page_design_layout,
   page_design_icon,
   page_code_layout,
