@@ -77,6 +77,7 @@ function Content(props: Props) {
             srcDoc={props.data}
             width={"100%"}
             height={"100%"}
+            allow="camera"
             style={{
               borderRadius: _DEFAULT_BORDER_RADIUS,
               boxShadow: _DEFAULT_SHADOW,
