@@ -68,6 +68,7 @@ export function LiteHostedAppConnector() {
           style={{ opacity: `${initialized ? 1 : 0}` }}
           // style={{ zoom: "80%" }} // use this to zoom inner content
           width="100%"
+          allow="camera"
           height={`${initialized ? "100%" : "0px"}`}
           sandbox="allow-scripts allow-same-origin allow-popups allow-modals"
           frameBorder="0"
