@@ -72,6 +72,7 @@ export function MonacoEditor({
         loading={<></>} // TODO: add loading state.
         theme="vs-dark"
         height={height}
+        beforeMount={register.initMonaco}
         onMount={onMount}
         onChange={onChange}
         defaultLanguage={monacolanguage(language)}
