@@ -14,6 +14,7 @@ import { useScrollTriggeredAnimation } from "app/lib/components/motions";
 import { useSetRecoilState } from "recoil";
 import { hide_navigation } from "app/lib/main/global-state-atoms";
 import bundler from "@code-editor/esbuild-services";
+import { debounce } from "../_utils/debounce";
 
 const resizeBarBase = 5;
 const resizeBarVerPadding = 5;
@@ -24,7 +25,8 @@ export function CodeScreen() {
   const selection = useSingleSelection();
 
   const [isBuilding, setIsBuilding] = useState(true);
-  const [previewData, setPreviewData] = useState<string>();
+  const [initialPreviewData, setInitialPreviewData] = useState<string>();
+  const [esbuildPreviewData, setEsbuildPreviewData] = useState<string>();
   const [previewMode, setPreviewMode] = useState<"responsive" | "esbuild">(
     "responsive"
   );
@@ -46,21 +48,26 @@ export function CodeScreen() {
     r?: repo_assets.TransportableImageRepository
   ) => {
     setIsBuilding(false);
-    setPreviewData(utils.inject_assets_source_to_vanilla(v, r));
+    setInitialPreviewData(utils.inject_assets_source_to_vanilla(v, r));
   };
 
   // ------------------------
   // ------ for esbuild -----
 
+  useEffect(() => {
+    // reset preview mode when switching framework
+    setPreviewMode("responsive");
+  }, [useroption?.framework]);
+
+  const onCodeChangeHandler = debounce((code) => {
+    handle_esbuild_preview_source(code);
+  }, 500);
+
   const handle_esbuild_preview_source = (v: string) => {
-    if (!previewData) {
+    if (!initialPreviewData) {
       // the vanilla preview must be loaded first
       return;
     }
-    if (useroption.framework !== "react") {
-      return;
-    }
-
     const transform = (s, n) => {
       return `import React from 'react'; import ReactDOM from 'react-dom';
 ${s}
@@ -68,21 +75,22 @@ const App = () => <><${n}/></>
 ReactDOM.render(<App />, document.querySelector('#root'));`;
     };
 
-    setIsBuilding(true);
-    bundler(transform(v, name), "tsx")
-      .then((d) => {
-        if (d.err == null) {
-          if (d.code && d.code !== previewData) {
-            setPreviewData(d.code);
-            setPreviewMode("esbuild");
+    if (useroption.framework == "react") {
+      setIsBuilding(true);
+      bundler(transform(v, name), "tsx")
+        .then((d) => {
+          if (d.err == null) {
+            if (d.code && d.code !== esbuildPreviewData) {
+              setEsbuildPreviewData(d.code);
+              setPreviewMode("esbuild");
+            }
           }
-        }
-      })
-      .finally(() => {
-        setIsBuilding(false);
-      });
+        })
+        .finally(() => {
+          setIsBuilding(false);
+        });
+    }
   };
-
   // ------------------------
 
   // region scrolling handling -------------------
@@ -139,10 +147,13 @@ ReactDOM.render(<App />, document.querySelector('#root'));`;
           maxHeight="75vh"
         >
           <Preview
-            key={previewData}
-            // auto
+            key={selection?.id}
             type={previewMode}
-            data={previewData}
+            data={
+              previewMode === "esbuild"
+                ? esbuildPreviewData
+                : initialPreviewData
+            }
             id={selection?.id}
             origin_size={{
               width: selection?.node?.width,
@@ -187,11 +198,9 @@ ReactDOM.render(<App />, document.querySelector('#root'));`;
             setSource(src);
             handle_vanilla_preview_source(vanilla_preview_source);
           }}
-          onCodeChange={(c) => {
-            handle_esbuild_preview_source(c);
-          }}
+          onCodeChange={onCodeChangeHandler}
           onAssetsLoad={(r) => {
-            handle_vanilla_preview_source(previewData, r);
+            handle_vanilla_preview_source(initialPreviewData, r);
           }}
           onUserOptionsChange={setUseroption}
         />
