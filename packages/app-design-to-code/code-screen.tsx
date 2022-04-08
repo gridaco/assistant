@@ -13,6 +13,7 @@ import { Resizable } from "re-resizable";
 import { useScrollTriggeredAnimation } from "app/lib/components/motions";
 import { useSetRecoilState } from "recoil";
 import { hide_navigation } from "app/lib/main/global-state-atoms";
+import bundler from "@code-editor/esbuild-services";
 
 const resizeBarBase = 5;
 const resizeBarVerPadding = 5;
@@ -22,10 +23,14 @@ const default_responsive_preview_height_for_code_screen = 300;
 export function CodeScreen() {
   const selection = useSingleSelection();
 
-  const [vanilla_preview_source, set_vanilla_preview_source] =
-    useState<string>();
+  const [isBuilding, setIsBuilding] = useState(true);
+  const [previewData, setPreviewData] = useState<string>();
+  const [previewMode, setPreviewMode] = useState<"responsive" | "esbuild">(
+    "responsive"
+  );
   const [source, setSource] = useState<string>();
   const [app, setApp] = useState<string>();
+  const [name, setName] = useState<string>();
   const [useroption, setUseroption] = useState<DesigntoCodeUserOptions>();
 
   const onCopyClicked = (e) => {
@@ -40,15 +45,54 @@ export function CodeScreen() {
     v: string,
     r?: repo_assets.TransportableImageRepository
   ) => {
-    set_vanilla_preview_source(utils.inject_assets_source_to_vanilla(v, r));
+    setIsBuilding(false);
+    setPreviewData(utils.inject_assets_source_to_vanilla(v, r));
   };
 
+  // ------------------------
+  // ------ for esbuild -----
+
+  const handle_esbuild_preview_source = (v: string) => {
+    if (!previewData) {
+      // the vanilla preview must be loaded first
+      return;
+    }
+    if (useroption.framework !== "react") {
+      return;
+    }
+
+    const transform = (s, n) => {
+      return `import React from 'react'; import ReactDOM from 'react-dom';
+${s}
+const App = () => <><${n}/></>
+ReactDOM.render(<App />, document.querySelector('#root'));`;
+    };
+
+    setIsBuilding(true);
+    bundler(transform(v, name), "tsx")
+      .then((d) => {
+        if (d.err == null) {
+          if (d.code && d.code !== previewData) {
+            setPreviewData(d.code);
+            setPreviewMode("esbuild");
+          }
+        }
+      })
+      .finally(() => {
+        setIsBuilding(false);
+      });
+  };
+
+  // ------------------------
+
+  // region scrolling handling -------------------
   const code_scrolling_area_ref = useRef<HTMLDivElement>(null);
   const set_hide_navigation_state = useSetRecoilState(hide_navigation);
   const hide = useScrollTriggeredAnimation(code_scrolling_area_ref);
   useEffect(() => {
     set_hide_navigation_state(hide);
   }, [hide]);
+  // ---------------------------------------------
 
   const [previewHeight, setPreviewHeight] = useState<number>(
     default_responsive_preview_height_for_code_screen
@@ -95,10 +139,10 @@ export function CodeScreen() {
           maxHeight="75vh"
         >
           <Preview
-            key={vanilla_preview_source}
+            key={previewData}
             // auto
-            type="responsive"
-            data={vanilla_preview_source}
+            type={previewMode}
+            data={previewData}
             id={selection?.id}
             origin_size={{
               width: selection?.node?.width,
@@ -137,13 +181,17 @@ export function CodeScreen() {
         <CodeViewWithControl
           key={selection?.id}
           targetid={selection?.id}
-          onGeneration={(app, src, vanilla_preview_source) => {
+          onGeneration={({ name, app, src, vanilla_preview_source }) => {
+            setName(name);
             setApp(app);
             setSource(src);
             handle_vanilla_preview_source(vanilla_preview_source);
           }}
+          onCodeChange={(c) => {
+            handle_esbuild_preview_source(c);
+          }}
           onAssetsLoad={(r) => {
-            handle_vanilla_preview_source(vanilla_preview_source, r);
+            handle_vanilla_preview_source(previewData, r);
           }}
           onUserOptionsChange={setUseroption}
         />

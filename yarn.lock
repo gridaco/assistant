@@ -6944,7 +6944,7 @@ es6-templates@^0.2.3:
     recast "~0.11.12"
     through "~2.3.6"
 
-esbuild-wasm@^0.14.31:
+esbuild-wasm@0.14.34:
   version "0.14.34"
   resolved "https://registry.yarnpkg.com/esbuild-wasm/-/esbuild-wasm-0.14.34.tgz#cde4a4c10405b6dfb677652092eb5b9788670d70"
   integrity sha512-0GYXI7gNla1PePGpXMqSH8U/k0xDkVYwH62L0ZLq3MuI26NPabhAlShOOELISpNZIaYiJ8vlkwdYZ4V229zf2A==
