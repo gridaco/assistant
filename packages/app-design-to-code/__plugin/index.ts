@@ -64,9 +64,10 @@ async function _handle_code_gen_request(req: CodeGenRequest) {
       };
       const transportable_config = { type: transportable_config_map[mode] };
       // host images
-      const transportableImageAssetRepository = await repo_assets.MainImageRepository.instance
-        .get("fill-later-assets")
-        .makeTransportable(transportable_config);
+      const transportableImageAssetRepository =
+        await repo_assets.MainImageRepository.instance
+          .get("fill-later-assets")
+          .makeTransportable(transportable_config);
       figma.ui.postMessage({
         type: EK_IMAGE_ASSET_REPOSITORY_MAP,
         data: transportableImageAssetRepository,
@@ -87,6 +88,7 @@ async function _handle_code_gen_request(req: CodeGenRequest) {
       case "vanilla": {
         const vanillaBuild = await designToVanilla(rnode);
         post_cb({
+          name: vanillaBuild.name,
           code: vanillaBuild.code,
           app: vanillaBuild.scaffold,
           vanilla_preview_source: vanilla_preview_source,
@@ -96,6 +98,7 @@ async function _handle_code_gen_request(req: CodeGenRequest) {
       case "react": {
         const reactBuild = await designToReact(rnode);
         post_cb({
+          name: reactBuild.name,
           code: reactBuild.code,
           app: reactBuild.scaffold,
           vanilla_preview_source: vanilla_preview_source,
@@ -105,6 +108,7 @@ async function _handle_code_gen_request(req: CodeGenRequest) {
       case "flutter": {
         const flutterBuild = await designToFlutter(rnode, asset_export_job);
         post_cb({
+          name: flutterBuild.name,
           code: flutterBuild.code,
           app: flutterBuild.scaffold,
           vanilla_preview_source: vanilla_preview_source,
@@ -118,7 +122,12 @@ async function _handle_code_gen_request(req: CodeGenRequest) {
   //#endregion
 }
 
-function post_cb(data: { code; app; vanilla_preview_source }) {
+function post_cb(data: {
+  code;
+  app;
+  vanilla_preview_source: string;
+  name: string;
+}) {
   figma.ui.postMessage({
     type: EK_GENERATED_CODE_PLAIN,
     data: data,

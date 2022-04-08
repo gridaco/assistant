@@ -1,12 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "@emotion/styled";
 import { ResponsiveContentIframeProps } from "@code-editor/vanilla-preview";
 import { StaticPreview, StaticPreviewProps } from "../preview-static-snapshot";
-import { handle_wrap_bg_color, PreviewEmpty } from "../components";
+import { PreviewEmpty } from "../components";
 import { useScrollTriggeredAnimation } from "app/lib/components/motions";
 import { useSetRecoilState } from "recoil";
 import { hide_navigation } from "app/lib/main/global-state-atoms";
 import { InteractiveCanvas } from "../components/interactive-canvas";
+import { VanillaESBuildAppRunner } from "../components/esbuild-result-preview";
+
+const esbuild_base_html_code = `<div id="root"></div>`;
 
 interface PreviewProps {
   auto?: boolean;
@@ -26,7 +29,15 @@ interface PreviewProps {
   height?: number;
 }
 
-type Subscenario = StaticPreviewProps | ResponsiveContentIframeProps;
+type EsBuildContentIframeProps = Omit<ResponsiveContentIframeProps, "type"> & {
+  type: "esbuild";
+};
+
+type Subscenario =
+  | StaticPreviewProps
+  | ResponsiveContentIframeProps
+  | EsBuildContentIframeProps;
+
 type Props = PreviewProps & Subscenario;
 
 export function Preview(props: Props) {
@@ -51,13 +62,13 @@ export function Preview(props: Props) {
       padding={previewWrapPadding}
       isAutoSizable={props.isAutoSizable}
       initialPreviewHeight={initialPreviewHeight}
-      bgColor={handle_wrap_bg_color(props.type, !(!!props.data || props.auto))}
+      // bgColor={handle_wrap_bg_color(props.type, !(!!props.data || props.auto))}
     >
       <>
-        {props.data || props.auto ? (
+        {props.auto || props.data ? (
           <Content {...props} />
         ) : (
-          <> {props.empty || <PreviewEmpty type={props.type} />}</>
+          <> {props.empty || <PreviewEmpty />}</>
         )}
       </>
     </PreviewWrap>
@@ -65,11 +76,11 @@ export function Preview(props: Props) {
 }
 
 function Content(props: Props) {
+  const _DEFAULT_SHADOW = "0px 4px 64px rgba(160, 160, 160, 0.18)";
+  const _DEFAULT_BORDER_RADIUS = 4;
+
   switch (props.type) {
     case "responsive": {
-      const _DEFAULT_SHADOW = "0px 4px 64px rgba(160, 160, 160, 0.18)";
-      const _DEFAULT_BORDER_RADIUS = 4;
-
       return (
         // TODO: replace InteractiveCanvas from module designto-code/@editor-packages
         <InteractiveCanvas defaultSize={props.origin_size}>
@@ -78,6 +89,25 @@ function Content(props: Props) {
             width={"100%"}
             height={"100%"}
             allow="camera"
+            style={{
+              borderRadius: _DEFAULT_BORDER_RADIUS,
+              boxShadow: _DEFAULT_SHADOW,
+              outline: "none",
+              overflow: "hidden",
+              border: "none",
+            }}
+          />
+        </InteractiveCanvas>
+      );
+    }
+    case "esbuild": {
+      return (
+        <InteractiveCanvas defaultSize={props.origin_size}>
+          <VanillaESBuildAppRunner
+            doc={{
+              html: esbuild_base_html_code,
+              javascript: props.data,
+            }}
             style={{
               borderRadius: _DEFAULT_BORDER_RADIUS,
               boxShadow: _DEFAULT_SHADOW,
@@ -103,15 +133,12 @@ const PreviewWrap = styled.div<{
   padding: number;
   initialPreviewHeight: number;
   isAutoSizable: boolean;
-  bgColor: string;
 }>`
   padding: ${(props) => `${props.padding}px`};
   height: ${(props) =>
     props.isAutoSizable
       ? `calc(100% - ${props.padding * 2}px)`
       : `calc(${props.initialPreviewHeight}px - ${props.padding * 2}px)`};
-
-  background-color: ${(props) => props.bgColor};
 
   overflow-y: auto;
   overflow-x: hidden;
