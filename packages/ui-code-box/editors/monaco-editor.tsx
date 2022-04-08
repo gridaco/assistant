@@ -1,12 +1,17 @@
-import React, { useEffect } from "react";
-import Editor, { useMonaco } from "@monaco-editor/react";
+import React, { useRef } from "react";
+import Editor, { OnMount } from "@monaco-editor/react";
+import * as monaco from "monaco-editor/esm/vs/editor/editor.api";
 import { editor } from "monaco-editor";
+import { register } from "./monaco-utils";
+
+type ICodeEditor = monaco.editor.IStandaloneCodeEditor;
 
 // TODO: add auto sizing - https://github.com/microsoft/monaco-editor/issues/794#issuecomment-688959283
 export function MonacoEditor({
   src,
   language,
   minHeight = 800,
+  onChange,
 }: {
   /**
    * minheight is also a initial height.
@@ -14,32 +19,47 @@ export function MonacoEditor({
   minHeight?: number;
   src: string;
   language: string;
+  onChange?: (code: string) => void;
 }) {
-  const monaco = useMonaco();
   const [height, setHeight] = React.useState(minHeight);
 
-  useEffect(() => {
-    if (monaco) {
-      monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
-        target: monaco.languages.typescript.ScriptTarget.Latest,
-        allowNonTsExtensions: true,
-        moduleResolution:
-          monaco.languages.typescript.ModuleResolutionKind.NodeJs,
-        module: monaco.languages.typescript.ModuleKind.CommonJS,
-        noEmit: true,
-        esModuleInterop: true,
-        jsx: monaco.languages.typescript.JsxEmit.React,
-        reactNamespace: "React",
-        allowJs: true,
-        typeRoots: ["node_modules/@types"],
-      });
+  const instance = useRef<{ editor: ICodeEditor; format: any } | null>(null);
+  const activeModel = useRef<any>();
 
-      monaco.languages.typescript.typescriptDefaults.setDiagnosticsOptions({
-        noSemanticValidation: false,
-        noSyntaxValidation: false,
-      });
-    }
-  }, [src]);
+  const onMount: OnMount = (editor, monaco) => {
+    // REQUIRED
+    editor.onDidContentSizeChange(() => {
+      updateHeight(editor);
+    });
+
+    const format = editor.getAction("editor.action.formatDocument");
+    const rename = editor.getAction("editor.action.rename");
+
+    instance.current = { editor, format };
+
+    activeModel.current = editor.getModel();
+
+    register.initEditor(editor, monaco);
+
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, function () {
+      format.run();
+    });
+
+    // disabled. todo: find a way to format on new line, but also with adding new line.
+    // editor.addCommand(monaco.KeyCode.Enter, function () {
+    //   format.run();
+    // });
+
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyR, function () {
+      // don't reload the entire page, and..
+      // Default is F2
+      rename.run();
+    });
+
+    editor.onDidChangeModelContent((e) => {
+      /* add here */
+    });
+  };
 
   const updateHeight = (editor: editor.IStandaloneCodeEditor) => {
     const contentHeight = Math.max(minHeight, editor.getContentHeight());
@@ -52,11 +72,8 @@ export function MonacoEditor({
         loading={<></>} // TODO: add loading state.
         theme="vs-dark"
         height={height}
-        onMount={(editor) => {
-          editor.onDidContentSizeChange(() => {
-            updateHeight(editor);
-          });
-        }}
+        onMount={onMount}
+        onChange={onChange}
         defaultLanguage={monacolanguage(language)}
         defaultValue={src}
         value={src}
@@ -69,7 +86,7 @@ export function MonacoEditor({
             // disable minimap a.k.a preview
             enabled: false,
           },
-          renderIndentGuides: true, // need color customization
+          // renderIndentGuides: true, // need color customization
           scrollbar: {
             // allow parent scoll
             alwaysConsumeMouseWheel: false,

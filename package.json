@@ -23,7 +23,11 @@
       "packages/design-to-code/packages/builder-*",
       "packages/design-to-code/packages/support-*",
       "packages/design-to-code/packages/reflect-detection",
-      "packages/design-to-code/externals/coli/packages/*"
+      "packages/design-to-code/externals/coli/packages/*",
+      "packages/design-to-code/editor-packages/editor-services-esbuild",
+      "packages/design-to-code/editor-packages/editor-services-prettier",
+      "packages/design-to-code/editor-packages/editor-services-jsx-syntax-highlight",
+      "packages/design-to-code/editor-packages/editor-services-webworker-core"
     ]
   },
   "repository": "https://github.com/gridaco/assistant",

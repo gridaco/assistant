@@ -65,6 +65,12 @@ const withTM = require("next-transpile-modules")([
   // -----------------------------
 
   // -----------------------------
+  // region editor-packages
+  "@code-editor/prettier-services",
+  "@code-editor/webworker-services-core",
+  // -----------------------------
+
+  // -----------------------------
   // design-sdk
   "@design-sdk/flags",
   "@design-sdk/core",
