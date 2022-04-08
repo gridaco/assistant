@@ -43,7 +43,7 @@
     "sketch": "yarn workspace sketch run render",
     "web": "yarn workspace web run dev",
     "xd": "yarn workspace xd run build",
-    "test": "cd figma-native && yarn build",
+    "test": "cd figma && yarn build",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },

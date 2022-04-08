@@ -7305,9 +7305,9 @@ figgy-pudding@^3.5.1:
   integrity sha512-0btnI/H8f2pavGMN8w40mlSKOfTK2SVJmBfBeVIj3kNw0swwgzyRq0d5TJVOwodFmtvpPeWPN/MCcfuWF0Ezbw==
 
 figma-js@^1.13.0:
-  version "1.14.0"
-  resolved "https://registry.yarnpkg.com/figma-js/-/figma-js-1.14.0.tgz#f427a8585d3fbe48f915e19c7eb25f964d1dc04e"
-  integrity sha512-XqUmDmGj8tJkjNEuSoKWke0dzbRedya0jc0Ob3lr/g0pLeQI5TtMmz5zpsFLw4KRRtbDD5V/J2MRJhm9nvRS+A==
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/figma-js/-/figma-js-1.15.0.tgz#0acd77fc54e66719e3c6c8166db54f5408e9224f"
+  integrity sha512-j9Yu+Kt2W8Age6pSkT3MFLi/RkByb398PhhhSglbSfce7jOP7XK9X/xjCconxXqvC3vT7I/dAa+E+M5PVwyvXg==
   dependencies:
     axios "^0.21.1"
 
