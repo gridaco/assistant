@@ -28,6 +28,12 @@
 - [Flutter] Poligon Node support with XImage (svg)
 - [Lint] Primal naming & grouping linting for better code export quality. this is tracked sperately on [lint](https://github.com/bridgedxyz/lint)
 
+## [2022.4.0.1] - 2022-04-08
+
+- D2C: CSS Duplication reduction
+- UI: Prettier & Dart formatter added
+- Preview: React executable live scripting feature added
+
 ## [2022.3.4] - 2022-03-30
 
 - fix incomplete autolayout flex mapping

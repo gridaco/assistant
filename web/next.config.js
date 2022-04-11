@@ -12,6 +12,7 @@ const withTM = require("next-transpile-modules")([
 
   // @app
   "app",
+  "@app/utils",
   "@app/design-to-code",
   "@app/live",
   "@app/auth",
@@ -62,6 +63,13 @@ const withTM = require("next-transpile-modules")([
 
   "@code-features/assets",
   "@code-features/flags",
+  // -----------------------------
+
+  // -----------------------------
+  // region editor-packages
+  "@code-editor/esbuild-services",
+  "@code-editor/prettier-services",
+  "@code-editor/webworker-services-core",
   // -----------------------------
 
   // -----------------------------

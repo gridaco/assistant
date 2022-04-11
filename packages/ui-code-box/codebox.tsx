@@ -11,6 +11,7 @@ export function CodeBox({
   code,
   codeActions,
   disabled,
+  onChange,
 }: {
   language: "dart" | "jsx" | "tsx" | "ts" | "js" | string;
   editor?: "monaco" | "prism";
@@ -21,12 +22,19 @@ export function CodeBox({
   code: SourceInput;
   codeActions?: Array<JSX.Element>;
   disabled?: true;
+} & {
+  onChange?: (code: string) => void;
 }) {
   const raw = (code && (typeof code == "string" ? code : code.raw)) || "";
 
   const Editor =
     editor == "monaco" ? (
-      <MonacoEditor key={language} src={raw} language={language} />
+      <MonacoEditor
+        key={language}
+        src={raw}
+        language={language}
+        onChange={onChange}
+      />
     ) : (
       <PrismView src={raw} language={language} />
     );

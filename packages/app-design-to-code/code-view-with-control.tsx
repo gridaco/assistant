@@ -23,6 +23,7 @@ export function CodeViewWithControl({
   targetid,
   editor = "monaco",
   onUserOptionsChange,
+  onCodeChange,
   disabled,
   onGeneration,
   onAssetsLoad,
@@ -32,12 +33,14 @@ export function CodeViewWithControl({
 }: {
   targetid: string;
   editor?: "monaco" | "prism";
+  onCodeChange?: (code: string) => void;
   onUserOptionsChange?: (options: DesigntoCodeUserOptions) => void;
-  onGeneration?: (
-    app: string,
-    src: string,
-    vanilla_preview_source?: string
-  ) => void;
+  onGeneration?: (d: {
+    name: string;
+    app: string;
+    src: string;
+    vanilla_preview_source?: string;
+  }) => void;
   onAssetsLoad?: (r: repo_assets.TransportableImageRepository) => void;
   customMessages?: string[];
   automaticRemoteFormatting?: boolean;
@@ -103,17 +106,19 @@ export function CodeViewWithControl({
     setUseroption(op);
   };
 
-  const __onGeneration__cb = (app, src, vanilla_preview_source) => {
+  const __onGeneration__cb = (name, app, src, vanilla_preview_source) => {
     cacheStore.setCache(src);
     const _source = typeof src == "string" ? src : src?.raw;
-    onGeneration?.(app, _source, vanilla_preview_source);
+    onGeneration?.({ name, app, src: _source, vanilla_preview_source });
   };
 
   const handleSourceInput = ({
+    name,
     app,
     code,
     vanilla_preview_source,
   }: {
+    name: string;
     app: string;
     code: SourceInput;
     vanilla_preview_source?: string;
@@ -122,7 +127,7 @@ export function CodeViewWithControl({
       app,
       useroption.language,
       (s) => {
-        __onGeneration__cb(s, source, vanilla_preview_source);
+        __onGeneration__cb(name, s, source, vanilla_preview_source);
       },
       {
         disable_remote_format: !automaticRemoteFormatting,
@@ -136,7 +141,7 @@ export function CodeViewWithControl({
       useroption.language,
       (s) => {
         setSource(s);
-        __onGeneration__cb(app, s, vanilla_preview_source);
+        __onGeneration__cb(name, app, s, vanilla_preview_source);
       },
       {
         disable_remote_format: !automaticRemoteFormatting,
@@ -150,6 +155,7 @@ export function CodeViewWithControl({
       switch (msg.type) {
         case EK_GENERATED_CODE_PLAIN:
           handleSourceInput({
+            name: msg.data.name,
             app: msg.data.app,
             code: msg.data.code,
             vanilla_preview_source: msg.data.vanilla_preview_source,
@@ -188,6 +194,7 @@ export function CodeViewWithControl({
       <CodeBox
         disabled={disabled}
         editor={editor}
+        onChange={onCodeChange}
         language={_src_view_language(useroption.framework)}
         code={source}
       />

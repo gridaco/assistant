@@ -1,23 +1,7 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-interface PreviewEmptyProps {
-  type: "static" | "responsive";
-}
-
-export function handle_wrap_bg_color(type: string, hasBg: boolean): string {
-  if (!hasBg) {
-    return "transparent";
-  }
-  switch (type) {
-    case "static":
-      return "#F1F1F1";
-    case "responsive":
-      return "#fff";
-  }
-}
-
-export function PreviewEmpty(props: PreviewEmptyProps) {
+export function PreviewEmpty() {
   return (
     <RootWrapperPreviewStaticEmpty>
       <InnerWrap>
@@ -25,9 +9,7 @@ export function PreviewEmpty(props: PreviewEmptyProps) {
           src={"/assets/images/empty-state-icon.png"}
           alt="image of empty state icon"
         ></ArtworkEmptystateRectAndCursorArtwork>
-        <Notice>
-          {props.type === "static" ? "Nothing is selected" : "No Selection"}
-        </Notice>
+        <Notice>Nothing is selected</Notice>
       </InnerWrap>
     </RootWrapperPreviewStaticEmpty>
   );

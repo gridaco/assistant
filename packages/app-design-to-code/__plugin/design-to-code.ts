@@ -11,6 +11,7 @@ import {
   react_presets,
   flutter_presets,
   vanilla_presets,
+  preview_presets,
 } from "@grida/builder-config-preset";
 
 type O = output.ComponentOutput;
@@ -135,7 +136,7 @@ export async function designToFixedPreviewVanilla(
       id: reflectDesign.id,
       entry: reflectDesign,
     },
-    framework: vanilla_presets.vanilla_default,
+    framework: preview_presets.default,
     build_config: build_config,
     asset_config: {
       // the asset replacement on assistant is handled on ui thread.
