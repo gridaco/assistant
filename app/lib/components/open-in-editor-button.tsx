@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styled from "@emotion/styled";
-import { BlueButtonStyle } from "@ui/core/button-style";
+
 import { PluginSdk } from "@plugin-sdk/app";
 import type { IReflectNodeReference } from "@design-sdk/figma-node";
 import { isAuthenticated } from "@assistant-fp/auth";
@@ -19,6 +18,7 @@ export function OpenInEditorButton(props: {
   scene?: IReflectNodeReference;
   framework?: string;
   app?: any;
+  button: TOpenButton;
 }) {
   const history = useHistory();
   const [filekey, setFilekey] = useState<string>(null);
@@ -83,12 +83,18 @@ export function OpenInEditorButton(props: {
           }}
         />
       </Dialog>
-      <OpenButton disabled={props.disabled} onClick={onNextClick}>
-        Open
-      </OpenButton>
+      {React.cloneElement(props.button, {
+        disabled: props.disabled,
+        onClick: onNextClick,
+      })}
     </>
   );
 }
+
+type TOpenButton = React.ReactElement<{
+  disabled?: boolean;
+  onClick: () => void;
+}>;
 
 function buildOpenUrlForEditor({
   filekey,
@@ -105,8 +111,3 @@ function buildOpenUrlForEditor({
   // &mode=isolate
   return `https://code.grida.co/files/${filekey}?node=${id}&framework=${framework}&mode=isolate`;
 }
-
-const OpenButton = styled.button`
-  ${BlueButtonStyle}
-  min-width: 60%;
-`;
