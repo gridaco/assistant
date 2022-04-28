@@ -76,6 +76,7 @@ export function LinkInput({
   return (
     <>
       <Input
+        autoFocus
         disabled={valid}
         onFocus={handleFocus}
         onPaste={onPaste}
@@ -90,7 +91,7 @@ export function LinkInput({
 const Input = styled.input`
   height: 52px;
   outline: none;
-  border: none;
+  border: 1px solid rgba(0, 0, 0, 0.1);
   padding: 0 16px;
   overflow: hidden;
   background-color: rgba(255, 255, 255, 1);
@@ -104,6 +105,10 @@ const Input = styled.input`
   text-align: left;
   &::placeholder {
     color: rgba(232, 232, 232, 1);
+  }
+
+  &:focus {
+    border: 1px solid rgba(0, 0, 0, 0.2);
   }
 
   &:disabled {
