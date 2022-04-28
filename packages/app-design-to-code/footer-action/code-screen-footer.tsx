@@ -7,7 +7,7 @@ import { preview } from "@app/scene-view";
 // import { Legacy__NextUploadButton } from "./legacy-next-upload-button";
 import type { ReflectSceneNode } from "@design-sdk/figma-node";
 import { Framework } from "@grida/builder-platform-types";
-import { OpenInEditorButton } from "app/lib/components/open-in-editor-button";
+import { OpenInEditorButton } from "app/lib/components";
 import { BlueButtonStyle } from "@ui/core/button-style";
 interface ICodeScreenFooter {
   framework: Framework;

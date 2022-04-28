@@ -8,12 +8,11 @@ import {
 } from "@core/constant";
 import { vanilla_presets } from "@app/design-to-code/framework-option";
 import { fromApp } from "@app/design-to-code/__plugin/events";
-import styled from "@emotion/styled";
 import Dialog from "@material-ui/core/Dialog";
-import { UploadSteps } from "@ui/flow-steps";
-import { BlackButtonStyle } from "@ui/core/button-style";
 import { FullscreenAppbarActionButton } from "./components";
 import { FullsreenAppbar } from "./components/fullscreen-appbar";
+import { OpenInEditorButton } from "app/lib/components";
+
 const vanilla_config = vanilla_presets.vanilla_default;
 
 function usePreview() {
@@ -121,13 +120,14 @@ export function PreviewScreen() {
               }}
               actions={
                 <>
-                  <FullscreenAppbarActionButton
-                    onClick={() => {
-                      // TODO:
-                    }}
-                  >
-                    Open in browser
-                  </FullscreenAppbarActionButton>
+                  <OpenInEditorButton
+                    scene={{ id }}
+                    button={
+                      <FullscreenAppbarActionButton>
+                        Open in Grida
+                      </FullscreenAppbarActionButton>
+                    }
+                  />
                 </>
               }
             />
@@ -140,49 +140,3 @@ export function PreviewScreen() {
     </>
   );
 }
-
-function OpenInBrowserSteps() {
-  return (
-    <UploadSteps
-      onComplete={{
-        title: "Your page is ready",
-        description: "Note: anyone with the link can access the page.",
-        actions: (
-          <FooterActionsWrapper>
-            <OpenButton>Open</OpenButton>
-            <CopyLinkButton>Copy link</CopyLinkButton>
-          </FooterActionsWrapper>
-        ),
-      }}
-    />
-  );
-}
-
-const FooterActionsWrapper = styled.div`
-  position: fixed;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin: 0 16px;
-  bottom: 16px;
-  right: 0;
-  left: 0;
-`;
-
-const OpenButton = styled.button`
-  ${BlackButtonStyle}
-  width: 100%;
-`;
-
-const CopyLinkButton = styled.button`
-  cursor: pointer;
-  outline: none;
-  border: none;
-  background: none;
-  color: rgb(193, 193, 193);
-  text-overflow: ellipsis;
-  font-size: 16px;
-  font-family: "Helvetica Neue", sans-serif;
-  font-weight: 400;
-  text-align: center;
-`;
