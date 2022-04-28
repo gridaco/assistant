@@ -53,7 +53,6 @@ import {
 } from "../components/navigation";
 import styled from "@emotion/styled";
 import { Column, Row } from "@ui/core";
-import { UploadSteps } from "../components/upload-steps";
 
 function Screen(props: { screen: WorkScreen }) {
   switch (props.screen) {
@@ -93,8 +92,6 @@ function Screen(props: { screen: WorkScreen }) {
       return <DataMapperScreen />;
     case WorkScreen.tool_code_syntax_highlighter:
       return <DesignTextCdoeSyntaxHighligherScreen />;
-    case WorkScreen.scene_upload_steps_final:
-      return <UploadSteps />;
     case WorkScreen.signin:
       return <SigninScreen />;
     default:
