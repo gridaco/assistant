@@ -8,12 +8,16 @@ import {
 } from "@core/constant";
 import { vanilla_presets } from "@app/design-to-code/framework-option";
 import { fromApp } from "@app/design-to-code/__plugin/events";
-
+import styled from "@emotion/styled";
+import Dialog from "@material-ui/core/Dialog";
+import { UploadSteps } from "@ui/flow-steps";
+import { BlackButtonStyle } from "@ui/core/button-style";
+import { FullscreenAppbarActionButton } from "./components";
+import { FullsreenAppbar } from "./components/fullscreen-appbar";
 const vanilla_config = vanilla_presets.vanilla_default;
 
-export function PreviewScreen() {
+function usePreview() {
   const selection = useSingleSelection();
-
   const [source, setSource] = useState<string>();
 
   const handle_vanilla_preview_source = (
@@ -72,19 +76,113 @@ export function PreviewScreen() {
     [selection?.id]
   );
 
-  return (
+  return {
+    source,
+    width: selection?.node?.width,
+    height: selection?.node?.height,
+    id: selection?.id,
+  };
+}
+
+export function PreviewScreen() {
+  const { source, id, width, height } = usePreview();
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  useEffect(() => {
+    if (source) {
+      setIsFullscreen(true);
+    }
+  }, [source]);
+
+  const preview = (
     <Preview
       key={source}
       // auto
       type="responsive"
       data={source}
-      id={selection?.id}
+      id={id}
       origin_size={{
-        width: selection?.node?.width,
-        height: selection?.node?.height,
+        width: width,
+        height: height,
       }}
       isAutoSizable={true}
       height={300} //FIXME:
     />
   );
+
+  return (
+    <>
+      {isFullscreen ? (
+        <Dialog open={source !== undefined} fullScreen>
+          <div>
+            <FullsreenAppbar
+              onBack={() => {
+                setIsFullscreen(false);
+              }}
+              actions={
+                <>
+                  <FullscreenAppbarActionButton
+                    onClick={() => {
+                      // TODO:
+                    }}
+                  >
+                    Open in browser
+                  </FullscreenAppbarActionButton>
+                </>
+              }
+            />
+            {preview}
+          </div>
+        </Dialog>
+      ) : (
+        <>{preview}</>
+      )}
+    </>
+  );
 }
+
+function OpenInBrowserSteps() {
+  return (
+    <UploadSteps
+      onComplete={{
+        title: "Your page is ready",
+        description: "Note: anyone with the link can access the page.",
+        actions: (
+          <FooterActionsWrapper>
+            <OpenButton>Open</OpenButton>
+            <CopyLinkButton>Copy link</CopyLinkButton>
+          </FooterActionsWrapper>
+        ),
+      }}
+    />
+  );
+}
+
+const FooterActionsWrapper = styled.div`
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0 16px;
+  bottom: 16px;
+  right: 0;
+  left: 0;
+`;
+
+const OpenButton = styled.button`
+  ${BlackButtonStyle}
+  width: 100%;
+`;
+
+const CopyLinkButton = styled.button`
+  cursor: pointer;
+  outline: none;
+  border: none;
+  background: none;
+  color: rgb(193, 193, 193);
+  text-overflow: ellipsis;
+  font-size: 16px;
+  font-family: "Helvetica Neue", sans-serif;
+  font-weight: 400;
+  text-align: center;
+`;

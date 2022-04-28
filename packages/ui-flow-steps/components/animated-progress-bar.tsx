@@ -4,37 +4,40 @@ import styled from "@emotion/styled";
 import { AnimatePresence, motion } from "framer-motion";
 
 interface IProgressBar {
-  contorl?: () => void;
+  initial?: number;
+  height?: React.CSSProperties["height"];
+  onAnimationComplete?: () => void;
 }
 
-export function AnimatedProgressBar(props: IProgressBar) {
+export function AnimatedProgressBar({
+  initial = 10,
+  height = 4,
+  onAnimationComplete,
+}: IProgressBar) {
   return (
-    <Background>
+    <Base>
       <AnimatePresence>
         <Bar
-          initial={{ width: "0" }}
+          style={{
+            height,
+          }}
+          initial={{ width: `${initial}%` }}
           animate={{ width: "100%" }}
           transition={{
             ease: "easeOut",
-            duration: 10,
-            delay: 2,
+            duration: 5,
           }}
-          onAnimationComplete={props.contorl}
+          onAnimationComplete={onAnimationComplete}
         />
       </AnimatePresence>
-    </Background>
+    </Base>
   );
 }
 
-const Background = styled.div`
+const Base = styled.div`
   background: #f5f5f5;
-
-  // for reset body and parent padding
-  margin-left: -20px;
-  margin-right: -20px;
 `;
 
 const Bar = styled(motion.div)`
-  height: 8px;
-  background: #6cd470;
+  background: #2562ff;
 `;

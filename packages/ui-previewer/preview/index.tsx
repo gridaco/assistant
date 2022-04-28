@@ -17,9 +17,9 @@ interface PreviewProps {
   name?: string;
   /**
    * the background color
-   * @deprecated not implemented
+   * @default "transparent"
    */
-  background?: string;
+  background?: React.CSSProperties["background"];
   /**
    * when used as a child of a resizable component.
    * if not, set default height in preview 200px
@@ -62,6 +62,7 @@ export function Preview(props: Props) {
       padding={previewWrapPadding}
       isAutoSizable={props.isAutoSizable}
       initialPreviewHeight={initialPreviewHeight}
+      background={props.background ?? "transparent"}
       // bgColor={handle_wrap_bg_color(props.type, !(!!props.data || props.auto))}
     >
       <>
@@ -133,6 +134,7 @@ const PreviewWrap = styled.div<{
   padding: number;
   initialPreviewHeight: number;
   isAutoSizable: boolean;
+  background: React.CSSProperties["background"];
 }>`
   padding: ${(props) => `${props.padding}px`};
   height: ${(props) =>
@@ -140,6 +142,7 @@ const PreviewWrap = styled.div<{
       ? `calc(100% - ${props.padding * 2}px)`
       : `calc(${props.initialPreviewHeight}px - ${props.padding * 2}px)`};
 
+  background: ${(props) => props.background};
   overflow-y: auto;
   overflow-x: hidden;
 `;

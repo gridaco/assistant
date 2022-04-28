@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import {
-  BlackButtonStyle,
-  TransparentButtonStyle,
-} from "@ui/core/button-style";
-import { Button } from "@material-ui/core";
 import { motion } from "framer-motion";
 import { Preview } from "@ui/previewer";
 import CheckIcon from "@assistant/icons/check";
@@ -14,9 +9,8 @@ const steps = [
   "converting design to universal format",
   "analyzing the layout",
   "detecting components",
-  "checking existing components",
-  "making builds (flutter, react, ..)",
   "running tests",
+  "packaging",
 ];
 
 const _motion_field_variants = {
@@ -32,7 +26,16 @@ const _motion_item_variants = {
   },
 };
 
-export function UploadSteps() {
+export function UploadSteps({
+  onComplete,
+}: {
+  onComplete: {
+    callback?: () => void;
+    title: string;
+    description: string;
+    actions?: React.ReactNode;
+  };
+}) {
   const [isLoading, setIsLoading] = useState(true);
 
   function animateHandle() {
@@ -42,7 +45,7 @@ export function UploadSteps() {
   return (
     <>
       <Preview type="static" auto />
-      {isLoading && <AnimatedProgressBar contorl={animateHandle} />}
+      {isLoading && <AnimatedProgressBar onAnimationComplete={animateHandle} />}
       <InnerWrapper variants={_motion_field_variants} animate="make-active">
         {isLoading ? (
           <Loading>
@@ -78,17 +81,10 @@ export function UploadSteps() {
                 <IconBox>
                   <CheckIcon />
                 </IconBox>
-
-                <Title>Your design is ready</Title>
+                <Title>{onComplete.title}</Title>
               </Field>
-              <Item>
-                You can start using this component in your existing project
-                immideitly.
-              </Item>
-              <FooterButtonWrapper>
-                <CheckButton>Check it out</CheckButton>
-                <UncheckButton>do it later</UncheckButton>
-              </FooterButtonWrapper>
+              <Item>{onComplete.description}</Item>
+              <FooterButtonWrapper>{onComplete.actions}</FooterButtonWrapper>
             </Finished>
           </>
         )}
@@ -102,13 +98,9 @@ const InnerWrapper = styled(motion.div)`
   padding-top: 72px;
 `;
 
-const Loading = styled.div`
-  /* display: none; */
-`;
+const Loading = styled.div``;
 
-const Finished = styled.div`
-  /* display: none; */
-`;
+const Finished = styled.div``;
 
 const Title = styled.h1`
   font-style: normal;
@@ -135,7 +127,8 @@ const Icon = styled(AnimatedCheckIcon)`
   margin-right: 9px;
 `;
 
-const Item = styled(motion.h5)`
+const Item = styled(motion.span)`
+  color: #8b8b8b;
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
@@ -152,18 +145,6 @@ const FooterButtonWrapper = styled.div`
 `;
 
 const IconBox = styled.div`
-  fill: #6cd470;
+  fill: #2562ff;
   margin-right: 9px;
-`;
-
-const CheckButton = styled(Button)`
-  ${BlackButtonStyle};
-  width: 100%;
-`;
-
-const UncheckButton = styled(Button)`
-  ${TransparentButtonStyle}
-  width: 100%;
-  cursor: pointer;
-  text-transform: initial;
 `;

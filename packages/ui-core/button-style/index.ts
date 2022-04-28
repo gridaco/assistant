@@ -25,7 +25,11 @@ export const BlackButtonStyle = css`
   // for reset material-ui button style
   &:hover {
     color: #fff;
-    background: #17181a;
+    opacity: 0.9;
+  }
+
+  &:active {
+    opacity: 1;
   }
 
   &:disabled {
