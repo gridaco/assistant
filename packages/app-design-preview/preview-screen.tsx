@@ -8,12 +8,15 @@ import {
 } from "@core/constant";
 import { vanilla_presets } from "@app/design-to-code/framework-option";
 import { fromApp } from "@app/design-to-code/__plugin/events";
+import Dialog from "@material-ui/core/Dialog";
+import { FullscreenAppbarActionButton } from "./components";
+import { FullsreenAppbar } from "./components/fullscreen-appbar";
+import { OpenInEditorButton } from "app/lib/components";
 
 const vanilla_config = vanilla_presets.vanilla_default;
 
-export function PreviewScreen() {
+function usePreview() {
   const selection = useSingleSelection();
-
   const [source, setSource] = useState<string>();
 
   const handle_vanilla_preview_source = (
@@ -72,19 +75,68 @@ export function PreviewScreen() {
     [selection?.id]
   );
 
-  return (
+  return {
+    source,
+    width: selection?.node?.width,
+    height: selection?.node?.height,
+    id: selection?.id,
+  };
+}
+
+export function PreviewScreen() {
+  const { source, id, width, height } = usePreview();
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  useEffect(() => {
+    if (source) {
+      setIsFullscreen(true);
+    }
+  }, [source]);
+
+  const preview = (
     <Preview
       key={source}
       // auto
       type="responsive"
       data={source}
-      id={selection?.id}
+      id={id}
       origin_size={{
-        width: selection?.node?.width,
-        height: selection?.node?.height,
+        width: width,
+        height: height,
       }}
       isAutoSizable={true}
       height={300} //FIXME:
     />
+  );
+
+  return (
+    <>
+      {isFullscreen ? (
+        <Dialog open={source !== undefined} fullScreen>
+          <div>
+            <FullsreenAppbar
+              onBack={() => {
+                setIsFullscreen(false);
+              }}
+              actions={
+                <>
+                  <OpenInEditorButton
+                    scene={{ id }}
+                    button={
+                      <FullscreenAppbarActionButton>
+                        Open in Grida
+                      </FullscreenAppbarActionButton>
+                    }
+                  />
+                </>
+              }
+            />
+            {preview}
+          </div>
+        </Dialog>
+      ) : (
+        <>{preview}</>
+      )}
+    </>
   );
 }

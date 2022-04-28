@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
-import styled from "@emotion/styled";
-import { BlueButtonStyle } from "@ui/core/button-style";
+
 import { PluginSdk } from "@plugin-sdk/app";
-import type { IReflectNodeReference } from "@design-sdk/figma-node";
 import { isAuthenticated } from "@assistant-fp/auth";
 import { useHistory } from "react-router-dom";
 import { Dialog } from "@material-ui/core";
@@ -16,9 +14,10 @@ import {
  */
 export function OpenInEditorButton(props: {
   disabled?: boolean;
-  scene?: IReflectNodeReference;
+  scene?: { id: string };
   framework?: string;
   app?: any;
+  button: TOpenButton;
 }) {
   const history = useHistory();
   const [filekey, setFilekey] = useState<string>(null);
@@ -50,8 +49,8 @@ export function OpenInEditorButton(props: {
     open(
       buildOpenUrlForEditor({
         filekey: filekey,
-        id: props.scene.id,
-        framework: props.framework,
+        id: props?.scene?.id,
+        framework: props?.framework,
       })
     );
     // ..
@@ -83,12 +82,18 @@ export function OpenInEditorButton(props: {
           }}
         />
       </Dialog>
-      <OpenButton disabled={props.disabled} onClick={onNextClick}>
-        Open
-      </OpenButton>
+      {React.cloneElement(props.button, {
+        disabled: props.disabled,
+        onClick: onNextClick,
+      })}
     </>
   );
 }
+
+type TOpenButton = React.ReactElement<{
+  disabled?: boolean;
+  onClick: () => void;
+}>;
 
 function buildOpenUrlForEditor({
   filekey,
@@ -96,17 +101,34 @@ function buildOpenUrlForEditor({
   framework,
 }: {
   filekey: string;
-  id: string;
-  framework: string;
+  id?: string;
+  framework?: string;
 }) {
   // local: http://localhost:6626/files/~
   // staging: https://staging-branch-code.grida.co/files/~
   // production: https://code.grida.co/files/~
   // &mode=isolate
-  return `https://code.grida.co/files/${filekey}?node=${id}&framework=${framework}&mode=isolate`;
-}
 
-const OpenButton = styled.button`
-  ${BlueButtonStyle}
-  min-width: 60%;
-`;
+  // query params - do not provide optional query param if not provided.
+  // - filekey (path)
+  // - node (optional)
+  // - framework (optional)
+  // - mode (optional)
+
+  const queryParams = {};
+
+  if (id) {
+    queryParams["node"] = id;
+    queryParams["mode"] = "isolate";
+  }
+
+  if (framework) {
+    queryParams["framework"] = framework;
+  }
+
+  const queryString = Object.keys(queryParams)
+    .map((key) => `${key}=${queryParams[key]}`)
+    .join("&");
+
+  return `https://code.grida.co/files/${filekey}?${queryString}`;
+}

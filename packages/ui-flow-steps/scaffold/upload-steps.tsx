@@ -1,39 +1,41 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
-import {
-  BlackButtonStyle,
-  TransparentButtonStyle,
-} from "@ui/core/button-style";
-import { Button } from "@material-ui/core";
-import { AnimatedProgressBar } from "./animated/animated-progress-bar";
-import { AnimatedCheckIcon } from "./animated/animated-check-icon";
 import { motion } from "framer-motion";
 import { Preview } from "@ui/previewer";
 import CheckIcon from "@assistant/icons/check";
+import { AnimatedProgressBar, AnimatedCheckIcon } from "../components";
 
-const step = [
+const steps = [
   "converting design to universal format",
   "analyzing the layout",
   "detecting components",
-  "checking existing components",
-  "making builds (flutter, react, ..)",
   "running tests",
+  "packaging",
 ];
 
-const fieldVariants = {
+const _motion_field_variants = {
   "make-active": {
     transition: { staggerChildren: 0.8, delayChildren: 1 },
   },
 };
 
-const itemVariants = {
+const _motion_item_variants = {
   "make-active": {
     color: "#8B8B8B",
     transition: { ease: "easeIn", duration: 0.2 },
   },
 };
 
-export function UploadSteps() {
+export function UploadSteps({
+  onComplete,
+}: {
+  onComplete: {
+    callback?: () => void;
+    title: string;
+    description: string;
+    actions?: React.ReactNode;
+  };
+}) {
   const [isLoading, setIsLoading] = useState(true);
 
   function animateHandle() {
@@ -43,8 +45,8 @@ export function UploadSteps() {
   return (
     <>
       <Preview type="static" auto />
-      {isLoading && <AnimatedProgressBar contorl={animateHandle} />}
-      <InnerWrapper variants={fieldVariants} animate="make-active">
+      {isLoading && <AnimatedProgressBar onAnimationComplete={animateHandle} />}
+      <InnerWrapper variants={_motion_field_variants} animate="make-active">
         {isLoading ? (
           <Loading>
             <Title>
@@ -52,11 +54,20 @@ export function UploadSteps() {
               <br />
               “button”
             </Title>
-            <StepsWrapper variants={fieldVariants} animate="make-active">
-              {step.map((item, i) => (
-                <Field key={`Upload-Step-${item}-${i}`} variants={itemVariants}>
+            <StepsWrapper
+              variants={_motion_field_variants}
+              animate="make-active"
+            >
+              {steps.map((item, i) => (
+                <Field
+                  key={`Upload-Step-${item}-${i}`}
+                  variants={_motion_item_variants}
+                >
                   <Icon />
-                  <Item variants={itemVariants} initial={{ color: "#C1C1C1" }}>
+                  <Item
+                    variants={_motion_item_variants}
+                    initial={{ color: "#C1C1C1" }}
+                  >
                     {item}
                   </Item>
                 </Field>
@@ -65,23 +76,16 @@ export function UploadSteps() {
           </Loading>
         ) : (
           <>
-            <Finish>
+            <Finished>
               <Field>
                 <IconBox>
                   <CheckIcon />
                 </IconBox>
-
-                <Title>Your design is ready</Title>
+                <Title>{onComplete.title}</Title>
               </Field>
-              <Item>
-                You can start using this component in your existing project
-                immideitly.
-              </Item>
-              <FooterButtonWrapper>
-                <CheckButton>Check it out</CheckButton>
-                <UncheckButton>do it later</UncheckButton>
-              </FooterButtonWrapper>
-            </Finish>
+              <Item>{onComplete.description}</Item>
+              <FooterButtonWrapper>{onComplete.actions}</FooterButtonWrapper>
+            </Finished>
           </>
         )}
       </InnerWrapper>
@@ -92,18 +96,11 @@ export function UploadSteps() {
 const InnerWrapper = styled(motion.div)`
   padding: 12px;
   padding-top: 72px;
-
-  // TODO: contorl stateus!
-  /* display: none; */
 `;
 
-const Loading = styled.div`
-  /* display: none; */
-`;
+const Loading = styled.div``;
 
-const Finish = styled.div`
-  /* display: none; */
-`;
+const Finished = styled.div``;
 
 const Title = styled.h1`
   font-style: normal;
@@ -130,7 +127,8 @@ const Icon = styled(AnimatedCheckIcon)`
   margin-right: 9px;
 `;
 
-const Item = styled(motion.h5)`
+const Item = styled(motion.span)`
+  color: #8b8b8b;
   font-style: normal;
   font-weight: normal;
   font-size: 16px;
@@ -145,18 +143,8 @@ const FooterButtonWrapper = styled.div`
   bottom: 16px;
   width: calc(100% - 40px);
 `;
-const IconBox = styled.div`
-  fill: #6cd470;
-  margin-right: 9px;
-`;
 
-const CheckButton = styled(Button)`
-  ${BlackButtonStyle};
-  width: 100%;
-`;
-const UncheckButton = styled(Button)`
-  ${TransparentButtonStyle}
-  width: 100%;
-  cursor: pointer;
-  text-transform: initial;
+const IconBox = styled.div`
+  fill: #2562ff;
+  margin-right: 9px;
 `;

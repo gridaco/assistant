@@ -119,12 +119,6 @@ const page_toolbox_code_syntax_highlight: PageConfig = {
   path: "/toolbox/code-syntax-highlight",
 };
 
-const page_scene_upload_steps_final: PageConfig = {
-  id: WorkScreen.scene_upload_steps_final,
-  title: "Review your scene", // not used
-  path: "/code/uploadsteps/final-upload",
-};
-
 const page_signup: PageConfig = {
   id: WorkScreen.signin,
   title: "Signin",
@@ -148,7 +142,6 @@ const all_pages: PageConfig[] = [
   // standalones
   page_signup,
   page_about,
-  page_scene_upload_steps_final,
   // tools
   page_toolbox_home,
   page_toolbox_data_mapper,
@@ -163,7 +156,6 @@ const all_pages: PageConfig[] = [
 export const standalone_pages: PageConfig[] = [
   page_signup,
   page_about,
-  page_scene_upload_steps_final,
   // tools
   page_toolbox_home,
   page_toolbox_data_mapper,

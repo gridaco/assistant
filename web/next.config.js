@@ -7,6 +7,7 @@ const withTM = require("next-transpile-modules")([
   "@ui/core",
   "@ui/previewer",
   "@ui/codebox",
+  "@ui/flow-steps",
   "@assistant/icons",
   "@assistant/lint-icons",
 

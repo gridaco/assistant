@@ -8,7 +8,7 @@ const variants = {
   "make-active": {
     opacity: 1,
     scale: 1.05,
-    fill: "#6CD470",
+    fill: "#2562FF",
     transition: { ease: "easeOut", duration: 0.2 },
   },
 };

@@ -7,8 +7,8 @@ import { preview } from "@app/scene-view";
 // import { Legacy__NextUploadButton } from "./legacy-next-upload-button";
 import type { ReflectSceneNode } from "@design-sdk/figma-node";
 import { Framework } from "@grida/builder-platform-types";
-import { OpenInEditorButton } from "./open-in-editor-button";
-
+import { OpenInEditorButton } from "app/lib/components";
+import { BlueButtonStyle } from "@ui/core/button-style";
 interface ICodeScreenFooter {
   framework: Framework;
   app?: any;
@@ -47,7 +47,11 @@ export function CodeScreenFooter(props: ICodeScreenFooter) {
     <CodeFooterCtaWrapper>
       {
         <InnerWrapper>
-          <OpenInEditorButton disabled={!_can_open_in_editor} {...props} />
+          <OpenInEditorButton
+            button={<OpenButton>Open</OpenButton>}
+            disabled={!_can_open_in_editor}
+            {...props}
+          />
           {/* <Legacy__NextUploadButton disabled={!_can_enable_next} {...props} /> */}
           {_can_show_preview && (
             <PreviewButton
@@ -86,4 +90,9 @@ const PreviewButton = styled.button`
   ${WhiteTextButtonStyle}
   /* temp before add button component */
   width: 36%;
+`;
+
+const OpenButton = styled.button`
+  ${BlueButtonStyle}
+  min-width: 60%;
 `;

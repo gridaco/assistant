@@ -45,6 +45,7 @@ export function WorkmodeScreenTabs(props: {
       {layout.map((v, i) => {
         return (
           <StyledTab
+            disableRipple
             key={v.id}
             label={v.name}
             {...a11yProps(i)}
