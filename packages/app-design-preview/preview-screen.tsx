@@ -80,12 +80,15 @@ function usePreview() {
     width: selection?.node?.width,
     height: selection?.node?.height,
     id: selection?.id,
+    isRoot: selection?.node && selection.node.parent.origin === "PAGE",
+    type: selection?.node?.type,
   };
 }
 
 export function PreviewScreen() {
-  const { source, id, width, height } = usePreview();
+  const { source, id, width, height, isRoot, type } = usePreview();
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const _is_publishable_frame = isRoot && type === "FRAME";
 
   useEffect(() => {
     if (source) {
@@ -128,6 +131,19 @@ export function PreviewScreen() {
                       </FullscreenAppbarActionButton>
                     }
                   />
+                  <FullscreenAppbarActionButton
+                    title={
+                      _is_publishable_frame
+                        ? "publish this frame as a website"
+                        : "only root frames can be published"
+                    }
+                    disabled={!_is_publishable_frame}
+                    onClick={() => {
+                      // TODO:
+                    }}
+                  >
+                    Publish
+                  </FullscreenAppbarActionButton>
                 </>
               }
             />

@@ -4,11 +4,19 @@ import styled from "@emotion/styled";
 export function FullscreenAppbarActionButton({
   onClick,
   children,
+  disabled,
+  title,
 }: {
   onClick?: () => void;
   children: React.ReactNode;
+  disabled?: boolean;
+  title?: string;
 }) {
-  return <Button onClick={onClick}>{children}</Button>;
+  return (
+    <Button title={title} onClick={onClick} disabled={disabled}>
+      {children}
+    </Button>
+  );
 }
 
 const Button = styled.button`
