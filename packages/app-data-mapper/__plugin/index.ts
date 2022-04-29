@@ -1,4 +1,4 @@
-import { utils, flags } from "@design-sdk/core";
+import { utils } from "@design-sdk/core";
 import { variant } from "@design-sdk/figma/features";
 import { Figma } from "@design-sdk/figma";
 import { PluginSdk } from "@plugin-sdk/app";
