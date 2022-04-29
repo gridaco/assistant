@@ -29,8 +29,7 @@ export async function publishPage(req: PagePutRequest) {
 
   Object.keys(req.assets).forEach((key) => {
     const asset = req.assets[key];
-    //@ts-ignore
-    form.append("assets", asset, { filename: key });
+    form.append("assets", asset, key);
   });
 
   //@ts-ignore

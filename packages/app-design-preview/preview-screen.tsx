@@ -19,7 +19,8 @@ const vanilla_config = vanilla_presets.vanilla_default;
 
 function usePreview() {
   const selection = useSingleSelection();
-  const [source, setSource] = useState<string>();
+  const [source, setSource] = useState<string>(); // preview source
+  const [raw, setRaw] = useState<string>(); // source without asset replacement
 
   const handle_vanilla_preview_source = (
     v: string,
@@ -30,6 +31,7 @@ function usePreview() {
 
   const handleSourceInput = ({ src }: { src: string }) => {
     handle_vanilla_preview_source(src);
+    setRaw(src);
   };
 
   const onMessage = (ev: MessageEvent) => {
@@ -79,6 +81,7 @@ function usePreview() {
 
   return {
     source,
+    raw,
     width: selection?.node?.width,
     height: selection?.node?.height,
     id: selection?.id,
@@ -88,7 +91,7 @@ function usePreview() {
 }
 
 export function PreviewScreen() {
-  const { source, id, width, height, isRoot, type } = usePreview();
+  const { raw, source, id, width, height, isRoot, type } = usePreview();
   const [isFullscreen, setIsFullscreen] = useState(false);
   const _is_publishable_frame = isRoot && type === "FRAME";
 
@@ -136,7 +139,7 @@ export function PreviewScreen() {
                   <OpenInBrowserButton
                     disabled={!_is_publishable_frame}
                     scene={{
-                      raw: source,
+                      raw: raw,
                       id: id,
                     }}
                   />
