@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from "react";
-
+import React from "react";
 import { PluginSdk } from "@plugin-sdk/app";
 import { isAuthenticated } from "@assistant-fp/auth";
 import { useHistory } from "react-router-dom";
-import { Dialog } from "@material-ui/core";
 import {
-  FigmaFileChecksum,
-  loadFilekey,
-  saveFilekey,
-} from "@platform-dedicated/figma-checksum";
+  ActionAfterFilekeySetButton,
+  TOpenButton,
+} from "./action-after-filekey-set-button";
+
 /**
  * Open in editor button to open the selection on the grida web editor : currently https://code.grida.co/files/:filekey/:id
  */
@@ -20,31 +18,19 @@ export function OpenInEditorButton(props: {
   button: TOpenButton;
 }) {
   const history = useHistory();
-  const [filekey, setFilekey] = useState<string>(null);
-  const [openFilekeysetPrompt, setOpenFilekeysetPrompt] = useState(false);
 
-  useEffect(() => {
-    loadFilekey().then(setFilekey);
-  }, []);
-
-  const isFilekeySet = filekey !== null;
-
-  const onNextClick = async () => {
+  const onBeforeNext = async () => {
     const authenticated = await isAuthenticated();
     if (!authenticated) {
       PluginSdk.notify("Let's Sign in first");
       history.push("/signin");
-      return;
+      return false;
     }
+    return true;
+  };
 
-    if (!isFilekeySet) {
-      PluginSdk.notify("Let's setup the filekey first");
-      setOpenFilekeysetPrompt(true);
-      return;
-    }
-
+  const onNext = (filekey: string) => {
     // if authenticated and the filekey for this file is provided, we can procceed to next step finally. ;)
-
     // ..
     open(
       buildOpenUrlForEditor({
@@ -58,42 +44,14 @@ export function OpenInEditorButton(props: {
 
   return (
     <>
-      <Dialog open={openFilekeysetPrompt} fullScreen>
-        <FigmaFileChecksum
-          mode="only-url-scheme"
-          onVerify={(valid, filekey) => {
-            if (valid) {
-              // save filekey
-              saveFilekey(filekey)
-                .then(() => {
-                  setFilekey(filekey);
-                })
-                .finally(() => {
-                  // close dialog
-                  setOpenFilekeysetPrompt(false);
-                });
-            } else {
-              setOpenFilekeysetPrompt(false);
-            }
-          }}
-          onClose={() => {
-            setOpenFilekeysetPrompt(false);
-            onNextClick();
-          }}
-        />
-      </Dialog>
-      {React.cloneElement(props.button, {
-        disabled: props.disabled,
-        onClick: onNextClick,
-      })}
+      <ActionAfterFilekeySetButton
+        {...props}
+        onNext={onNext}
+        beforeNext={onBeforeNext}
+      />
     </>
   );
 }
-
-type TOpenButton = React.ReactElement<{
-  disabled?: boolean;
-  onClick: () => void;
-}>;
 
 function buildOpenUrlForEditor({
   filekey,

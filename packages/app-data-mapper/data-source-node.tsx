@@ -2,7 +2,7 @@
 /// if node with name pattern "@//data-source/*", it means it contians data for logic representation.
 
 // TOOD - make it universal
-import { flags, Figma } from "@design-sdk/figma";
+import { Figma } from "@design-sdk/figma";
 import type { IReflectNodeReference } from "@design-sdk/figma-node";
 
 /**

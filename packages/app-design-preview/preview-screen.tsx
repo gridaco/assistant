@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Preview, utils } from "@ui/previewer";
 import { repo_assets } from "@design-sdk/core";
 import { useSingleSelection } from "plugin-app";
@@ -12,12 +12,16 @@ import Dialog from "@material-ui/core/Dialog";
 import { FullscreenAppbarActionButton } from "./components";
 import { FullsreenAppbar } from "./components/fullscreen-appbar";
 import { OpenInEditorButton } from "app/lib/components";
+import { publishFigmaFrameAsPage } from "./components/publish";
+import { ActionAfterFilekeySetButton } from "app/lib/components/action-after-filekey-set-button";
+import { PluginSdk } from "@plugin-sdk/app";
 
 const vanilla_config = vanilla_presets.vanilla_default;
 
 function usePreview() {
   const selection = useSingleSelection();
-  const [source, setSource] = useState<string>();
+  const [source, setSource] = useState<string>(); // preview source
+  const [raw, setRaw] = useState<string>(); // source without asset replacement
 
   const handle_vanilla_preview_source = (
     v: string,
@@ -28,6 +32,7 @@ function usePreview() {
 
   const handleSourceInput = ({ src }: { src: string }) => {
     handle_vanilla_preview_source(src);
+    setRaw(src);
   };
 
   const onMessage = (ev: MessageEvent) => {
@@ -77,15 +82,19 @@ function usePreview() {
 
   return {
     source,
+    raw,
     width: selection?.node?.width,
     height: selection?.node?.height,
     id: selection?.id,
+    isRoot: selection?.node && selection.node.parent.origin === "PAGE",
+    type: selection?.node?.type,
   };
 }
 
 export function PreviewScreen() {
-  const { source, id, width, height } = usePreview();
+  const { raw, source, id, width, height, isRoot, type } = usePreview();
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const _is_publishable_frame = isRoot && type === "FRAME";
 
   useEffect(() => {
     if (source) {
@@ -128,6 +137,13 @@ export function PreviewScreen() {
                       </FullscreenAppbarActionButton>
                     }
                   />
+                  <OpenInBrowserButton
+                    disabled={!_is_publishable_frame}
+                    scene={{
+                      raw: raw,
+                      id: id,
+                    }}
+                  />
                 </>
               }
             />
@@ -137,6 +153,50 @@ export function PreviewScreen() {
       ) : (
         <>{preview}</>
       )}
+    </>
+  );
+}
+
+/**
+ * Open in editor button to open the selection on the grida web editor : currently https://code.grida.co/files/:filekey/:id
+ */
+export function OpenInBrowserButton(props: {
+  disabled?: boolean;
+  scene: { id: string; raw: string };
+  framework?: string;
+  app?: any;
+}) {
+  const onNext = (filekey: string) => {
+    PluginSdk.notify("📦 Bundling..", 4);
+    publishFigmaFrameAsPage({
+      filekey,
+      scene: props.scene,
+    })
+      .then((r) => {
+        open(r.page_url);
+      })
+      .finally(() => {
+        PluginSdk.notify("🦈 Page published", 3);
+      });
+  };
+
+  return (
+    <>
+      <ActionAfterFilekeySetButton
+        {...props}
+        onNext={onNext}
+        button={
+          <FullscreenAppbarActionButton
+            title={
+              props.disabled
+                ? "publish this frame as a website"
+                : "only root frames can be published"
+            }
+          >
+            Publish
+          </FullscreenAppbarActionButton>
+        }
+      />
     </>
   );
 }
