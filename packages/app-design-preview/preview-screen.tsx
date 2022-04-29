@@ -14,6 +14,7 @@ import { FullsreenAppbar } from "./components/fullscreen-appbar";
 import { OpenInEditorButton } from "app/lib/components";
 import { publishFigmaFrameAsPage } from "./components/publish";
 import { ActionAfterFilekeySetButton } from "app/lib/components/action-after-filekey-set-button";
+import { PluginSdk } from "@plugin-sdk/app";
 
 const vanilla_config = vanilla_presets.vanilla_default;
 
@@ -166,12 +167,17 @@ export function OpenInBrowserButton(props: {
   app?: any;
 }) {
   const onNext = (filekey: string) => {
+    PluginSdk.notify("📦 Bundling..", 4);
     publishFigmaFrameAsPage({
       filekey,
       scene: props.scene,
-    }).then((r) => {
-      open(r.page_url);
-    });
+    })
+      .then((r) => {
+        open(r.page_url);
+      })
+      .finally(() => {
+        PluginSdk.notify("🦈 Page published", 3);
+      });
   };
 
   return (
