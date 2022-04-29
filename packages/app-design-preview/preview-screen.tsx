@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Preview, utils } from "@ui/previewer";
 import { repo_assets } from "@design-sdk/core";
 import { useSingleSelection } from "plugin-app";
@@ -12,6 +12,8 @@ import Dialog from "@material-ui/core/Dialog";
 import { FullscreenAppbarActionButton } from "./components";
 import { FullsreenAppbar } from "./components/fullscreen-appbar";
 import { OpenInEditorButton } from "app/lib/components";
+import { publishFigmaFrameAsPage } from "./components/publish";
+import { ActionAfterFilekeySetButton } from "app/lib/components/action-after-filekey-set-button";
 
 const vanilla_config = vanilla_presets.vanilla_default;
 
@@ -131,19 +133,13 @@ export function PreviewScreen() {
                       </FullscreenAppbarActionButton>
                     }
                   />
-                  <FullscreenAppbarActionButton
-                    title={
-                      _is_publishable_frame
-                        ? "publish this frame as a website"
-                        : "only root frames can be published"
-                    }
+                  <OpenInBrowserButton
                     disabled={!_is_publishable_frame}
-                    onClick={() => {
-                      // TODO:
+                    scene={{
+                      raw: source,
+                      id: id,
                     }}
-                  >
-                    Publish
-                  </FullscreenAppbarActionButton>
+                  />
                 </>
               }
             />
@@ -153,6 +149,45 @@ export function PreviewScreen() {
       ) : (
         <>{preview}</>
       )}
+    </>
+  );
+}
+
+/**
+ * Open in editor button to open the selection on the grida web editor : currently https://code.grida.co/files/:filekey/:id
+ */
+export function OpenInBrowserButton(props: {
+  disabled?: boolean;
+  scene: { id: string; raw: string };
+  framework?: string;
+  app?: any;
+}) {
+  const onNext = (filekey: string) => {
+    publishFigmaFrameAsPage({
+      filekey,
+      scene: props.scene,
+    }).then((r) => {
+      open(r.page_url);
+    });
+  };
+
+  return (
+    <>
+      <ActionAfterFilekeySetButton
+        {...props}
+        onNext={onNext}
+        button={
+          <FullscreenAppbarActionButton
+            title={
+              props.disabled
+                ? "publish this frame as a website"
+                : "only root frames can be published"
+            }
+          >
+            Publish
+          </FullscreenAppbarActionButton>
+        }
+      />
     </>
   );
 }
