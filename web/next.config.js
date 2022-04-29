@@ -69,6 +69,7 @@ const withTM = require("next-transpile-modules")([
   // -----------------------------
   // region editor-packages
   "@code-editor/esbuild-services",
+  "@code-editor/estypes-resolver",
   "@code-editor/prettier-services",
   "@code-editor/webworker-services-core",
   // -----------------------------
