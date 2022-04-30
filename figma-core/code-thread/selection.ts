@@ -58,7 +58,7 @@ export function onfigmaselectionchange() {
       }
     }
 
-    return convert.intoReflectNode(raw as any, raw.parent as any);
+    return convert.intoReflectNode(raw as any, raw.parent as any, "plugin");
   };
 
   const selectionType = analyzeSelection(rawSelections);

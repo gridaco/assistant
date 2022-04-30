@@ -189,8 +189,8 @@ export function OpenInBrowserButton(props: {
           <FullscreenAppbarActionButton
             title={
               props.disabled
-                ? "publish this frame as a website"
-                : "only root frames can be published"
+                ? "only root frames can be published"
+                : "publish this frame as a website"
             }
           >
             Publish
