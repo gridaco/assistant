@@ -1,1 +1,1 @@
-export { DesignLibraryScreen } from "./app-design-library-screen";
+export { DesignLibraryScreen } from "./screen";

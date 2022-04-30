@@ -6,7 +6,7 @@ export const ButtonStyle = css`
   /* margin-left: 5px !important; */
   height: 48px;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 500;
   border-radius: 4px;
   box-sizing: border-box;
   padding-top: 14px;
@@ -41,7 +41,7 @@ export const BlackButtonStyle = css`
 
 export const TextButtonBase = css`
   ${ButtonStyle}
-  border: 0;
+  border: none;
   color: #151617;
   background: transparent;
   &:hover {
