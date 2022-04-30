@@ -6,20 +6,14 @@ import RemoveIcon from "@material-ui/icons/Remove";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import { useSingleSelection } from "plugin-app";
 import { parseFromName } from "@design-sdk/flags";
-
-const map = {
-  camera: {
-    name: "Camera view",
-    description:
-      "Specifies the view to stream the primary camera stream. (Preview will not work in Assistant due to security reasons)",
-  },
-};
+import config from "./config";
+import { PluginSdk } from "@plugin-sdk/app";
 
 export function DesignLibraryScreen() {
   const selection = useSingleSelection();
   const usedFlags = selection ? parseFromName(selection.node.name) : {};
-  const currentId = "camera";
-  const current = map[currentId];
+  const currentId = "x-youtube-view";
+  const current = config[currentId];
   const value = usedFlags[currentId];
 
   return (
@@ -40,16 +34,19 @@ export function DesignLibraryScreen() {
         description={current.description}
         mode={value !== undefined ? "edit" : "add"}
         disabled={selection == undefined}
-        onAdd={() => {}}
-        onRemove={() => {}}
-        onChange={() => {}}
-        fields={{
-          this: {
-            initial: undefined,
-            placeholder: "Front / Back",
-            type: "string",
-          },
+        onAdd={async () => {
+          const name = await PluginSdk.getNodeName(selection.id);
+          const newname = name + "++";
+          PluginSdk.renameNode(selection.id, newname);
+          PluginSdk.notify("✅ applied");
         }}
+        onRemove={() => {}}
+        onChange={() => {
+          // const name = await PluginSdk.getNodeName(selection.id);
+          // const newname = name + "++";
+          // PluginSdk.renameNode(selection.id, newname);
+        }}
+        fields={current.fields}
       />
     </>
   );
@@ -67,7 +64,7 @@ export function Container({
   errorMessage,
 }: {
   name: string;
-  description: string;
+  description: string | React.ReactElement;
   mode: "add" | "edit";
   disabled?: boolean;
   onAdd?: () => void;
@@ -75,7 +72,7 @@ export function Container({
   onChange?: (key: string, value: string) => void;
   fields?: {
     [key: string]: {
-      placeholder: string;
+      placeholder?: string;
       initial?: string;
       type: "string";
     };
