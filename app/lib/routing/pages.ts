@@ -52,6 +52,12 @@ const page_design_layout: PageConfig = {
   path: "/design/layout",
 };
 
+const page_design_library: PageConfig = {
+  id: WorkScreen.library,
+  title: "Library",
+  path: "/design/library",
+};
+
 const page_design_preview: PageConfig = {
   id: WorkScreen.preview,
   title: "Preview",
@@ -133,6 +139,7 @@ const all_pages: PageConfig[] = [
   page_design_lint,
   page_design_preview,
   page_design_layout,
+  page_design_library,
   page_design_icon,
   page_code_layout,
   page_code_preview,

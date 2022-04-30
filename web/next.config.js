@@ -23,6 +23,7 @@ const withTM = require("next-transpile-modules")([
   "@app/data-mapper",
   "@app/preferences",
   "@app/design-lint",
+  "@app/design-library",
   "@app/design-preview",
   "@app/design-text-code-syntax-highlight",
   "@app/icons-loader",

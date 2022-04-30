@@ -1,0 +1,8 @@
+{
+  "name": "@app/design-library",
+  "description": "design library (load components, add properties)",
+  "authors": "Grida.co",
+  "version": "0.0.0",
+  "private": false,
+  "dependencies": {}
+}
