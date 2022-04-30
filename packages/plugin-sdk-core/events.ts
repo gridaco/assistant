@@ -47,6 +47,11 @@ export const PLUGIN_SDK_EK_REQUEST_RESIZE_NODE_BY_ID =
   "assistant/node/resize/by-id";
 export const PLUGIN_SDK_EK_REQUEST_REMOVE_NODE_BY_ID =
   "assistant/node/remove/by-id";
+export const PLUGIN_SDK_EK_REQUEST_RENAME = "assistant/node/rename";
+/**
+ * get name request
+ */
+export const PLUGIN_SDK_EK_REQUEST_NAME = "assistant/node/name";
 // endregion node access
 
 // region storage
