@@ -74,7 +74,7 @@ export function Container({
   onRemove?: () => void;
   onChange?: (key: string, value: string) => void;
   fields?: {
-    [key: string | "this"]: {
+    [key: string]: {
       placeholder: string;
       initial?: string;
       type: "string";
