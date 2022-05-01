@@ -174,10 +174,12 @@ export function OpenInBrowserButton(props: {
     })
       .then((r) => {
         open(r.page_url);
-      })
-      .finally(() => {
         PluginSdk.notify("🦈 Page published", 3);
-      });
+      })
+      .catch((e) => {
+        PluginSdk.notify("⛔️ Payload too large", 3);
+      })
+      .finally(() => {});
   };
 
   return (
