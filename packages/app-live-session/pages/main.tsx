@@ -74,7 +74,7 @@ export function LiveSessionPage() {
   useEffect(() => {
     if (session && session.entered && selection) {
       switch (selection.type) {
-        case SelectionType.single: {
+        case "single": {
           session.emmitSelect({
             event: "select",
             selectionType: selection.type,

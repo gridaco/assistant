@@ -5,26 +5,21 @@ import {
 } from "@design-sdk/figma-node";
 import { detectIf } from "@reflect-ui/detection";
 
-export enum SelectionType {
-  "single", // updated with single selection
-  "multi", // updated with multi selection
-  "none", // nothing was selected - but not recognized as cancel (when it was none before)
-  "cancel", // Deselection
-}
+export type SelectionType = SelectionData["type"];
 
 interface SingleSelectionData {
-  type: SelectionType.single;
+  type: "single";
   node: IReflectNodeReference;
   id: string;
 }
 
 interface MultiSelectionData {
-  type: SelectionType.multi;
+  type: "multi";
   nodes: IReflectNodeReference[];
 }
 
 interface NoneSelectionData {
-  type: SelectionType.none;
+  type: "none";
 }
 
 type SelectionData =
@@ -56,7 +51,7 @@ export function useSelection(): SelectionData | undefined {
     function handleSelectionChange(node) {
       if (Array.isArray(node)) {
         setselectednode({
-          type: SelectionType.multi,
+          type: "multi",
           nodes: node,
         });
       } else {
@@ -65,19 +60,19 @@ export function useSelection(): SelectionData | undefined {
             // do not trigger selection change when same node is selected.
             // to trigger selection change on same node, user should unselect and select again.
             selectednode &&
-            selectednode.type == SelectionType.single &&
+            selectednode.type == "single" &&
             node.id == selectednode.id
           ) {
             return;
           }
           setselectednode({
-            type: SelectionType.single,
+            type: "single",
             node: node,
             id: node.id,
           });
         } else {
           setselectednode({
-            type: SelectionType.none,
+            type: "none",
           });
         }
       }
@@ -111,7 +106,7 @@ export function useSingleSelection(): SingleSelectionData | undefined {
   const selection = useSelection();
   useEffect(() => {
     if (selection) {
-      if (selection.type == SelectionType.single) {
+      if (selection.type == "single") {
         setSingle(selection);
       }
     }
@@ -125,7 +120,7 @@ export function usePairSelection(): _PairSelectionEvent {
   const selection = useSelection();
   useEffect(() => {
     if (selection) {
-      if (selection.type == SelectionType.multi) {
+      if (selection.type == "multi") {
         if (selection.nodes.length == 2) {
           setPair({
             first: selection.nodes[0],
@@ -147,13 +142,12 @@ export function usePairSelection(): _PairSelectionEvent {
  * @returns
  */
 export function useRangeSelection(min: number, max: number) {
-  const [rangedSelections, setRangedSelections] = useState<MultiSelectionData>(
-    null
-  );
+  const [rangedSelections, setRangedSelections] =
+    useState<MultiSelectionData>(null);
   const selection = useSelection();
   useEffect(() => {
     if (selection) {
-      if (selection.type == SelectionType.multi) {
+      if (selection.type == "multi") {
         if (selection.nodes.length >= min && selection.nodes.length < max) {
           setRangedSelections(selection);
         }
@@ -177,7 +171,7 @@ interface SelectionNodeMeta {
   meta: {
     type: ScaffoldMetaNodeType;
   };
-  type: SelectionType.single;
+  type: "single";
   node: IReflectNodeReference;
   id: string;
 }
@@ -187,9 +181,8 @@ export function useSingleSelectionWithMeta() {
   const selection = useSingleSelection();
   const { node } = selection;
 
-  let type_in_meta: ScaffoldMetaNodeType = _reflect_scene_node_type__to__scaffold_meta_node_type(
-    node
-  );
+  let type_in_meta: ScaffoldMetaNodeType =
+    _reflect_scene_node_type__to__scaffold_meta_node_type(node);
 
   return <SelectionNodeMeta>{
     meta: { type: type_in_meta },
@@ -218,8 +211,9 @@ function _reflect_scene_node_type__to__scaffold_meta_node_type(
     case ReflectSceneNodeType.instance:
       return "component-like";
     case ReflectSceneNodeType.frame:
-      const _detection_result_if_screen = detectIf.screen(node as any)
-        .result; /** TODO: remove `as any` */
+      const _detection_result_if_screen = detectIf.screen(
+        node as any
+      ).result; /** TODO: remove `as any` */
 
       if (_detection_result_if_screen) {
         return "screen";

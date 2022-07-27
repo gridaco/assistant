@@ -15,6 +15,8 @@ import {
   __PLUGIN_SDK_NAMESPACE_BASE_TOKEN,
   PLUGIN_SDK_NS_APP_REQUEST_CUSTOM_ALL,
   PLUGIN_SDK_NS_DRAG_AND_DROP,
+  PLUGIN_SDK_NS_NODE,
+  PLUGIN_SDK_EK_REQUEST_RENAME,
   PLUGIN_SDK_NS_META_API,
   PLUGIN_SDK_NS_NOTIFY_API,
   PLUGIN_SDK_NS_REMOTE_API,
@@ -47,6 +49,8 @@ import {
   MetaRequest,
   makeExportSetting,
   UIControlRequest,
+  NodeEditRequest,
+  PLUGIN_SDK_EK_REQUEST_NAME,
 } from "@plugin-sdk/core";
 
 import {
@@ -162,6 +166,11 @@ export class PluginSdkService {
     // get node
     else if (event.namespace == PLUGIN_SDK_NS_GET_NODE) {
       handleGetNodeEvent(handerProps);
+    }
+
+    // node
+    else if (event.namespace == PLUGIN_SDK_NS_NODE) {
+      handleNodeEditEvent(handerProps);
     }
 
     // storage
@@ -382,6 +391,24 @@ function handleGetNodeEvent(props: HanderProps<{ id: string }>) {
   }
 }
 
+function handleNodeEditEvent(props: HanderProps<NodeEditRequest>) {
+  switch (props.key) {
+    case PLUGIN_SDK_EK_REQUEST_RENAME: {
+      const node = figma.getNodeById(props.data.id);
+      node.name = props.data.name;
+      return response(props.id, {
+        name: node.name,
+      });
+    }
+    case PLUGIN_SDK_EK_REQUEST_NAME: {
+      const node = figma.getNodeById(props.data.id);
+      return response(props.id, {
+        name: node.name,
+      });
+    }
+  }
+}
+
 function handleFocus(props: HanderProps<FocusRequest>) {
   if (props.key == PLUGIN_SDK_EK_SIMPLE_FOCUS) {
     switch (target_platform.get()) {
@@ -411,9 +438,9 @@ async function handleExportEvent(event: HanderProps<ImageExportRequest>) {
         return undefined;
       }
       case TargetPlatform.figma: {
-        const r = await (figma.getNodeById(
-          event.data.id
-        ) as SceneNode).exportAsync({
+        const r = await (
+          figma.getNodeById(event.data.id) as SceneNode
+        ).exportAsync({
           ...makeExportSetting(event.data.opt),
         });
 
@@ -460,14 +487,8 @@ async function handleBrowserApiEvent(props: TransportPluginEvent) {
 
 function handleDragDropped(props: HanderProps<DragAndDropOnCanvasRequest>) {
   console.log("handling drop event", props.data);
-  const {
-    dropPosition,
-    windowSize,
-    offset,
-    itemSize,
-    eventKey,
-    customData,
-  } = props.data;
+  const { dropPosition, windowSize, offset, itemSize, eventKey, customData } =
+    props.data;
 
   // Getting the position and size of the visible area of the canvas.
   const bounds = figma.viewport.bounds;

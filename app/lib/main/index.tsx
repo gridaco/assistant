@@ -14,6 +14,7 @@ import { ButtonMakerScreen } from "@app/button-maker";
 import { LayoutViewScreen } from "../pages/layout-view";
 import { ComponentViewScreen } from "@app/component-manage";
 import { LintScreen } from "@app/design-lint";
+import { DesignLibraryScreen } from "@app/design-library";
 import { PreviewScreen } from "@app/design-preview";
 import { IconsScreen } from "@app/icons-loader";
 import { MetaEditorScreen, BatchMetaEditor } from "@app/meta-editor";
@@ -66,6 +67,8 @@ function Screen(props: { screen: WorkScreen }) {
       return <LayoutViewScreen />;
     case WorkScreen.preview:
       return <PreviewScreen />;
+    case WorkScreen.library:
+      return <DesignLibraryScreen />;
     case WorkScreen.icon:
       return <IconsScreen />;
     case WorkScreen.lint:

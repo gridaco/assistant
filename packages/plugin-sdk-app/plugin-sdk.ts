@@ -38,6 +38,7 @@ import {
   target_platform,
   TargetPlatform,
   UIControlRequest,
+  RenameNodeRequest,
 } from "@plugin-sdk/core";
 import type { ReflectSceneNode } from "@design-sdk/figma-node";
 import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "@core/constant";
@@ -120,8 +121,16 @@ export class PluginSdk {
     return new NodeApi(id).get();
   }
 
+  static async getNodeName(id: string) {
+    return await new NodeApi(id).getName();
+  }
+
   static node(id: string): NodeApi {
     return new NodeApi(id);
+  }
+
+  static renameNode(id: string, name: string) {
+    return new NodeApi(id).rename(name);
   }
 
   static async getNodeImage(

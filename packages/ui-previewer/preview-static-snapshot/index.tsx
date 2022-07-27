@@ -72,8 +72,8 @@ export function StaticPreview(props: StaticPreviewProps) {
 
   return (
     <img
-      className="render"
       alt={name}
+      style={{ objectFit: "scale-down" }}
       src={makeUrl()}
       width="100%"
       height="200px"

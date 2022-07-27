@@ -28,6 +28,10 @@
 - [Flutter] Poligon Node support with XImage (svg)
 - [Lint] Primal naming & grouping linting for better code export quality. this is tracked sperately on [lint](https://github.com/bridgedxyz/lint)
 
+## [2022.4.1.0] - 2022-04-30
+
+- New feature: Design Library
+
 ## [2022.4.0.3] - 2022-04-29
 
 - New feature : Publish as website
