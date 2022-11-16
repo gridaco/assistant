@@ -9,7 +9,8 @@
     },
     "scripts": {
         "clean": "rimraf dist",
-        "build": "yarn clean && webpack --mode=production --host=production",
+        "build": "yarn clean && webpack --mode=production --host=production && yarn prepublish",
+        "prepublish": "node scripts/prepublish.js",
         "build:staging": "yarn clean && webpack --mode=production --host=staging",
         "build:dev": "webpack --mode=development --host=dev",
         "watch": "webpack --watch",
