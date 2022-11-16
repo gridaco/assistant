@@ -1,14 +1,14 @@
 import { RouteBackButton } from "app/lib/components/navigation/route-back-button";
 import React from "react";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 export function ToolboxHome() {
-  const history = useHistory();
+  const navigate = useNavigate();
   return (
     <>
       <RouteBackButton />
       <button
         onClick={() => {
-          history.push("/toolbox/font-replacer");
+          navigate("/toolbox/font-replacer");
         }}
       >
         Font replacer
@@ -16,7 +16,7 @@ export function ToolboxHome() {
       <br />
       <button
         onClick={() => {
-          history.push("/toolbox/meta-editor");
+          navigate("/toolbox/meta-editor");
         }}
       >
         Meta editor
@@ -24,7 +24,7 @@ export function ToolboxHome() {
       <br />
       <button
         onClick={() => {
-          history.push("/toolbox/batch-meta-editor");
+          navigate("/toolbox/batch-meta-editor");
         }}
       >
         Batch Meta editor
@@ -32,7 +32,7 @@ export function ToolboxHome() {
       <br />
       <button
         onClick={() => {
-          history.push("/toolbox/code-syntax-highlight");
+          navigate("/toolbox/code-syntax-highlight");
         }}
       >
         Code syntax highlight

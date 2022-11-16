@@ -21,9 +21,8 @@ import styled from "@emotion/styled";
 // cached icons configs
 let CONFIGS: Map<string, NamedDefaultOssIconConfig>;
 export function IconsLoader() {
-  const [configs, setConfigs] = useState<
-    Map<string, NamedDefaultOssIconConfig>
-  >(undefined);
+  const [configs, setConfigs] =
+    useState<Map<string, NamedDefaultOssIconConfig>>(undefined);
   const [queryTerm, setQueryTerm] = useState<string>(undefined);
   const [iconLoadLimit, setIconLoadLimit] = useState(100);
   const iconRef = useRef<HTMLUListElement>(undefined);
@@ -209,7 +208,10 @@ function IconSearch(props: {
             classes={{ root: "root" }}
             value={iconProperty.variant}
             onChange={(e) => onSelectValue("variant", e.target.value)}
-            input={<BootstrapInput classes={{ root: "root" }} />}
+            input={
+              // @ts-ignore
+              <BootstrapInput classes={{ root: "root" }} />
+            }
           >
             {iconPropertyList.variant.map((i) => (
               <MenuItem value={i}>{i}</MenuItem>
@@ -222,7 +224,10 @@ function IconSearch(props: {
             id="demo-customized-select-native"
             value={iconProperty.default_size}
             onChange={(e) => onSelectValue("size", e.target.value)}
-            input={<BootstrapInput />}
+            input={
+              // @ts-ignore
+              <BootstrapInput />
+            }
           >
             {iconPropertyList.default_size.map((i) => (
               <MenuItem value={i}>

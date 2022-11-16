@@ -1,5 +1,5 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { WorkMode, WorkScreen } from "../../routing";
 import { SecondaryWorkmodeMenu } from "./secondary-workmode-menu";
 
@@ -12,13 +12,13 @@ interface Menu {
 }
 
 export function signinOrLibraryMenu(): Menu {
-  const history = useHistory();
+  const navigate = useNavigate();
   return {
     id: WorkScreen.signin,
     name: WorkScreen.signin,
     stage: "production",
     onSelect: () => {
-      history.push("/signin");
+      navigate("/signin");
     },
   };
 
@@ -33,7 +33,7 @@ export function signinOrLibraryMenu(): Menu {
 }
 
 export function SecondaryMenuDropdown() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const menu: Menu[] = [
     signinOrLibraryMenu(),
     {
@@ -53,7 +53,7 @@ export function SecondaryMenuDropdown() {
       name: WorkMode.tools,
       stage: "development",
       onSelect: () => {
-        history.push("/toolbox/home");
+        navigate("/toolbox/home");
       },
     },
     {
@@ -75,7 +75,7 @@ export function SecondaryMenuDropdown() {
       name: WorkMode.about,
       stage: "production",
       onSelect: () => {
-        history.push("/about");
+        navigate("/about");
       },
     },
   ].filter((m) => {

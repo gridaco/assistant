@@ -7,7 +7,7 @@ import {
 } from "@assistant-fp/auth";
 import { AuthProxySessionStartResult } from "@base-sdk-fp/auth";
 import { ButtonStyle } from "@ui/core/button-style";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import {
   BtnWrapper,
   Contents,
@@ -97,10 +97,10 @@ export function SigninScreen({
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [sessionInfo, setSessionInfo] = useState<AuthProxySessionStartResult>();
   const [sessionStarted, setSessionStarted] = useState<boolean>(false);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const close = () => {
-    onClose ? onClose?.() : history.goBack();
+    onClose ? onClose?.() : navigate(-1);
   };
 
   return (

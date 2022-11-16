@@ -1,13 +1,14 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import BackArrow from "@assistant/icons/back-arrow";
 
 export function RouteBackButton({ onClick }: { onClick?: () => void }) {
-  const history = useHistory();
+  const navigate = useNavigate();
+  navigate("");
 
   const close = () => {
-    onClick ? onClick() : history.goBack();
+    onClick ? onClick() : navigate(-1);
   };
 
   return (

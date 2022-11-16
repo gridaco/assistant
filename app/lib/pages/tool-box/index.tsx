@@ -2,14 +2,8 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import { PluginSdk } from "@plugin-sdk/app";
 
-export class ToolboxScreen extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  componentDidMount() {}
-
-  hideAllExceptText = (e) => {
+export function ToolboxScreen(props) {
+  const hideAllExceptText = (e) => {
     parent.postMessage(
       {
         pluginMessage: {
@@ -21,30 +15,29 @@ export class ToolboxScreen extends React.Component {
     );
   };
 
-  hideAllOnlyText = (e) => {
+  const hideAllOnlyText = (e) => {
     parent.postMessage(
       { pluginMessage: { type: "hide-all-only", data: { only: "TEXT" } } },
       "*"
     );
   };
 
-  onClickRandomize(e) {
+  const onClickRandomize = (e) => {
     parent.postMessage({ pluginMessage: { type: "randomize-selection" } }, "*");
-  }
+  };
 
-  onClickOpenConsole(e) {
+  const onClickOpenConsole = (e) => {
     PluginSdk.openUri("https://console.grida.co/");
-  }
-  render() {
-    return (
-      <div>
-        <p>dev tools</p>
-        <Button variant="outlined">font replacer</Button>
-        <Button onClick={this.hideAllExceptText}>hide all except text</Button>
-        <Button onClick={this.hideAllOnlyText}>hide only text</Button>
-        <Button onClick={this.onClickRandomize}>randomize</Button>
-        <Button onClick={this.onClickOpenConsole}>open in console</Button>
-      </div>
-    );
-  }
+  };
+
+  return (
+    <div>
+      <p>dev tools</p>
+      <Button variant="outlined">font replacer</Button>
+      <Button onClick={hideAllExceptText}>hide all except text</Button>
+      <Button onClick={hideAllOnlyText}>hide only text</Button>
+      <Button onClick={onClickRandomize}>randomize</Button>
+      <Button onClick={onClickOpenConsole}>open in console</Button>
+    </div>
+  );
 }

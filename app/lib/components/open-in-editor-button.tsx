@@ -1,7 +1,7 @@
 import React from "react";
 import { PluginSdk } from "@plugin-sdk/app";
 import { isAuthenticated } from "@assistant-fp/auth";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   ActionAfterFilekeySetButton,
   TOpenButton,
@@ -17,13 +17,13 @@ export function OpenInEditorButton(props: {
   app?: any;
   button: TOpenButton;
 }) {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const onBeforeNext = async () => {
     const authenticated = await isAuthenticated();
     if (!authenticated) {
       PluginSdk.notify("Let's Sign in first");
-      history.push("/signin");
+      navigate("/signin");
       return false;
     }
     return true;

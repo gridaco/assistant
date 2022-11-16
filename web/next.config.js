@@ -1,4 +1,4 @@
-const withTM = require("next-transpile-modules")([
+const packages = [
   // _firstparty
   "@assistant-fp/analytics",
   "@assistant-fp/auth",
@@ -130,6 +130,17 @@ const withTM = require("next-transpile-modules")([
   "@web-builder/styles",
   // endregion web builders
   // -----------------------------
-]);
+];
 
-module.exports = withTM();
+const withTM = require("next-transpile-modules")(packages);
+
+/**
+ * @type {import('next').NextConfig}
+ */
+const config = {
+  experimental: {
+    transpilePackages: packages,
+  },
+};
+
+module.exports = config;

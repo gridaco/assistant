@@ -2,7 +2,7 @@ import React from "react";
 import styled from "@emotion/styled";
 import * as about from "./manifest";
 import { __auth_proxy, ProxyAuthenticationMode } from "@base-sdk-fp/auth";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import BackArrowIcon from "@assistant/icons/back-arrow";
 import { PluginSdk } from "@plugin-sdk/app";
 const URLS = {
@@ -30,7 +30,7 @@ const URLS = {
 };
 
 export function AboutScreen() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const linkTo = (url: string) => {
     return () => {
       PluginSdk.openUri(url);
@@ -38,12 +38,12 @@ export function AboutScreen() {
   };
 
   const signIntoAssistant = () => {
-    history.push("/signin");
+    navigate("/signin");
   };
 
   return (
     <>
-      <BackIcon onClick={history.goBack}>
+      <BackIcon onClick={() => navigate(-1)}>
         <BackArrowIcon />
       </BackIcon>
       <AboutTitleSection>

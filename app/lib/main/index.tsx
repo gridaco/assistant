@@ -5,7 +5,7 @@ import { initialize as analytics_initialize } from "@assistant-fp/analytics";
 // UI COMPS
 import { EK_SET_APP_MODE } from "@core/constant/ek.constant";
 import { PluginApp } from "plugin-app";
-import { useHistory, Switch, Route } from "react-router-dom";
+import { useNavigate, Routes, Route } from "react-router-dom";
 import type { TargetPlatform } from "@plugin-sdk/core";
 
 //
@@ -109,7 +109,7 @@ import { hide_navigation } from "./global-state-atoms";
 // endregion
 
 function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
-  const history = useHistory();
+  const history = useNavigate();
   const [workmode, setWorkmode] = useState<WorkMode>(
     props.savedLayout.currentWorkmode
   );
@@ -146,7 +146,7 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
     const screen = tabs_as_page_configs[index];
     setScreen(screen.id);
     on_work_select(index, screen.id);
-    history.replace(screen.path); // since it is a movement between tabs, we don't use push. we use replace to avoid the history stack to be too long.
+    history(screen.path); // since it is a movement between tabs, we don't use push. we use replace to avoid the history stack to be too long.
   };
 
   const tabs_as_page_configs = getWorkmodeTabLayout(workmode).map(
@@ -208,17 +208,17 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
       <>
         {/* the screen's wrapping layout */}
         <ScreenWrapLayout>
-          <Switch>
+          <Routes>
             {tabs_as_page_configs.map((v, i) => {
               return (
                 <Route
                   key={v.id}
                   path={v.path}
-                  render={() => <Screen screen={v.id} />}
+                  element={<Screen screen={v.id} />}
                 />
               );
             })}
-          </Switch>
+          </Routes>
         </ScreenWrapLayout>
       </>
     </div>
@@ -247,7 +247,7 @@ function RouterTabNavigationApp(props) {
 }
 
 function Home() {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [savedLayout, setSavedLayout] =
     useState<NavigationStoreState>(undefined);
 
@@ -265,7 +265,7 @@ function Home() {
   if (savedLayout) {
     try {
       const p = get_page_config(savedLayout.currentWork).path;
-      history.replace(p);
+      navigate(p);
     } catch (e) {
       console.log("failed to load saved layout", e);
       console.log(
@@ -273,7 +273,7 @@ function Home() {
       );
       // if somehow, failed loading the path of the current work, we will redirect to the home page.
       // this can happen during development, switching between branches, or could happen on production wehn new version lo longer has a page that is previously loaded.
-      history.replace("/code/preview");
+      navigate("/code/preview");
     }
   }
 
@@ -300,25 +300,26 @@ export default function App(props: { platform: TargetPlatform }) {
       <PluginApp platform={props.platform}>
         {/* @ts-ignore */}
         <Router>
-          <Switch>
+          <Routes>
             {/* # region unique route section */}
             {standalone_pages.map((p) => {
               return (
                 <Route
                   key={p.id}
                   path={p.path}
-                  render={() => {
-                    return <Screen screen={p.id} />;
-                  }}
+                  element={<Screen screen={p.id} />}
                 />
               );
             })}
             {/* # endregion unique route section */}
             {/* dynamic route shall be placed at the last point, since it overwrites other routes */}
-            <Route path="/:workmode/:work" component={RouterTabNavigationApp} />
-            <Route path="/" component={Home} />
+            <Route
+              path="/:workmode/:work"
+              element={<RouterTabNavigationApp />}
+            />
+            <Route path="/" element={<Home />} />
             {/* 👆 this is for preventing blank page on book up. this will be fixed and removed.*/}
-          </Switch>
+          </Routes>
         </Router>
       </PluginApp>
     </RecoilRoot>
