@@ -3,7 +3,6 @@ import {
   EK_IMAGE_ASSET_REPOSITORY_MAP,
   EK_VANILLA_TRANSPORT,
 } from "@core/constant/ek.constant";
-import * as vanilla from "@design-sdk/vanilla";
 import { ReflectFrameNode, ReflectSceneNode } from "@design-sdk/figma-node";
 import { user_interest } from "./user-interest";
 import { broadcastSelectionPreview } from "./broadcast-selection-preview";
@@ -35,18 +34,19 @@ export async function runon(rnode: ReflectSceneNode) {
 
   // TODO: migrate this to __plugin
   // region make vanilla
-  if (user_interest == "g11n" || user_interest == "exporter") {
-    const globalizatoinScreen = vanilla.makeVanilla(rnode as ReflectFrameNode);
-    const vanillaTransportableImageRepository = await globalizatoinScreen.repository.makeTransportable();
-    figma.ui.postMessage({
-      type: EK_IMAGE_ASSET_REPOSITORY_MAP,
-      data: vanillaTransportableImageRepository,
-    });
-    figma.ui.postMessage({
-      type: EK_VANILLA_TRANSPORT,
-      data: globalizatoinScreen,
-    });
-  }
+  // import * as vanilla from "@design-sdk/vanilla";
+  // if (user_interest == "g11n" || user_interest == "exporter") {
+  //   const globalizatoinScreen = vanilla.makeVanilla(rnode as ReflectFrameNode);
+  //   const vanillaTransportableImageRepository = await globalizatoinScreen.repository.makeTransportable();
+  //   figma.ui.postMessage({
+  //     type: EK_IMAGE_ASSET_REPOSITORY_MAP,
+  //     data: vanillaTransportableImageRepository,
+  //   });
+  //   figma.ui.postMessage({
+  //     type: EK_VANILLA_TRANSPORT,
+  //     data: globalizatoinScreen,
+  //   });
+  // }
   // endregion
 
   // send preview image
