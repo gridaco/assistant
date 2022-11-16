@@ -313,11 +313,8 @@ export default function App(props: { platform: TargetPlatform }) {
             })}
             {/* # endregion unique route section */}
             {/* dynamic route shall be placed at the last point, since it overwrites other routes */}
-            <Route
-              path="/:workmode/:work"
-              element={<RouterTabNavigationApp />}
-            />
-            <Route path="/" element={<Home />} />
+            <Route path="/:workmode/:work" loader={RouterTabNavigationApp} />
+            <Route path="/" loader={Home} />
             {/* 👆 this is for preventing blank page on book up. this will be fixed and removed.*/}
           </Routes>
         </Router>

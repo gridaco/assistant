@@ -1379,10 +1379,15 @@
   resolved "https://registry.yarnpkg.com/@code-ui/color-scheme/-/color-scheme-0.0.0.tgz#9f7b1d32e33193166c2958dec999c9fbf9009c8d"
   integrity sha512-KqxYgHgEZYEqs0+n2wX4cIAo4PpBtsLDHxWJcUdXcYeV9u0cTVQ9qJA/8M+d44L6Hu8sYz+lM7f5q2o3W4hloQ==
 
-"@code-ui/color-scheme@0.0.2", "@code-ui/color-scheme@^0.0.2":
+"@code-ui/color-scheme@0.0.2":
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@code-ui/color-scheme/-/color-scheme-0.0.2.tgz#aa3e805068591cad4f2f7f476d89fba037cb4d85"
   integrity sha512-Z7YHcEj/2+6oBEQITlxC3qJyRbhilsr0xyeKUJ4SBdY+MTVWmMKN5P/zvVO7DUQ/Lqi9E6bKSk9VOvvfFwvKdQ==
+
+"@code-ui/color-scheme@^0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@code-ui/color-scheme/-/color-scheme-0.1.5.tgz#131d5502aa7561b9f7117984194104bd9119a41e"
+  integrity sha512-M4fWS71Rslrs5ejFgwxT99sGJCIdQ54pyefp4gcM7OwLaj09kc8msm0YN24UOSsvDPw3xdb8l8vLYVfrRIT/Wg==
 
 "@code-ui/completion-provider@^0.0.4":
   version "0.0.4"
@@ -1401,26 +1406,31 @@
     "@code-ui/token" "^0.0.1"
     handlebars "^4.7.7"
 
-"@code-ui/core@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@code-ui/core/-/core-0.0.2.tgz#40ea9c3284e8b33f6c6201f16129707edad22dbf"
-  integrity sha512-uDluALu5H3uh8Qsg7ACnXccaNxwmnXntTlaSWr+R/nXb1LnMJGaO5bBuaw16UbA86DjDz2eWCK1iierdb47KWA==
+"@code-ui/core@^0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@code-ui/core/-/core-0.1.5.tgz#348a6dc8f8801637643e68f9a0faeef103e91a24"
+  integrity sha512-grmVVbCXJMSrBZFY8Q2UWl00e475xFMGA9KxxrbO3hAfe8kmZTycXLscWFLYezPBeifZJeo/RKs+Qd6z0sNyow==
   dependencies:
-    "@code-ui/color-scheme" "^0.0.2"
-    "@code-ui/token" "^0.0.2-beta"
-    handlebars "^4.7.7"
+    "@code-ui/color-scheme" "^0.1.5"
+    "@code-ui/token" "^0.1.5"
 
-"@code-ui/docstring@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@code-ui/docstring/-/docstring-0.0.12.tgz#8e3b2b3ef67ee7927e564377bd844329278eef42"
-  integrity sha512-1418Jsu5Nk9bzxmHO5YoY1Y4MAFduBzhrd0dIZ1IaDWcLzxsaHxkPyRmj16lt8ThYnhlmcYLH6GzuRk4hXQmkg==
+"@code-ui/docstring@^0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@code-ui/docstring/-/docstring-0.1.5.tgz#9a781d62fb389fe183230d05e695711915c8a80a"
+  integrity sha512-syLEosnijGntFocP6AXp8EZQbC+c8bKPGjqJDWz4heypjRGiOcgG20Jer4hoxvbv7xQ/pkfzyzZUlbSiiAD6VQ==
   dependencies:
-    "@code-ui/core" "^0.0.2"
+    "@code-ui/core" "^0.1.5"
+    handlebars "^4.7.7"
 
 "@code-ui/hover@0.0.2", "@code-ui/hover@^0.0.2":
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/@code-ui/hover/-/hover-0.0.2.tgz#0e66637417b02b79e3caa2debfeda8f486705375"
   integrity sha512-czTCGSPloamoxG5uz+MDNsigbtjdbAuK0rjIZKxb0XXl3CmUu/lbFvlRDl87pAqI5us6OLqDdYVUzfzC4oqBcw==
+
+"@code-ui/hover@^0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@code-ui/hover/-/hover-0.1.5.tgz#f5834ad43951c664a64a27e88c7cac4176701dc5"
+  integrity sha512-EEZI+yObO2vlRR+nfPbol833XoqDzGUY5HnT2U2GvEFIc0r6tV+CVukJQu4DPxqBqzQCKbs1eT2ohrPp4Z34vA==
 
 "@code-ui/interface@^0.0.5":
   version "0.0.5"
@@ -1439,13 +1449,6 @@
     "@tippyjs/react" "^4.2.5"
     handlebars "^4.7.7"
 
-"@code-ui/token@^0.0.2-beta":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@code-ui/token/-/token-0.0.2.tgz#c44f8cce112a938b7dbd0608a0f3cd2e082e65f8"
-  integrity sha512-JKNvZ1TcRjW/uHwQ8bghIpEU4w97F+dwWt4TKu8tx9I42Rmy3xeqN9Fq4s9+M2pt3xYjRER7CwYq9s+R2ye6Qg==
-  dependencies:
-    "@tippyjs/react" "^4.2.5"
-
 "@code-ui/token@^0.0.7":
   version "0.0.7"
   resolved "https://registry.yarnpkg.com/@code-ui/token/-/token-0.0.7.tgz#def0237057116d8c3fc1914fb1354faf959f24cb"
@@ -1453,6 +1456,15 @@
   dependencies:
     "@code-ui/color-scheme" "0.0.2"
     "@code-ui/hover" "0.0.2"
+    "@tippyjs/react" "^4.2.5"
+
+"@code-ui/token@^0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@code-ui/token/-/token-0.1.5.tgz#749778ed24294cf8b265276744a331ae8ad8caae"
+  integrity sha512-GzNYt3awcA1ICAZYFRcXAuUl/oB0fPqmYXI697YceZ5NqCOty0hbL04GrO7AiKgVpV7eddTZK+E58zyhH+7gIw==
+  dependencies:
+    "@code-ui/color-scheme" "^0.1.5"
+    "@code-ui/hover" "^0.1.5"
     "@tippyjs/react" "^4.2.5"
 
 "@design-sdk/figma-remote-api@0.0.0":

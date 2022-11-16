@@ -21,6 +21,7 @@ export function PrismView(props: { src: string; language: any | Language }) {
   }, [props.language]);
 
   return (
+    // @ts-ignore
     <PrismHighlight
       {...defaultProps}
       theme={vsdark}

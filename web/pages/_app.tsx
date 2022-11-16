@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
-import type { AppProps } from "next/app";
 import { useRouter } from "next/router";
 import * as gtag from "../lib/gtag";
 
-function WebApp({ Component, pageProps }: AppProps) {
+function WebApp({ Component, pageProps }) {
   // region GA
   const router = useRouter();
   useEffect(() => {
