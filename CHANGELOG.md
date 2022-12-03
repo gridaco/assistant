@@ -172,7 +172,7 @@ Initial release of Bridged's figma plugin (a.k.a assistant)
 > 0.1.0 focuses on flutter code generation feature.
 
 - Figma plugin ui built with react + plain css
-- Supported : Fimga / Flutter
+- Supported : Figma / Flutter
 - Flutter code exporter built with [flutter-builder](https://github.com/bridgedxyz/flutter-builder)
 
 ### Info
