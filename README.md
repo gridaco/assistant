@@ -4,9 +4,9 @@ platform: Android, iOS, Web, macOS, Linux, Windows
 title: Grida assistant for figma, sketch, xd
 ---
 
-  <meta name="description" content="figma to flutter code exporter, lint your design. generate human level quality code from figma">
-  <meta name="title" content="Grida assistant">
-  
+<meta name="description" content="figma to flutter code exporter, lint your design. generate human level quality code from figma">
+<meta name="title" content="Grida assistant">
+
 ![Grida assistant](./branding/assistant-cover-v2021.8.0.png)
 
 <div style="text-align:center"><a href="https://www.producthunt.com/posts/grida-assistant-figma-2-flutter-react?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-grida-assistant-figma-2-flutter-react" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=310028&theme=light" alt="Grida Assistant - Figma 2 Flutter &React - Free & Opensource Design2Code Plugin with lot more features. | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a></div>
@@ -18,7 +18,7 @@ title: Grida assistant for figma, sketch, xd
 ![Grida figma to code demo with live preview](docs/gifs/assistant-demo-2021.0.1.gif)
 
 - ✅ Human readable code generation.
-- ✅ code generation built with CoLI, developed especially for assistant usage, ensuring the best code generation quality.
+- ✅ Code generation built with CoLI, developed especially for assistant usage, ensuring the best code generation quality.
 - ✅ Slots support (Component with parameters)
 - ✅ Modularized code generation / readability. All production level code, code beign generated as Functions, Varables, Ect..
 - ✅ Design Linting - Visaully makes sence, Structure made sence.
@@ -28,13 +28,14 @@ title: Grida assistant for figma, sketch, xd
 
 ## Usage
 
-> install figma plugin via below link. note that the published plugin is allways behind few new features behind this repository. for trying out the latest and mindblowing features, please build from your local environment directly.
+> Install figma plugin via below link. Note that the published plugin is always behind few new features behind this repository. For trying out the latest and mindblowing features, please build from your local environment directly.
 
-install via figma plugin [link here](https://www.figma.com/community/plugin/896445082033423994)
+Install via figma plugin [link here](https://www.figma.com/community/plugin/896445082033423994).
 
-> Cloning and running the project.
-> we use yarn workspace for maintaining this project as monorepository.
-> Some additional steps are required to run this project properly.
+### Cloning and running the project:
+
+> - We use yarn workspace for maintaining this project as monorepo.
+> - Some additional steps are required to run this project properly.
 
 ```shell
 # [REQUIRED] we use git submodules for `packages/`. you have to explicitly execute this command instead default clone.
@@ -42,26 +43,26 @@ git clone --recurse-submodules https://github.com/gridaco/assistant.git
 
 cd assistant
 
-# [REQUIRED] yarn will install dependencies, link packages, and generate compiled code of packages, so it can be referenced by root projects.
+# [REQUIRED] Yarn will install dependencies, link packages, and generate compiled code of packages, so it can be referenced by root projects.
 yarn
 
-# [OPTIONAL 1] run figma plugin in dev mode (use localhost server) (recommanded)
+# [OPTIONAL 1] Run figma plugin in dev mode (use localhost server) (recommanded)
 yarn figma
 
-# [OPTIONAL 1-2] run figma plugin in dev mode (native)
+# [OPTIONAL 1-2] Run figma plugin in dev mode (native)
 yarn figma-native
 
-# [OPTIONAL 2]run sketch plugin in dev mode
+# [OPTIONAL 2] Run sketch plugin in dev mode
 yarn sketch
 
-# [OPTIONAL 3 & Contributors only] run plugin ui in webdev mode
+# [OPTIONAL 3 & Contributors only] Run plugin ui in webdev mode
 yarn web
 # visit http://localhost:3303/init-webdev to work on browser
 ```
 
-_soon as the subpackages are released as stable, we will remove git submodule dependency for ease of use. until then, this will be the primary repository and all the edits and PRs will be caused by this project._ - [Learn more here](https://github.com/bridgedxyz/.github/blob/main/contributing/working-with-submodules.md)
+_Soon as the subpackages are released as stable, we will remove git submodule dependency for ease of use. until then, this will be the primary repository and all the edits and PRs will be caused by this project._ - [Learn more here](https://github.com/bridgedxyz/.github/blob/main/contributing/working-with-submodules.md)
 
-> sometimes, when pulling this repo from remote, if new submodule package is added, you'll need to run below command to pull with updated submodules (we recommand you to know what this command actually does in a nut shell.)
+> Sometimes, when pulling this repo from remote, if new submodule package is added, you'll need to run below command to pull with updated submodules (we recommand you to know what this command actually does in a nut shell.)
 
 ```shell
 git submodule update --init --recursive
@@ -83,7 +84,7 @@ flutter widget builder is done by [figma/flutter](/flutter) and the core builder
 - ✅ `Colors.` Color support
 - ✅ Slots support (not static content)
 - ✅ Modularized builder functions - (not all-in-one widget tree)
-- ✅ formatted dart code
+- ✅ Formatted Dart code
 - ✅ Best code quality (I Assure,) in this planet
 
 ## Console & Cloud integrations
@@ -96,7 +97,7 @@ Learn more at [console repository](https://github.com/gridaco/console.grida.co)
 
 ## UI Element Detection
 
-> rule based button / input / icon detection with [@reflect-ui/detection](./packages/detection)
+> Rule based button / input / icon detection with [@reflect-ui/detection](./packages/detection)
 > Higher quality ML based detection available at [Grida's context engine](https://github.com/bridgedxyz/context)
 
 ## Design Assistant
@@ -121,12 +122,12 @@ Learn more at [console repository](https://github.com/gridaco/console.grida.co)
 
 ### Building the plugin
 
-- figma: See [plugin README](/figma/README.md)
-- sketch: `sketch platform will be available soon`
+- Figma: See [plugin README](/figma/README.md)
+- Sketch: `Sketch platform will be available soon`
 
 ### Running as Webdev
 
-> webdev is a mode that you can run assistant as a standalone appliaction for ui development purpose of its' you can't acccess or call api to design tools.
+> `webdev` is a mode that you can run assistant as a standalone appliaction for ui development purpose of its' you can't acccess or call api to design tools.
 
 Learn more at [./webdev](./webdev)
 
@@ -160,15 +161,15 @@ And general Grida project contribution and collaboration guideline [here](https:
 
 **supported platforms and frameworks**
 
-- ✅ [figma](./figma)
-- ✅ [flutter](./core)
-- ✅ [grida web](https://github.com/gridaco/console.grida.co)
-- [sketch](./sketch) -- coming soon
-- react -- coming soon & under [development](https://github.com/bridgedxyz/web-builder)
-- vue -- coming soon & under [development](https://github.com/bridgedxyz/web-builder)
-- css / sass -- coming soon & under [development](https://github.com/bridgedxyz/web-builder)
-- [xd](./xd) -- coming soon
-- [zeplin](./zeplin) -- coming soon
+- ✅ [Figma](./figma)
+- ✅ [Flutter](./core)
+- ✅ [Grida Web](https://github.com/gridaco/console.grida.co)
+- [Sketch](./sketch) -- Coming Soon
+- React -- Coming Soon & Under [Development](https://github.com/bridgedxyz/web-builder)
+- Vue -- Coming Soon & Under [Development](https://github.com/bridgedxyz/web-builder)
+- CSS/SASS -- Coming Soon & Under [Development](https://github.com/bridgedxyz/web-builder)
+- [Adobe XD](./xd) -- Coming Soon
+- [Zeplin](./zeplin) -- Coming Soon
 
 ## Changelog
 
@@ -189,13 +190,13 @@ All update logs available at [CHANGELOG.md](./CHANGELOG.md)
 
 **_to shortly brief,_**
 
-- any form of modifing this software, including clone, fork, merge is allowed with no restrictions.
-- making profit "by using" this software is allowed with no restrictions.
-- making profit "by re-distributing" is not allowed. recap, you cannot publish this plugin as an alternative to this original plugin.
-  -- why is that? we are taking "minimum" profit from this software, we will prevent from other enterprise from copycatting this software.
-- the code and packages distributed via this repository is free to use without any restrictions.
-- code, design is free to use and modify. (just don't make any profits by re-distributing this plugin.)
+- Any form of modifing this software, including clone, fork, merge is allowed with no restrictions.
+- Making profit "by using" this software is allowed with no restrictions.
+- Making profit "by re-distributing" is not allowed. Recap, you cannot publish this plugin as an alternative to this original plugin.
+  -- Why is that? We are taking "minimum" profit from this software, we will prevent from other enterprise from copycatting this software.
+- The code and packages distributed via this repository is free to use without any restrictions.
+- The code and design is free to use and modify. (Just don't make any profits by re-distributing this plugin.)
 
 ### DISCLAIMER
 
-re-use of this software and it's license is overrided by [contributing-and-license](https://github.com/bridgedxyz/contributing-and-license)
+Re-use of this software and it's license is overrided by [contributing-and-license](https://github.com/bridgedxyz/contributing-and-license)

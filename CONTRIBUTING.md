@@ -1,6 +1,6 @@
-## [general contribution guideline](https://github.com/bridgedxyz/contributing-and-license)
+## [General Contribution Guideline](https://github.com/bridgedxyz/contributing-and-license)
 
-## access design (readonly)
+## Access Design (readonly)
 
 **The plugin desing**
 
@@ -11,9 +11,9 @@ The design of the plugin user interface. Here, you can find what to develop.
 
 Sample design is used for evaluating code generation quality check. Both good and bad examples are provided. [Link here](https://www.figma.com/file/iypAHagtcSp3Osfo2a7EDz/?node-id=164%3A2621).
 
-## Writing ui codes (react).
+## Writing UI codes (React)
 
-if using material-ui, read the following [guidelines](https://material-ui.com/guides/minimizing-bundle-size/).
+If using material-ui, read the following [guidelines](https://material-ui.com/guides/minimizing-bundle-size/).
 
 
 You can also run / inspect / develop the [ui](./ui) on the browser environment without design tools openned. Instructions available at [webdev](./webdev)
