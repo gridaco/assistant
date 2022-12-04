@@ -1,0 +1,8 @@
+{
+  "name": "@app/emojis-loader",
+  "description": "emojis loader",
+  "authors": "Grida.co",
+  "version": "0.0.0",
+  "private": false,
+  "dependencies": {}
+}
