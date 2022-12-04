@@ -21,9 +21,8 @@ import styled from "@emotion/styled";
 // cached icons configs
 let CONFIGS: Map<string, NamedDefaultOssIconConfig>;
 export function IconsLoader() {
-  const [configs, setConfigs] = useState<
-    Map<string, NamedDefaultOssIconConfig>
-  >(undefined);
+  const [configs, setConfigs] =
+    useState<Map<string, NamedDefaultOssIconConfig>>(undefined);
   const [queryTerm, setQueryTerm] = useState<string>(undefined);
   const [iconLoadLimit, setIconLoadLimit] = useState(100);
   const iconRef = useRef<HTMLUListElement>(undefined);
@@ -263,7 +262,15 @@ function filterIcons(
 
 function IconItem(props: { name: string; config: NamedDefaultOssIconConfig }) {
   const { name, config } = props;
+  const [loading, setLoading] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const [downloading, setDownloading] = useState<boolean>(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(!loaded);
+    }, 5);
+  }, [loaded]);
 
   const _onUserLoadIconToCanvas = () => {
     // ANALYTICS
@@ -326,9 +333,18 @@ function IconItem(props: { name: string; config: NamedDefaultOssIconConfig }) {
           {downloading ? (
             <CircularProgress size={24} />
           ) : (
-            <svg width="24" height="24">
+            <svg
+              width="24"
+              height="24"
+              style={{
+                borderRadius: 4,
+                background: loading ? "rgba(0, 0, 0, 0.1)" : "none",
+                transition: "background 0.3s",
+              }}
+            >
               <image
                 xlinkHref={icons.makeIconUrl(name, config)}
+                onLoad={() => setLoaded(true)}
                 width="24"
                 height="24"
               />
