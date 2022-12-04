@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { PluginSdkService } from "@plugin-sdk/service";
 import App from "app/lib/main";
-import { TargetPlatform } from "app/lib/utils/plugin-init/init-target-platform";
+import { PluginSdkService } from "@plugin-sdk/service";
+import { TargetPlatform } from "@plugin-sdk/core";
 
 export default function InitWebdevTriggerPage() {
   useEffect(() => {

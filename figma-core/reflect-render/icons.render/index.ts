@@ -1,7 +1,6 @@
-// todo - make this universal
-import { converters } from "@design-sdk/figma";
+import { reflectColorToFigmaColor } from "@design-sdk/figma-node-conversion";
 import { Color } from "@reflect-ui/core/lib/color";
-import { IconConfig } from "@reflect-ui/core/lib/icon/icon.config";
+import { NamedIconConfig } from "@reflect-ui/core";
 import {
   ICON_DEFAULT_SIZE,
   ICON_MAX_SIZE,
@@ -19,7 +18,7 @@ export function renderSvgIcon(
   data: string,
   color: Color = "#000000",
   placement: IconPlacement = "center",
-  config?: IconConfig
+  config?: NamedIconConfig
 ): FrameNode {
   console.log(`inserting icon with name ${name} and data ${data}`);
 
@@ -63,7 +62,7 @@ export function renderSvgIcon(
 
 export function buildReflectIconNameForRender(
   name: string,
-  config: IconConfig
+  config: NamedIconConfig
 ): string {
   if (config.host == "material") {
     return `icons/mdi_${name}`;
@@ -90,7 +89,7 @@ export function switchSvgColor(
         node.fills = [
           {
             type: "SOLID",
-            color: converters.reflectColorToFigmaColor(sets[0].to),
+            color: reflectColorToFigmaColor(sets[0].to),
           },
         ];
       }

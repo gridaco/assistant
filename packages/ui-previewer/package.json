@@ -1,0 +1,10 @@
+{
+    "name": "@ui/previewer",
+    "version": "0.0.0",
+    "private": false,
+    "dependencies": {
+        "@code-editor/vanilla-preview": "^0.0.2",
+        "re-resizable": "^6.9.1",
+        "react-use-measure": "^2.1.1"
+    }
+}

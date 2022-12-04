@@ -1,32 +1,34 @@
 import React, { useState, useEffect } from "react";
 import "../app.css"; /** TODO: remove raw css usage. */
-import { initialize } from "../analytics";
+import { initialize as analytics_initialize } from "@assistant-fp/analytics";
 
 // UI COMPS
-import { EK_SET_APP_MODE } from "../constants/ek.constant";
+import { EK_SET_APP_MODE } from "@core/constant/ek.constant";
 import { PluginApp } from "plugin-app";
-import BatchMetaEditor from "../pages/tool-box/batch-meta-editor";
 import { useHistory, Switch, Route } from "react-router-dom";
+import type { TargetPlatform } from "@plugin-sdk/core";
 
 //
 // region screens import
-import { FontReplacerScreen } from "../pages/tool-box/font-replacer";
-import { ButtonMakerScreen } from "../pages/design/button-maker-screen";
-import { ComponentViewScreen } from "../pages/component-view";
+import { ButtonMakerScreen } from "@app/button-maker";
 import { LayoutViewScreen } from "../pages/layout-view";
-import { LintScreen } from "../pages/lint/lint-screen";
-import { GlobalizationScreen } from "../pages/g11n-screen";
-import { IconsScreen } from "../pages/icons-screen";
-import { CodeScreen } from "../pages/code/code-screen";
+import { ComponentViewScreen } from "@app/component-manage";
+import { LintScreen } from "@app/design-lint";
+import { PreviewScreen } from "@app/design-preview";
+import { IconsScreen } from "@app/icons-loader";
+import { MetaEditorScreen, BatchMetaEditor } from "@app/meta-editor";
+import { ExporterScreen } from "@app/export-scene-as-json";
+import { DataMapperScreen } from "@app/data-mapper";
+import { GlobalizationScreen } from "@app/i18n";
 import { ToolboxScreen } from "../pages/tool-box";
-import { MetaEditorScreen } from "../pages/tool-box/meta-editor";
-import { ExporterScreen } from "../pages/tool-box/exporter";
-import { DataMapperScreen } from "../pages/tool-box/data-mapper/data-mapper-screen";
-import { TargetPlatform } from "../utils/plugin-init/init-target-platform";
+import { FontReplacerScreen } from "@toolbox/font-replacer";
+import { CodeScreen } from "@app/design-to-code";
 import { AboutScreen } from "../pages/about";
-import Signin from "../pages/signin";
+import { SigninScreen } from "@app/auth";
+import { ToolboxHome } from "@app/toolbox";
+import { LiveSessionPage } from "@app/live";
+import { DesignTextCdoeSyntaxHighligherScreen } from "@app/design-text-code-syntax-highlight";
 // endregion screens import
-//
 
 import {
   getDedicatedRouter,
@@ -41,82 +43,16 @@ import {
   saveLayout,
   updateLayout,
   get_page_config_by_path,
-} from "../navigation";
+} from "../routing";
 
 import {
   WorkmodeScreenTabs,
   PrimaryWorkmodeSelect,
   NavigatorExpansionControlButton,
-  SecondaryWorkmodeMenu,
+  SecondaryMenuDropdown,
 } from "../components/navigation";
 import styled from "@emotion/styled";
-import { Column, Row } from "../components/style/global-style";
-import { UploadSteps } from "../components/upload-steps";
-
-function MoreMenus() {
-  const history = useHistory();
-  const menu = [
-    {
-      id: WorkScreen.signin,
-      name: WorkScreen.signin,
-      stage: "production",
-      onSelect: () => {
-        history.push("/signin");
-      },
-    },
-    {
-      id: WorkMode.asset,
-      name: WorkMode.asset,
-      stage: "development",
-      onSelect: () => {},
-    },
-    {
-      id: WorkMode.manage,
-      name: WorkMode.manage,
-      stage: "development",
-      onSelect: () => {},
-    },
-    {
-      id: WorkMode.tools,
-      name: WorkMode.tools,
-      stage: "development",
-      onSelect: () => {},
-    },
-    {
-      id: WorkMode.library,
-      name: WorkMode.library,
-      stage: "development",
-      onSelect: () => {},
-    },
-    {
-      id: WorkMode.settings,
-      name: WorkMode.settings,
-      stage: "development",
-      onSelect: () => {},
-    },
-    {
-      id: WorkMode.about,
-      name: WorkMode.about,
-      stage: "production",
-      onSelect: () => {
-        history.push("/about");
-      },
-    },
-  ].filter((m) => {
-    if (process.env.NODE_ENV == "production") {
-      return m.stage === "production";
-    }
-    return true; /** if not production, return all available menus */
-  });
-  return (
-    <SecondaryWorkmodeMenu<WorkMode | WorkScreen>
-      menus={menu}
-      onSelect={(id) => {
-        menu.find((m) => m.id === id)?.onSelect();
-      }}
-    />
-  );
-}
+import { Column, Row } from "@ui/core";
 
 function Screen(props: { screen: WorkScreen }) {
   switch (props.screen) {
@@ -128,16 +64,22 @@ function Screen(props: { screen: WorkScreen }) {
       return <ComponentViewScreen />;
     case WorkScreen.layout:
       return <LayoutViewScreen />;
+    case WorkScreen.preview:
+      return <PreviewScreen />;
     case WorkScreen.icon:
       return <IconsScreen />;
     case WorkScreen.lint:
       return <LintScreen />;
+    case WorkScreen.live:
+      return <LiveSessionPage />;
     case WorkScreen.dev:
       return <ToolboxScreen />;
     case WorkScreen.g11n:
       return <GlobalizationScreen />;
     case WorkScreen.exporter:
       return <ExporterScreen />;
+    case WorkScreen.tool_home:
+      return <ToolboxHome />;
     case WorkScreen.tool_desing_button_maker:
       return <ButtonMakerScreen />;
     case WorkScreen.tool_font_replacer:
@@ -148,82 +90,40 @@ function Screen(props: { screen: WorkScreen }) {
       return <BatchMetaEditor />;
     case WorkScreen.tool_data_mapper:
       return <DataMapperScreen />;
-    case WorkScreen.scene_upload_steps_final:
-      return <UploadSteps />;
+    case WorkScreen.tool_code_syntax_highlighter:
+      return <DesignTextCdoeSyntaxHighligherScreen />;
     case WorkScreen.signin:
-      return <Signin />;
+      return <SigninScreen />;
     default:
       return <div>Not found</div>;
   }
 }
 
-function TabsLayout(props: {
-  workmode: WorkMode;
-  tabIndex: number;
-  isTabVisible: boolean;
-  onChange: (index: number, tab: WorkScreen) => void;
-}) {
-  const history = useHistory();
-  const { workmode, tabIndex, onChange } = props;
-  const tabs_as_page_configs = getWorkmodeTabLayout(workmode).map(
-    (screen, index) => {
-      const _ = get_page_config(screen);
-      return {
-        id: _.id,
-        name: _.title,
-        path: _.path,
-      };
-    }
-  );
-
-  useEffect(() => {
-    handleTabChange(tabIndex);
-  }, []);
-
-  const handleTabChange = (index: number) => {
-    const screen = tabs_as_page_configs[index];
-    onChange(index, screen.id);
-    history.replace(screen.path); // since it is a movement between tabs, we don't use push. we use replace to avoid the history stack to be too long.
-  };
-
-  return (
-    <div className="outer-ui">
-      {props.isTabVisible && (
-        <div className="tabs-wrapper" style={{ margin: "0 -8px" }}>
-          <WorkmodeScreenTabs
-            layout={tabs_as_page_configs}
-            tabIndex={tabIndex}
-            onSelect={handleTabChange}
-          />
-        </div>
-      )}
-
-      <Switch>
-        {tabs_as_page_configs.map((v, i) => {
-          return (
-            <Route
-              key={v.id}
-              path={v.path}
-              render={() => <Screen screen={v.id} />}
-            />
-          );
-        })}
-      </Switch>
-    </div>
-  );
-}
+// region global navigation animation state
+import { RecoilRoot, useRecoilState } from "recoil";
+import {
+  AppbarContainerMotion,
+  AppbarContentMotion,
+} from "../components/navigation/navigation-motions";
+import { hide_navigation } from "./global-state-atoms";
+// endregion
 
 function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
+  const history = useHistory();
   const [workmode, setWorkmode] = useState<WorkMode>(
     props.savedLayout.currentWorkmode
   );
   const [workmodeSet, setWorkmodeSet] = useState<PrimaryWorkmodeSet>(
     props.savedLayout.workmodeSet
   );
-
+  const [tabIndex, setTabIndex] = useState<number>(0);
+  const [screen, setScreen] = useState<WorkScreen>();
+  const [expansion, setExpansion] = useState<boolean>(true);
+  const isTabVisible = expansion;
   const on_workmode_select = (workmode: WorkMode) => {
     setWorkmode(workmode);
     setTabIndex(0);
+    setExpansion(true);
   };
 
   const on_work_select = (index, screen) => {
@@ -235,44 +135,93 @@ function TabNavigationApp(props: { savedLayout: NavigationStoreState }) {
     });
   };
 
-  const [tabIndex, setTabIndex] = useState<number>(0);
-  const [expansion, setExpansion] = useState<boolean>(true);
+  // region animation state
+  const [whole_navigation_hidden] = useRecoilState(hide_navigation);
+
+  useEffect(() => {
+    handleTabChange(tabIndex);
+  }, [tabIndex, workmode]);
+
+  const handleTabChange = (index: number) => {
+    const screen = tabs_as_page_configs[index];
+    setScreen(screen.id);
+    on_work_select(index, screen.id);
+    history.replace(screen.path); // since it is a movement between tabs, we don't use push. we use replace to avoid the history stack to be too long.
+  };
+
+  const tabs_as_page_configs = getWorkmodeTabLayout(workmode).map(
+    (screen, index) => {
+      const _ = get_page_config(screen);
+      return {
+        id: _.id,
+        name: _.title,
+        path: _.path,
+      };
+    }
+  );
+
+  const shadow_required = screen == WorkScreen.code || !isTabVisible;
 
   return (
-    <>
-      <Wrapper>
-        <Column
-          style={{
-            width: "100%",
-            justifyItems: "center",
-            // marginBottom: "-8px",
-          }}
-        >
-          <Row>
-            <PrimaryWorkmodeSelect
-              selection={workmode}
-              set={workmodeSet}
-              onSelect={on_workmode_select}
-            />
-            <NavigatorExpansionControlButton
-              action={expansion ? "close" : "expand"}
-              onClick={() => setExpansion(!expansion)}
-            />
-          </Row>
-          {!expansion && <MoreMenus />}
-        </Column>
-      </Wrapper>
+    // root flex styled container for the whole app
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh",
+      }}
+    >
+      <AppbarContainerMotion hidden={whole_navigation_hidden}>
+        <AppbarContentMotion hidden={whole_navigation_hidden}>
+          <PrimaryWorkmodeWrapper shadow_required={shadow_required}>
+            <Column
+              style={{
+                width: "100%",
+                justifyItems: "center",
+              }}
+            >
+              <Row style={{ paddingTop: "22px" }}>
+                <PrimaryWorkmodeSelect
+                  selection={workmode}
+                  set={workmodeSet}
+                  onSelect={on_workmode_select}
+                />
+                <NavigatorExpansionControlButton
+                  action={expansion ? "close" : "expand"}
+                  onClick={() => setExpansion(!expansion)}
+                />
+              </Row>
+              {!expansion && <SecondaryMenuDropdown />}
+              {isTabVisible && (
+                <WorkmodeScreenTabs
+                  key="workmode-tabs"
+                  layout={tabs_as_page_configs}
+                  tabIndex={tabIndex}
+                  onSelect={handleTabChange}
+                />
+              )}
+            </Column>
+          </PrimaryWorkmodeWrapper>
+        </AppbarContentMotion>
+      </AppbarContainerMotion>
 
-      {/* {expansion && ( */}
-      <TabsLayout
-        key={workmode}
-        workmode={workmode}
-        tabIndex={tabIndex}
-        isTabVisible={expansion}
-        onChange={on_work_select}
-      />
-      {/* )} */}
-    </>
+      <>
+        {/* the screen's wrapping layout */}
+        <ScreenWrapLayout>
+          <Switch>
+            {tabs_as_page_configs.map((v, i) => {
+              return (
+                <Route
+                  key={v.id}
+                  path={v.path}
+                  render={() => <Screen screen={v.id} />}
+                />
+              );
+            })}
+          </Switch>
+        </ScreenWrapLayout>
+      </>
+    </div>
   );
   //
 }
@@ -307,12 +256,25 @@ function Home() {
       .then((d) => {
         setSavedLayout(d);
       })
+      .catch((e) => {
+        console.log("failed loading layout", e);
+      })
       .finally(() => {});
   }, []);
 
   if (savedLayout) {
-    const p = get_page_config(savedLayout.currentWork).path;
-    history.replace(p);
+    try {
+      const p = get_page_config(savedLayout.currentWork).path;
+      history.replace(p);
+    } catch (e) {
+      console.log("failed to load saved layout", e);
+      console.log(
+        "this can happen during development, switching between branches, or could happen on production wehn new version lo longer has a page that is previously loaded."
+      );
+      // if somehow, failed loading the path of the current work, we will redirect to the home page.
+      // this can happen during development, switching between branches, or could happen on production wehn new version lo longer has a page that is previously loaded.
+      history.replace("/code/preview");
+    }
   }
 
   return <></>;
@@ -325,7 +287,7 @@ export default function App(props: { platform: TargetPlatform }) {
 
     // region init analytics
     try {
-      initialize();
+      analytics_initialize();
     } catch (e) {
       console.warn("Analytics disabled", e);
     }
@@ -334,30 +296,32 @@ export default function App(props: { platform: TargetPlatform }) {
 
   const Router = getDedicatedRouter();
   return (
-    <PluginApp platform={props.platform}>
-      {/* @ts-ignore */}
-      <Router>
-        <Switch>
-          {/* # region unique route section */}
-          {standalone_pages.map((p) => {
-            return (
-              <Route
-                key={p.id}
-                path={p.path}
-                render={() => {
-                  return <Screen screen={p.id} />;
-                }}
-              />
-            );
-          })}
-          {/* # endregion unique route section */}
-          {/* dynamic route shall be placed at the last point, since it overwrites other routes */}
-          <Route path="/:workmode/:work" component={RouterTabNavigationApp} />
-          <Route path="/" component={Home} />
-          {/* 👆 this is for preventing blank page on book up. this will be fixed and removed.*/}
-        </Switch>
-      </Router>
-    </PluginApp>
+    <RecoilRoot>
+      <PluginApp platform={props.platform}>
+        {/* @ts-ignore */}
+        <Router>
+          <Switch>
+            {/* # region unique route section */}
+            {standalone_pages.map((p) => {
+              return (
+                <Route
+                  key={p.id}
+                  path={p.path}
+                  render={() => {
+                    return <Screen screen={p.id} />;
+                  }}
+                />
+              );
+            })}
+            {/* # endregion unique route section */}
+            {/* dynamic route shall be placed at the last point, since it overwrites other routes */}
+            <Route path="/:workmode/:work" component={RouterTabNavigationApp} />
+            <Route path="/" component={Home} />
+            {/* 👆 this is for preventing blank page on book up. this will be fixed and removed.*/}
+          </Switch>
+        </Router>
+      </PluginApp>
+    </RecoilRoot>
   );
 }
 
@@ -372,13 +336,23 @@ function _update_focused_screen_ev(screen: WorkScreen) {
     },
     "*"
   );
-  console.log(
-    `sending back thread about changed screen (user interest) data - "${screen}"`
-  );
 }
-
-const Wrapper = styled.div`
+const ScreenWrapLayout = styled.div`
   display: flex;
-  padding: 0 8px;
-  /* margin-bottom: -8px; */
+  flex-direction: column;
+  flex-grow: 1;
+  min-height: 0px;
+`;
+
+const PrimaryWorkmodeWrapper = styled.div<{ shadow_required: boolean }>`
+  display: flex;
+  padding: 0 16px;
+  background-color: #fff;
+
+  box-shadow: ${(props) =>
+    props.shadow_required ? "0px 4px 24px rgba(0,0,0,0.25)" : "none"};
+
+  > div {
+    width: 100%;
+  }
 `;

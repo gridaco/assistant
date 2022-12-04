@@ -102,9 +102,9 @@ You will need to specify a `repository` in the `package.json`:
 
 ```diff
 ...
-+ "repository" : {
++ "repository": {
 +   "type": "git",
 +   "url": "git+https://github.com/ORG/NAME.git"
-+  }
++ }
 ...
 ```

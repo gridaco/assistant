@@ -1,0 +1,15 @@
+{
+  "name": "@app/schema-editor",
+  "description": "schema editor related package",
+  "authors": "Grida.co",
+  "version": "0.0.0",
+  "private": false,
+  "dependencies": {
+    "@code-ui/completion-provider": "^0.0.4",
+    "@code-ui/hover": "^0.0.2",
+    "@code-ui/interface": "^0.0.5",
+    "@code-ui/token": "^0.0.7",
+    "@radix-ui/react-hover-card": "^0.1.0",
+    "@tippyjs/react": "^4.2.5"
+  }
+}

@@ -28,6 +28,27 @@ export const PUGIN_SDK_EK_REQUEST_UPDATE_MAIN_COMPONENT_META =
   "assistant/tools/node-meta-editor/update/main-component";
 // endregion meta
 
+// region export (image)
+export const PLUGIN_SDK_NS_EXPORT_AS_IMAGE = `${__PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/export`;
+export const PLUGIN_SDK_EK_REQUEST_EXPORT_AS_IMAGE =
+  "assistant/export-node-as-image";
+// endregion export (image)
+
+// region node read
+export const PLUGIN_SDK_NS_GET_NODE = `${__PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/get-node`;
+export const PLUGIN_SDK_EK_REQUEST_GET_NODE_BY_ID = "assistant/node/get/by-id";
+// endregion node read
+
+// region node access
+export const PLUGIN_SDK_NS_NODE = `${__PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/node`;
+export const PLUGIN_SDK_EK_REQUEST_RESCALE_NODE_BY_ID =
+  "assistant/node/rescale/by-id";
+export const PLUGIN_SDK_EK_REQUEST_RESIZE_NODE_BY_ID =
+  "assistant/node/resize/by-id";
+export const PLUGIN_SDK_EK_REQUEST_REMOVE_NODE_BY_ID =
+  "assistant/node/remove/by-id";
+// endregion node access
+
 // region storage
 export const PLUGIN_SDK_NS_STORAGE = `${__PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/storage`;
 export const PLUGIN_SDK_EK_REQUEST_STORAGE_SET_ITEM =
@@ -54,6 +75,20 @@ export const PLUGIN_SDK_EK_BROWSER_OPEN_URI = "assistant/browser-api/open-uri";
 export const PLUGIN_SDK_NS_NOTIFY_API = `${__PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/notify`;
 export const PLUGIN_SDK_EK_SIMPLE_NOTIFY = "notify";
 export const PLUGIN_SDK_EK_NOTIFY_COPIED = "notify-copied";
+// endregion notify
+
+// region ui
+export const PLUGIN_SDK_NS_UI_API = `${__PLUGIN_SDK_NAMESPACE_BASE_TOKEN}/ui`;
+export const PLUGIN_SDK_EK_UI_RESIZE = "resize";
+export const PLUGIN_SDK_EK_UI_CLOSE = "close";
+export const PLUGIN_SDK_EK_UI_SHOW = "show";
+export const PLUGIN_SDK_EK_UI_HIDE = "hide";
+export const PLUGIN_SDK_EK_UI_ALIAS = {
+  close: PLUGIN_SDK_EK_UI_CLOSE,
+  resize: PLUGIN_SDK_EK_UI_RESIZE,
+  show: PLUGIN_SDK_EK_UI_SHOW,
+  hide: PLUGIN_SDK_EK_UI_HIDE,
+};
 // endregion notify
 
 // region focus

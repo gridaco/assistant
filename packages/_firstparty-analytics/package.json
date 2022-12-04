@@ -1,0 +1,7 @@
+{
+    "name": "@assistant-fp/analytics",
+    "description": "First party analytics for assistant",
+    "authors": "Grida.co",
+    "version": "0.0.0",
+    "dependencies": {}
+}

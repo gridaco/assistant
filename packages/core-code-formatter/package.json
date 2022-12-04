@@ -1,0 +1,9 @@
+{
+    "name": "@core/code-formatter",
+    "description": "description",
+    "authors": "Grida co",
+    "version": "0.0.0",
+    "dependencies": {
+        "dart-style": "^1.3.2-dev"
+    }
+}

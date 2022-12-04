@@ -1,1 +1,1 @@
-export * from "./preview";
+export * from "./open-in-editor-button";

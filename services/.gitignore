@@ -1,0 +1,11 @@
+.env
+
+# Serverless directories
+.serverless/
+
+# DynamoDB Local files
+.dynamodb/
+
+# build artifacts
+.build
+.webpack

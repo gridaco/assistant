@@ -1,8 +1,13 @@
-import { NS_FILE_ROOT_METADATA } from "app/lib/constants/ns.constant";
+import { NS_FILE_ROOT_METADATA } from "@core/constant/ns.constant";
 
 import {
   PLUGIN_SDK_EK_BATCH_META_UPDATE,
   PLUGIN_SDK_EK_DRAG_AND_DROPPED,
+  PLUGIN_SDK_NS_UI_API,
+  PLUGIN_SDK_EK_UI_RESIZE,
+  PLUGIN_SDK_EK_UI_SHOW,
+  PLUGIN_SDK_EK_UI_HIDE,
+  PLUGIN_SDK_EK_UI_CLOSE,
   PLUGIN_SDK_EK_REQUEST_FETCH_NODE_MAIN_COMPONENT_META,
   PLUGIN_SDK_EK_REQUEST_FETCH_NODE_META,
   PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META,
@@ -30,19 +35,31 @@ import {
   PLUGIN_SDK_EK_SIMPLE_FOCUS,
   PLUGIN_SDK_NS_BROWSER_API,
   PLUGIN_SDK_EK_BROWSER_OPEN_URI,
+  PLUGIN_SDK_EK_REQUEST_EXPORT_AS_IMAGE,
+  PLUGIN_SDK_NS_EXPORT_AS_IMAGE,
+  ImageExportResponse,
+  _ImageExportOption_to_FigmaCompat,
+  ImageExportRequest,
+  PLUGIN_SDK_EK_REQUEST_GET_NODE_BY_ID,
+  PLUGIN_SDK_NS_GET_NODE,
+  TargetPlatform,
+  target_platform,
+  MetaRequest,
+  makeExportSetting,
+  UIControlRequest,
 } from "@plugin-sdk/core";
 
-import { WebStorage, FigmaStorage, IStorage } from "./storage";
+import {
+  WebStorage,
+  FigmaStorage,
+  IStorage,
+  LayerMetadataStorage,
+} from "./storage";
 
 // TODO - make it universal
 import { Figma, figma } from "@design-sdk/figma";
 import type { SceneNode } from "@design-sdk/figma";
 
-import {
-  __syncTargetPlatformForCodeThread,
-  TargetPlatform,
-  TARGET_PLATFORM,
-} from "../../app/lib/utils/plugin-init/init-target-platform";
 import {
   StorageGetItemResponse,
   StorageRequest,
@@ -137,14 +154,24 @@ export class PluginSdkService {
       return true;
     }
 
+    // image export
+    else if (event.namespace == PLUGIN_SDK_NS_EXPORT_AS_IMAGE) {
+      handleExportEvent(handerProps);
+    }
+
+    // get node
+    else if (event.namespace == PLUGIN_SDK_NS_GET_NODE) {
+      handleGetNodeEvent(handerProps);
+    }
+
     // storage
-    if (event.namespace == PLUGIN_SDK_NS_STORAGE) {
+    else if (event.namespace == PLUGIN_SDK_NS_STORAGE) {
       handleStorageEvent(handerProps);
       return true;
     }
 
     // browser api
-    if (event.namespace == PLUGIN_SDK_NS_BROWSER_API) {
+    else if (event.namespace == PLUGIN_SDK_NS_BROWSER_API) {
       handleBrowserApiEvent(event);
       return true;
     }
@@ -159,6 +186,11 @@ export class PluginSdkService {
     // notify
     else if (event.namespace == PLUGIN_SDK_NS_NOTIFY_API) {
       handleNotify(handerProps);
+      return true;
+    }
+    // ui api
+    else if (event.namespace == PLUGIN_SDK_NS_UI_API) {
+      handleUiApiEvent(event);
       return true;
     }
 
@@ -214,102 +246,77 @@ function handleInternalEvent(event: HanderProps) {
   return response(event.id, true);
 }
 
-function handleMetaEvent(props: HanderProps) {
-  if (props.key == PLUGIN_SDK_EK_BATCH_META_UPDATE) {
-    const d = props.data as BatchMetaUpdateRequest;
-    figma?.root.setSharedPluginData(NS_FILE_ROOT_METADATA, d.key, d.value);
-    figma?.notify("metadata updated", { timeout: 1 });
-  } else if (props.key == PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META) {
-    const d = props.data as BatchMetaFetchRequest;
-    const fetched = figma?.root.getSharedPluginData(
-      NS_FILE_ROOT_METADATA,
-      d.key
-    );
-    console.log(`fetched root metadata for key ${d.key} is.`, fetched);
-    response(props.id, fetched);
-  } else if (props.key == PLUGIN_SDK_EK_REQUEST_FETCH_NODE_META) {
-    const request: NodeMetaFetchRequest = props.data;
-    if (!request.id) {
-      throw `node id is required in order to perform meta fetch`;
-    }
-    const data = figma
-      .getNodeById(request.id)
-      .getSharedPluginData(request.namespace, request.key);
-    const normData = normalizeMetadata(data);
-    return response(props.id, normData);
-  } else if (
-    props.key == PLUGIN_SDK_EK_REQUEST_FETCH_NODE_MAIN_COMPONENT_META
+function handleMetaEvent(props: HanderProps<MetaRequest>) {
+  if (
+    props.key == PLUGIN_SDK_EK_BATCH_META_UPDATE ||
+    props.key == PLUGIN_SDK_EK_REQUEST_FETCH_ROOT_META ||
+    props.key == PLUGIN_SDK_EK_REQUEST_FETCH_NODE_META ||
+    props.key == PUGIN_SDK_EK_REQUEST_UPDATE_NODE_META
   ) {
-    const request: NodeMetaFetchRequest = props.data;
-    const node = figma?.getNodeById(request.id);
-    let targetNode: Figma.SceneNode = getMaincomponentLike(node?.id);
-    const data = targetNode.getSharedPluginData(request.namespace, request.key);
-    const normData = normalizeMetadata(data);
-    return response(props.id, normData);
-  } else if (props.key == PUGIN_SDK_EK_REQUEST_UPDATE_MAIN_COMPONENT_META) {
-    const request: NodeMetaUpdateRequest = props.data;
-    const node = figma?.getNodeById(request.id);
-    let targetNode: Figma.SceneNode = getMaincomponentLike(node?.id);
-    targetNode.setSharedPluginData(
-      request.namespace,
-      request.key,
-      normalizeSavingMetadata(request.value)
-    );
-    return response(props.id, true);
-    //
-  } else if (props.key == PUGIN_SDK_EK_REQUEST_UPDATE_NODE_META) {
-    const request: NodeMetaUpdateRequest = props.data;
-    figma
-      .getNodeById(request.id)
-      .setSharedPluginData(
-        request.namespace,
-        request.key,
-        normalizeSavingMetadata(request.value)
-      );
-    return response(props.id, true);
+    const d = props.data;
+    switch (d.type) {
+      case "batch-meta-update-request": {
+        new LayerMetadataStorage(figma.root.id, NS_FILE_ROOT_METADATA).setItem(
+          d.key,
+          d.value
+        );
+        figma.notify("metadata updated", { timeout: 1 });
+        return response(props.id, true);
+      }
+      case "batch-meta-fetch-request": {
+        const fetched = new LayerMetadataStorage(
+          figma.root.id,
+          NS_FILE_ROOT_METADATA
+        ).getItem(d.key);
+
+        return response(props.id, fetched);
+      }
+      case "node-meta-fetch-request": {
+        if (!d.id) {
+          throw `node id is required in order to perform meta fetch`;
+        }
+        const fetched = new LayerMetadataStorage(
+          figma.root.id,
+          d.namespace
+        ).getItem(d.key);
+        return response(props.id, fetched);
+      }
+      case "node-meta-update-request": {
+        new LayerMetadataStorage(figma.root.id, d.namespace).setItem(
+          d.key,
+          d.value
+        );
+        return response(props.id, true);
+      }
+    }
   }
+
+  // if (props.key == PLUGIN_SDK_EK_REQUEST_FETCH_NODE_MAIN_COMPONENT_META) {
+  //   const request: NodeMetaFetchRequest = props.data;
+  //   let targetNode: Figma.SceneNode = getMaincomponentLike(request.id);
+  //   const data = targetNode.getSharedPluginData(request.namespace, request.key);
+  //   const normData = decode(data);
+  //   return response(props.id, normData);
+  // } else if (props.key == PUGIN_SDK_EK_REQUEST_UPDATE_MAIN_COMPONENT_META) {
+  //   const request: NodeMetaUpdateRequest = props.data;
+  //   let targetNode: Figma.SceneNode = getMaincomponentLike(request?.id);
+  //   targetNode.setSharedPluginData(
+  //     request.namespace,
+  //     request.key,
+  //     encode(request.value)
+  //   );
+  //   return response(props.id, true);
+  //   //
+  // }
 }
 
-function normalizeSavingMetadata(data: string | object) {
-  return typeof data == "object" ? JSON.stringify(data) : data;
+function handleRemoteApiEvent(props: HanderProps) {
+  throw "not implemented";
 }
-
-function normalizeMetadata(data: string): object | string {
-  if (data == undefined || data.length == 0) {
-    return undefined;
-  }
-
-  try {
-    const json = JSON.parse(data);
-    return json;
-  } catch (_) {
-    return data;
-  }
-}
-
-function getMaincomponentLike(nodeID: string): Figma.SceneNode {
-  if (!nodeID) {
-    throw `node id is required in order to perform meta fetch`;
-  }
-  const node = figma?.getNodeById(nodeID);
-  let targetNode: Figma.SceneNode;
-  if (node.type == "INSTANCE") {
-    targetNode = node.mainComponent;
-  } else if (node.type == "COMPONENT") {
-    targetNode = node;
-  } else if (node.type == "COMPONENT_SET") {
-    targetNode = node;
-  } else {
-    throw `node ${node.id} of type ${node.type} is not supported for component meta manipulation.`;
-  }
-  return targetNode;
-}
-
-function handleRemoteApiEvent(props: HanderProps) {}
 
 function handleNotify(props: HanderProps<NotifyRequest>) {
   if (props.key == PLUGIN_SDK_EK_SIMPLE_NOTIFY) {
-    switch (TARGET_PLATFORM) {
+    switch (target_platform.get()) {
       case TargetPlatform.webdev: {
         alert(props.data.message);
       }
@@ -323,9 +330,61 @@ function handleNotify(props: HanderProps<NotifyRequest>) {
   response(props.id, true);
 }
 
+function handleUiApiEvent(props: HanderProps<UIControlRequest>) {
+  switch (target_platform.get()) {
+    case TargetPlatform.webdev: {
+      break;
+      // not handled
+    }
+
+    case TargetPlatform.figma: {
+      switch (props.data.type) {
+        case PLUGIN_SDK_EK_UI_CLOSE: {
+          figma?.ui.close();
+          break;
+        }
+        case PLUGIN_SDK_EK_UI_SHOW: {
+          figma?.ui.show();
+          break;
+        }
+        case PLUGIN_SDK_EK_UI_HIDE: {
+          figma?.ui.hide();
+          break;
+        }
+        case PLUGIN_SDK_EK_UI_RESIZE: {
+          figma?.ui.resize(props.data.size.width, props.data.size.height);
+          break;
+        }
+      }
+    }
+  }
+  response(props.id, true);
+}
+
+function handleGetNodeEvent(props: HanderProps<{ id: string }>) {
+  if (props.key == PLUGIN_SDK_EK_REQUEST_GET_NODE_BY_ID) {
+    switch (target_platform.get()) {
+      case TargetPlatform.webdev: {
+      }
+      case TargetPlatform.figma: {
+        const node = figma?.getNodeById(props.data.id) as SceneNode;
+        response(props.id, {
+          id: node?.id,
+          name: node?.name,
+          x: node?.x,
+          y: node?.y,
+          width: node?.width,
+          height: node?.height,
+          ...node,
+        });
+      }
+    }
+  }
+}
+
 function handleFocus(props: HanderProps<FocusRequest>) {
   if (props.key == PLUGIN_SDK_EK_SIMPLE_FOCUS) {
-    switch (TARGET_PLATFORM) {
+    switch (target_platform.get()) {
       case TargetPlatform.webdev: {
         // none
         console.log("mock focus event from webdev", props);
@@ -342,9 +401,35 @@ function handleFocus(props: HanderProps<FocusRequest>) {
   }
 }
 
+async function handleExportEvent(event: HanderProps<ImageExportRequest>) {
+  if (event.key === PLUGIN_SDK_EK_REQUEST_EXPORT_AS_IMAGE) {
+    switch (target_platform.get()) {
+      case TargetPlatform.webdev: {
+        console.log(
+          "webdev cannot perform image export request. ignoring this."
+        );
+        return undefined;
+      }
+      case TargetPlatform.figma: {
+        const r = await (figma.getNodeById(
+          event.data.id
+        ) as SceneNode).exportAsync({
+          ...makeExportSetting(event.data.opt),
+        });
+
+        return response<ImageExportResponse>(event.id, {
+          id: event.data.id,
+          data: r,
+          opt: event.data.opt,
+        });
+      }
+    }
+  }
+}
+
 async function handleStorageEvent(props: HanderProps<StorageRequest>) {
   const _get_dedicated_storage = (): IStorage => {
-    switch (TARGET_PLATFORM) {
+    switch (target_platform.get()) {
       case TargetPlatform.webdev: {
         return new WebStorage();
       }
@@ -375,8 +460,14 @@ async function handleBrowserApiEvent(props: TransportPluginEvent) {
 
 function handleDragDropped(props: HanderProps<DragAndDropOnCanvasRequest>) {
   console.log("handling drop event", props.data);
-  const { dropPosition, windowSize, offset, itemSize, eventKey, customData } =
-    props.data;
+  const {
+    dropPosition,
+    windowSize,
+    offset,
+    itemSize,
+    eventKey,
+    customData,
+  } = props.data;
 
   // Getting the position and size of the visible area of the canvas.
   const bounds = figma.viewport.bounds;
@@ -416,11 +507,13 @@ function response<T = any>(
   data: T,
   error: Error | undefined = undefined
 ): boolean {
-  console.info(
-    `${TARGET_PLATFORM}>> responding to request ${requestId} with data ${JSON.stringify(
-      data
-    )} and ${error ? "" + error : "no error"}`
-  );
+  if (process.env.NODE_ENV == "development" && process.env.VERBOSE) {
+    console.info(
+      `${target_platform.get()}>> responding to request ${requestId} with data ${JSON.stringify(
+        data
+      )} and ${error ? "" + error : "no error"}`
+    );
+  }
 
   const msg = <TransportPluginEvent>{
     id: requestId,
@@ -429,7 +522,7 @@ function response<T = any>(
     error: error,
     data: data,
   };
-  switch (TARGET_PLATFORM) {
+  switch (target_platform.get()) {
     case TargetPlatform.webdev: {
       window.postMessage({ pluginMessage: msg }, undefined);
       break;
@@ -446,7 +539,7 @@ function response<T = any>(
 /** this is used to proxy a request from inner iframe to host iframe. */
 function requestToHost(req) {
   console.log("requesting host to handle requests from hosted app.", req);
-  switch (TARGET_PLATFORM) {
+  switch (target_platform.get()) {
     case TargetPlatform.webdev: {
       window.postMessage(
         { pluginMessage: { __proxy_request_from_hosted_plugin: true, ...req } },
@@ -462,6 +555,14 @@ function requestToHost(req) {
       break;
     }
   }
+}
+
+export function __syncTargetPlatformForCodeThread(
+  platform: TargetPlatform
+): boolean {
+  // console.info(`thread#code: syncing target platform to ${platform}`);
+  target_platform.set(platform);
+  return true;
 }
 
 /**

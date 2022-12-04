@@ -1,0 +1,9 @@
+{
+    "name": "@ui/codebox",
+    "version": "0.0.0",
+    "private": false,
+    "dependencies": {
+        "@monaco-editor/react": "^4.4.1",
+        "monaco-editor": "^0.33.0"
+    }
+}

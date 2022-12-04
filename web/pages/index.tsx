@@ -1,9 +1,9 @@
 import React from "react";
 
 import App from "app/lib/main";
-import { TargetPlatform } from "app/lib/utils/plugin-init/init-target-platform";
 import { useEffect } from "react";
 import { PluginSdkService } from "@plugin-sdk/service";
+import { TargetPlatform } from "@plugin-sdk/core";
 import { useRouter } from "next/router";
 import { get_target_platform_from_query } from "../utils/platform-init-query";
 

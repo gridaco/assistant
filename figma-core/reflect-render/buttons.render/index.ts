@@ -1,5 +1,5 @@
 import { Color } from "@reflect-ui/core/lib/color";
-import { converters } from "@design-sdk/figma";
+import { reflectColorToFigmaRGB } from "@design-sdk/figma-node-conversion";
 import { ButtonColorScheme } from "@reflect-ui/core/lib/theme/color-schemes";
 import { BUTTON_COLOR_SCHEMES_SET } from "@reflect.bridged.xyz/ui-generator/lib/seeds/color-schemes/button.color-scheme.seed";
 import { BUTTON_TEXTS_SET_EN } from "@reflect.bridged.xyz/ui-generator/lib/seeds";
@@ -188,7 +188,7 @@ function generateRandomBorder(color: Color | undefined): Paint | undefined {
 
   return {
     type: "SOLID",
-    color: converters.reflectColorToFigmaRGB(color),
+    color: reflectColorToFigmaRGB(color),
     visible: chanceBy(0.5),
   };
 }

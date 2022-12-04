@@ -1,4 +1,4 @@
-import { EK_REPLACE_FONT } from "app/lib/constants";
+import { EK_REPLACE_FONT } from "@core/constant";
 import { replaceAllTextFontInFrame } from "../tool-box/manipulate";
 import { addEventHandler, singleFigmaNodeSelection } from "../code-thread";
 

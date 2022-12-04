@@ -1,5 +1,5 @@
-import { IconConfig } from "@reflect-ui/core";
-import { EK_CREATE_ICON, EK_ICON_DRAG_AND_DROPPED } from "app/lib/constants";
+import { NamedIconConfig } from "@reflect-ui/core";
+import { EK_CREATE_ICON, EK_ICON_DRAG_AND_DROPPED } from "@core/constant";
 import { PluginSdkService } from "@plugin-sdk/service";
 import { IconPlacement, renderSvgIcon } from "../reflect-render/icons.render";
 import { addEventHandler } from "../code-thread";
@@ -7,7 +7,7 @@ import { addEventHandler } from "../code-thread";
 interface CreateIconProps {
   key: string;
   svg: string;
-  config: IconConfig;
+  config: NamedIconConfig;
 }
 
 function createIcon(

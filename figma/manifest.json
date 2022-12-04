@@ -1,7 +1,17 @@
 {
-    "api": "1.0.0",
-    "id": "896445082033423994",
-    "name": "Grida",
-    "main": "dist/code.js",
-    "ui": "dist/ui.html"
+  "name": "Grida",
+  "id": "896445082033423994",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "dist/ui.html",
+  "editorType": [
+    "figma"
+  ],
+  "relaunchButtons": [
+    {
+      "command": "open",
+      "name": "Open Assistant",
+      "multipleSelection": true
+    }
+  ]
 }
