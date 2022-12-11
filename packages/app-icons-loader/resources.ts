@@ -97,8 +97,6 @@ export function useIcons({
 
   let result = Array.from(icons ?? []);
 
-  console.log(meta.filter((m) => m.package === "radix-ui"));
-
   // sort by package name
 
   const pkg_order = query

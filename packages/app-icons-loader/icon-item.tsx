@@ -43,8 +43,12 @@ export function IconItem({ onClick, ...props }: IconItemProps) {
       const data = {
         key: name,
         svg: svg,
-        // TODO:
-        // config: config,
+        config: {
+          name: props.name,
+          variant: props.variant,
+          size: props.size,
+          package: props.package,
+        },
       };
       return data;
     } catch (_) {
@@ -73,7 +77,7 @@ export function IconItem({ onClick, ...props }: IconItemProps) {
   return (
     <Draggable customDataLoader={loadData} eventKey={EK_ICON_DRAG_AND_DROPPED}>
       <Tooltip
-        title={`${name} (${variant}) (${_package})`}
+        title={`${name} (${variant ?? "default"}) (${_package})`}
         placement="top"
         PopperProps={{
           popperOptions: {

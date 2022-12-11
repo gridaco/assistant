@@ -161,6 +161,7 @@ const Section = styled.div`
   .title {
     margin: 0;
     padding: 16px;
+    padding-right: 0;
     font-size: 12px;
     font-weight: normal;
     color: rgba(0, 0, 0, 0.54);
