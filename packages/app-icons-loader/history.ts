@@ -1,30 +1,43 @@
 // save recently used items
 
+import type { Icon } from "./resources";
+
 const _k_store_key = "icons-load-history";
 
 export class IconsLoadHistory {
-  private readonly history: Set<string>;
+  private readonly data: Array<Icon> = [];
 
-  constructor() {
-    this.history = new Set();
-
+  constructor(readonly max: number = 50) {
     const items = localStorage.getItem(_k_store_key);
     if (items) {
-      this.history = new Set(JSON.parse(items));
+      this.data = JSON.parse(items);
     }
   }
 
-  list(to: number = Infinity) {
-    return Array.from(this.history).reverse().slice(0, to);
+  list(to: number = Infinity): Array<Icon> {
+    return Array.from(this.data).reverse().slice(0, to);
   }
 
-  push(item: string) {
-    this.history.delete(item);
-    this.history.add(item);
+  push(item: Icon) {
+    const index = this.data.findIndex(
+      (i) =>
+        i.package === item.package &&
+        i.name === item.name &&
+        i.variant === item.variant
+    );
+    if (index >= 0) {
+      this.data.splice(index, 1);
+    }
+    this.data.push(item);
+
+    if (this.data.length > this.max) {
+      this.data.shift();
+    }
+
     this.save();
   }
 
   private save() {
-    localStorage.setItem(_k_store_key, JSON.stringify(this.list()));
+    localStorage.setItem(_k_store_key, JSON.stringify(this.data));
   }
 }

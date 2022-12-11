@@ -88,7 +88,23 @@ export function useIcons({
 
   const hasMore = icons?.length > max;
 
-  return { icons: icons?.slice(0, max), hasMore };
+  let result = Array.from(icons ?? []);
+
+  // sort by package name
+  const pkg_order = ["radix-ui", "material", "unicons", "ant-design"];
+  result = result.sort((i, i2) => {
+    const pkg1 = pkg_order.indexOf(i.package);
+    const pkg2 = pkg_order.indexOf(i2.package);
+    if (pkg1 < pkg2) {
+      return -1;
+    }
+    if (pkg1 > pkg2) {
+      return 1;
+    }
+    return 0;
+  });
+
+  return { icons: result.slice(0, max), hasMore };
 }
 
 /**

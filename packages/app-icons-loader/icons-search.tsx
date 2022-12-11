@@ -7,47 +7,47 @@ export function IconSearch(props: {
   onChange: (value: string) => void;
   onSelectIconProperty: (value: any) => void;
 }) {
-  const iconPropertyList = {
-    default_size: ["Size", "16", "20", "24", "28", "32"],
-    variant: ["Variant", "Outlined", "Twotone", "Default", "Sharp"],
-  };
-  const [iconProperty, setIconProperty] = useState({
-    default_size: "Size",
-    variant: "Variant",
-  });
+  // const iconPropertyList = {
+  //   default_size: ["Size", "16", "20", "24", "28", "32"],
+  //   variant: ["Variant", "Outlined", "Twotone", "Default", "Sharp"],
+  // };
+  // const [iconProperty, setIconProperty] = useState({
+  //   default_size: "Size",
+  //   variant: "Variant",
+  // });
 
-  const BootstrapInput = withStyles((theme) => ({
-    root: {
-      "label + &": {
-        marginTop: theme.spacing(3),
-      },
-    },
-    input: {
-      fontSize: 14,
-    },
-  }))(InputBase);
+  // const BootstrapInput = withStyles((theme) => ({
+  //   root: {
+  //     "label + &": {
+  //       marginTop: theme.spacing(3),
+  //     },
+  //   },
+  //   input: {
+  //     fontSize: 14,
+  //   },
+  // }))(InputBase);
 
-  const onSelectValue = (type: string, value: any) => {
-    if (type === "size") {
-      props.onSelectIconProperty((d) => ({
-        ...d,
-        default_size: value.toLocaleLowerCase(),
-      }));
-      setIconProperty((d) => ({
-        ...d,
-        default_size: value,
-      }));
-    } else if (type === "variant") {
-      props.onSelectIconProperty((d) => ({
-        ...d,
-        variant: value.toLocaleLowerCase(),
-      }));
-      setIconProperty((d) => ({
-        ...d,
-        variant: value,
-      }));
-    }
-  };
+  // const onSelectValue = (type: string, value: any) => {
+  //   if (type === "size") {
+  //     props.onSelectIconProperty((d) => ({
+  //       ...d,
+  //       default_size: value.toLocaleLowerCase(),
+  //     }));
+  //     setIconProperty((d) => ({
+  //       ...d,
+  //       default_size: value,
+  //     }));
+  //   } else if (type === "variant") {
+  //     props.onSelectIconProperty((d) => ({
+  //       ...d,
+  //       variant: value.toLocaleLowerCase(),
+  //     }));
+  //     setIconProperty((d) => ({
+  //       ...d,
+  //       variant: value,
+  //     }));
+  //   }
+  // };
 
   return (
     <ControlsWrapper>
@@ -58,7 +58,7 @@ export function IconSearch(props: {
           onChange={(e) => props.onChange(e.target.value.toLocaleLowerCase())}
         />
       </SearchBar>
-      <Filters>
+      {/* <Filters>
         <TypeCheck>
           <StyledSelect
             classes={{ root: "root" }}
@@ -87,7 +87,7 @@ export function IconSearch(props: {
             ))}
           </StyledSelect>
         </SizeCheck>
-      </Filters>
+      </Filters> */}
     </ControlsWrapper>
   );
 }

@@ -10,7 +10,9 @@ import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import styled from "@emotion/styled";
 import { IconMeta, Icon, loadSvg, makeIconUrl, useIcons } from "./resources";
 
-export function IconItem(props: Icon) {
+type IconItemProps = Icon & { onClick: () => void };
+
+export function IconItem({ onClick, ...props }: IconItemProps) {
   const { package: _package, name, variant } = props;
   const [loading, setLoading] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -52,7 +54,8 @@ export function IconItem(props: Icon) {
     }
   }
 
-  const onClick = () => {
+  const onclick = () => {
+    onClick();
     _onUserLoadIconToCanvas();
     loadData().then((d) => {
       parent.postMessage(
@@ -82,7 +85,7 @@ export function IconItem(props: Icon) {
           },
         }}
       >
-        <IconButton onClick={onClick} disabled={downloading}>
+        <IconButton onClick={onclick} disabled={downloading}>
           {downloading ? (
             <CircularProgress size={24} />
           ) : (

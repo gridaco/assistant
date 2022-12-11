@@ -13,15 +13,34 @@ export function search(
   // - tags (fuzzy search)
   // - category (fuzzy search)
 
+  if (!query) {
+    return metas;
+  }
+
+  const q = query?.toLowerCase();
+  // split [" ", ","]
+  const qs = q?.split(/[\s,]+/).filter((q) => q.length > 0);
+
   return metas.filter((m) => {
-    if (m.name.includes(query)) {
+    // name
+    if (qs.some((q) => m.name.toLowerCase().includes(q))) {
       return true;
     }
 
-    if (m.category?.includes(query)) {
+    // category
+    if (m.category && qs.some((q) => m.category.toLowerCase().includes(q))) {
       return true;
     }
 
-    return m.tags.some((t) => t.includes(query));
+    // package
+    if (qs.some((q) => m.package.toLowerCase().includes(q))) {
+      return true;
+    }
+
+    // tags
+    if (m.tags.some((t) => qs.some((q) => t.toLowerCase().includes(q)))) {
+      return true;
+    }
+    // return m.tags.some((t) => t.includes(query));
   });
 }
