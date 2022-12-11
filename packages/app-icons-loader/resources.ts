@@ -72,6 +72,13 @@ export function useIcons({
   useEffect(() => {
     if (queriedMeta) {
       let icons = queriedMeta.flatMap((meta) => {
+        if (meta.variants.length === 0) {
+          return {
+            name: meta.name,
+            size: meta.size,
+            package: meta.package,
+          } as Icon;
+        }
         return meta.variants.map((variant) => {
           return {
             name: meta.name,
@@ -90,8 +97,13 @@ export function useIcons({
 
   let result = Array.from(icons ?? []);
 
+  console.log(meta.filter((m) => m.package === "radix-ui"));
+
   // sort by package name
-  const pkg_order = ["radix-ui", "material", "unicons", "ant-design"];
+
+  const pkg_order = query
+    ? ["radix-ui", "unicons", "material", "ant-design"] // if query is set, prioritize radix-ui and unicons
+    : ["radix-ui", "material", "unicons", "ant-design"]; // if query is not set, prioritize radix-ui and material
   result = result.sort((i, i2) => {
     const pkg1 = pkg_order.indexOf(i.package);
     const pkg2 = pkg_order.indexOf(i2.package);
