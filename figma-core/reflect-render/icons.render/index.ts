@@ -18,7 +18,7 @@ export function renderSvgIcon(
   data: string,
   color: Color = "#000000",
   placement: IconPlacement = "center",
-  config?: NamedIconConfig
+  config?: { size: number; name: string; package: string; variant?: string }
 ): FrameNode {
   console.log(`inserting icon with name ${name} and data ${data}`);
 
@@ -47,7 +47,7 @@ export function renderSvgIcon(
 
   // operate extra manipulation if config is available.
   if (config) {
-    const size = Number(config.default_size);
+    const size = Number(config.size);
     node.resize(size, size);
   }
 
@@ -62,14 +62,19 @@ export function renderSvgIcon(
 
 export function buildReflectIconNameForRender(
   name: string,
-  config: NamedIconConfig
+  config: { name: string; package: string; variant?: string }
 ): string {
-  if (config.host == "material") {
-    return `icons/mdi_${name}`;
-  } else if (config.host == "ant-design") {
-    return `icons/antd-${name}`;
-  } else {
-    return `icons/${name}`;
+  switch (config.package) {
+    case "material":
+      return `icons/mdi_${name}`;
+    case "ant-design":
+      return `icons/antd-${name}`;
+    case "radix-ui":
+      return `icons/radix-${name}`;
+    case "unicons":
+      return `icons/unicons-${name}`;
+    default:
+      return `icons/${name}`;
   }
 }
 

@@ -4,5 +4,10 @@
     "authors": "Grida.co",
     "version": "0.0.0",
     "private": false,
-    "dependencies": {}
+    "dependencies": {
+        "react-infinite-scroller": "^1.2.6"
+    },
+    "devDependencies": {
+        "@types/react-infinite-scroller": "^1.2.3"
+    }
 }
