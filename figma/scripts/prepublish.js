@@ -7,7 +7,7 @@ const path = require("path");
 const distPath = path.join(__dirname, "../dist");
 
 fs.readdirSync(distPath).forEach((file) => {
-  if (file !== "code.js" && file !== "ui.js") {
+  if (file !== "code.js" && file !== "ui.html") {
     fs.unlink(path.join(distPath, file), (err) => {
       if (err) throw err;
     });
