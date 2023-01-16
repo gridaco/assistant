@@ -1,7 +1,7 @@
 ---
-framework: figma, flutter, react
+framework: figma, flutter, react, solid-js
 platform: Android, iOS, Web, macOS, Linux, Windows
-title: Grida assistant for figma, sketch, xd
+title: Grida Assistant for Figma
 ---
 
 <meta name="description" content="figma to flutter code exporter, lint your design. generate human level quality code from figma">
