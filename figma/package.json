@@ -1,22 +1,25 @@
 {
-    "name": "figma",
-    "description": "A web hosted version of figma plugin.",
-    "authors": "Grida.co",
-    "version": "0.0.0",
-    "private": false,
-    "dependencies": {
-        "@ui/skeleton": "0.0.0"
-    },
-    "scripts": {
-        "clean": "rimraf dist",
-        "build": "yarn clean && webpack --mode=production --host=production && yarn prepublish",
-        "prepublish": "node scripts/prepublish.js",
-        "build:staging": "yarn clean && webpack --mode=production --host=staging",
-        "build:dev": "webpack --mode=development --host=dev",
-        "watch": "webpack --watch",
-        "dev": "yarn watch"
-    },
-    "devDependencies": {
-        "react-dev-utils": "^12.0.1"
-    }
+  "name": "figma",
+  "description": "A web hosted version of figma plugin.",
+  "authors": "Grida.co",
+  "version": "0.0.0",
+  "private": false,
+  "dependencies": {
+    "@ui/skeleton": "0.0.0"
+  },
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "yarn clean && webpack --mode=production --host=production && yarn prepublish",
+    "prepublish": "node scripts/prepublish.js",
+    "build:staging": "yarn clean && webpack --mode=production --host=staging",
+    "build:dev": "webpack --mode=development --host=dev",
+    "watch": "webpack --watch",
+    "dev": "yarn watch"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "devDependencies": {
+    "react-dev-utils": "^12.0.1"
+  }
 }
