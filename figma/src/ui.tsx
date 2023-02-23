@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from "react";
 import * as ReactDOM from "react-dom";
 import { AppSkeleton } from "@ui/skeleton";
 import { handle } from "./handle-proxy-requests";
-import { useSetRecoilState } from "recoil";
 
 ReactDOM.render(
   <LiteHostedAppConnector />,
