@@ -16,6 +16,7 @@ export function AnimatedProgressBar({
 }: IProgressBar) {
   return (
     <Base>
+      {/* @ts-ignore */}
       <AnimatePresence>
         <Bar
           style={{
