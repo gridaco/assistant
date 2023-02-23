@@ -15,5 +15,8 @@
         "build:dev": "webpack --mode=development --host=dev",
         "watch": "webpack --watch",
         "dev": "yarn watch"
+    },
+    "devDependencies": {
+        "react-dev-utils": "^12.0.1"
     }
 }
