@@ -1,7 +1,10 @@
 {
-    "name": "@ui/core",
-    "description": "Assistant ui cores",
-    "authors": "Grida co",
-    "version": "0.0.0",
-    "dependencies": {}
+  "name": "@ui/core",
+  "description": "Assistant ui cores",
+  "authors": "Grida co",
+  "version": "0.0.0",
+  "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.11.2"
+  }
 }
