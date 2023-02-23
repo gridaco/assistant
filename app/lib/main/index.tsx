@@ -237,13 +237,13 @@ function RouterTabNavigationApp(props) {
   useEffect(() => {
     const _page_config = get_page_config_by_path(path);
     if (_page_config) {
-      loadLayout().then((l) =>
+      loadLayout().then((l) => {
         setSavedLayout({
           ...l,
           currentWorkmode: workmode,
           currentWork: _page_config.id,
-        })
-      );
+        });
+      });
     } else {
       throw `${path} is not registered`;
     }
