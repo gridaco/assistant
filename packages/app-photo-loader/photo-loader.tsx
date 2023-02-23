@@ -6,8 +6,13 @@
 import React, { useState } from "react";
 import styled from "@emotion/styled";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
-import { list, itemsWithSizes } from "./.test";
+import { list } from "./.test";
 import { SearchInput } from "@ui/core/search";
+import Axios from "axios";
+
+const client = Axios.create({
+  baseURL: "/api",
+});
 
 // Array of images with captions
 //const list = [{image: 'http://...', title: 'Foo'}];
@@ -19,17 +24,44 @@ const noCacheList = list.map((item, index) => ({
 }));
 
 export function PhotoLoader() {
-  const [state, setState] = useState({ images: noCacheList });
+  const [images, setImages] = useState({ images: noCacheList });
+  const [locked, setLocked] = useState(false);
+  const [query, setQuery] = useState("");
+
+  const prompt = async () => {
+    setLocked(true);
+    const { data } = await client
+      .get("/generative/image", {
+        params: { q: query },
+      })
+      .finally(() => setLocked(false));
+    const { images: gens, n } = data;
+    setImages({
+      images: gens.map((g) => ({
+        image: g,
+        title: `${n} ${query}`,
+      })),
+    });
+  };
+
   return (
     <Wrapper>
-      <SearchInput placeholder={`Try "astronaut with cowboy hat"`} />
+      <SearchInput
+        readonly={locked}
+        loading={locked}
+        onEnter={() => {
+          prompt();
+        }}
+        onChange={setQuery}
+        placeholder={`Try "astronaut with cowboy hat"`}
+      />
       <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}>
         <Masonry
           style={{
             gap: 16,
           }}
         >
-          {state.images.map((item, index) => (
+          {images.images.map((item, index) => (
             <GridItem key={index}>
               <LoadableGraphicItem src={item.image} name={item.title} />
             </GridItem>
