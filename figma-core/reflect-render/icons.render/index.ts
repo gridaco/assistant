@@ -1,7 +1,6 @@
-// todo - make this universal
-import { converters } from "@design-sdk/figma";
+import { reflectColorToFigmaColor } from "@design-sdk/figma-node-conversion";
 import { Color } from "@reflect-ui/core/lib/color";
-import { IconConfig } from "@reflect-ui/core/lib/icon/icon.config";
+import { NamedIconConfig } from "@reflect-ui/core";
 import {
   ICON_DEFAULT_SIZE,
   ICON_MAX_SIZE,
@@ -19,7 +18,7 @@ export function renderSvgIcon(
   data: string,
   color: Color = "#000000",
   placement: IconPlacement = "center",
-  config?: IconConfig
+  config?: { size: number; name: string; package: string; variant?: string }
 ): FrameNode {
   console.log(`inserting icon with name ${name} and data ${data}`);
 
@@ -48,7 +47,7 @@ export function renderSvgIcon(
 
   // operate extra manipulation if config is available.
   if (config) {
-    const size = Number(config.default_size);
+    const size = Number(config.size);
     node.resize(size, size);
   }
 
@@ -63,14 +62,19 @@ export function renderSvgIcon(
 
 export function buildReflectIconNameForRender(
   name: string,
-  config: IconConfig
+  config: { name: string; package: string; variant?: string }
 ): string {
-  if (config.host == "material") {
-    return `icons/mdi_${name}`;
-  } else if (config.host == "ant-design") {
-    return `icons/antd-${name}`;
-  } else {
-    return `icons/${name}`;
+  switch (config.package) {
+    case "material":
+      return `icons/mdi_${name}`;
+    case "ant-design":
+      return `icons/antd-${name}`;
+    case "radix-ui":
+      return `icons/radix-${name}`;
+    case "unicons":
+      return `icons/unicons-${name}`;
+    default:
+      return `icons/${name}`;
   }
 }
 
@@ -90,7 +94,7 @@ export function switchSvgColor(
         node.fills = [
           {
             type: "SOLID",
-            color: converters.reflectColorToFigmaColor(sets[0].to),
+            color: reflectColorToFigmaColor(sets[0].to),
           },
         ];
       }

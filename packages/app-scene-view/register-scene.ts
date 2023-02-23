@@ -17,7 +17,7 @@ export async function registerScene(scene: {
   raw: object;
   code?: {
     flutter: {
-      raw: string;
+      app: { raw: string };
     };
   };
 }) {
@@ -30,6 +30,7 @@ export async function registerScene(scene: {
 
   // upload preview image
   const previewImageUploaded = await upload({
+    // @ts-ignore blob
     file: new Blob([scene.preview], {
       type: "image/png",
     }),
@@ -38,7 +39,7 @@ export async function registerScene(scene: {
 
   const flutter_hosted = await wrap_with_hosting__flutter(
     _id,
-    scene.code.flutter.raw
+    scene.code.flutter.app
   );
 
   /**
@@ -60,7 +61,7 @@ export async function registerScene(scene: {
         flutter: {
           widget: {
             url: flutter_hosted.url,
-            raw: scene.code.flutter.raw,
+            raw: scene.code.flutter.app.raw,
           },
           executable: {
             url: flutter_hosted.url,

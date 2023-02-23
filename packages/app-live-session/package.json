@@ -1,0 +1,10 @@
+{
+    "name": "@app/live",
+    "description": "Live session triggered from assistant",
+    "authors": "Grida.co",
+    "version": "0.0.0",
+    "private": false,
+    "dependencies": {
+        "pusher-js": "^7.0.3"
+    }
+}

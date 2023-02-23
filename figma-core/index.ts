@@ -13,6 +13,11 @@
 /* do not delete this line */ import "./event-handlers"; // NO REMOVE
 // ==========
 
+// ==========
+// init relaunch-data trigger
+/* do not delete this line */ import "./relaunch-data"; // NO REMOVE
+// ==========
+
 import { onfigmaselectionchange } from "./code-thread/selection";
 import { onfigmamessage } from "./code-thread/message-handler";
 import { MainImageRepository } from "@design-sdk/core/assets-repository";
@@ -41,10 +46,16 @@ figma.on("currentpagechange", () => {
 // MAIN INITIALIZATION
 import { showUI } from "./code-thread/show-ui";
 import { provideFigma } from "@design-sdk/figma";
+
 function main() {
   MainImageRepository.instance = new ImageRepositories();
   provideFigma(figma);
   showUI();
+  // disabled on staging ----
+  // create primary visual store
+  // import { createPrimaryVisualStorePageIfNonExists } from "./physical-visual-store/page-manager/craete-page-if-non-exist";
+  // createPrimaryVisualStorePageIfNonExists();
+  // ------------------------
 }
 
 main();

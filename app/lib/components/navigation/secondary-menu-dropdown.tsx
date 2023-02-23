@@ -1,6 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { WorkMode, WorkScreen } from "../../navigation";
+import { WorkMode, WorkScreen } from "../../routing";
 import { SecondaryWorkmodeMenu } from "./secondary-workmode-menu";
 
 type Stage = "production" | "development" | string;
@@ -52,7 +52,9 @@ export function SecondaryMenuDropdown() {
       id: WorkMode.tools,
       name: WorkMode.tools,
       stage: "development",
-      onSelect: () => {},
+      onSelect: () => {
+        history.push("/toolbox/home");
+      },
     },
     {
       id: WorkMode.settings,

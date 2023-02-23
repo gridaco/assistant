@@ -35,7 +35,5 @@ const Button = styled.div`
 
   svg {
     fill: #cfcfcf;
-    width: 25px;
-    height: 34px;
   }
 `;

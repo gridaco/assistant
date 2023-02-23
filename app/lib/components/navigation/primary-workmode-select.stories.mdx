@@ -1,0 +1,32 @@
+import { Meta, Story, Preview, Props } from "@storybook/addon-docs/blocks";
+import { PrimaryWorkmodeSelect } from "./primary-workmode-select";
+
+<Meta title="navigation/primary-workmode-select" />
+
+Primary workmode selector for navigation.
+
+# Preview
+
+<Preview>
+  <Story name="default">
+    <PrimaryWorkmodeSelect
+      set={{
+        first: "code",
+        second: "design",
+      }}
+      selection={"code"}
+    />
+  </Story>
+  <Story name="no selection (for development)">
+    <PrimaryWorkmodeSelect
+      set={{
+        first: "code",
+        second: "design",
+      }}
+    />
+  </Story>
+</Preview>
+
+# Props
+
+<Props of={PrimaryWorkmodeSelect} />

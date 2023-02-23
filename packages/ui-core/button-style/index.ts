@@ -1,20 +1,18 @@
 import { css } from "@emotion/react";
 
 export const ButtonStyle = css`
-  width: calc(50% - 5px);
+  /* width: calc(50% - 5px); */
   /* for unused .MuiButton-root margin: 0  */
   /* margin-left: 5px !important; */
-  font-size: 14px;
+  height: 48px;
+  font-size: 16px;
   font-weight: bold;
   border-radius: 4px;
   box-sizing: border-box;
-  padding-top: 16px;
-  padding-bottom: 16px;
+  padding-top: 14px;
+  padding-bottom: 14px;
   cursor: pointer;
   outline: none;
-
-  // FIXME: CHEKC IS RIGHT capitalize?
-  text-transform: capitalize;
 `;
 
 export const BlackButtonStyle = css`
@@ -22,12 +20,16 @@ export const BlackButtonStyle = css`
   border: 1px solid #151617;
   background: #151617;
   color: #fff;
-  width: 66.666666%;
+  min-width: 60%;
 
   // for reset material-ui button style
   &:hover {
     color: #fff;
-    background: #17181a;
+    opacity: 0.9;
+  }
+
+  &:active {
+    opacity: 1;
   }
 
   &:disabled {
@@ -37,12 +39,43 @@ export const BlackButtonStyle = css`
   }
 `;
 
-export const WhtieButtonStyle = css`
+export const TextButtonBase = css`
   ${ButtonStyle}
-  /* border: 1px solid #151617; */
   border: 0;
   color: #151617;
-  background: #fff;
+  background: transparent;
+  &:hover {
+    background: rgba(221, 221, 221, 0.2);
+  }
+`;
+
+export const BlackTextButtonStyle = css`
+  ${TextButtonBase}
+  color: #151617;
+  &:hover {
+    background: rgba(221, 221, 221, 0.2);
+  }
+`;
+
+export const WhiteTextButtonStyle = css`
+  ${TextButtonBase}
+  color: #FFFF;
+  &:hover {
+    background: rgba(221, 221, 221, 0.2);
+  }
+`;
+
+export const BlueButtonStyle = css`
+  ${ButtonStyle}
+  background: rgba(38, 99, 255, 1);
+  border: solid 1px rgba(68, 132, 255, 1);
+  color: #fff;
+  &:hover {
+    background: rgba(57, 112, 251, 1);
+  }
+  &:disabled {
+    opacity: 50%;
+  }
 `;
 
 export const TransparentButtonStyle = css`

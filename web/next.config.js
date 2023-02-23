@@ -1,4 +1,4 @@
-const withTM = require("next-transpile-modules")([
+const transpile_packages = [
   // _firstparty
   "@assistant-fp/analytics",
   "@assistant-fp/auth",
@@ -7,17 +7,24 @@ const withTM = require("next-transpile-modules")([
   "@ui/core",
   "@ui/previewer",
   "@ui/codebox",
+  "@ui/flow-steps",
   "@assistant/icons",
   "@assistant/lint-icons",
 
   // @app
   "app",
+  "@app/utils",
+  "@app/design-to-code",
+  "@app/live",
   "@app/auth",
   "@app/i18n",
   "@app/component-manage",
   "@app/button-maker",
   "@app/data-mapper",
+  "@app/preferences",
   "@app/design-lint",
+  "@app/design-preview",
+  "@app/design-text-code-syntax-highlight",
   "@app/icons-loader",
   "@app/photo-loader",
   "@app/meta-editor",
@@ -27,10 +34,14 @@ const withTM = require("next-transpile-modules")([
   "@app/schema-editor",
 
   // @toolbox
+  "@app/toolbox",
   "@toolbox/font-replacer",
 
   // cores
   "@core/code-formatter",
+
+  // dedicated platform
+  "@platform-dedicated/figma-checksum",
 
   // Plugin sdk
   "@plugin-sdk/app",
@@ -39,24 +50,49 @@ const withTM = require("next-transpile-modules")([
   "@plugin-sdk/draggable",
   "plugin-app",
 
+  // -----------------------------
+  // region @designto-code
   "@designto/config",
+  "@grida/builder-config-preset",
+  "@grida/builder-platform-types",
   "@designto/code",
+  "@designto/sanitized",
   "@designto/token",
   "@designto/flutter",
   "@designto/web",
+  "@designto/vanilla",
   "@designto/react",
+
+  "@code-features/assets",
+  "@code-features/flags",
+  // -----------------------------
+
+  // -----------------------------
+  // region editor-packages
+  "@code-editor/esbuild-services",
+  "@code-editor/estypes-resolver",
+  "@code-editor/prettier-services",
+  "@code-editor/webworker-services-core",
+  // -----------------------------
+
+  // -----------------------------
   // design-sdk
-  "@design-sdk/key-annotations",
+  "@design-sdk/flags",
   "@design-sdk/core",
   "@design-sdk/core-types",
   "@design-sdk/universal",
   "@design-sdk/figma",
   "@design-sdk/figma-url",
+  "@design-sdk/figma-xpath",
   "@design-sdk/url-analysis",
   "@design-sdk/sketch",
-  // reflect-ui
+  // -----------------------------
+
+  // -----------------------------
+  // region @reflect-ui types & utils
   "@reflect-ui/core",
   "@reflect-ui/detection",
+  // -----------------------------
 
   // base sdk
   "@base-sdk/core",
@@ -68,19 +104,45 @@ const withTM = require("next-transpile-modules")([
   "@base-sdk/resources",
 
   // baes sdk fp
+  "@base-sdk-fp/core",
   "@base-sdk-fp/auth",
+  "@base-sdk-fp/accounts",
 
+  // -----------------------------
   // region coli
   "coli",
   "@coli.codes/escape-string",
-  "@coli.codes/web-builder",
-  "@coli.codes/web-builder-core",
-  "@coli.codes/nodejs-builder",
-  "@coli.codes/react-builder",
+  "@coli.codes/core-syntax-kind",
+  // endregion coli
+  // -----------------------------
+
+  // -----------------------------
+  // region builders - part of designto-code / coli
+
+  // region web builders
+  "@web-builder/nodejs",
+  "@web-builder/core",
+  "@web-builder/vanilla",
+  "@web-builder/react-core",
+  "@web-builder/react",
+  "@web-builder/react-native",
+  "@web-builder/reflect-ui",
   "@web-builder/styled",
   "@web-builder/styles",
-  "@bridged.xyz/flutter-builder",
-  // endregion coli
-]);
+  // endregion web builders
+  // -----------------------------
+];
 
-module.exports = withTM();
+/**
+ * @type {import('next').NextConfig}
+ */
+const nextConfig = {
+  transpilePackages: transpile_packages,
+  webpack: (config) => {
+    config.resolve.fallback = { fs: false };
+
+    return config;
+  },
+};
+
+module.exports = nextConfig;

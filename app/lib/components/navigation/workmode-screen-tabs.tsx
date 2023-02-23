@@ -37,10 +37,15 @@ export function WorkmodeScreenTabs(props: {
           userSelect: "none",
         },
       }}
+      style={{
+        marginLeft: "-16px",
+        marginRight: "16px",
+      }}
     >
       {layout.map((v, i) => {
         return (
           <StyledTab
+            disableRipple
             key={v.id}
             label={v.name}
             {...a11yProps(i)}

@@ -5,3 +5,4 @@ export * from "./notify";
 export * from "./remote-api";
 export * from "./storage";
 export * from "./focus";
+export * from "./uicontrol";

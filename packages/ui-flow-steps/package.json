@@ -1,0 +1,7 @@
+{
+  "name": "@ui/flow-steps",
+  "description": "Assistant ui upload (flow) steps",
+  "authors": "grida.co",
+  "version": "0.0.0",
+  "dependencies": {}
+}

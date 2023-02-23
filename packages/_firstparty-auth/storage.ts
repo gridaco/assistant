@@ -17,7 +17,19 @@ async function getAuthCredential(): Promise<Credential> {
   return PluginSdk.getItem(_ASSISTANT_GRIDA_AUTHENTICATION_CREDENTIAL_KEY);
 }
 
+function saveProfile(profile) {
+  // usees localstorage
+  window.localStorage.setItem("my-profile", JSON.stringify(profile));
+}
+
+function getProfile() {
+  // usees localstorage
+  return JSON.parse(window.localStorage.getItem("my-profile"));
+}
+
 export const AuthStorage = {
   save: saveAuthCredential,
+  saveProfile: saveProfile,
   get: getAuthCredential,
+  getProfile: getProfile,
 };
