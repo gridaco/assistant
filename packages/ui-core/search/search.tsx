@@ -1,18 +1,43 @@
 import React from "react";
 import { Search } from "@material-ui/icons";
 import styled from "@emotion/styled";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import withStyles from "@material-ui/core/styles/withStyles";
+
+const LoadingIndicator = withStyles((theme) => ({
+  root: {},
+  primaryColor: {
+    color: "#000000",
+  },
+}))(CircularProgress);
 
 export function SearchInput({
   onChange,
+  onEnter,
+  loading = false,
   placeholder = "Serach anything...",
+  disabled = false,
+  readonly = false,
 }: {
   onChange?: (value: string) => void;
+  onEnter?: () => void;
+  loading?: boolean;
   placeholder?: string;
+  disabled?: boolean;
+  readonly?: boolean;
 }) {
   return (
     <SearchBarWrapper>
-      <Search style={{ fontSize: "20px" }} />
+      {loading && <LoadingIndicator />}
+      {!loading && <Search style={{ fontSize: "20px" }} />}
       <Input
+        readOnly={readonly}
+        disabled={disabled}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            onEnter?.();
+          }
+        }}
         placeholder={placeholder}
         onChange={(e) => onChange?.(e.target.value)}
       />
