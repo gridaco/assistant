@@ -1,5 +1,6 @@
 import { SelectionType } from "plugin-app";
 import Pusher, { Channel } from "pusher-js";
+import assert from "assert";
 
 const _base_url =
   "https://ahzdf5x4q3.execute-api.us-west-1.amazonaws.com/production";
@@ -36,7 +37,8 @@ export class AssistantLiveSession {
       this._onEnter?.();
     });
 
-    this.channel.bind("pusher:subscription_error", () => {
+    this.channel.bind("pusher:subscription_error", (e) => {
+      console.error("pusher:subscription_error", e);
       this._entered = false;
     });
   }
@@ -46,8 +48,10 @@ export class AssistantLiveSession {
     this._onEnter = cb;
   }
 
-  emmitSelect(selesction: SelectionPayload) {
-    this.channel.trigger("client-select", selesction);
+  select(selesction: SelectionPayload) {
+    console.log("live:select", selesction);
+    const triggered = this.channel.trigger("client-select", selesction);
+    assert(triggered);
   }
 }
 

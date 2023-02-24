@@ -75,7 +75,7 @@ export function LiveSessionPage() {
     if (session && session.entered && selection) {
       switch (selection.type) {
         case SelectionType.single: {
-          session.emmitSelect({
+          session.select({
             event: "select",
             selectionType: selection.type,
             filekey: filekey,
