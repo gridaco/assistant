@@ -9,6 +9,10 @@ export const EK_CURRENT_SELECTION_PREVIEW_SOURCE_CHANGED =
 // icon related
 export const EK_ICON_DRAG_AND_DROPPED = "assistant/design/icons/add/dropped";
 export const EK_CREATE_ICON = "assistant/design/icons/add/create";
+
+// image resource related
+export const EK_CREATE_IMAGE = "assistant/design/images/add/create";
+
 //
 export const EK_SET_APP_MODE = "EK_SET_APP_MODE";
 export const EK_COMPUTE_STARTED = "EK_COMPUTE_STARTED";
