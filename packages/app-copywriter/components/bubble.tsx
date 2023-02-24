@@ -1,8 +1,13 @@
 import React from "react";
 import styled from "@emotion/styled";
 
-export function Bubble({ children }: React.PropsWithChildren<{}>) {
-  return <BubbleWrapper>{children}</BubbleWrapper>;
+export function Bubble({
+  onClick,
+  children,
+}: React.PropsWithChildren<{
+  onClick?: () => void;
+}>) {
+  return <BubbleWrapper onClick={onClick}>{children}</BubbleWrapper>;
 }
 
 const BubbleWrapper = styled.div`

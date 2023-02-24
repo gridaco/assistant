@@ -3,7 +3,26 @@ import styled from "@emotion/styled";
 import { motion, AnimatePresence } from "framer-motion";
 import { PromptInputBox, Bubble, GroupLabel } from "./components";
 import { LightningBoltIcon, ListBulletIcon } from "@radix-ui/react-icons";
+import { EK_REPLACE_TEXT_CHARACTERS } from "@core/constant";
 import * as api from "./client";
+
+interface ReplaceTextCharactersProps {
+  type: "selection" | "id";
+  id?: string;
+  characters: string;
+}
+
+function __plugin_replace_text_characteres(d: ReplaceTextCharactersProps) {
+  parent.postMessage(
+    {
+      pluginMessage: {
+        type: EK_REPLACE_TEXT_CHARACTERS,
+        data: d,
+      },
+    },
+    "*"
+  );
+}
 
 export function CopywriterScreen() {
   const [busy, setBusy] = React.useState(false);
@@ -139,7 +158,14 @@ function ResultsList({ data }: { data: string[] }) {
         <AnimatePresence>
           {data.map((item, index) => (
             <ResultItem delay={index * 0.1} key={item}>
-              <Bubble>
+              <Bubble
+                onClick={() => {
+                  __plugin_replace_text_characteres({
+                    type: "selection",
+                    characters: item,
+                  });
+                }}
+              >
                 <p>{item}</p>
               </Bubble>
             </ResultItem>

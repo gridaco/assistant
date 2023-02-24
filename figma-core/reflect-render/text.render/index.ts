@@ -32,3 +32,29 @@ export function renderText(textManifest: FigmaRenderTextManifest): TextNode {
 
   return text;
 }
+
+export async function replaceTextCharacters(
+  text: TextNode,
+  {
+    characters,
+    name,
+  }: {
+    name?: string;
+    characters: string;
+  }
+) {
+  // resolve fonts (required for changing text characters)
+  await Promise.all(
+    text
+      .getRangeAllFontNames(0, text.characters.length)
+      .map(figma.loadFontAsync)
+  );
+
+  text.characters = characters;
+
+  if (name) {
+    text.name = name;
+  }
+
+  return text;
+}
