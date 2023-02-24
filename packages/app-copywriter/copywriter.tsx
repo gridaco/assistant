@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { motion, AnimatePresence } from "framer-motion";
 import { PromptInputBox, Bubble, GroupLabel } from "./components";
 import { LightningBoltIcon, ListBulletIcon } from "@radix-ui/react-icons";
-import { EK_REPLACE_TEXT_CHARACTERS } from "@core/constant";
+import { EK_APPLY_TEXT_CHARACTERS } from "@core/constant";
 import * as api from "./client";
 
 interface ReplaceTextCharactersProps {
@@ -16,7 +16,7 @@ function __plugin_replace_text_characteres(d: ReplaceTextCharactersProps) {
   parent.postMessage(
     {
       pluginMessage: {
-        type: EK_REPLACE_TEXT_CHARACTERS,
+        type: EK_APPLY_TEXT_CHARACTERS,
         data: d,
       },
     },

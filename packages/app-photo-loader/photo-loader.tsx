@@ -4,7 +4,7 @@ import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { SearchInput } from "@ui/core/search";
 import * as api from "./client";
 import { LoadableGraphicItem } from "./image-item";
-import { EK_CREATE_IMAGE } from "@core/constant/ek.constant";
+import { EK_APPLY_IMAGE } from "@core/constant/ek.constant";
 import { motion } from "framer-motion";
 import { PluginSdk } from "@plugin-sdk/app";
 import { useSetRecoilState } from "recoil";
@@ -30,7 +30,7 @@ function __plugin_create_image(d: CreateImageProps) {
   parent.postMessage(
     {
       pluginMessage: {
-        type: EK_CREATE_IMAGE,
+        type: EK_APPLY_IMAGE,
         data: d,
       },
     },
