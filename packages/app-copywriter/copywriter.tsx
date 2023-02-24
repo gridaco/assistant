@@ -1,53 +1,161 @@
 import React from "react";
 import styled from "@emotion/styled";
+import { motion, AnimatePresence } from "framer-motion";
 import { PromptInputBox, Bubble, GroupLabel } from "./components";
-import { LightningBoltIcon } from "@radix-ui/react-icons";
+import { LightningBoltIcon, ListBulletIcon } from "@radix-ui/react-icons";
+import * as api from "./client";
 
 export function CopywriterScreen() {
+  const [busy, setBusy] = React.useState(false);
+  const [error, setError] = React.useState<Error | null>(null);
+  const [prompt, setPrompt] = React.useState("");
+  const [results, setResults] = React.useState<string[]>([]);
+
+  const action = () => {
+    setBusy(true);
+
+    // clear previous results
+    setResults([]);
+
+    api
+      .prompt({ q: prompt })
+      .then(({ texts }) => {
+        setResults(texts);
+      })
+      .catch((e) => {
+        setError(e);
+      })
+      .finally(() => {
+        setBusy(false);
+      });
+  };
+
   return (
     <div
       style={{
         margin: 16,
       }}
     >
-      <PromptInputBox />
+      <PromptInputBox
+        //
+        readonly={busy}
+        prompting={busy}
+        onSubmit={action}
+        onChange={setPrompt}
+      />
 
       <div
         style={{
           marginTop: 32,
+        }}
+      >
+        {results?.length ? (
+          <>
+            <ResultsList data={results} />
+          </>
+        ) : (
+          <>{!busy && <Shortcuts />}</>
+        )}
+      </div>
+    </div>
+  );
+}
+
+const ResultItem = ({
+  children,
+  delay,
+}: React.PropsWithChildren<{
+  delay: number;
+}>) => {
+  return (
+    <motion.div
+      initial={{ y: 16, opacity: 0 }}
+      animate={{
+        y: 0,
+        opacity: 1,
+        transition: {
+          delay,
+          damping: 15,
+          stiffness: 200,
+        },
+      }}
+      exit={{ y: -16, opacity: 0 }}
+      transition={{ duration: 0.2 }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+function ResultsList({ data }: { data: string[] }) {
+  return (
+    <>
+      <GroupLabel
+        style={{
+          marginBottom: 16,
+        }}
+      >
+        <ListBulletIcon />
+        Ideas
+      </GroupLabel>
+      <div
+        style={{
           display: "flex",
           flexDirection: "column",
           gap: 16,
         }}
       >
-        <GroupLabel>
-          <LightningBoltIcon />
-          Shortcuts
-        </GroupLabel>
-        <Bubble>
-          <p>
-            Translate to{" "}
-            <InlineSelect defaultValue="fr">
-              <option value="fr">French</option>
-              <option value="ja">Japanese</option>
-              <option value="ko">Korean</option>
-              <option value="en">English</option>
-            </InlineSelect>
-          </p>
-        </Bubble>
-        <Bubble>
-          <p>Give me Ideas</p>
-        </Bubble>
-        <Bubble>
-          <p>
-            Placeholder Text for
-            <InlineSelect defaultValue="p">
-              <option value="p">Paragraph</option>
-              <option value="h1">Headline</option>
-            </InlineSelect>
-          </p>
-        </Bubble>
+        {/* @ts-ignore */}
+        <AnimatePresence>
+          {data.map((item, index) => (
+            <ResultItem delay={index * 0.1} key={item}>
+              <Bubble>
+                <p>{item}</p>
+              </Bubble>
+            </ResultItem>
+          ))}
+        </AnimatePresence>
       </div>
+    </>
+  );
+}
+
+function Shortcuts() {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 8,
+      }}
+    >
+      <GroupLabel>
+        <LightningBoltIcon />
+        Shortcuts
+      </GroupLabel>
+      <Bubble>
+        <p>
+          Translate to{" "}
+          <InlineSelect defaultValue="fr">
+            <option value="fr">French</option>
+            <option value="ja">Japanese</option>
+            <option value="ko">Korean</option>
+            <option value="en">English</option>
+          </InlineSelect>
+        </p>
+      </Bubble>
+      <Bubble>
+        <p>Give me Ideas</p>
+      </Bubble>
+      <Bubble>
+        <p>
+          Placeholder Text for
+          <InlineSelect defaultValue="p">
+            <option value="p">Paragraph</option>
+            <option value="h1">Headline</option>
+          </InlineSelect>
+        </p>
+      </Bubble>
     </div>
   );
 }

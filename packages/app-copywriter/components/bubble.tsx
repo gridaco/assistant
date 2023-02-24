@@ -6,6 +6,7 @@ export function Bubble({ children }: React.PropsWithChildren<{}>) {
 }
 
 const BubbleWrapper = styled.div`
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   padding: 21px;
