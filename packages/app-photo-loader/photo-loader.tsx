@@ -1,48 +1,133 @@
-// FIXME HAS ERROR!
-// react-virtualized image measurer
-// error message
-// Critical dependency: require function is used in a way in which dependencies cannot be statically extracted
-
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import styled from "@emotion/styled";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
-import { list } from "./.test";
 import { SearchInput } from "@ui/core/search";
 import Axios from "axios";
+
+///
+///  TODO:
+///  1. Move api client somewhere else
+///  2. Support for DND
+///  3. Support for replace fill(s)
+///
 
 const client = Axios.create({
   baseURL: "/api",
 });
 
-// Array of images with captions
-//const list = [{image: 'http://...', title: 'Foo'}];
+interface SearchQuery {
+  q: string;
+}
 
-// We need to make sure images are loaded from scratch every time for this demo
-const noCacheList = list.map((item, index) => ({
-  title: index + ". " + item.title,
-  image: item.image + (item.image ? "?noCache=" + Math.random() : ""),
-}));
+interface GenerativeResponse {
+  q: string;
+  n: number;
+  images: string[];
+  size: "1024x1024" | "512x512" | "256x256";
+}
+
+interface ResourceResponse {
+  q: string;
+  n: number;
+  images: {
+    id: string;
+    thumbnail: string;
+    url: string;
+    raw: string;
+    alt: string;
+    color: string;
+    width: number;
+    height: number;
+    author: {
+      username: string;
+      name: string;
+    };
+  }[];
+  pages: number;
+}
+
+async function fromGenerative(p: SearchQuery): Promise<GenerativeResponse> {
+  const { data } = await client.get("/generative/images", {
+    params: p,
+  });
+
+  return data;
+}
+
+async function fromResources(p: SearchQuery): Promise<ResourceResponse> {
+  const { data } = await client.get("/resources/images", {
+    params: p,
+  });
+
+  return data;
+}
+
+interface PlacableImage {
+  thumbnail: string;
+  raw: string;
+  name: string;
+}
 
 export function PhotoLoader() {
-  const [images, setImages] = useState({ images: noCacheList });
+  const [images, setImages] = useState<{ images: Array<PlacableImage> }>({
+    images: [],
+  });
   const [locked, setLocked] = useState(false);
   const [query, setQuery] = useState("");
+  const [isQuerySufficientForGeneration, setIsQuerySufficientForGeneration] =
+    useState(false);
 
-  const prompt = async () => {
+  const promptGeneration = async () => {
     setLocked(true);
-    const { data } = await client
-      .get("/generative/image", {
-        params: { q: query },
-      })
-      .finally(() => setLocked(false));
-    const { images: gens, n } = data;
+    const { images: gens, n } = await fromGenerative({
+      q: query,
+    }).finally(() => setLocked(false));
+
     setImages({
       images: gens.map((g) => ({
-        image: g,
-        title: `${n} ${query}`,
+        raw: g,
+        thumbnail: g,
+        name: `${n} ${query}`,
       })),
     });
   };
+
+  useEffect(() => {
+    if (isQuerySufficientForGeneration) {
+      setImages({
+        images: [],
+      });
+    }
+  }, [isQuerySufficientForGeneration]);
+
+  const searchResources = useCallback(
+    async (query: string) => {
+      if (isQuerySufficientForGeneration) {
+        return;
+      }
+
+      setLocked(true);
+      const { images: gens, n } = await fromResources({
+        q: query,
+      }).finally(() => setLocked(false));
+
+      if (!isQuerySufficientForGeneration) {
+        setImages({
+          images: gens.map((g) => ({
+            thumbnail: g.thumbnail,
+            raw: g.raw,
+            name: g.alt,
+          })),
+        });
+      }
+    },
+    [isQuerySufficientForGeneration]
+  );
+
+  const debouncedSearch = useCallback(debounce(searchResources, 1200), [
+    searchResources,
+    isQuerySufficientForGeneration,
+  ]);
 
   return (
     <Wrapper>
@@ -50,12 +135,29 @@ export function PhotoLoader() {
         readonly={locked}
         loading={locked}
         onEnter={() => {
-          prompt();
+          if (isQuerySufficientForGeneration) {
+            promptGeneration();
+          }
         }}
-        onChange={setQuery}
+        onChange={(value) => {
+          setQuery(value);
+          setIsQuerySufficientForGeneration(
+            // more than 1 word and more than 10 characters
+            value.split(" ").length >= 2 && value.length >= 10
+          );
+          debouncedSearch(value);
+        }}
         placeholder={`Try "astronaut with cowboy hat"`}
       />
-      <ResponsiveMasonry columnsCountBreakPoints={{ 350: 1, 750: 2, 900: 3 }}>
+      {isQuerySufficientForGeneration && (
+        <GenerateButton onClick={promptGeneration}>⚡️ Generate</GenerateButton>
+      )}
+      <ResponsiveMasonry
+        style={{
+          margin: "0 16px",
+        }}
+        columnsCountBreakPoints={{ 350: 2, 750: 3, 900: 3 }}
+      >
         <Masonry
           style={{
             gap: 16,
@@ -63,17 +165,9 @@ export function PhotoLoader() {
         >
           {images.images.map((item, index) => (
             <GridItem key={index}>
-              <LoadableGraphicItem src={item.image} name={item.title} />
+              <LoadableGraphicItem src={item.thumbnail} name={item.name} />
             </GridItem>
           ))}
-          {/* {images.map((image, i) => (
-            <img
-              key={i}
-              src={image}
-              style={{ width: "100%", display: "block" }}
-              alt=""
-            />
-          ))} */}
         </Masonry>
       </ResponsiveMasonry>
     </Wrapper>
@@ -91,13 +185,38 @@ const GridItem = styled.figure`
   background: gray;
 `;
 
+const GenerateButton = styled.button`
+  position: absolute;
+  z-index: 9;
+  bottom: 16px;
+  right: 16px;
+  left: 16px;
+  padding: 8px 16px;
+  border: none;
+  background: black;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+`;
+
 interface OverlayStyle extends React.CSSProperties {
   "--progress"?: number;
 }
 
-function LoadableGraphicItem({ name, src }: { name: string; src: string }) {
+function LoadableGraphicItem({
+  onResourceReady,
+  name,
+  src,
+}: {
+  onResourceReady?: () => void;
+  name: string;
+  src: string;
+}) {
   const [isDownloading, setIsDownloading] = useState(false);
   const [progress, setProgress] = useState(0);
+
+  // TODO: handle on ready (onResourceReady)
 
   const onclick = () => {
     setIsDownloading(true);
@@ -174,3 +293,17 @@ const ItemWrapper = styled.div`
     transition: transform 0.3s linear;
   }
 `;
+
+/**
+ * Simpler debounce function for composing with multiple functions
+ * @returns
+ */
+function debounce(func, wait) {
+  let timeoutId;
+  return function (...args) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      func.apply(this, args);
+    }, wait);
+  };
+}
