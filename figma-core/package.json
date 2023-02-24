@@ -9,7 +9,7 @@
         "@plugin-sdk/service": "0.0.0"
     },
     "devDependencies": {
-        "@figma/plugin-typings": "^1.37.0",
+        "@figma/plugin-typings": "^1.58.0",
         "typescript": "^4.0.5"
     }
 }
