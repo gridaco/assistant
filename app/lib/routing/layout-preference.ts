@@ -20,6 +20,7 @@ export function getWorkmodeTabLayout(workspaceMode: WorkMode): TabLayout {
           WorkScreen.preview,
           WorkScreen.icon,
           WorkScreen.photo,
+          WorkScreen.copy,
           WorkScreen.lint,
           WorkScreen.layout,
         ];
@@ -66,6 +67,8 @@ export function workScreenToName(appMode: WorkScreen): string {
       return "icon";
     case WorkScreen.photo:
       return "photo";
+    case WorkScreen.copy:
+      return "copy";
     case WorkScreen.lint:
       return "lint";
     case WorkScreen.exporter:

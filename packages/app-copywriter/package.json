@@ -1,0 +1,12 @@
+{
+  "name": "@app/copywriter",
+  "version": "0.0.0",
+  "private": false,
+  "license": "MIT",
+  "dependencies": {
+    "react-textarea-autosize": "^8.4.0"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0"
+  }
+}

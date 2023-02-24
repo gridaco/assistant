@@ -16,7 +16,7 @@ export default async function handler(
   const model = "text-davinci-003";
 
   const prompt = `
-Create headlines for my design content:
+Create headline for my design content:
 prompt: ${q}
 output:
 `;
@@ -24,6 +24,7 @@ output:
   const { data } = await openai.createCompletion({
     prompt: prompt,
     model: model,
+    n: 3,
   });
 
   const { choices } = data;
