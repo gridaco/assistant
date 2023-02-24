@@ -16,6 +16,7 @@ import { ComponentViewScreen } from "@app/component-manage";
 import { LintScreen } from "@app/design-lint";
 import { PreviewScreen } from "@app/design-preview";
 import { IconsScreen } from "@app/icons-loader";
+import { PhotoScreen } from "@app/photo-loader";
 import { MetaEditorScreen, BatchMetaEditor } from "@app/meta-editor";
 import { ExporterScreen } from "@app/export-scene-as-json";
 import { DataMapperScreen } from "@app/data-mapper";
@@ -68,6 +69,8 @@ function Screen(props: { screen: WorkScreen }) {
       return <PreviewScreen />;
     case WorkScreen.icon:
       return <IconsScreen />;
+    case WorkScreen.photo:
+      return <PhotoScreen />;
     case WorkScreen.lint:
       return <LintScreen />;
     case WorkScreen.live:
@@ -233,14 +236,17 @@ function RouterTabNavigationApp(props) {
   const path = "/" + workmode + "/" + work;
   useEffect(() => {
     const _page_config = get_page_config_by_path(path);
-
-    loadLayout().then((l) =>
-      setSavedLayout({
-        ...l,
-        currentWorkmode: workmode,
-        currentWork: _page_config.id,
-      })
-    );
+    if (_page_config) {
+      loadLayout().then((l) => {
+        setSavedLayout({
+          ...l,
+          currentWorkmode: workmode,
+          currentWork: _page_config.id,
+        });
+      });
+    } else {
+      throw `${path} is not registered`;
+    }
   }, []);
 
   return <>{savedLayout && <TabNavigationApp savedLayout={savedLayout} />}</>;

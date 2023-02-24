@@ -10,6 +10,7 @@ export enum WorkScreen {
   preview = "preview",
   layout = "layout",
   icon = "icon",
+  photo = "photo",
   live = "live",
   lint = "lint",
   g11n = "g11n",

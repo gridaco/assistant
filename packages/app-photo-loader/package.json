@@ -1,0 +1,15 @@
+{
+  "name": "@app/photo-loader",
+  "description": "Photo loader for designers",
+  "version": "0.0.0",
+  "author": "Grida.co",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "react-responsive-masonry": "^2.1.7",
+    "unsplash-js": "^7.0.15"
+  },
+  "devDependencies": {
+    "@types/react-responsive-masonry": "^2.1.0"
+  }
+}

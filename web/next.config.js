@@ -26,6 +26,7 @@ const transpile_packages = [
   "@app/design-preview",
   "@app/design-text-code-syntax-highlight",
   "@app/icons-loader",
+  "@app/photo-loader",
   "@app/meta-editor",
   "@app/meta-editor",
   "@app/export-scene-as-json",

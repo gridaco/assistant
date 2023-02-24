@@ -12,11 +12,11 @@ export interface NavigationStoreState {
 
 const _default_state: NavigationStoreState = {
   workmodeSet: {
-    first: WorkMode.code,
-    second: WorkMode.design,
+    first: WorkMode.design,
+    second: WorkMode.code,
   },
-  currentWorkmode: WorkMode.code,
-  currentWork: WorkScreen.code,
+  currentWorkmode: WorkMode.design,
+  currentWork: WorkScreen.preview,
 };
 
 const __KEY = "app-navigation-full-layout";

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "@emotion/styled";
 import { withStyles, Select, MenuItem, InputBase } from "@material-ui/core";
-import { Search } from "@material-ui/icons";
+import { SearchInput } from "@ui/core/search";
 
 export function IconSearch(props: {
   onChange: (value: string) => void;
@@ -51,13 +51,12 @@ export function IconSearch(props: {
 
   return (
     <ControlsWrapper>
-      <SearchBar>
-        <Search style={{ fontSize: "20px" }} />
-        <Input
-          placeholder="Search with icon name"
-          onChange={(e) => props.onChange(e.target.value.toLocaleLowerCase())}
-        />
-      </SearchBar>
+      <SearchInput
+        placeholder="Search with icon name"
+        onChange={(v) => {
+          props.onChange(v.toLocaleLowerCase());
+        }}
+      />
       {/* <Filters>
         <TypeCheck>
           <StyledSelect
@@ -96,36 +95,6 @@ const ControlsWrapper = styled.div`
   padding-top: 14px;
   padding-bottom: 15px;
   position: relative;
-`;
-
-const SearchBar = styled.div`
-  width: 100%;
-  font-size: 14px;
-  height: 55px;
-  padding: 8px;
-  display: flex;
-  align-items: center;
-
-  svg {
-    margin: 10px 10px 10px 8px;
-    font-size: 20px;
-  }
-`;
-
-const Input = styled.input`
-  width: 100%;
-  height: 90%;
-  border: none;
-  outline: none;
-
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 17px;
-  color: #adaeb2;
-
-  &::placeholder {
-    color: #adaeb2;
-  }
 `;
 
 const Filters = styled.div`
