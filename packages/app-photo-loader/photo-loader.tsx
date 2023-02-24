@@ -102,12 +102,9 @@ export function PhotoLoader() {
         return;
       }
 
-      setLocked(true);
-      const { images: gens, n } = await api
-        .fromResources({
-          q: query,
-        })
-        .finally(() => setLocked(false));
+      const { images: gens, n } = await api.fromResources({
+        q: query,
+      });
 
       if (!isQuerySufficientForGeneration) {
         setImages({
@@ -124,6 +121,7 @@ export function PhotoLoader() {
 
   const onclear = () => {
     setQuery("");
+    setIsQuerySufficientForGeneration(false);
     setImages({
       images: [],
     });
@@ -221,7 +219,7 @@ const GridItem = styled.figure`
 `;
 
 const GenerateButton = styled.button`
-  position: absolute;
+  position: fixed;
   z-index: 9;
   bottom: 16px;
   right: 16px;

@@ -28,15 +28,21 @@ export function SearchInput({
   disabled?: boolean;
   readonly?: boolean;
 }) {
+  const ref = React.useRef<HTMLInputElement>(null);
   const [value, setValue] = React.useState<string>("");
 
   const canclear = onClear && value;
 
+  const focus = React.useCallback(() => {
+    ref.current?.focus();
+  }, [ref.current]);
+
   return (
-    <SearchBarWrapper>
+    <SearchBarWrapper onClick={focus}>
       {loading && <LoadingIndicator />}
       {!loading && <MagnifyingGlassIcon className="search-icon" />}
       <Input
+        ref={ref}
         readOnly={readonly}
         disabled={disabled}
         onKeyDown={(e) => {
