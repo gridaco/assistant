@@ -46,7 +46,6 @@ export function SearchInput({
 }
 
 const SearchBarWrapper = styled.div`
-  width: 100%;
   font-size: 14px;
   height: 55px;
   padding: 8px;
@@ -60,7 +59,7 @@ const SearchBarWrapper = styled.div`
 `;
 
 const Input = styled.input`
-  width: 100%;
+  flex: 1;
   height: 90%;
   border: none;
   outline: none;
