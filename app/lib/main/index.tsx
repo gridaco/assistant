@@ -20,6 +20,7 @@ import { PhotoScreen } from "@app/photo-loader";
 import { MetaEditorScreen, BatchMetaEditor } from "@app/meta-editor";
 import { ExporterScreen } from "@app/export-scene-as-json";
 import { DataMapperScreen } from "@app/data-mapper";
+import { CopywriterScreen } from "@app/copywriter";
 import { GlobalizationScreen } from "@app/i18n";
 import { ToolboxScreen } from "../pages/tool-box";
 import { FontReplacerScreen } from "@toolbox/font-replacer";
@@ -71,6 +72,8 @@ function Screen(props: { screen: WorkScreen }) {
       return <IconsScreen />;
     case WorkScreen.photo:
       return <PhotoScreen />;
+    case WorkScreen.copy:
+      return <CopywriterScreen />;
     case WorkScreen.lint:
       return <LintScreen />;
     case WorkScreen.live:
