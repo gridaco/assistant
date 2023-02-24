@@ -5,15 +5,22 @@ import { Color } from "@reflect-ui/core/lib/color";
 interface FigmaRenderTextManifest {
   name?: string;
   text: string;
-  fontName: FontName;
+  fontName?: FontName;
   fontSize: number;
   color: Color;
 }
 
-export function renderText(textManifest: FigmaRenderTextManifest): TextNode {
+export async function renderText(
+  textManifest: FigmaRenderTextManifest
+): Promise<TextNode> {
   const text = figma.createText();
 
-  text.fontName = textManifest.fontName;
+  if (textManifest.fontName) {
+    text.fontName = textManifest.fontName;
+  } else {
+    // resolve fonts (required for changing text characters)
+    await resolvefonts(text);
+  }
   text.characters = textManifest.text;
 
   text.name = textManifest.name ?? "text";
@@ -33,6 +40,14 @@ export function renderText(textManifest: FigmaRenderTextManifest): TextNode {
   return text;
 }
 
+async function resolvefonts(text: TextNode) {
+  await Promise.all(
+    text
+      .getRangeAllFontNames(0, text.characters.length)
+      .map(figma.loadFontAsync)
+  );
+}
+
 export async function replaceTextCharacters(
   text: TextNode,
   {
@@ -44,11 +59,7 @@ export async function replaceTextCharacters(
   }
 ) {
   // resolve fonts (required for changing text characters)
-  await Promise.all(
-    text
-      .getRangeAllFontNames(0, text.characters.length)
-      .map(figma.loadFontAsync)
-  );
+  await resolvefonts(text);
 
   text.characters = characters;
 

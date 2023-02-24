@@ -48,7 +48,7 @@ export async function drawButtons(
       const colorScheme = generateRandomButonColorSceme();
       const textColor: Color = fillIsGradient ? "#FFFFFF" : colorScheme.text;
       const textContent = generateRandomButtonTextContent();
-      const text = renderText({
+      const text = await renderText({
         name: "slot:text",
         text: textContent,
         fontName: fontName,
