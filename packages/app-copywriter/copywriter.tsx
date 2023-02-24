@@ -36,17 +36,47 @@ export function CopywriterScreen() {
         margin: 16,
       }}
     >
-      <PromptInputBox
-        //
-        readonly={busy}
-        prompting={busy}
-        onSubmit={action}
-        onChange={setPrompt}
-      />
+      <motion.div
+        initial={{
+          opacity: 0.0,
+          y: 16,
+        }}
+        animate={{
+          y: 0,
+          opacity: 1,
+        }}
+        transition={{
+          duration: 0.2,
+          damping: 15,
+          stiffness: 200,
+        }}
+      >
+        <PromptInputBox
+          //
+          readonly={busy}
+          prompting={busy}
+          onSubmit={action}
+          onChange={setPrompt}
+        />
+      </motion.div>
 
-      <div
+      <motion.div
         style={{
           marginTop: 32,
+        }}
+        initial={{
+          opacity: 0.0,
+          y: 16,
+        }}
+        animate={{
+          y: 0,
+          opacity: 1,
+        }}
+        transition={{
+          delay: 0.3,
+          duration: 0.2,
+          damping: 15,
+          stiffness: 200,
         }}
       >
         {results?.length ? (
@@ -56,7 +86,7 @@ export function CopywriterScreen() {
         ) : (
           <>{!busy && <Shortcuts />}</>
         )}
-      </div>
+      </motion.div>
     </div>
   );
 }
