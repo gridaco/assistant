@@ -5,16 +5,39 @@ import { SearchInput } from "@ui/core/search";
 import * as api from "./client";
 import { LoadableGraphicItem } from "./image-item";
 import { EK_CREATE_IMAGE } from "@core/constant/ek.constant";
+import { PluginSdk } from "@plugin-sdk/app";
+
 ///
 ///  TODO:
-///  1. Move api client somewhere else
 ///  2. Support for DND
 ///  3. Support for replace fill(s)
+///  4. Add optimized image loading witn max 4096 in width and height (either)
 ///
+
+interface CreateImageProps {
+  src: string;
+  config: {
+    name?: string;
+    width?: number;
+    height?: number;
+  };
+}
+
+function __plugin_create_image(d: CreateImageProps) {
+  parent.postMessage(
+    {
+      pluginMessage: {
+        type: EK_CREATE_IMAGE,
+        data: d,
+      },
+    },
+    "*"
+  );
+}
 
 interface PlacableImage {
   thumbnail: string;
-  raw: string;
+  src: string;
   name: string;
 }
 
@@ -37,7 +60,7 @@ export function PhotoLoader() {
 
     setImages({
       images: gens.map((g) => ({
-        raw: g,
+        src: g,
         thumbnail: g,
         name: `${n} ${query}`,
       })),
@@ -69,7 +92,7 @@ export function PhotoLoader() {
         setImages({
           images: gens.map((g) => ({
             thumbnail: g.thumbnail,
-            raw: g.raw,
+            src: g.url,
             name: g.alt,
           })),
         });
@@ -119,7 +142,20 @@ export function PhotoLoader() {
         >
           {images.images.map((item, index) => (
             <GridItem key={index}>
-              <LoadableGraphicItem src={item.thumbnail} name={item.name} />
+              <LoadableGraphicItem
+                onResourceReady={() => {
+                  // load with plugin messaging
+                  PluginSdk.notify("Inserting Image..", 1000);
+                  __plugin_create_image({
+                    src: item.src,
+                    config: {
+                      name: item.name,
+                    },
+                  });
+                }}
+                src={item.thumbnail}
+                name={item.name}
+              />
             </GridItem>
           ))}
         </Masonry>

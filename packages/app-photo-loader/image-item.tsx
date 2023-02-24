@@ -17,6 +17,7 @@ export function LoadableGraphicItem({
   // TODO: handle on ready (onResourceReady)
 
   const onclick = () => {
+    onResourceReady?.();
     setIsDownloading(true);
 
     // mock progress

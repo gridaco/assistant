@@ -22,6 +22,7 @@ interface ResourceResponse {
     id: string;
     thumbnail: string;
     url: string;
+    full: string;
     raw: string;
     alt: string;
     color: string;

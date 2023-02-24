@@ -20,6 +20,7 @@ export default async function handler(
     id: r.id,
     thumbnail: r.urls.thumb,
     url: r.urls.regular,
+    full: r.urls.full,
     raw: r.urls.raw,
     alt: r.alt_description,
     color: r.color,
