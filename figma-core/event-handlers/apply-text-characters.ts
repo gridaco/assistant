@@ -1,14 +1,14 @@
-import { EK_REPLACE_TEXT_CHARACTERS } from "@core/constant";
+import { EK_APPLY_TEXT_CHARACTERS } from "@core/constant";
 import { replaceTextCharacters } from "../reflect-render/text.render";
 import { addEventHandler } from "../code-thread";
 
-interface ReplaceTextCharactersProps {
+interface ApplyTextCharactersProps {
   type: "selection" | "id";
   id?: string;
   characters: string;
 }
 
-function replaceCharacters(data: ReplaceTextCharactersProps) {
+function applyCharacters(data: ApplyTextCharactersProps) {
   console.log("creating image with data", data);
 
   const { type, characters } = data;
@@ -51,11 +51,8 @@ function replaceCharacters(data: ReplaceTextCharactersProps) {
 }
 
 export function __register__() {
-  addEventHandler<ReplaceTextCharactersProps>(
-    EK_REPLACE_TEXT_CHARACTERS,
-    (msg) => {
-      console.log("replace text characters", msg.data);
-      replaceCharacters(msg.data);
-    }
-  );
+  addEventHandler<ApplyTextCharactersProps>(EK_APPLY_TEXT_CHARACTERS, (msg) => {
+    console.log("replace text characters", msg.data);
+    applyCharacters(msg.data);
+  });
 }
