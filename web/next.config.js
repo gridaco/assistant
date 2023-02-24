@@ -19,6 +19,7 @@ const transpile_packages = [
   "@app/auth",
   "@app/i18n",
   "@app/component-manage",
+  "@app/copywriter",
   "@app/button-maker",
   "@app/data-mapper",
   "@app/preferences",
