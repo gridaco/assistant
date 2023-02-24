@@ -40,3 +40,70 @@ export async function renderImage({
     figma.notify("Error: " + e);
   }
 }
+
+type ImageReplacement =
+  | {
+      // use existing image and by its hash
+      type: "hash";
+      hash: string;
+      scaleMode?: ImagePaint["scaleMode"];
+    }
+  | {
+      // create new image (data) from src url and use it by its hash
+      type: "src";
+      src: string;
+      scaleMode?: ImagePaint["scaleMode"];
+    };
+
+export type ImageInsertableNode =
+  | RectangleNode
+  | EllipseNode
+  | PolygonNode
+  | StarNode
+  | VectorNode
+  | LineNode
+  | TextNode
+  | FrameNode
+  | ComponentNode
+  | InstanceNode
+  | BooleanOperationNode;
+
+export async function insertImageFill<T extends ImageInsertableNode>(
+  node: ImageInsertableNode,
+  { scaleMode = "FILL", ...p }: ImageReplacement
+): Promise<T> {
+  let imagefill: ImagePaint;
+  switch (p.type) {
+    case "hash": {
+      imagefill = <ImagePaint>{
+        type: "IMAGE",
+        imageHash: p.hash,
+        scaleMode: scaleMode,
+      };
+      break;
+    }
+    case "src": {
+      const image = await figma.createImageAsync(p.src);
+      imagefill = <ImagePaint>{
+        type: "IMAGE",
+        imageHash: image.hash,
+        scaleMode: scaleMode,
+      };
+      break;
+    }
+  }
+
+  if (imagefill) {
+    if (node.fills == figma.mixed) {
+      node.fills = [imagefill];
+    } else {
+      node.fills = [
+        ...node.fills,
+        // last is on the top of the stack
+        imagefill,
+      ];
+    }
+  }
+
+  return node as T;
+}
