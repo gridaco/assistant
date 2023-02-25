@@ -216,6 +216,7 @@ const GridItem = styled.figure`
   margin-bottom: 16px;
   border-radius: 2px;
   overflow: hidden;
+  background: rgba(0, 0, 0, 0.1);
 `;
 
 const GenerateButton = styled.button`

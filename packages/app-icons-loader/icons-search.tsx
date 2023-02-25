@@ -92,8 +92,6 @@ export function IconSearch(props: {
 }
 
 const ControlsWrapper = styled.div`
-  padding-top: 14px;
-  padding-bottom: 15px;
   position: relative;
 `;
 

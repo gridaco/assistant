@@ -39,8 +39,8 @@ export function SearchInput({
 
   return (
     <SearchBarWrapper onClick={focus}>
-      {loading && <LoadingIndicator />}
-      {!loading && <MagnifyingGlassIcon className="search-icon" />}
+      {loading && <LoadingIndicator className="leading-icon" size={20} />}
+      {!loading && <MagnifyingGlassIcon className="leading-icon" />}
       <Input
         ref={ref}
         readOnly={readonly}
@@ -82,8 +82,8 @@ const SearchBarWrapper = styled.div`
   display: flex;
   align-items: center;
 
-  .search-icon {
-    margin: 10px 10px 10px 8px;
+  .leading-icon {
+    margin: 10px 10px 10px 0px;
     width: 20px;
     height: 20px;
   }
