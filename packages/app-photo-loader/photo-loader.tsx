@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import { PluginSdk } from "@plugin-sdk/app";
 import { useSetRecoilState } from "recoil";
 import { hide_navigation } from "app/lib/main/global-state-atoms";
+import InfiniteScroll from "react-infinite-scroller";
 
 ///
 ///  TODO:
@@ -55,21 +56,24 @@ export function PhotoLoader() {
     set_hide_navigation_state(false);
   }, [set_hide_navigation_state]);
 
-  const [images, setImages] = useState<{ images: Array<PlacableImage> }>({
+  const [data, setData] = useState<{ images: Array<PlacableImage> }>({
     images: [],
   });
   const [locked, setLocked] = useState(false);
   const [query, setQuery] = useState("");
+  const [searchKey, setSearchKey] = useState("");
   const [isQuerySufficientForGeneration, setIsQuerySufficientForGeneration] =
     useState(false);
 
+  const [hasMore, setHasMore] = useState(false);
+
   useEffect(() => {
-    if (images.images.length > 0) {
+    if (data.images.length > 0) {
       hidenav();
     } else {
       shownav();
     }
-  }, [images]);
+  }, [data]);
 
   const promptGeneration = async () => {
     setLocked(true);
@@ -79,7 +83,7 @@ export function PhotoLoader() {
       })
       .finally(() => setLocked(false));
 
-    setImages({
+    setData({
       images: gens.map((g) => ({
         src: g,
         thumbnail: g,
@@ -88,49 +92,64 @@ export function PhotoLoader() {
     });
   };
 
-  useEffect(() => {
-    if (isQuerySufficientForGeneration) {
-      setImages({
-        images: [],
-      });
-    }
-  }, [isQuerySufficientForGeneration]);
-
   const searchResources = useCallback(
-    async (query: string) => {
-      if (isQuerySufficientForGeneration) {
+    async (q: string, page = 1, extend = false) => {
+      if (!q) {
         return;
       }
 
-      const { images: gens, n } = await api.fromResources({
-        q: query,
+      const {
+        images: gens,
+        n,
+        pages,
+      } = await api.fromResources({
+        q: q,
+        page,
       });
 
-      if (!isQuerySufficientForGeneration) {
-        setImages({
-          images: gens.map((g) => ({
-            thumbnail: g.thumbnail,
-            src: g.url,
-            name: g.alt,
-          })),
-        });
-      }
+      const newimages = gens.map((g) => ({
+        thumbnail: g.thumbnail,
+        src: g.url,
+        name: g.alt,
+      }));
+
+      const images = extend ? [...data.images, ...newimages] : newimages;
+
+      // remove duplicate with id
+      const unique = images.reduce((acc, current) => {
+        const x = acc.find((item) => item.src === current.src);
+        if (!x) {
+          return acc.concat([current]);
+        } else {
+          return acc;
+        }
+      }, []);
+
+      setData({
+        images: unique,
+      });
+
+      setSearchKey(q);
+
+      setHasMore(pages > page);
     },
-    [isQuerySufficientForGeneration]
+    [data.images]
   );
 
   const onclear = () => {
     setQuery("");
+    setSearchKey("");
+    setHasMore(false);
+    setLocked(false);
     setIsQuerySufficientForGeneration(false);
-    setImages({
+    setData({
       images: [],
     });
     shownav();
   };
 
-  const debouncedSearch = useCallback(debounce(searchResources, 1200), [
+  const debouncedSearch = useCallback(debounce(searchResources, 1000), [
     searchResources,
-    isQuerySufficientForGeneration,
   ]);
 
   return (
@@ -157,39 +176,48 @@ export function PhotoLoader() {
       {isQuerySufficientForGeneration && (
         <GenerateButton onClick={promptGeneration}>⚡️ Generate</GenerateButton>
       )}
-      <ResponsiveMasonry
-        style={{
-          margin: "0 16px",
+      <InfiniteScroll
+        key={searchKey}
+        pageStart={0}
+        hasMore={hasMore}
+        loadMore={(page) => {
+          searchResources(query, page, true);
         }}
-        columnsCountBreakPoints={{ 350: 2, 750: 3, 900: 3 }}
       >
-        <Masonry
+        <ResponsiveMasonry
           style={{
-            gap: 16,
+            margin: "0 16px",
           }}
+          columnsCountBreakPoints={{ 350: 2, 750: 3, 900: 3 }}
         >
-          {images.images.map((item, index) => (
-            <GridItem key={item.src}>
-              <DelayedMotionShowup index={index}>
-                <LoadableGraphicItem
-                  onResourceReady={() => {
-                    // load with plugin messaging
-                    PluginSdk.notify("Inserting Image..", 1000);
-                    __plugin_create_image({
-                      src: item.src,
-                      config: {
-                        name: item.name,
-                      },
-                    });
-                  }}
-                  src={item.thumbnail}
-                  name={item.name}
-                />
-              </DelayedMotionShowup>
-            </GridItem>
-          ))}
-        </Masonry>
-      </ResponsiveMasonry>
+          <Masonry
+            style={{
+              gap: 16,
+            }}
+          >
+            {data.images.map((item, index) => (
+              <GridItem key={searchKey + item.src}>
+                <DelayedMotionShowup index={index}>
+                  <LoadableGraphicItem
+                    onResourceReady={() => {
+                      // load with plugin messaging
+                      PluginSdk.notify("Inserting Image..", 1000);
+                      __plugin_create_image({
+                        src: item.src,
+                        config: {
+                          name: item.name,
+                        },
+                      });
+                    }}
+                    src={item.thumbnail}
+                    name={item.name}
+                  />
+                </DelayedMotionShowup>
+              </GridItem>
+            ))}
+          </Masonry>
+        </ResponsiveMasonry>
+      </InfiniteScroll>
     </Wrapper>
   );
 }
@@ -217,6 +245,7 @@ const GridItem = styled.figure`
   border-radius: 2px;
   overflow: hidden;
   background: rgba(0, 0, 0, 0.1);
+  user-select: none;
 `;
 
 const GenerateButton = styled.button`

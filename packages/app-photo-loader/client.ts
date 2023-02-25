@@ -6,6 +6,7 @@ const client = Axios.create({
 
 interface SearchQuery {
   q: string;
+  page?: number;
 }
 
 interface GenerativeResponse {

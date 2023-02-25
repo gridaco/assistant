@@ -10,10 +10,12 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const q = req.query.q as string;
+  const page = req.query.page as string;
 
   const { response } = await unsplash.search.getPhotos({
     query: q,
     orderBy: "relevant",
+    page: parseInt(page) ?? 1,
   });
 
   const images = response.results.map((r) => ({
