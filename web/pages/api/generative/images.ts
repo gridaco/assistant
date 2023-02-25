@@ -13,7 +13,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const q = req.query.q as string;
-  const n = 4;
+  const n = 2;
 
   const { data } = await openai.createImage({
     prompt: q,
