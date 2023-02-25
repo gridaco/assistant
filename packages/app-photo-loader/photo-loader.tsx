@@ -222,12 +222,17 @@ export function PhotoLoader() {
   );
 }
 
-const DelayedMotionShowup = ({ children, index = 0, delay = 0.04 }) => {
+const DelayedMotionShowup = ({
+  children,
+  index = 0,
+  delay = 0.04,
+  max = 0.2,
+}) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2, delay: index * delay }}
+      transition={{ duration: 0.2, delay: Math.min(index * delay, max) }}
     >
       {children}
     </motion.div>
