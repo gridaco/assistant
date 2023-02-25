@@ -1,6 +1,7 @@
 import React from "react";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
 function a11yProps(index: number) {
@@ -38,8 +39,7 @@ export function WorkmodeScreenTabs(props: {
         },
       }}
       style={{
-        marginLeft: "-16px",
-        marginRight: "16px",
+        marginLeft: -12,
       }}
     >
       {layout.map((v, i) => {
@@ -59,29 +59,28 @@ export function WorkmodeScreenTabs(props: {
   return <>{tabs}</>;
 }
 
+const basestyle = css`
+  min-width: fit-content;
+  max-width: fit-content;
+  width: fit-content;
+  font-size: 13px;
+  line-height: 17px;
+  padding-top: 0px;
+`;
+
 const StyledTab = styled(Tab)`
   // for reset @material-ui style
   text-transform: capitalize !important;
 
   &.root {
-    min-width: fit-content;
-    max-width: fit-content;
-    width: fit-content;
-    padding: 18px 16px;
-    font-size: 14px;
+    ${basestyle}
     font-weight: 400 !important;
-    line-height: 17px;
-    color: #adaeb2;
+    color: #8e8e8e;
   }
 
   &.selected {
-    min-width: fit-content;
-    max-width: fit-content;
-    width: fit-content;
-    padding: 18px 16px;
-    font-size: 14px;
+    ${basestyle}
     font-weight: 700 !important;
-    line-height: 17px;
     color: #151617;
   }
 `;
