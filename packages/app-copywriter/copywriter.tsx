@@ -36,6 +36,7 @@ function useSingleText() {
     if (selection) {
       if (selection.node.type === "TEXT") {
         if ("characters" in selection.node) {
+          // @ts-ignore
           setText(selection.node.characters as string);
         } else {
           alert("not supported");
