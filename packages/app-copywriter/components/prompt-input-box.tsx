@@ -15,6 +15,7 @@ const LoadingIndicator = withStyles((theme) => ({
 export function PromptInputBox({
   onChange,
   onSubmit,
+  value = "",
   readonly = false,
   placeholder = "Type your prompt here",
   canSubmit = true,
@@ -24,6 +25,7 @@ export function PromptInputBox({
   readonly?: boolean;
   onSubmit?: () => void;
   onChange?: (value: string) => void;
+  value?: string;
   canSubmit?: boolean;
   prompting?: boolean;
   placeholder?: string;
@@ -59,6 +61,7 @@ export function PromptInputBox({
             submit();
           }
         }}
+        value={value}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         placeholder={placeholder}

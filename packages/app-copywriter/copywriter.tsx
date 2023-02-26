@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "@emotion/styled";
 import { motion, AnimatePresence } from "framer-motion";
 import { PromptInputBox, Bubble, GroupLabel } from "./components";
 import { LightningBoltIcon, ListBulletIcon } from "@radix-ui/react-icons";
 import { EK_APPLY_TEXT_CHARACTERS } from "@core/constant";
 import * as api from "./client";
+import { useSingleSelection } from "plugin-app";
+import { IReflectNodeReference } from "@design-sdk/figma-node";
 
 interface ReplaceTextCharactersProps {
   type: "selection" | "id";
@@ -24,11 +26,47 @@ function __plugin_replace_text_characteres(d: ReplaceTextCharactersProps) {
   );
 }
 
+function useSingleText() {
+  // TODO: make it native, performance efficient.
+
+  const [text, setText] = React.useState<string>();
+  const selection = useSingleSelection();
+
+  useEffect(() => {
+    if (selection) {
+      if (selection.node.type === "TEXT") {
+        if ("characters" in selection.node) {
+          setText(selection.node.characters as string);
+        } else {
+          alert("not supported");
+        }
+      }
+    }
+  }, [selection]);
+
+  return text;
+}
+
 export function CopywriterScreen() {
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<Error | null>(null);
   const [prompt, setPrompt] = React.useState("");
   const [results, setResults] = React.useState<string[]>([]);
+  const [setbyuser, setSetbyuser] = React.useState(false);
+
+  const selectiontext = useSingleText();
+
+  useEffect(() => {
+    // initially load text from selected one, only for the first time.
+    if (selectiontext) {
+      if (!prompt.trim().length) {
+        if (!setbyuser) {
+          setPrompt(selectiontext);
+          setSetbyuser(false);
+        }
+      }
+    }
+  }, [selectiontext, prompt, setbyuser]);
 
   const action = () => {
     setBusy(true);
@@ -76,7 +114,11 @@ export function CopywriterScreen() {
           readonly={busy}
           prompting={busy}
           onSubmit={action}
-          onChange={setPrompt}
+          value={prompt}
+          onChange={(v) => {
+            setPrompt(v);
+            setSetbyuser(true);
+          }}
         />
       </motion.div>
 
