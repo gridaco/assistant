@@ -8,22 +8,60 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
+const translate_prompt = (text: string) => `Detect the Inout language below.
+Options are: en, ko, ja, fr
+
+Input: ${text}
+Output: `;
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const q = req.query.q as string;
+  const t = req.query.t as string;
   const model = "text-davinci-003";
 
-  const prompt = `
+  if (!q) {
+    res.status(400).json({
+      error: "query parameter q is required.",
+    });
+    return;
+  }
+
+  let prompt = q;
+  switch (t) {
+    case "headline": {
+      prompt = `
 Create headline for my design content:
 prompt: ${q}
 output:
 `;
+      break;
+    }
+    case "paragraph": {
+      prompt = `
+Create paragraph for my design content:
+prompt: ${q}
+output:
+`;
+    }
+    case undefined:
+    case "free": {
+      prompt = q;
+    }
+    default: {
+    }
+  }
+
+  // TODO: add support for stream.
 
   const { data } = await openai.createCompletion({
     prompt: prompt,
     model: model,
+    temperature: 0.7,
+    max_tokens: 256,
+    top_p: 1,
     n: 3,
   });
 

@@ -17,4 +17,10 @@ const BubbleWrapper = styled.div`
   padding: 21px;
   background: rgba(0, 0, 0, 0.02);
   border-radius: 8px;
+
+  p {
+    margin: 0;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.8);
+  }
 `;

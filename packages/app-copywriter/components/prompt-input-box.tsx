@@ -3,18 +3,28 @@ import TextareaAutosize from "react-textarea-autosize";
 import styled from "@emotion/styled";
 import { LightningBoltIcon } from "@radix-ui/react-icons";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import withStyles from "@material-ui/core/styles/withStyles";
+
+const LoadingIndicator = withStyles((theme) => ({
+  root: {},
+  primaryColor: {
+    color: "#ffffff",
+  },
+}))(CircularProgress);
 
 export function PromptInputBox({
   onChange,
   onSubmit,
   readonly = false,
   placeholder = "Type your prompt here",
+  canSubmit = true,
   autofocus = true,
   prompting = false,
 }: {
   readonly?: boolean;
   onSubmit?: () => void;
   onChange?: (value: string) => void;
+  canSubmit?: boolean;
   prompting?: boolean;
   placeholder?: string;
   autofocus?: boolean;
@@ -62,11 +72,14 @@ export function PromptInputBox({
             e.preventDefault();
             submit();
           }}
-          disabled={readonly}
+          disabled={!canSubmit || readonly}
           className="send"
         >
-          {prompting ? <CircularProgress size={15} /> : <LightningBoltIcon />}
-          Generate
+          {prompting ? (
+            <LoadingIndicator className="icon" size={15} />
+          ) : (
+            <LightningBoltIcon className="icon" />
+          )}
         </button>
       </div>
     </BoxWrapper>
@@ -76,7 +89,10 @@ export function PromptInputBox({
 const BoxWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 21px;
+  padding-top: 16px;
+  padding-left: 16px;
+  padding-right: 12px;
+  padding-bottom: 12px;
   outline: 1px solid transparent;
   background: rgba(0, 0, 0, 0.02);
   border-radius: 8px;
@@ -136,6 +152,11 @@ const BoxWrapper = styled.div`
 
     &:disabled {
       cursor: not-allowed;
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    .icon {
+      color: white;
     }
   }
 

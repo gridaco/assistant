@@ -72,6 +72,7 @@ export function CopywriterScreen() {
       >
         <PromptInputBox
           //
+          canSubmit={prompt.length > 3}
           readonly={busy}
           prompting={busy}
           onSubmit={action}
@@ -103,7 +104,10 @@ export function CopywriterScreen() {
             <ResultsList data={results} />
           </>
         ) : (
-          <>{!busy && <Shortcuts />}</>
+          <>
+            {/* disabling shortcuts */}
+            {/* {!busy && <Shortcuts />} */}
+          </>
         )}
       </motion.div>
     </div>
