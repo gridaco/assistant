@@ -5,6 +5,7 @@ const unsplash = createApi({
   accessKey: process.env.UNSPLASH_API_CLIENT_ID,
 });
 
+// @ts-ignore FIXME: (Awaited available from ts 4.5)
 type Photo = Awaited<ReturnType<typeof unsplash.photos.get>>["response"];
 
 const mapphoto = (r: Photo) => ({
