@@ -10,6 +10,16 @@ import { PluginSdk } from "@plugin-sdk/app";
 import { useSetRecoilState } from "recoil";
 import { hide_navigation } from "app/lib/main/global-state-atoms";
 import InfiniteScroll from "react-infinite-scroller";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import withStyles from "@material-ui/core/styles/withStyles";
+import { LightningBoltIcon } from "@radix-ui/react-icons";
+
+const LoadingIndicator = withStyles((theme) => ({
+  root: {},
+  primaryColor: {
+    color: "#000000",
+  },
+}))(CircularProgress);
 
 ///
 ///  TODO:
@@ -56,8 +66,12 @@ export function PhotoLoader() {
     set_hide_navigation_state(false);
   }, [set_hide_navigation_state]);
 
-  const [data, setData] = useState<{ images: Array<PlacableImage> }>({
-    images: [],
+  const [data, setData] = useState<{
+    from_resources: Array<PlacableImage>;
+    from_ai: Array<PlacableImage>;
+  }>({
+    from_resources: [],
+    from_ai: [],
   });
   const [locked, setLocked] = useState(false);
   const [query, setQuery] = useState("");
@@ -74,14 +88,14 @@ export function PhotoLoader() {
   }, []);
 
   useEffect(() => {
-    if (data.images.length > 0) {
+    if (data.from_resources.length > 0) {
       if (query.length > 0) {
         hidenav();
       }
     } else {
       shownav();
     }
-  }, [data.images, hidenav, shownav, query]);
+  }, [data.from_resources, hidenav, shownav, query]);
 
   const promptGeneration = async () => {
     setLocked(true);
@@ -92,7 +106,8 @@ export function PhotoLoader() {
       .finally(() => setLocked(false));
 
     setData({
-      images: gens.map((g) => ({
+      from_resources: data.from_resources,
+      from_ai: gens.map((g) => ({
         src: g,
         thumbnail: g,
         name: `${n} ${query}`,
@@ -121,7 +136,9 @@ export function PhotoLoader() {
         name: g.alt,
       }));
 
-      const images = extend ? [...data.images, ...newimages] : newimages;
+      const images = extend
+        ? [...data.from_resources, ...newimages]
+        : newimages;
 
       // remove duplicate with id
       const unique = images.reduce((acc, current) => {
@@ -134,14 +151,15 @@ export function PhotoLoader() {
       }, []);
 
       setData({
-        images: unique,
+        from_resources: unique,
+        from_ai: [],
       });
 
       setSearchKey(q);
 
       setHasMore(pages > page);
     },
-    [data.images]
+    [data.from_resources]
   );
 
   const onclear = () => {
@@ -151,7 +169,8 @@ export function PhotoLoader() {
     setLocked(false);
     setIsQuerySufficientForGeneration(false);
     setData({
-      images: [],
+      from_resources: [],
+      from_ai: [],
     });
     shownav();
   };
@@ -182,8 +201,16 @@ export function PhotoLoader() {
         placeholder={`Try "astronaut with cowboy hat"`}
       />
       {isQuerySufficientForGeneration && (
-        <GenerateButton onClick={promptGeneration}>⚡️ Generate</GenerateButton>
+        <GenerateButton disabled={locked} onClick={promptGeneration}>
+          {locked ? (
+            <LoadingIndicator className="icon" size={16} />
+          ) : (
+            <LightningBoltIcon className="icon" />
+          )}
+          {query}
+        </GenerateButton>
       )}
+
       <InfiniteScroll
         key={searchKey}
         pageStart={0}
@@ -192,6 +219,36 @@ export function PhotoLoader() {
           searchResources(query, page, true);
         }}
       >
+        {data.from_ai.length > 0 && (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              padding: 16,
+            }}
+          >
+            {data.from_ai.map((item, index) => (
+              <GridItem key={searchKey + item.src}>
+                <DelayedMotionShowup index={index}>
+                  <LoadableGraphicItem
+                    onResourceReady={() => {
+                      // load with plugin messaging
+                      PluginSdk.notify("Inserting Image..", 1000);
+                      __plugin_create_image({
+                        src: item.src,
+                        config: {
+                          name: item.name,
+                        },
+                      });
+                    }}
+                    src={item.thumbnail}
+                    name={item.name}
+                  />
+                </DelayedMotionShowup>
+              </GridItem>
+            ))}
+          </div>
+        )}
         <ResponsiveMasonry
           style={{
             margin: "0 16px",
@@ -203,7 +260,7 @@ export function PhotoLoader() {
               gap: 16,
             }}
           >
-            {data.images.map((item, index) => (
+            {data.from_resources.map((item, index) => (
               <GridItem key={searchKey + item.src}>
                 <DelayedMotionShowup index={index}>
                   <LoadableGraphicItem
@@ -262,17 +319,29 @@ const GridItem = styled.figure`
 `;
 
 const GenerateButton = styled.button`
-  position: fixed;
-  z-index: 9;
-  bottom: 16px;
-  right: 16px;
-  left: 16px;
-  padding: 8px 16px;
+  margin-top: 0 !important;
+  margin: 16px;
+  padding: 12px 12px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
   border: none;
   background: black;
   color: white;
   border-radius: 8px;
   cursor: pointer;
+
+  .icon {
+    color: white;
+    width: 16px;
+    height: 16px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
   transition: all 0.2s ease-in-out;
 `;
 

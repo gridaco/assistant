@@ -83,6 +83,7 @@ const SearchBarWrapper = styled.div`
   align-items: center;
 
   .leading-icon {
+    color: black;
     margin: 10px 10px 10px 0px;
     width: 20px;
     height: 20px;
