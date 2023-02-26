@@ -67,13 +67,21 @@ export function PhotoLoader() {
 
   const [hasMore, setHasMore] = useState(false);
 
+  // load random images on mount, once.
+  useEffect(() => {
+    // prompting empty query with spaces will return random images
+    searchResources("  ", 1, false);
+  }, []);
+
   useEffect(() => {
     if (data.images.length > 0) {
-      hidenav();
+      if (query.length > 0) {
+        hidenav();
+      }
     } else {
       shownav();
     }
-  }, [data]);
+  }, [data.images, hidenav, shownav, query]);
 
   const promptGeneration = async () => {
     setLocked(true);
