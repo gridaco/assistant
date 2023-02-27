@@ -60,14 +60,12 @@ export function CopywriterScreen() {
   useEffect(() => {
     // initially load text from selected one, only for the first time.
     if (selectiontext) {
-      if (!prompt.trim().length) {
-        if (!setbyuser) {
-          setPrompt(selectiontext);
-          setSetbyuser(false);
-        }
+      if (!setbyuser || !prompt.trim().length) {
+        setPrompt(selectiontext);
+        setSetbyuser(false);
       }
     }
-  }, [selectiontext, prompt, setbyuser]);
+  }, [selectiontext]);
 
   const action = () => {
     setBusy(true);
