@@ -39,6 +39,7 @@ export default async function handler(
     const __n = 20;
     // if no query, get radom images.
     const { response } = await unsplash.photos.getRandom({
+      featured: true,
       count: __n,
     });
     images = (response as Array<any>).map(mapphoto);
