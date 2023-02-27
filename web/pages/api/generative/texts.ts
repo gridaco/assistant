@@ -1,18 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Configuration, OpenAIApi } from "openai";
-
-const OPENAI_API_SECRET_KEY = process.env.OPENAI_API_SECRET_KEY;
-const configuration = new Configuration({
-  apiKey: OPENAI_API_SECRET_KEY,
-});
-
-const openai = new OpenAIApi(configuration);
-
-const translate_prompt = (text: string) => `Detect the Inout language below.
-Options are: en, ko, ja, fr
-
-Input: ${text}
-Output: `;
+import openai from "service/providers/openai";
 
 export default async function handler(
   req: NextApiRequest,
