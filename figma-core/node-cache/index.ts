@@ -23,7 +23,8 @@ export class FigmaNodeCache {
   private static _conversions: {
     [key: string]: TimedCacheContainer<ReflectSceneNode>;
   } = {};
-  private static _lastConverted: TimedCacheContainer<ReflectSceneNode> | null = null;
+  private static _lastConverted: TimedCacheContainer<ReflectSceneNode> | null =
+    null;
   static get lastConverted(): ReflectSceneNode | null {
     return this._lastConverted.data;
   }
@@ -81,7 +82,7 @@ export class FigmaNodeCache {
 
   static getLast(): SceneNode | null {
     if (this._lastSelections) {
-      return figma.getNodeById(this.lastId) as SceneNode;
+      return figma.getNodeById(this.lastId) as any as SceneNode;
     }
     return null;
   }

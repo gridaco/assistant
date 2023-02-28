@@ -9,7 +9,9 @@ export enum WorkScreen {
   component = "component",
   preview = "preview",
   layout = "layout",
+  copy = "copy",
   icon = "icon",
+  photo = "photo",
   live = "live",
   lint = "lint",
   g11n = "g11n",
@@ -24,4 +26,5 @@ export enum WorkScreen {
   tool_batch_meta_editor = "tool_batch_meta_editor",
   tool_data_mapper = "tool_data_mapper",
   signin = "signin",
+  upgrade = "upgrade",
 }

@@ -1,0 +1,1 @@
+export { UpgradePage } from "./register";

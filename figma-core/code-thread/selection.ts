@@ -1,5 +1,6 @@
 import { analyzeSelection, SelectionAnalysis } from "plugin-app/utils";
 import { convert } from "@design-sdk/figma";
+import type { ReflectSceneNode } from "@design-sdk/figma";
 import { Logger } from "logger";
 import { makeReference } from "@design-sdk/figma-node";
 import { runon } from "./runon";
@@ -106,7 +107,7 @@ export function onfigmaselectionchange() {
       targetNodeId = singleFigmaNodeSelection.id;
 
       // TODO: this will not trigger unless user deselects and re select the same node. currently node cache does not have expiry control.
-      let rnode;
+      let rnode: ReflectSceneNode;
       const _cached = FigmaNodeCache.getConverted(singleFigmaNodeSelection.id);
       if (_cached) {
         console.info("using cached", _cached.name);
@@ -123,6 +124,16 @@ export function onfigmaselectionchange() {
       // region sync selection event (search "selectionchange" for references)
       try {
         const data = makeReference(rnode);
+
+        // support text node (characters) =========
+        // FIXME: safely remove (migrate) this. (affected: @app/copywriter) - add a proper text support
+        if (rnode.type == "TEXT") {
+          if ("data" in rnode) {
+            data["characters"] = rnode.data;
+          }
+        }
+        // ========================================
+
         figma.ui.postMessage({
           type: "selectionchange",
           data: data,

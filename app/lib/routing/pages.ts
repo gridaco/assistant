@@ -46,6 +46,18 @@ const page_design_icon: PageConfig = {
   path: "/design/icons",
 };
 
+const page_design_photo: PageConfig = {
+  id: WorkScreen.photo,
+  title: "Photo",
+  path: "/design/photos-loader",
+};
+
+const page_design_copywriter: PageConfig = {
+  id: WorkScreen.copy,
+  title: "Copy",
+  path: "/design/copywriter",
+};
+
 const page_design_layout: PageConfig = {
   id: WorkScreen.layout,
   title: "Layout",
@@ -125,6 +137,12 @@ const page_signup: PageConfig = {
   path: "/signin",
 };
 
+const page_early_access: PageConfig = {
+  id: WorkScreen.upgrade,
+  title: "Upgrade",
+  path: "/upgrade",
+};
+
 /**
  * list of all pages
  */
@@ -134,6 +152,8 @@ const all_pages: PageConfig[] = [
   page_design_preview,
   page_design_layout,
   page_design_icon,
+  page_design_photo,
+  page_design_copywriter,
   page_code_layout,
   page_code_preview,
   page_code_component,
@@ -142,6 +162,7 @@ const all_pages: PageConfig[] = [
   // standalones
   page_signup,
   page_about,
+  page_early_access,
   // tools
   page_toolbox_home,
   page_toolbox_data_mapper,
@@ -156,6 +177,7 @@ const all_pages: PageConfig[] = [
 export const standalone_pages: PageConfig[] = [
   page_signup,
   page_about,
+  page_early_access,
   // tools
   page_toolbox_home,
   page_toolbox_data_mapper,

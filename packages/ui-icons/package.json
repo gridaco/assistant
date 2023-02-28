@@ -3,5 +3,7 @@
     "description": "Icons used for assistant app (React)",
     "authors": "Grida",
     "version": "0.0.0",
-    "dependencies": {}
+    "dependencies": {
+        "@radix-ui/react-icons": "^1.2.0"
+    }
 }

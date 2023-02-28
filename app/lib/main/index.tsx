@@ -16,15 +16,18 @@ import { ComponentViewScreen } from "@app/component-manage";
 import { LintScreen } from "@app/design-lint";
 import { PreviewScreen } from "@app/design-preview";
 import { IconsScreen } from "@app/icons-loader";
+import { PhotoScreen } from "@app/photo-loader";
 import { MetaEditorScreen, BatchMetaEditor } from "@app/meta-editor";
 import { ExporterScreen } from "@app/export-scene-as-json";
 import { DataMapperScreen } from "@app/data-mapper";
+import { CopywriterScreen } from "@app/copywriter";
 import { GlobalizationScreen } from "@app/i18n";
 import { ToolboxScreen } from "../pages/tool-box";
 import { FontReplacerScreen } from "@toolbox/font-replacer";
 import { CodeScreen } from "@app/design-to-code";
 import { AboutScreen } from "../pages/about";
 import { SigninScreen } from "@app/auth";
+import { UpgradePage } from "@assistant-fp/early-access";
 import { ToolboxHome } from "@app/toolbox";
 import { LiveSessionPage } from "@app/live";
 import { DesignTextCdoeSyntaxHighligherScreen } from "@app/design-text-code-syntax-highlight";
@@ -68,6 +71,10 @@ function Screen(props: { screen: WorkScreen }) {
       return <PreviewScreen />;
     case WorkScreen.icon:
       return <IconsScreen />;
+    case WorkScreen.photo:
+      return <PhotoScreen />;
+    case WorkScreen.copy:
+      return <CopywriterScreen />;
     case WorkScreen.lint:
       return <LintScreen />;
     case WorkScreen.live:
@@ -94,6 +101,8 @@ function Screen(props: { screen: WorkScreen }) {
       return <DesignTextCdoeSyntaxHighligherScreen />;
     case WorkScreen.signin:
       return <SigninScreen />;
+    case WorkScreen.upgrade:
+      return <UpgradePage />;
     default:
       return <div>Not found</div>;
   }
@@ -233,14 +242,17 @@ function RouterTabNavigationApp(props) {
   const path = "/" + workmode + "/" + work;
   useEffect(() => {
     const _page_config = get_page_config_by_path(path);
-
-    loadLayout().then((l) =>
-      setSavedLayout({
-        ...l,
-        currentWorkmode: workmode,
-        currentWork: _page_config.id,
-      })
-    );
+    if (_page_config) {
+      loadLayout().then((l) => {
+        setSavedLayout({
+          ...l,
+          currentWorkmode: workmode,
+          currentWork: _page_config.id,
+        });
+      });
+    } else {
+      throw `${path} is not registered`;
+    }
   }, []);
 
   return <>{savedLayout && <TabNavigationApp savedLayout={savedLayout} />}</>;

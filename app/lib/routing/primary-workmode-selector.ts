@@ -6,7 +6,7 @@ export interface PrimaryWorkmodeSet {
 
 export function getPrimaryWorkmodeSet(): PrimaryWorkmodeSet {
   return {
-    first: WorkMode.code,
-    second: WorkMode.design,
+    first: WorkMode.design,
+    second: WorkMode.code,
   };
 }

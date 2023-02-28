@@ -22,7 +22,7 @@ interface Props {
 const WorkmodeLabel = styled.h3<Props>`
   display: flex;
   text-transform: capitalize;
-  font-size: 21px;
+  font-size: 19px;
   letter-spacing: 0em;
   cursor: pointer;
   user-select: none;
@@ -47,7 +47,6 @@ const WorkmodeLabel = styled.h3<Props>`
           color: #cfcfcf;
 
           &:hover {
-            font-size: 21px;
             font-weight: 400;
             line-height: 25px;
             letter-spacing: 0em;

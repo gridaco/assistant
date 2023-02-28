@@ -10,7 +10,7 @@ export function SecondaryWorkmodeChoice(props: {
 }
 
 const Title = styled.h6`
-  font-size: 21px;
+  font-size: 19px;
   font-weight: 700;
   line-height: 26px;
   letter-spacing: 0em;

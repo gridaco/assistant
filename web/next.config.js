@@ -2,6 +2,7 @@ const transpile_packages = [
   // _firstparty
   "@assistant-fp/analytics",
   "@assistant-fp/auth",
+  "@assistant-fp/early-access",
 
   // UI
   "@ui/core",
@@ -19,6 +20,7 @@ const transpile_packages = [
   "@app/auth",
   "@app/i18n",
   "@app/component-manage",
+  "@app/copywriter",
   "@app/button-maker",
   "@app/data-mapper",
   "@app/preferences",
@@ -26,6 +28,7 @@ const transpile_packages = [
   "@app/design-preview",
   "@app/design-text-code-syntax-highlight",
   "@app/icons-loader",
+  "@app/photo-loader",
   "@app/meta-editor",
   "@app/meta-editor",
   "@app/export-scene-as-json",

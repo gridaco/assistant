@@ -56,12 +56,12 @@ export function SecondaryMenuDropdown() {
         history.push("/toolbox/home");
       },
     },
-    {
-      id: WorkMode.settings,
-      name: WorkMode.settings,
-      stage: "development",
-      onSelect: () => {},
-    },
+    // {
+    //   id: WorkMode.settings,
+    //   name: WorkMode.settings,
+    //   stage: "development",
+    //   onSelect: () => {},
+    // },
     {
       id: "feedback-toggle",
       name: "Feedback",
@@ -76,6 +76,14 @@ export function SecondaryMenuDropdown() {
       stage: "production",
       onSelect: () => {
         history.push("/about");
+      },
+    },
+    {
+      id: "upgrade",
+      name: "Upgrade",
+      stage: "production",
+      onSelect: () => {
+        history.push("/upgrade");
       },
     },
   ].filter((m) => {

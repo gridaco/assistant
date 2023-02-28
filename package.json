@@ -58,7 +58,8 @@
   },
   "resolutions": {
     "react": "18.2.0",
-    "@types/react": "^18.0.28"
+    "@types/react": "^18.0.28",
+    "@figma/plugin-typings": "^1.58.0"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
