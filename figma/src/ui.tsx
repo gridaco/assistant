@@ -69,7 +69,7 @@ export function LiteHostedAppConnector() {
           width="100%"
           allow="camera"
           height={`${initialized ? "100%" : "0px"}`}
-          sandbox="allow-scripts allow-same-origin allow-popups allow-modals"
+          sandbox="allow-scripts allow-same-origin allow-popups allow-modals allow-forms"
           frameBorder="0"
           allowFullScreen
           src={`${_host}/init-figma`} //?platform=figma
