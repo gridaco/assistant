@@ -20,6 +20,10 @@ export function RegisterWithCodeCard() {
       return false;
     }
 
+    if (!code.startsWith("GAEBAK-")) {
+      return false;
+    }
+
     //
     // TODO: add server side verification
 
@@ -28,7 +32,12 @@ export function RegisterWithCodeCard() {
 
   const activate = (code: string) => {
     verify(code).then((verified) => {
-      PluginSdk.setItem(__key, code);
+      if (verified) {
+        PluginSdk.setItem(__key, code);
+        alert("Congrats🎉 Early access program activated.");
+      } else {
+        alert("Hmm🤔 That's not a valid access key");
+      }
     });
   };
 
@@ -49,9 +58,10 @@ export function RegisterWithCodeCard() {
           <KeyAsInput
             id="topt"
             type="text"
-            maxLength={6}
-            minLength={6}
-            placeholder="0000000"
+            // the length is 39 (prefix 6) value 32
+            maxLength={50}
+            minLength={24}
+            placeholder="xxxxxx-xxxxxxxxxxxxx"
           />
           <EnterAsButton>Enter</EnterAsButton>
         </Field>
