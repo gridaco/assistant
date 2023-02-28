@@ -47,6 +47,8 @@ export function workScreenToName(appMode: WorkScreen): string {
   switch (appMode) {
     case WorkScreen.about:
       return "about";
+    case WorkScreen.upgrade:
+      return "upgrade";
     case WorkScreen.code:
       return "code";
     case WorkScreen.code_flutter:

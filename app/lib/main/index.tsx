@@ -27,6 +27,7 @@ import { FontReplacerScreen } from "@toolbox/font-replacer";
 import { CodeScreen } from "@app/design-to-code";
 import { AboutScreen } from "../pages/about";
 import { SigninScreen } from "@app/auth";
+import { UpgradePage } from "@assistant-fp/early-access";
 import { ToolboxHome } from "@app/toolbox";
 import { LiveSessionPage } from "@app/live";
 import { DesignTextCdoeSyntaxHighligherScreen } from "@app/design-text-code-syntax-highlight";
@@ -100,6 +101,8 @@ function Screen(props: { screen: WorkScreen }) {
       return <DesignTextCdoeSyntaxHighligherScreen />;
     case WorkScreen.signin:
       return <SigninScreen />;
+    case WorkScreen.upgrade:
+      return <UpgradePage />;
     default:
       return <div>Not found</div>;
   }

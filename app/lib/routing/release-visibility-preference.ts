@@ -10,6 +10,7 @@ export interface ReleaseVisibilityPreference {
 const SCREEN_VISIBILITY_PREFERENCE: Map<WorkScreen, ReleaseChannel> = new Map([
   [WorkScreen.code, "release"],
   [WorkScreen.about, "release"],
+  [WorkScreen.upgrade, "release"],
   [WorkScreen.component, "beta"],
   [WorkScreen.layout, "beta"],
   [WorkScreen.icon, "release"],
