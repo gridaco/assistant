@@ -16,6 +16,16 @@ export default async function handler(
   const q = req.query.q as string;
   const n = 2;
 
+  // get access key
+  const { authorization } = req.headers;
+  const key = authorization?.split(" ")[1];
+  if (!key || !key.startsWith("GAEBAK")) {
+    res.status(401).json({
+      error: "authorization header is required.",
+    });
+    return;
+  }
+
   const prompt = await translateForTextToImage(q);
 
   const { data } = await openai.createImage({

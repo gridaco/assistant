@@ -38,13 +38,25 @@ interface ResourceResponse {
 }
 
 export async function fromGenerative(
-  p: SearchQuery
+  p: SearchQuery,
+  accessToken: string
 ): Promise<GenerativeResponse> {
-  const { data } = await client.get("/generative/images", {
-    params: p,
-  });
+  try {
+    const { data } = await client.get("/generative/images", {
+      params: p,
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
 
-  return data;
+    return data;
+  } catch (e) {
+    // if 401
+    if (e.response.status === 401) {
+      throw new Error("Unauthorized");
+    }
+    throw e;
+  }
 }
 
 export async function fromResources(p: SearchQuery): Promise<ResourceResponse> {

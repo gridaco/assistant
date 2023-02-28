@@ -14,6 +14,8 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { LightningBoltIcon } from "@radix-ui/react-icons";
 
+const __key = "assistant-early-access-activation";
+
 const LoadingIndicator = withStyles((theme) => ({
   root: {},
   primaryColor: {
@@ -99,20 +101,33 @@ export function PhotoLoader() {
 
   const promptGeneration = async () => {
     setLocked(true);
-    const { images: gens, n } = await api
-      .fromGenerative({
-        q: query,
-      })
-      .finally(() => setLocked(false));
+    const accesskey = await PluginSdk.getItem(__key);
+    try {
+      const { images: gens, n } = await api
+        .fromGenerative(
+          {
+            q: query,
+          },
+          accesskey
+        )
+        .finally(() => setLocked(false));
 
-    setData({
-      from_resources: data.from_resources,
-      from_ai: gens.map((g) => ({
-        src: g,
-        thumbnail: g,
-        name: `${n} ${query}`,
-      })),
-    });
+      setData({
+        from_resources: data.from_resources,
+        from_ai: gens.map((g) => ({
+          src: g,
+          thumbnail: g,
+          name: `${n} ${query}`,
+        })),
+      });
+    } catch (e) {
+      // if e.message == 'Unauthorized'
+      // then show the activation screen
+      if (e.message === "Unauthorized") {
+        alert("This is a pro feature, please activate");
+        open("https://grida.co/assistant");
+      }
+    }
   };
 
   const searchResources = useCallback(
