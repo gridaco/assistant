@@ -2,6 +2,7 @@ const transpile_packages = [
   // _firstparty
   "@assistant-fp/analytics",
   "@assistant-fp/auth",
+  "@assistant-fp/early-access",
 
   // UI
   "@ui/core",
