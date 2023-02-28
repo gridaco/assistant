@@ -1,0 +1,9 @@
+{
+  "name": "scripts",
+  "dependencies": {
+    "qrcode": "^1.5.1"
+  },
+  "devDependencies": {
+    "@types/qrcode": "^1.5.0"
+  }
+}
