@@ -51,7 +51,7 @@ const Description = styled.span`
   font-weight: 500;
   line-height: 96%;
   text-align: center;
-  width: 279px;
+  max-width: 260px;
 `;
 
 const ActionAsButton = styled.button`

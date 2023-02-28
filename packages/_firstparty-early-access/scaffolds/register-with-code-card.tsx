@@ -34,6 +34,7 @@ export function RegisterWithCodeCard() {
     verify(code).then((verified) => {
       if (verified) {
         PluginSdk.setItem(__key, code);
+        setVerified(true);
         alert("Congrats🎉 Early access program activated.");
       } else {
         alert("Hmm🤔 That's not a valid access key");
@@ -44,27 +45,35 @@ export function RegisterWithCodeCard() {
   return (
     <>
       <RootWrapperEnterAccessKeyCard>
-        <Heading>Enter your Access Key</Heading>
-        <Paragraph>
-          Please enter your early bird access key. It can be found at
-        </Paragraph>
-        <Field
-          onSubmit={(e) => {
-            e.preventDefault();
-            const totp = e.target["topt"].value;
-            activate(totp);
-          }}
-        >
-          <KeyAsInput
-            id="topt"
-            type="text"
-            // the length is 39 (prefix 6) value 32
-            maxLength={50}
-            minLength={24}
-            placeholder="xxxxxx-xxxxxxxxxxxxx"
-          />
-          <EnterAsButton>Enter</EnterAsButton>
-        </Field>
+        {verified ? (
+          <>
+            <Heading>Activated</Heading>
+          </>
+        ) : (
+          <>
+            <Heading>Enter your Access Key</Heading>
+            <Paragraph>
+              Please enter your early bird access key. It can be found at
+            </Paragraph>
+            <Field
+              onSubmit={(e) => {
+                e.preventDefault();
+                const totp = e.target["topt"].value;
+                activate(totp);
+              }}
+            >
+              <KeyAsInput
+                id="topt"
+                type="text"
+                // the length is 39 (prefix 6) value 32
+                maxLength={50}
+                minLength={24}
+                placeholder="xxxxxx-xxxxxxxxxxxxx"
+              />
+              <EnterAsButton>Enter</EnterAsButton>
+            </Field>
+          </>
+        )}
       </RootWrapperEnterAccessKeyCard>
     </>
   );
@@ -102,7 +111,7 @@ const Paragraph = styled.span`
   line-height: 96%;
   text-align: center;
   color: rgba(0, 0, 0, 0.5);
-  width: 279px;
+  max-width: 260px;
 `;
 
 const Field = styled.form`
@@ -116,6 +125,7 @@ const Field = styled.form`
 `;
 
 const KeyAsInput = styled.input`
+  width: 100%;
   background-color: rgba(0, 0, 0, 0.02);
   border: solid 1px rgba(0, 0, 0, 0.04);
   border-radius: 4px;
