@@ -121,9 +121,9 @@ const Input = styled.input`
   font-size: 14px;
   font-weight: 400;
   line-height: 17px;
-  color: #adaeb2;
+  color: rgba(0, 0, 0, 0.8);
 
   &::placeholder {
-    color: #adaeb2;
+    color: rgba(0, 0, 0, 0.4);
   }
 `;

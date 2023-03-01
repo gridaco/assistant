@@ -10,20 +10,11 @@ import { PluginSdk } from "@plugin-sdk/app";
 import { useSetRecoilState } from "recoil";
 import { hide_navigation } from "app/lib/main/global-state-atoms";
 import InfiniteScroll from "react-infinite-scroller";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import withStyles from "@material-ui/core/styles/withStyles";
-import { LightningBoltIcon } from "@radix-ui/react-icons";
 import { useHistory } from "react-router-dom";
 import { radmon_query_placeholder } from "./k";
+import { ImagePromptBox } from "./image-prompt-box";
 
 const __key = "assistant-early-access-activation";
-
-const LoadingIndicator = withStyles((theme) => ({
-  root: {},
-  primaryColor: {
-    color: "#000000",
-  },
-}))(CircularProgress);
 
 ///
 ///  TODO:
@@ -220,14 +211,24 @@ export function PhotoLoader() {
         placeholder={placeholder}
       />
       {isQuerySufficientForGeneration && (
-        <GenerateButton disabled={locked} onClick={promptGeneration}>
-          {locked ? (
-            <LoadingIndicator className="icon" size={16} />
-          ) : (
-            <LightningBoltIcon className="icon" />
-          )}
-          {query}
-        </GenerateButton>
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          // no bounce
+          transition={{ type: "spring", damping: 20 }}
+          style={{
+            margin: 16,
+            marginTop: 0,
+          }}
+        >
+          <ImagePromptBox
+            value={query}
+            onSubmit={promptGeneration}
+            prompting={locked}
+            readonly
+            autofocus
+          />
+        </motion.div>
       )}
 
       <InfiniteScroll
@@ -335,33 +336,6 @@ const GridItem = styled.figure`
   overflow: hidden;
   background: rgba(0, 0, 0, 0.1);
   user-select: none;
-`;
-
-const GenerateButton = styled.button`
-  margin-top: 0 !important;
-  margin: 16px;
-  padding: 12px 12px;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  background: black;
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
-
-  .icon {
-    color: white;
-    width: 16px;
-    height: 16px;
-  }
-
-  &:disabled {
-    opacity: 0.5;
-  }
-
-  transition: all 0.2s ease-in-out;
 `;
 
 /**
