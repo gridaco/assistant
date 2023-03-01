@@ -9,6 +9,11 @@ interface SearchQuery {
   page?: number;
 }
 
+interface GenPrompt {
+  q: string;
+  style?: string;
+}
+
 interface GenerativeResponse {
   q: string;
   n: number;
@@ -38,7 +43,7 @@ interface ResourceResponse {
 }
 
 export async function fromGenerative(
-  p: SearchQuery,
+  p: GenPrompt,
   accessToken: string
 ): Promise<GenerativeResponse> {
   try {

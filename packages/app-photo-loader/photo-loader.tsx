@@ -94,14 +94,20 @@ export function PhotoLoader() {
     }
   }, [data.from_resources, hidenav, shownav, query]);
 
-  const promptGeneration = async () => {
+  const promptGeneration = async (
+    q: string,
+    c: {
+      style?: string;
+    }
+  ) => {
     setLocked(true);
     const accesskey = await PluginSdk.getItem(__key);
     try {
       const { images: gens, n } = await api
         .fromGenerative(
           {
-            q: query,
+            q: q,
+            style: c.style,
           },
           accesskey
         )
@@ -196,7 +202,7 @@ export function PhotoLoader() {
         loading={locked}
         onEnter={() => {
           if (isQuerySufficientForGeneration) {
-            promptGeneration();
+            promptGeneration(query, {});
           }
         }}
         onClear={onclear}

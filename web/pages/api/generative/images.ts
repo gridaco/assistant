@@ -14,6 +14,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const q = req.query.q as string;
+  const style = req.query.style as string;
   const n = 2;
 
   // get access key
@@ -26,7 +27,12 @@ export default async function handler(
     return;
   }
 
-  const prompt = await translateForTextToImage(q);
+  let prompt = await translateForTextToImage(q);
+
+  // add style
+  if (style) {
+    prompt += ` - in a ${style} style`;
+  }
 
   const { data } = await openai.createImage({
     prompt: prompt,

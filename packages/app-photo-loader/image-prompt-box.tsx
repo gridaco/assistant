@@ -27,7 +27,12 @@ export function ImagePromptBox({
 }: {
   readonly?: boolean;
   disabled?: boolean;
-  onSubmit?: () => void;
+  onSubmit?: (
+    value: string,
+    c: {
+      style?: string;
+    }
+  ) => void;
   onChange?: (value: string) => void;
   value?: string;
   canSubmit?: boolean;
@@ -42,6 +47,7 @@ export function ImagePromptBox({
     });
   }, []);
 
+  const [style, setStyle] = React.useState<string | undefined>(undefined);
   const [focused, setFocused] = React.useState(false);
   const ref = React.useRef<HTMLTextAreaElement>(null);
 
@@ -50,9 +56,9 @@ export function ImagePromptBox({
   }, [ref.current]);
 
   const submit = useCallback(() => {
-    onSubmit?.();
+    onSubmit?.(value, { style });
     focus();
-  }, [onSubmit, focus]);
+  }, [onSubmit, focus, style]);
 
   return (
     <BoxWrapper
@@ -126,7 +132,7 @@ export function ImagePromptBox({
               DropdownIndicator: () => null,
             }}
             onChange={(e) => {
-              //
+              setStyle(e.value);
             }}
             options={options}
           />
