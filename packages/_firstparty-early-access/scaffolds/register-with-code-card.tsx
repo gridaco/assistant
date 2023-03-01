@@ -4,8 +4,11 @@ import { PluginSdk } from "@plugin-sdk/app";
 
 const __key = "assistant-early-access-activation";
 
+const __form_key_min_length = 24;
+
 export function RegisterWithCodeCard() {
   const [verified, setVerified] = useState(false);
+  const [isTokenFormatValid, setIsTokenFormatValid] = useState(false);
 
   useEffect(() => {
     PluginSdk.getItem(__key).then((code) => {
@@ -47,7 +50,7 @@ export function RegisterWithCodeCard() {
       <RootWrapperEnterAccessKeyCard>
         {verified ? (
           <>
-            <Heading>Activated</Heading>
+            <Heading>Your Key is Activated</Heading>
           </>
         ) : (
           <>
@@ -58,19 +61,26 @@ export function RegisterWithCodeCard() {
             <Field
               onSubmit={(e) => {
                 e.preventDefault();
-                const totp = e.target["topt"].value;
-                activate(totp);
+                const token = e.target["token"].value;
+                activate(token);
               }}
             >
               <KeyAsInput
-                id="topt"
+                id="token"
                 type="text"
                 // the length is 39 (prefix 6) value 32
                 maxLength={50}
-                minLength={24}
+                minLength={__form_key_min_length}
                 placeholder="xxxxxx-xxxxxxxxxxxxx"
+                onChange={(e) => {
+                  setIsTokenFormatValid(
+                    e.target.value.length >= __form_key_min_length
+                  );
+                }}
               />
-              <EnterAsButton>Enter</EnterAsButton>
+              <EnterAsButton disabled={!isTokenFormatValid}>
+                Enter
+              </EnterAsButton>
             </Field>
           </>
         )}
@@ -131,7 +141,8 @@ const KeyAsInput = styled.input`
   border-radius: 4px;
   padding: 10px 16px;
   box-sizing: border-box;
-  color: rgba(0, 0, 0, 0.5);
+  font-family: monospace !important;
+  color: rgba(0, 0, 0, 0.8);
   font-size: 18px;
   font-family: "Roboto Mono", sans-serif;
   font-weight: 400;
@@ -162,6 +173,7 @@ const EnterAsButton = styled.button`
   }
 
   :disabled {
+    cursor: not-allowed;
     opacity: 0.5;
   }
 
