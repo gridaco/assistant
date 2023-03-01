@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import styled from "@emotion/styled";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import { SearchInput } from "@ui/core/search";
@@ -13,6 +13,8 @@ import InfiniteScroll from "react-infinite-scroller";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { LightningBoltIcon } from "@radix-ui/react-icons";
+import { useHistory } from "react-router-dom";
+import { radmon_query_placeholder } from "./k";
 
 const __key = "assistant-early-access-activation";
 
@@ -58,6 +60,8 @@ interface PlacableImage {
 }
 
 export function PhotoLoader() {
+  const history = useHistory();
+  const placeholder = useMemo(() => radmon_query_placeholder(), []);
   const set_hide_navigation_state = useSetRecoilState(hide_navigation);
 
   const hidenav = useCallback(() => {
@@ -125,7 +129,7 @@ export function PhotoLoader() {
       // then show the activation screen
       if (e.message === "Unauthorized") {
         alert("This is a pro feature, please activate");
-        open("https://grida.co/assistant");
+        history.push("/upgrade");
       }
     }
   };
@@ -213,7 +217,7 @@ export function PhotoLoader() {
           );
           debouncedSearch(value);
         }}
-        placeholder={`Try "astronaut with cowboy hat"`}
+        placeholder={placeholder}
       />
       {isQuerySufficientForGeneration && (
         <GenerateButton disabled={locked} onClick={promptGeneration}>
