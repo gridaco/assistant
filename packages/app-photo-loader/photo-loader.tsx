@@ -13,8 +13,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import { useHistory } from "react-router-dom";
 import { radmon_query_placeholder } from "./k";
 import { ImagePromptBox } from "./image-prompt-box";
-
-const __key = "assistant-early-access-activation";
+import { useEarlyAccess } from "@assistant-fp/early-access";
 
 ///
 ///  TODO:
@@ -77,6 +76,7 @@ export function PhotoLoader() {
     useState(false);
 
   const [hasMore, setHasMore] = useState(false);
+  const accesskey = useEarlyAccess();
 
   // load random images on mount, once.
   useEffect(() => {
@@ -101,7 +101,6 @@ export function PhotoLoader() {
     }
   ) => {
     setLocked(true);
-    const accesskey = await PluginSdk.getItem(__key);
     try {
       const { images: gens, n } = await api
         .fromGenerative(
