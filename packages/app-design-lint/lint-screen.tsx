@@ -19,6 +19,7 @@ import { makeSummary, requestLintOnCurrentSelection } from "./actions";
 import { FixYourSelf } from "./fix-your-self";
 import { mapGrandchildren } from "@design-sdk/core/utils";
 import Dialog from "@material-ui/core/Dialog";
+import { requiresEarlyAccess } from "@assistant-fp/early-access";
 
 export const LintScreen = () => {
   const [feedbacks, setFeedbacks] = useState<ReflectLintFeedback[]>([]);
@@ -50,10 +51,10 @@ export const LintScreen = () => {
     }).length;
   }
 
-  function onFeedbackTap(feedback: ReflectLintFeedback) {
+  const onFeedbackTap = requiresEarlyAccess((feedback: ReflectLintFeedback) => {
     const targetNodeId = feedback.node.id;
     PluginSdk.focus(targetNodeId);
-  }
+  });
 
   function handleSelectionLayer() {
     const summary = makeSummary(feedbacks);

@@ -13,12 +13,16 @@ import InfiniteScroll from "react-infinite-scroller";
 import { useHistory } from "react-router-dom";
 import { radmon_query_placeholder } from "./k";
 import { ImagePromptBox } from "./image-prompt-box";
-import { useEarlyAccess } from "@assistant-fp/early-access";
+import {
+  requiresEarlyAccess,
+  useEarlyAccess,
+} from "@assistant-fp/early-access";
+import { early_access_required_message } from "@assistant-fp/early-access/k";
 
 ///
 ///  TODO:
 ///  2. Support for DND
-///  3. Support for replace fill(s)
+///  3. Support random images (on multiple selection)
 ///  4. Add optimized image loading witn max 4096 in width and height (either)
 ///
 
@@ -94,41 +98,43 @@ export function PhotoLoader() {
     }
   }, [data.from_resources, hidenav, shownav, query]);
 
-  const promptGeneration = async (
-    q: string,
-    c: {
-      style?: string;
-    }
-  ) => {
-    setLocked(true);
-    try {
-      const { images: gens, n } = await api
-        .fromGenerative(
-          {
-            q: q,
-            style: c.style,
-          },
-          accesskey
-        )
-        .finally(() => setLocked(false));
+  const promptGeneration = requiresEarlyAccess(
+    async (
+      q: string,
+      c: {
+        style?: string;
+      }
+    ) => {
+      setLocked(true);
+      try {
+        const { images: gens, n } = await api
+          .fromGenerative(
+            {
+              q: q,
+              style: c.style,
+            },
+            accesskey
+          )
+          .finally(() => setLocked(false));
 
-      setData({
-        from_resources: data.from_resources,
-        from_ai: gens.map((g) => ({
-          src: g,
-          thumbnail: g,
-          name: `${n} ${query}`,
-        })),
-      });
-    } catch (e) {
-      // if e.message == 'Unauthorized'
-      // then show the activation screen
-      if (e.message === "Unauthorized") {
-        alert("This is a pro feature, please activate");
-        history.push("/upgrade");
+        setData({
+          from_resources: data.from_resources,
+          from_ai: gens.map((g) => ({
+            src: g,
+            thumbnail: g,
+            name: `${n} ${query}`,
+          })),
+        });
+      } catch (e) {
+        // if e.message == 'Unauthorized'
+        // then show the activation screen
+        if (e.message === "Unauthorized") {
+          alert(early_access_required_message);
+          history.push("/upgrade");
+        }
       }
     }
-  };
+  );
 
   const searchResources = useCallback(
     async (q: string, page = 1, extend = false) => {

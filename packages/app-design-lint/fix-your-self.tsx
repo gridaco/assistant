@@ -7,6 +7,7 @@ import { LintItemRow } from "@app/design-lint";
 import { LintProcessPaginator } from "@app/design-lint/lint-process-paginator";
 import { _APP_EVENT_LINT_RESULT_EK } from "@app/design-lint/__plugin/events";
 import BackArrowIcon from "@assistant/icons/back-arrow";
+import { requiresEarlyAccess } from "@assistant-fp/early-access";
 
 /** Fix your self as page with router props ver. (not used. planned.) */
 export function FixYourSelfPage(props: {
@@ -43,12 +44,12 @@ export function FixYourSelf(props: {
     chaange_layer_index(0);
   }, []);
 
-  const chaange_layer_index = (i) => {
+  const chaange_layer_index = requiresEarlyAccess((i) => {
     setLayerIndex(i);
     const _target = layerlintMap.get(_key_at_index(i));
     setLayerLint(_target);
     PluginSdk.focus(_target.node.id);
-  };
+  });
 
   const _page_size = layerlintMap.size;
 
