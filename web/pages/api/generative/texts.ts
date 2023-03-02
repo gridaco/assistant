@@ -54,7 +54,7 @@ output:
 
   const { choices } = data;
 
-  const texts = choices.map((c) => c.text);
+  const texts = choices.map((c) => c.text.trim());
 
   switch (req.method) {
     case "GET": {
