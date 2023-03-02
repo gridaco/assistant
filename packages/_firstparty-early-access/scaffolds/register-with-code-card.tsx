@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import { PluginSdk } from "@plugin-sdk/app";
-
-const __key = "assistant-early-access-activation";
+import { store } from "@assistant-fp/early-access";
 
 const __form_key_min_length = 24;
 
@@ -11,7 +10,7 @@ export function RegisterWithCodeCard() {
   const [isTokenFormatValid, setIsTokenFormatValid] = useState(false);
 
   useEffect(() => {
-    PluginSdk.getItem(__key).then((code) => {
+    store.get().then((code) => {
       verify(code).then((verified) => {
         setVerified(verified);
       });
@@ -36,7 +35,7 @@ export function RegisterWithCodeCard() {
   const activate = (code: string) => {
     verify(code).then((verified) => {
       if (verified) {
-        PluginSdk.setItem(__key, code);
+        store.set(code);
         setVerified(true);
         alert("Congrats🎉 Early access program activated.");
       } else {
