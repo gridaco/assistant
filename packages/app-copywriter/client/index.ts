@@ -15,7 +15,7 @@ interface TextPrompt {
 }
 
 export async function prompt(p: TextPrompt): Promise<TextResponse> {
-  const { data } = await client.get<TextResponse>("/generative/texts", {
+  const { data } = await client.get<TextResponse>("/generative/copies", {
     params: p,
   });
 
