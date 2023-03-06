@@ -24,9 +24,13 @@ const BubbleWrapper = styled.div`
   background: rgba(0, 0, 0, 0.02);
   border-radius: 8px;
 
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+
   p {
     margin: 0;
     font-size: 16px;
+    line-height: 140%;
     color: rgba(0, 0, 0, 0.8);
   }
 
