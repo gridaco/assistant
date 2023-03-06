@@ -7,7 +7,6 @@ import { LightningBoltIcon, ListBulletIcon } from "@radix-ui/react-icons";
 import { EK_APPLY_TEXT_CHARACTERS } from "@core/constant";
 import * as api from "./client";
 import { useSingleSelection } from "plugin-app";
-import { IReflectNodeReference } from "@design-sdk/figma-node";
 
 interface ReplaceTextCharactersProps {
   type: "selection" | "id";
@@ -75,7 +74,7 @@ export function CopywriterScreen() {
     setResults([]);
 
     api
-      .prompt({ q: prompt })
+      .copies({ q: prompt })
       .then(({ texts }) => {
         setResults(texts);
       })
