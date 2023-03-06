@@ -35,7 +35,7 @@ const BubbleWrapper = styled.div`
   }
 
   &:hover {
-    background: rgba(0, 0, 0, 0.08);
+    background: rgba(0, 0, 0, 0.04);
   }
 
   transition: all 0.05s ease-in-out;
