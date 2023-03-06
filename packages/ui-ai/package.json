@@ -1,0 +1,24 @@
+{
+  "name": "@ui/ai",
+  "version": "0.0.0",
+  "private": false,
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@tiptap/core": "^2.0.0-beta.220",
+    "@tiptap/extension-bullet-list": "^2.0.0-beta.220",
+    "@tiptap/extension-code-block": "^2.0.0-beta.220",
+    "@tiptap/extension-code-block-lowlight": "^2.0.0-beta.220",
+    "@tiptap/extension-document": "^2.0.0-beta.220",
+    "@tiptap/extension-link": "^2.0.0-beta.220",
+    "@tiptap/extension-list-item": "^2.0.0-beta.220",
+    "@tiptap/extension-mention": "^2.0.0-beta.220",
+    "@tiptap/extension-placeholder": "^2.0.0-beta.220",
+    "@tiptap/extension-text": "^2.0.0-beta.220",
+    "@tiptap/pm": "^2.0.0-beta.220",
+    "@tiptap/react": "^2.0.0-beta.220",
+    "@tiptap/starter-kit": "^2.0.0-beta.220",
+    "@tiptap/suggestion": "^2.0.0-beta.220",
+    "lowlight": "^2.8.1",
+    "react-markdown": "^8.0.5"
+  }
+}

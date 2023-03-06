@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 import { LightningBoltIcon } from "@radix-ui/react-icons";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import withStyles from "@material-ui/core/styles/withStyles";
+import TiptapInput from "./tiptap";
 
 const LoadingIndicator = withStyles((theme) => ({
   root: {},
@@ -21,6 +22,8 @@ export function PromptInputBox({
   canSubmit = true,
   autofocus = true,
   prompting = false,
+  submit: submitConfig,
+  style = {},
 }: {
   readonly?: boolean;
   onSubmit?: () => void;
@@ -30,6 +33,10 @@ export function PromptInputBox({
   prompting?: boolean;
   placeholder?: string;
   autofocus?: boolean;
+  submit?: {
+    icon?: React.ReactNode;
+  };
+  style?: React.CSSProperties;
 }) {
   const [focused, setFocused] = React.useState(false);
   const ref = React.useRef<HTMLTextAreaElement>(null);
@@ -50,7 +57,15 @@ export function PromptInputBox({
       data-readonly={readonly}
       data-prompting={prompting}
       data-focused={focused}
+      style={style}
     >
+      {/* <TiptapInput
+        placeholder={placeholder}
+        autofocus={autofocus}
+        onSubmit={submit}
+        onChange={onChange}
+        value={value}
+      /> */}
       <TextareaAutosize
         ref={ref}
         onChange={(e) => onChange?.(e.target.value)}
@@ -81,7 +96,13 @@ export function PromptInputBox({
           {prompting ? (
             <LoadingIndicator className="icon" size={15} />
           ) : (
-            <LightningBoltIcon className="icon" />
+            <>
+              {submitConfig?.icon ? (
+                <div className="icon">{submitConfig.icon}</div>
+              ) : (
+                <LightningBoltIcon className="icon" />
+              )}
+            </>
           )}
         </button>
       </div>
