@@ -1,1 +1,1 @@
-export * from "./prompt";
+export const dummy = "";
