@@ -7,6 +7,11 @@ import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import ReactMarkdown from "react-markdown";
 import type { Message } from "./core/conversation";
 import * as api from "./client";
+import {
+  remarkColorPlugin,
+  remarkGradientPlugin,
+  remarkQuotationPlugin,
+} from "./plugins";
 
 export function ChatScreen() {
   const [busy, setBusy] = React.useState(false);
@@ -31,7 +36,8 @@ export function ChatScreen() {
 
     api
       .chat({ content: message, history: history })
-      .then(({ response }) => {
+      .then(({ response, meta }) => {
+        // console.log("re:", response);
         setMessages((l) =>
           l.concat({
             role: "assistant",
@@ -106,6 +112,24 @@ export function ChatScreen() {
           style={{
             background: "white",
           }}
+          onPreviousPrompt={() => {
+            // load the previous prompt
+            setMessage(
+              messages
+                .filter((m) => m.role === "user")
+                .map((m) => m.content)
+                .pop() || ""
+            );
+          }}
+          onNextPrompt={() => {
+            // load the next prompt
+            setMessage(
+              messages
+                .filter((m) => m.role === "user")
+                .map((m) => m.content)
+                .shift() || ""
+            );
+          }}
         />
       </motion.div>
     </div>
@@ -179,7 +203,90 @@ const Messages = React.forwardRef(function Messages(
                     {emoji}
                   </div>
                   <p>
-                    <ReactMarkdown>{content}</ReactMarkdown>
+                    <MarkdownView
+                      remarkPlugins={[
+                        remarkQuotationPlugin,
+                        remarkGradientPlugin,
+                        remarkColorPlugin,
+                      ]}
+                      disallowedElements={[]}
+                      components={{
+                        data: ({ node, ...props }) => {
+                          alert(JSON.stringify(node));
+                          return <strong {...props}></strong>;
+                        },
+                        img: ({ node, ...props }) => (
+                          <CustomGraphic {...props} />
+                        ),
+                        h1: ({ node, ...props }) => (
+                          // p
+                          <strong>
+                            <p {...props} />
+                          </strong>
+                        ),
+                        h2: ({ node, ...props }) => (
+                          // p
+                          <strong>
+                            <p {...props} />
+                          </strong>
+                        ),
+                        h3: ({ node, ...props }) => (
+                          // p
+                          <p {...props} />
+                        ),
+                        h4: ({ node, ...props }) => (
+                          // p
+                          <p {...props} />
+                        ),
+                        h5: ({ node, ...props }) => (
+                          // p
+                          <p {...props} />
+                        ),
+                        h6: ({ node, ...props }) => (
+                          // p
+                          <p {...props} />
+                        ),
+                        li: ({ node, ...props }) => (
+                          <ActionableListItem {...props} />
+                        ),
+                        ul: ({ node, ...props }) => (
+                          <ul
+                            style={{
+                              margin: 0,
+                            }}
+                            {...props}
+                          />
+                        ),
+                        code: ({ node, ...props }) => (
+                          <code
+                            style={{
+                              background: "rgba(0,0,0,0.1)",
+                              padding: 4,
+                              borderRadius: 4,
+                              fontFamily: "monospace",
+                              fontSize: 14,
+                              display: "inline-block",
+                              whiteSpace: "pre-wrap",
+                              wordBreak: "break-word",
+                              wordWrap: "break-word",
+                              overflowWrap: "break-word",
+                              hyphens: "auto",
+                              lineHeight: 1.5,
+                              overflowX: "auto",
+                              boxShadow: "0 0 0 1px rgba(0,0,0,0.1)",
+                              color: "rgba(0,0,0,0.8)",
+                              border: "none",
+                              outline: "none",
+                              resize: "none",
+                              verticalAlign: "top",
+                            }}
+                            {...props}
+                          />
+                        ),
+                      }}
+                    >
+                      {content}
+                    </MarkdownView>
                   </p>
                 </Bubble>
               </ResponseItem>
@@ -191,3 +298,76 @@ const Messages = React.forwardRef(function Messages(
     </>
   );
 });
+
+function CustomGraphic({
+  src,
+  alt,
+  ...props
+}: React.ImgHTMLAttributes<HTMLImageElement>) {
+  let __type: "img" | "div" = "img";
+  let __src = src;
+  let __background = "transparent";
+  // transform src
+  try {
+    const _ = new URL(alt);
+
+    switch (_.protocol) {
+      case "color:":
+        __type = "div";
+        __src = "//:0";
+        __background = alt.replace("color://", "");
+
+        break;
+    }
+  } catch (e) {}
+
+  switch (__type) {
+    case "div":
+      return (
+        <div
+          id="custom-graphic"
+          {...props}
+          style={{
+            margin: 4,
+            background: __background,
+            width: 64,
+            height: 64,
+            borderRadius: 8,
+          }}
+        />
+      );
+    case "img": {
+      return (
+        <img
+          id="custom-graphic"
+          {...props}
+          src={__src}
+          style={{
+            margin: 4,
+            width: 160,
+            height: 160,
+            objectFit: "cover",
+          }}
+        />
+      );
+    }
+  }
+}
+
+const MarkdownView = styled(ReactMarkdown)`
+  ul {
+    padding-inline-start: 0px;
+  }
+`;
+
+const ActionableListItem = styled.li`
+  list-style: none;
+  margin: 8px;
+  border-radius: 4px;
+  padding: 8px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    box-shadow: 0 4px 4px 1px rgba(0, 0, 0, 0.1);
+  }
+`;

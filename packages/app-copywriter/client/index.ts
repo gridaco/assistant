@@ -30,6 +30,7 @@ interface ChatPrompt {
 
 interface ChatResponse {
   q: string;
+  meta: any;
   response: string;
   model: string;
 }

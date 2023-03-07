@@ -24,6 +24,8 @@ export function PromptInputBox({
   prompting = false,
   submit: submitConfig,
   style = {},
+  onPreviousPrompt,
+  onNextPrompt,
 }: {
   readonly?: boolean;
   onSubmit?: () => void;
@@ -37,6 +39,8 @@ export function PromptInputBox({
     icon?: React.ReactNode;
   };
   style?: React.CSSProperties;
+  onPreviousPrompt?: () => void;
+  onNextPrompt?: () => void;
 }) {
   const [focused, setFocused] = React.useState(false);
   const ref = React.useRef<HTMLTextAreaElement>(null);
@@ -58,6 +62,24 @@ export function PromptInputBox({
       data-prompting={prompting}
       data-focused={focused}
       style={style}
+      onKeyDown={(e) => {
+        // if shift + enter, new line
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          submit();
+        }
+
+        if (value.trim().length === 0) {
+          if (e.key === "ArrowUp") {
+            e.preventDefault();
+            onPreviousPrompt?.();
+          }
+          if (e.key === "ArrowDown") {
+            e.preventDefault();
+            onNextPrompt?.();
+          }
+        }
+      }}
     >
       {/* <TiptapInput
         placeholder={placeholder}
@@ -69,13 +91,6 @@ export function PromptInputBox({
       <TextareaAutosize
         ref={ref}
         onChange={(e) => onChange?.(e.target.value)}
-        onKeyDown={(e) => {
-          // if shift + enter, new line
-          if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            submit();
-          }
-        }}
         value={value}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}

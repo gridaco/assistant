@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { chatcompletion } from "service/completion";
+import { assistCompletion } from "service/assistant";
 
 export default async function handler(
   req: NextApiRequest,
@@ -15,7 +15,7 @@ export default async function handler(
     return;
   }
 
-  const { texts, model } = await chatcompletion({
+  const { texts, model, meta } = await assistCompletion({
     prompt: content,
     history: history,
     n: 1,
@@ -26,6 +26,7 @@ export default async function handler(
       res.json({
         q: content,
         response: texts[0],
+        meta: meta,
         model: model,
       });
     }
