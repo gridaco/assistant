@@ -74,7 +74,8 @@ function Screen(props: { screen: WorkScreen }) {
     case WorkScreen.photo:
       return <PhotoScreen />;
     case WorkScreen.copy:
-      // return <CopywriterScreen />;
+      return <CopywriterScreen />;
+    case WorkScreen.assist:
       return <ChatScreen />;
     case WorkScreen.lint:
       return <LintScreen />;
