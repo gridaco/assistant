@@ -126,7 +126,7 @@ export function onfigmaselectionchange() {
         const data = makeReference(rnode);
 
         // support text node (characters) =========
-        // FIXME: safely remove (migrate) this. (affected: @app/copywriter) - add a proper text support
+        // FIXME: safely remove (migrate) this. (affected: @app/assist) - add a proper text support
         if (rnode.type == "TEXT") {
           if ("data" in rnode) {
             data["characters"] = rnode.data;

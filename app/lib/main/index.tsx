@@ -20,7 +20,7 @@ import { PhotoScreen } from "@app/photo-loader";
 import { MetaEditorScreen, BatchMetaEditor } from "@app/meta-editor";
 import { ExporterScreen } from "@app/export-scene-as-json";
 import { DataMapperScreen } from "@app/data-mapper";
-import { CopywriterScreen, ChatScreen } from "@app/copywriter";
+import { CopywriterScreen, ChatScreen } from "@app/assist";
 import { GlobalizationScreen } from "@app/i18n";
 import { ToolboxScreen } from "../pages/tool-box";
 import { FontReplacerScreen } from "@toolbox/font-replacer";
