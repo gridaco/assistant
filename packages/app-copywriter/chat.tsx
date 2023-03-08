@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import styled from "@emotion/styled";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bubble, GroupLabel } from "./components";
@@ -6,14 +6,17 @@ import { PromptInputBox } from "@ui/ai";
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import ReactMarkdown from "react-markdown";
 import type { Message } from "./core/conversation";
+import { useHistory } from "react-router-dom";
 import * as api from "./client";
 import {
   remarkColorPlugin,
   remarkGradientPlugin,
   remarkQuotationPlugin,
 } from "./plugins";
+import { ColorChip } from "./blocks";
 
 export function ChatScreen() {
+  const history = useHistory();
   const [busy, setBusy] = React.useState(false);
   const [error, setError] = React.useState<Error | null>(null);
   const [message, setMessage] = React.useState("");
@@ -21,10 +24,29 @@ export function ChatScreen() {
   const messages_bottom_ref = React.useRef<HTMLDivElement>(null);
 
   const action = () => {
+    // handle commands
+    if (message.startsWith("/")) {
+      const [command, ...args] = message.split(" ");
+      switch (command) {
+        case "/code": {
+          history.push("/code");
+          break;
+        }
+        case "/preview": {
+          history.push("/design/preview");
+          break;
+        }
+        case "/clear":
+          break;
+        case "/help":
+          break;
+      }
+    }
+
     setBusy(true);
     setMessage("");
 
-    const history = Array.from(messages);
+    const recent_messages = Array.from(messages).splice(-10);
 
     // add user's message
     setMessages((l) =>
@@ -35,7 +57,7 @@ export function ChatScreen() {
     );
 
     api
-      .chat({ content: message, history: history })
+      .chat({ content: message, history: recent_messages })
       .then(({ response, meta }) => {
         // console.log("re:", response);
         setMessages((l) =>
@@ -304,7 +326,7 @@ function CustomGraphic({
   alt,
   ...props
 }: React.ImgHTMLAttributes<HTMLImageElement>) {
-  let __type: "img" | "div" = "img";
+  let __type: "img" | "color-chip" = "img";
   let __src = src;
   let __background = "transparent";
   // transform src
@@ -313,7 +335,7 @@ function CustomGraphic({
 
     switch (_.protocol) {
       case "color:":
-        __type = "div";
+        __type = "color-chip";
         __src = "//:0";
         __background = alt.replace("color://", "");
 
@@ -322,20 +344,8 @@ function CustomGraphic({
   } catch (e) {}
 
   switch (__type) {
-    case "div":
-      return (
-        <div
-          id="custom-graphic"
-          {...props}
-          style={{
-            margin: 4,
-            background: __background,
-            width: 64,
-            height: 64,
-            borderRadius: 8,
-          }}
-        />
-      );
+    case "color-chip":
+      return <ColorChip {...props} color={__background} />;
     case "img": {
       return (
         <img
@@ -355,7 +365,8 @@ function CustomGraphic({
 }
 
 const MarkdownView = styled(ReactMarkdown)`
-  ul {
+  ul,
+  ol {
     padding-inline-start: 0px;
   }
 `;
