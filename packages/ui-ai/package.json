@@ -18,8 +18,12 @@
     "@tiptap/react": "^2.0.0-beta.220",
     "@tiptap/starter-kit": "^2.0.0-beta.220",
     "@tiptap/suggestion": "^2.0.0-beta.220",
+    "gradient-parser": "^1.0.2",
     "lowlight": "^2.8.1",
     "react-markdown": "^8.0.5",
     "unist-util-visit": "^4.1.2"
+  },
+  "devDependencies": {
+    "@types/gradient-parser": "^0.1.2"
   }
 }

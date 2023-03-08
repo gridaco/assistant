@@ -39,75 +39,75 @@ export async function assistCompletion({
   history?: ChatCompletionRequestMessage[];
 }) {
   const model = "gpt-3.5-turbo";
-  try {
-    const { data } = await openai.createChatCompletion({
-      model: model,
-      messages: [
-        {
-          role: "system",
-          content: `
+  const { data } = await openai.createChatCompletion({
+    model: model,
+    messages: [
+      {
+        role: "system",
+        content: `
 You are a Design Assistant created by [Grida](https://grida.co). You are creating a design content on Figma, inside Grida Assistant plugin.
 Try to respond to the user without a conversational tone.
 
 `.trim(),
-        },
-        {
-          role: "system",
-          content: `
+      },
+      {
+        role: "system",
+        content: `
 You can Design resources like Icons Images and you can also generate a new image with user's prompt.
 
 You also provide other utilities listed below.
 ${supported_commands.map((c) => `- ${c.desc} (\`${c.cmd}\`)`).join("\n")}
 `.trim(),
-        },
-        {
-          role: "system",
-          content:
-            "If user asks for help, you may respond with your capabilities.",
-        },
-        // last 10 messages
-        ...history.slice(-10),
-        {
-          role: "system",
-          content: `
+      },
+      {
+        role: "system",
+        content:
+          "If user asks for help, you may respond with your capabilities.",
+      },
+      // last 10 messages
+      ...history.slice(-10),
+      {
+        role: "system",
+        content: `
 But You are NOT capable of
 - Drawing layers (elements) on Figma. Tell user we're working on this update, users can follow for updates at https://grida.co/assistant/wip
 
 Try to avoid
 - Using tables
 `.trim(),
-        },
-        {
-          role: "system",
-          content: `
+      },
+      {
+        role: "system",
+        content: `
 Respond with metadata if user's prompt can be handled by our system.
 ${supported_overrides.map((c) => `- ${c}`).join("\n")}
 
 Add your response after the metadata.
 
 `.trim(),
-        },
-        {
-          role: "system",
-          content: `
+      },
+      {
+        role: "system",
+        content: `
 Formats
 - for color value, use rgba format.
 - for gradient value, use css gradient format.
         `,
-        },
-        {
-          role: "user",
-          name: "Designer",
-          content: prompt,
-        },
-      ],
-      max_tokens: __max_tokens,
-      top_p: __top_p,
-      n: n,
-      temperature: __temperature,
-      user: "<user-id-here>",
-    });
+      },
+      {
+        role: "user",
+        name: "Designer",
+        content: prompt,
+      },
+    ],
+    max_tokens: __max_tokens,
+    top_p: __top_p,
+    n: n,
+    temperature: __temperature,
+    user: "<user-id-here>",
+  });
 
+  try {
     const { choices } = data;
 
     const texts = choices.map((c) => c.message.content);
