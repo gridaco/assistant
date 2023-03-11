@@ -54,7 +54,7 @@ const transpile_packages = [
 
   // -----------------------------
   // region @designto-code
-  "@designto/config",
+  "@grida/builder-config",
   "@grida/builder-config-preset",
   "@grida/builder-platform-types",
   "@designto/code",
@@ -78,21 +78,7 @@ const transpile_packages = [
   // -----------------------------
 
   // -----------------------------
-  // design-sdk
-  "@design-sdk/flags",
-  "@design-sdk/core",
-  "@design-sdk/core-types",
-  "@design-sdk/universal",
-  "@design-sdk/figma",
-  "@design-sdk/figma-url",
-  "@design-sdk/figma-xpath",
-  "@design-sdk/url-analysis",
-  "@design-sdk/sketch",
-  // -----------------------------
-
-  // -----------------------------
   // region @reflect-ui types & utils
-  "@reflect-ui/core",
   "@reflect-ui/detection",
   // -----------------------------
 
@@ -109,14 +95,6 @@ const transpile_packages = [
   "@base-sdk-fp/core",
   "@base-sdk-fp/auth",
   "@base-sdk-fp/accounts",
-
-  // -----------------------------
-  // region coli
-  "coli",
-  "@coli.codes/escape-string",
-  "@coli.codes/core-syntax-kind",
-  // endregion coli
-  // -----------------------------
 
   // -----------------------------
   // region builders - part of designto-code / coli

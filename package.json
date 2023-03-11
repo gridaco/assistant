@@ -15,20 +15,10 @@
       "webdev",
       "xd",
       "packages/*",
-      "packages/design-sdk/*",
       "packages/base-sdk/*",
       "packages/base-sdk/_firstparty/*",
-      "packages/reflect-core/packages/*",
-      "packages/design-to-code/packages/designto-*",
-      "packages/design-to-code/packages/builder-*",
-      "packages/design-to-code/packages/support-*",
-      "packages/design-to-code/packages/reflect-detection",
-      "packages/design-to-code/externals/coli/packages/*",
-      "packages/design-to-code/editor-packages/editor-services-esbuild",
-      "packages/design-to-code/editor-packages/editor-services-estypes-resolver",
-      "packages/design-to-code/editor-packages/editor-services-prettier",
-      "packages/design-to-code/editor-packages/editor-services-jsx-syntax-highlight",
-      "packages/design-to-code/editor-packages/editor-services-webworker-core"
+      "packages/design-to-code/packages/*",
+      "packages/design-to-code/editor-packages/*"
     ]
   },
   "repository": "https://github.com/gridaco/assistant",
@@ -57,9 +47,17 @@
     "node": ">=12.0.0"
   },
   "resolutions": {
-    "react": "18.2.0",
-    "@types/react": "^18.0.28",
-    "@figma/plugin-typings": "^1.58.0"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "@types/react": "18.0.24",
+    "@types/react-dom": "^18.0.8",
+    "@figma/plugin-typings": "^1.58.0",
+    "ts-loader": "8.4.0",
+    "typescript": "4.9.5",
+    "coli": "0.0.32",
+    "@design-sdk/figma-node": "0.0.43",
+    "@design-sdk/core": "0.0.43",
+    "@reflect-ui/core": "0.0.10"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
