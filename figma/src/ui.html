@@ -22,8 +22,8 @@
     cursor: nwse-resize;
   }
 </style>
-<div id="main">
-  <div id="react-page"></div>
+<body id="main">
+  <div id="root"></div>
   <svg
     id="resize-knob"
     width="16"
@@ -39,7 +39,7 @@
       fill="#8C8C8C"
     />
   </svg>
-</div>
+</body>
 <script>
   const corner = document.getElementById("resize-knob");
   function resizeWindow(e) {

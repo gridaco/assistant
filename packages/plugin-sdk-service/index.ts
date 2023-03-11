@@ -57,7 +57,7 @@ import {
 } from "./storage";
 
 // TODO - make it universal
-import { Figma, figma } from "@design-sdk/figma";
+import { plugin as figma } from "@design-sdk/figma";
 import type { SceneNode } from "@design-sdk/figma";
 
 import {
@@ -411,9 +411,9 @@ async function handleExportEvent(event: HanderProps<ImageExportRequest>) {
         return undefined;
       }
       case TargetPlatform.figma: {
-        const r = await (figma.getNodeById(
-          event.data.id
-        ) as SceneNode).exportAsync({
+        const r = await (
+          figma.getNodeById(event.data.id) as SceneNode
+        ).exportAsync({
           ...makeExportSetting(event.data.opt),
         });
 
@@ -461,6 +461,7 @@ async function handleBrowserApiEvent(props: TransportPluginEvent) {
 function handleDragDropped(props: HanderProps<DragAndDropOnCanvasRequest>) {
   console.log("handling drop event", props.data);
   const {
+    //
     dropPosition,
     windowSize,
     offset,

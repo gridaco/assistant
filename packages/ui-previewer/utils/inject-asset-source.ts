@@ -1,13 +1,12 @@
 import { finalize_temporary_assets_with_prefixed_static_string_keys__dangerously } from "@code-features/assets";
 import { k } from "@web-builder/core";
-import { repo_assets } from "@design-sdk/core";
-import { ImageHostingRepository } from "@design-sdk/core/assets-repository";
+import * as repo_assets from "@design-sdk/asset-repository";
 
 export function inject_assets_source_to_vanilla(
   rawsrc: string,
   repo?: repo_assets.TransportableImageRepository
 ) {
-  repo = repo || ImageHostingRepository.imageRepostory;
+  repo = repo || repo_assets.ImageHostingRepository.imageRepostory;
   if (!rawsrc || !repo) {
     return rawsrc;
   }

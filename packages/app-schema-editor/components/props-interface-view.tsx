@@ -10,7 +10,7 @@ import { nameit, NameCases } from "@coli.codes/naming";
 import {
   FigmaVariantPropertyCompatType,
   VariantProperty,
-} from "@design-sdk/figma/features/variant";
+} from "@design-sdk/figma/dist/features/variant";
 
 const regxNumberType = /(number)/;
 const regxBooleanType = /(boolean)/;
