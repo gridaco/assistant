@@ -1,25 +1,13 @@
-import { NameCases, ScopedVariableNamer } from "@coli.codes/naming";
+import { ScopedVariableNamer } from "@coli.codes/naming";
 import { IReflectNodeReference } from "@design-sdk/figma-node";
-import { variant } from "@design-sdk/figma/features";
 import {
   FigmaBoolean,
   FigmaNumber,
   FigmaUnique,
   _FigmaVariantPropertyCompatType_to_string,
-} from "@design-sdk/figma/features/variant";
+} from "@design-sdk/figma/dist/features/variant";
 
-import {
-  InterfaceDeclaration,
-  PropertySignature,
-  Identifier,
-  LiteralType,
-  StringLiteral,
-  UnionType,
-  BooleanKeyword,
-  CommentExpression,
-  NumberKeyword,
-  stringfy,
-} from "coli";
+import { InterfaceDeclaration, SingleLineCommentTrivia } from "coli";
 import { singleLayerPropertyMappingToPropertySignature } from "../interface-code-builder/single-layer-property-mapping-to-property-signature";
 import { typeToColiType } from "../interface-code-builder/type-to-coli-type";
 import { IProperties } from "../types";
@@ -82,19 +70,16 @@ export default function ({
           style: "single-line",
           content: `properties of "${layer.name}"`,
         }) as any,
-        new CommentExpression({
-          style: "single-line",
-          content: `-------------------------------`,
+        new SingleLineCommentTrivia({
+          text: `-------------------------------`,
         }) as any,
         ..._this_configurable_property_signature,
-        new CommentExpression({
-          style: "single-line",
-          content: `-------------------------------`,
+        new SingleLineCommentTrivia({
+          text: `-------------------------------`,
         }) as any,
         // link button
-        new CommentExpression({
-          style: "single-line",
-          content: `add new property mapping`,
+        new SingleLineCommentTrivia({
+          text: `add new property mapping`,
         }) as any,
       ],
     }),

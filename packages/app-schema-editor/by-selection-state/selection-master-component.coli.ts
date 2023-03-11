@@ -1,5 +1,4 @@
 import { NameCases, ScopedVariableNamer } from "@coli.codes/naming";
-import { variant } from "@design-sdk/figma/features";
 
 import {
   InterfaceDeclaration,
@@ -9,7 +8,6 @@ import {
   StringLiteral,
   UnionType,
   BooleanKeyword,
-  CommentExpression,
   NumberKeyword,
   stringfy,
 } from "coli";

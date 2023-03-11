@@ -5,7 +5,7 @@ import {
   VariantPropertyParser,
   FigmaNumber,
   VariantProperty,
-} from "@design-sdk/figma/features/variant";
+} from "@design-sdk/figma/dist/features/variant";
 import { CodeBox } from "@ui/codebox";
 import {
   buildeExampleDataDeclaration,
@@ -26,9 +26,8 @@ export default function (props: { node: nodes.IReflectNodeReference }) {
     }).name;
   };
 
-  const [mappedProperties, setMappedProperties] = useState<
-    ISingleLayerProperty[]
-  >(null);
+  const [mappedProperties, setMappedProperties] =
+    useState<ISingleLayerProperty[]>(null);
   const [interfaceName, setInterfaceName] = useState(
     _format_interface_pascal(props.node.name)
   );

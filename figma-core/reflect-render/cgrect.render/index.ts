@@ -2,7 +2,7 @@ import {
   reflectColorToFigmaRGBA,
   reflectColorToFigmaRGB,
 } from "@design-sdk/figma-node-conversion";
-import { Color } from "@reflect-ui/core/lib/color";
+import { Color } from "@reflect-ui/core";
 
 // his should be repplaced by reflect's `CGRectManifest` when fully constructed
 interface FigmaRenderRectManifest {

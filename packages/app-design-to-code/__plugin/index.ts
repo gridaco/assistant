@@ -16,7 +16,7 @@ import {
 } from "./design-to-code";
 import { FigmaNodeCache } from "figma-core/node-cache";
 import { Framework } from "@grida/builder-platform-types";
-import { repo_assets } from "@design-sdk/core";
+import * as repo_assets from "@design-sdk/asset-repository";
 onService(main_cb);
 
 // main callback

@@ -1,6 +1,6 @@
 import { analyzeSelection, SelectionAnalysis } from "plugin-app/utils";
-import { convert } from "@design-sdk/figma";
-import type { ReflectSceneNode } from "@design-sdk/figma";
+import { convert } from "@design-sdk/figma-node-conversion";
+import type { ReflectSceneNode } from "@design-sdk/figma-node";
 import { Logger } from "logger";
 import { makeReference } from "@design-sdk/figma-node";
 import { runon } from "./runon";

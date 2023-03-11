@@ -17,7 +17,7 @@ import {
 import { useSingleSelection } from "plugin-app";
 import { makeSummary, requestLintOnCurrentSelection } from "./actions";
 import { FixYourSelf } from "./fix-your-self";
-import { mapGrandchildren } from "@design-sdk/core/utils";
+import { mapGrandchildren } from "@design-sdk/figma-utils";
 import Dialog from "@material-ui/core/Dialog";
 import { requiresEarlyAccess } from "@assistant-fp/early-access";
 

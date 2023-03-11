@@ -20,8 +20,8 @@
 
 import { onfigmaselectionchange } from "./code-thread/selection";
 import { onfigmamessage } from "./code-thread/message-handler";
-import { MainImageRepository } from "@design-sdk/core/assets-repository";
-import { ImageRepositories } from "@design-sdk/figma/asset-repository";
+import { MainImageRepository } from "@design-sdk/asset-repository";
+import { ImageRepositories } from "@design-sdk/figma/dist/asset-repository";
 
 figma.on("selectionchange", () => {
   onfigmaselectionchange();
