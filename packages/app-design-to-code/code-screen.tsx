@@ -8,7 +8,7 @@ import { PluginSdk } from "@plugin-sdk/app";
 import { CodeScreenFooter } from "./footer-action/code-screen-footer";
 import { useSingleSelection } from "plugin-app";
 import { CodeViewWithControl } from "./code-view-with-control";
-import { repo_assets } from "@design-sdk/core";
+import * as repo_assets from "@design-sdk/asset-repository";
 import { Resizable } from "re-resizable";
 import { useScrollTriggeredAnimation } from "app/lib/components/motions";
 import { useSetRecoilState } from "recoil";
@@ -27,9 +27,8 @@ export function CodeScreen() {
   const [isBuilding, setIsBuilding] = useState(true);
   const [initialPreviewData, setInitialPreviewData] = useState<string>();
   const [esbuildPreviewData, setEsbuildPreviewData] = useState<string>();
-  const [previewMode, setPreviewMode] = useState<"responsive" | "esbuild">(
-    "responsive"
-  );
+  const [previewMode, setPreviewMode] =
+    useState<"scaling" | "esbuild">("scaling");
   const [source, setSource] = useState<string>();
   const [app, setApp] = useState<string>();
   const [name, setName] = useState<string>();
@@ -56,7 +55,7 @@ export function CodeScreen() {
 
   useEffect(() => {
     // reset preview mode when switching framework
-    setPreviewMode("responsive");
+    setPreviewMode("scaling");
   }, [useroption?.framework]);
 
   const onCodeChangeHandler = debounce((code) => {
@@ -77,7 +76,12 @@ ReactDOM.render(<App />, document.querySelector('#root'));`;
 
     if (useroption.framework == "react") {
       setIsBuilding(true);
-      bundler(transform(v, name), "tsx")
+      bundler({
+        files: {
+          "index.tsx": transform(v, name),
+        },
+        entry: "index.tsx",
+      })
         .then((d) => {
           if (d.err == null) {
             if (d.code && d.code !== esbuildPreviewData) {

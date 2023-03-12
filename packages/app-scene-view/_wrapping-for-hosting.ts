@@ -1,7 +1,5 @@
-import { repo_assets } from "@design-sdk/core";
-import { composeAppWithHome, Widget } from "@flutter-builder/flutter";
+import * as repo_assets from "@design-sdk/asset-repository";
 import { hosting, types } from "@base-sdk/base";
-import * as flutter from "@flutter-builder/flutter";
 import { finalize_temporary_assets_with_prefixed_static_string_keys__dangerously } from "@code-features/assets";
 // import { formatCode as formatDart } from "dart-style";
 import { formatCode as formatDart } from "dart-style";
@@ -13,14 +11,15 @@ export async function wrap_with_hosting__flutter(
 ) {
   const imagesMaps = await repo_assets.ImageHostingRepository.hostImages();
   // final code formatting - do again even if it's already done.
-  scene.raw = finalize_temporary_assets_with_prefixed_static_string_keys__dangerously(
-    scene.raw,
-    "grida://assets-reservation/images/",
-    imagesMaps,
-    {
-      fallback: "this image cannot be hosted",
-    }
-  );
+  scene.raw =
+    finalize_temporary_assets_with_prefixed_static_string_keys__dangerously(
+      scene.raw,
+      "grida://assets-reservation/images/",
+      imagesMaps,
+      {
+        fallback: "this image cannot be hosted",
+      }
+    );
   scene.raw = formatDart(scene.raw).code;
 
   const uploaded = await hosting.upload({

@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { SingleLayerPropertyDefinition } from "../components/single-property";
 import { ISingleLayerProperty, IProperties } from "../types";
 import * as nodes from "@design-sdk/figma-node";
-import { _FigmaVariantPropertyCompatType_to_string } from "@design-sdk/figma/features/variant";
+import { _FigmaVariantPropertyCompatType_to_string } from "@design-sdk/figma/dist/features/variant";
 import { nameit, NameCases } from "@coli.codes/naming";
 import { CodeBox } from "@ui/codebox";
-import { isMemberOfComponentLike } from "@design-sdk/figma/node-analysis/component-like-type-analysis/analyze";
+import { isMemberOfComponentLike } from "@design-sdk/figma/dist/node-analysis/component-like-type-analysis/analyze";
 import { get_suggestions } from "../property-suggestions";
 import { MappedPropertyStorage } from "../storage";
 import {

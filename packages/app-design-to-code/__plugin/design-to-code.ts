@@ -1,12 +1,12 @@
-import { repo_assets } from "@design-sdk/core";
 import {
   ImageRepository,
   MainImageRepository,
-} from "@design-sdk/core/assets-repository";
+  TransportableImageRepository,
+} from "@design-sdk/asset-repository";
 import type { ReflectSceneNode } from "@design-sdk/figma-node";
-import { ImageRepositories } from "@design-sdk/figma/asset-repository";
+import { ImageRepositories } from "@design-sdk/figma/dist/asset-repository";
 import { designToCode } from "@designto/code";
-import { config, output } from "@designto/config";
+import { config, output } from "@grida/builder-config";
 import {
   react_presets,
   flutter_presets,
@@ -31,7 +31,7 @@ function setup_image_repository() {
 
 type InterceptorJobProcessor = () => Promise<any>;
 type InterceptorAssetRepositoryJobProcessor =
-  () => Promise<repo_assets.TransportableImageRepository>;
+  () => Promise<TransportableImageRepository>;
 
 export async function designToFlutter(
   reflectDesign: ReflectSceneNode,

@@ -13,11 +13,12 @@ import {
   EK_GENERATED_CODE_PLAIN,
   EK_IMAGE_ASSET_REPOSITORY_MAP,
 } from "@core/constant";
-import { repo_assets } from "@design-sdk/core";
+import * as repo_assets from "@design-sdk/asset-repository";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import { CodeSessionCacheStorage } from "./code-session-cache-storage";
 import { PreferFramework } from "@app/preferences";
 import { Framework } from "@grida/builder-platform-types";
+import { _src_view_language } from "./utils";
 
 export function CodeViewWithControl({
   targetid,
@@ -201,24 +202,6 @@ export function CodeViewWithControl({
     </CodeWrapper>
   );
 }
-
-/**
- * get language by framework (default) (for code display) (non critical)
- *
- * -- used by code view (for styling only - used by highlight js)
- */
-const _src_view_language = (framework: string): string => {
-  switch (framework) {
-    case "flutter":
-      return "dart";
-    case "react":
-      return "jsx";
-    case "vanilla":
-      return "html";
-    default:
-      throw `default language for code display on framework "${framework}" is not supported`;
-  }
-};
 
 const CodeWrapper = styled.div`
   /* vscode dark bg color */

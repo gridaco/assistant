@@ -9,10 +9,10 @@
   },
   "scripts": {
     "clean": "rimraf dist",
-    "build": "yarn clean && webpack --mode=production --host=production && yarn optimize",
+    "build": "yarn clean && webpack --env mode=production --env host=production && yarn optimize",
     "optimize": "node scripts/optimize.js",
-    "build:staging": "yarn clean && webpack --mode=production --host=staging",
-    "build:dev": "webpack --mode=development --host=dev",
+    "build:staging": "yarn clean && webpack --env mode=production --env host=staging",
+    "build:dev": "webpack --env mode=development --env host=dev",
     "watch": "webpack --watch",
     "dev": "yarn watch"
   },
@@ -20,6 +20,27 @@
     "node": ">=14"
   },
   "devDependencies": {
-    "react-dev-utils": "^12.0.1"
+    "@babel/core": "^7.14.3",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.14.3",
+    "@babel/preset-env": "^7.14.2",
+    "@babel/preset-react": "^7.13.13",
+    "@babel/preset-typescript": "^7.13.0",
+    "@babel/runtime": "^7.14.0",
+    "@types/fs-extra": "^9.0.1",
+    "@types/node": "^14.11.8",
+    "@types/pug": "^2.0.4",
+    "react-dev-utils": "^12.0.1",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^3.1.0",
+    "dotenv": "^8.2.0",
+    "dotenv-webpack": "^2.0.0",
+    "html-webpack-plugin": "^5.5.0",
+    "style-loader": "^0.23.1",
+    "terser-webpack-plugin": "^5.3.7",
+    "ts-loader": "^9.4.2",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.76.1",
+    "webpack-cli": "^5.0.1"
   }
 }

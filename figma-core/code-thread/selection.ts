@@ -1,6 +1,6 @@
 import { analyzeSelection, SelectionAnalysis } from "plugin-app/utils";
-import { convert } from "@design-sdk/figma";
-import type { ReflectSceneNode } from "@design-sdk/figma";
+import { convert } from "@design-sdk/figma-node-conversion";
+import type { ReflectSceneNode } from "@design-sdk/figma-node";
 import { Logger } from "logger";
 import { makeReference } from "@design-sdk/figma-node";
 import { runon } from "./runon";
@@ -126,7 +126,7 @@ export function onfigmaselectionchange() {
         const data = makeReference(rnode);
 
         // support text node (characters) =========
-        // FIXME: safely remove (migrate) this. (affected: @app/copywriter) - add a proper text support
+        // FIXME: safely remove (migrate) this. (affected: @app/assist) - add a proper text support
         if (rnode.type == "TEXT") {
           if ("data" in rnode) {
             data["characters"] = rnode.data;

@@ -10,7 +10,7 @@ export class PreferFramework {
   set(platform: Framework) {
     this.storage.setItem(key, platform);
   }
-  get(): Framework | undefined {
-    return this.storage.getItem(key) as Framework;
+  get(options?: { fallback?: Framework }): Framework | undefined {
+    return (this.storage.getItem(key) as Framework) ?? options?.fallback;
   }
 }

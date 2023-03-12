@@ -1,7 +1,7 @@
 import { VanillaSceneTransport } from "@base-sdk/base";
 import Button from "@material-ui/core/Button";
 import React from "react";
-import { repo_assets } from "@design-sdk/core";
+import * as repo_assets from "@design-sdk/asset-repository";
 import {
   EK_COMPUTE_STARTED,
   EK_IMAGE_ASSET_REPOSITORY_MAP,

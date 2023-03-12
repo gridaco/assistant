@@ -1,10 +1,6 @@
 import { reflectColorToFigmaColor } from "@design-sdk/figma-node-conversion";
-import { Color } from "@reflect-ui/core/lib/color";
-import { NamedIconConfig } from "@reflect-ui/core";
-import {
-  ICON_DEFAULT_SIZE,
-  ICON_MAX_SIZE,
-} from "@reflect-ui/core/lib/icon/icon.constants";
+import { Color } from "@reflect-ui/core";
+import { ICON_DEFAULT_SIZE, ICON_MAX_SIZE } from "@reflect-ui/core/k";
 
 export type IconPlacement = { x: number; y: number } | "center";
 
