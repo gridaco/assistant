@@ -5,7 +5,7 @@ import { Bubble, GroupLabel } from "../components";
 import { PromptInputBox } from "@ui/ai";
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import ReactMarkdown from "react-markdown";
-import type { Message } from "../core/conversation";
+import type { Message } from "core";
 import { useHistory } from "react-router-dom";
 import * as api from "../client";
 import {

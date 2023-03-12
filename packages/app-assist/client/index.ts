@@ -1,5 +1,5 @@
 import Axios from "axios";
-import type { Message } from "../core/conversation";
+import type { Message } from "core";
 
 const client = Axios.create({
   baseURL: "/api",
