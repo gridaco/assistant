@@ -1,5 +1,5 @@
 import { reflectColorToFigmaColor } from "@design-sdk/figma-node-conversion";
-import { Color } from "@reflect-ui/core/lib/color";
+import { Color } from "@reflect-ui/core";
 
 // FIXME - this should be repplaced by reflect's `TextManifest` when fully constructed
 interface FigmaRenderTextManifest {

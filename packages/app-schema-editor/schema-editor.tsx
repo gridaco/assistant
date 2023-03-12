@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useSingleSelection } from "plugin-app";
-import { _FigmaVariantPropertyCompatType_to_string } from "@design-sdk/figma/features/variant";
+import { _FigmaVariantPropertyCompatType_to_string } from "@design-sdk/figma/dist/features/variant";
 import {
   analyzeNode,
   SchemaDefinitionLike,
-} from "@design-sdk/figma/node-analysis";
+} from "@design-sdk/figma/dist/node-analysis";
 import * as Modes from "./by-selection-state";
 
 type EditerMode =

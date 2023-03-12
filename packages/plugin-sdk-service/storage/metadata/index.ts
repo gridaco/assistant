@@ -1,4 +1,4 @@
-import { figma, Figma } from "@design-sdk/figma-types";
+import { plugin as figma } from "@design-sdk/figma";
 import { IStorage } from "../istorage";
 import { decode, encode } from "../payload-handle";
 

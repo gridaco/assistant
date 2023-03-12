@@ -1,5 +1,8 @@
-import { variant } from "@design-sdk/figma/features";
-import { FigmaBoolean, FigmaNumber } from "@design-sdk/figma/features/variant";
+import { variant } from "@design-sdk/figma/dist/features";
+import {
+  FigmaBoolean,
+  FigmaNumber,
+} from "@design-sdk/figma/dist/features/variant";
 import {
   BooleanKeyword,
   LiteralType,
