@@ -4,7 +4,7 @@ import {
   FigmaNumber,
   VariantProperty,
   VariantPropertyParser,
-} from "@design-sdk/figma/features/variant";
+} from "@design-sdk/figma/dist/features/variant";
 import { CodeBox } from "@ui/codebox";
 import {
   buildeExampleDataDeclaration,
@@ -19,9 +19,8 @@ import { SingleLayerPropertyDefinition } from "../components/single-property";
 
 export default function (props: { node: nodes.IReflectNodeReference }) {
   const master = props.node;
-  const [mappedProperties, setMappedProperties] = useState<
-    ISingleLayerProperty[]
-  >(null);
+  const [mappedProperties, setMappedProperties] =
+    useState<ISingleLayerProperty[]>(null);
   const parser = new VariantPropertyParser(master);
   const data_of_properties = parser.getData(master);
   const interfaceName = nameit(master.parent.name + "-props", {

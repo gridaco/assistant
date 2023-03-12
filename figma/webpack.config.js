@@ -5,15 +5,15 @@ const InlineChunkHtmlPlugin = require("react-dev-utils/InlineChunkHtmlPlugin");
 const webpack = require("webpack");
 
 module.exports = (env, argv) => {
+  const { mode, host } = env;
+  const isProd = mode === "production";
+
   return {
-    mode: argv.mode === "production" ? "production" : "development",
+    mode: isProd ? "production" : "development",
     stats: { warnings: false },
-    // https://github.com/webpack-contrib/css-loader/issues/447#issuecomment-285598881
-    node: {
-      fs: "empty",
-    },
+
     // This is necessary because Figma's 'eval' works differently than normal eval
-    devtool: argv.mode === "production" ? false : "inline-source-map",
+    devtool: mode === "production" ? false : "inline-source-map",
 
     entry: {
       ui: "./src/ui.tsx", // The entry point for your UI code
@@ -29,32 +29,22 @@ module.exports = (env, argv) => {
             {
               loader: "ts-loader",
               options: {
-                configFile:
-                  argv.mode === "production"
-                    ? "tsconfig.prod.json"
-                    : "tsconfig.json",
+                configFile: isProd ? "tsconfig.prod.json" : "tsconfig.json",
               },
             },
           ],
           exclude: /node_modules/,
         },
-
-        // Enables including CSS by doing "import './file.css'" in your TypeScript code
-        {
-          test: /\.css$/,
-          loader: [{ loader: "style-loader" }, { loader: "css-loader" }],
-        },
-
-        // Allows you to use "<%= require('./file.svg') %>" in your HTML code to get a data URI
-        {
-          test: /\.(png|jpg|gif|webp|svg|zip)$/,
-          loader: [{ loader: "url-loader" }],
-        },
       ],
     },
 
     // Webpack tries these extensions for you if you omit the extension like "import './file'"
-    resolve: { extensions: [".tsx", ".ts", ".jsx", ".js"] },
+    resolve: {
+      extensions: [".tsx", ".ts", ".jsx", ".js"],
+      fallback: {
+        fs: false,
+      },
+    },
 
     output: {
       filename: "[name].js",
@@ -69,17 +59,21 @@ module.exports = (env, argv) => {
           terserOptions: {
             format: { comments: false },
             // required for @flutter-builder annotion based code gen.
-            keep_classnames: true,
+            keep_classnames: false,
+            compress: true,
           },
         }),
       ],
     },
 
-    // Tells Webpack to generate "ui.html" and to inline "ui.ts" into it
     plugins: [
-      new webpack.EnvironmentPlugin({
-        HOST: get_host(argv.host),
+      new webpack.ProvidePlugin({
+        process: "process/browser",
       }),
+      new webpack.EnvironmentPlugin({
+        HOST: get_host(host),
+      }),
+      // Tells Webpack to generate "ui.html" and to inline "ui.ts" into it
       // https://www.figma.com/plugin-docs/bundling-webpack/
       new HtmlWebpackPlugin({
         template: "./src/ui.html",

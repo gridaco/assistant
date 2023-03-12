@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Preview, utils } from "@ui/previewer";
-import { repo_assets } from "@design-sdk/core";
+import * as repo_assets from "@design-sdk/asset-repository";
 import { useSingleSelection } from "plugin-app";
 import {
   EK_GENERATED_CODE_PLAIN,
@@ -106,7 +106,7 @@ export function PreviewScreen() {
     <Preview
       key={source}
       // auto
-      type="responsive"
+      type="scaling"
       data={source}
       id={id}
       origin_size={{

@@ -1,12 +1,15 @@
 import React, { useRef, useState, useEffect } from "react";
-import * as ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import { AppSkeleton } from "@ui/skeleton";
 import { handle } from "./handle-proxy-requests";
 
-ReactDOM.render(
-  <LiteHostedAppConnector />,
-  document.getElementById("react-page")
-);
+window.onload = function () {
+  const root = ReactDOM.createRoot(
+    document.getElementById("root") as HTMLElement
+  );
+
+  root.render(<LiteHostedAppConnector />);
+};
 
 export function LiteHostedAppConnector() {
   const frame = useRef<HTMLIFrameElement>();

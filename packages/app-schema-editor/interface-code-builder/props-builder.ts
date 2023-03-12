@@ -1,10 +1,10 @@
-import { variant } from "@design-sdk/figma/features";
+import { variant } from "@design-sdk/figma/dist/features";
 import {
   FigmaBoolean,
   FigmaNumber,
   FigmaUnique,
   _FigmaVariantPropertyCompatType_to_string,
-} from "@design-sdk/figma/features/variant";
+} from "@design-sdk/figma/dist/features/variant";
 import {
   InterfaceDeclaration,
   PropertySignature,
@@ -18,7 +18,7 @@ import {
 } from "coli";
 
 import { NameCases, nameit, ScopedVariableNamer } from "@coli.codes/naming";
-import { ReservedKeywordPlatforms } from "@coli.codes/naming/reserved";
+import { ReservedKeywordPlatforms } from "coli";
 import { typeToColiType } from "./type-to-coli-type";
 
 export interface InterfaceCodeBuilParam {

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import styled from "@emotion/styled";
-import { ResponsiveContentIframeProps } from "@code-editor/vanilla-preview";
+import { ScalingContentProps } from "@code-editor/vanilla-preview";
 import { StaticPreview, StaticPreviewProps } from "../preview-static-snapshot";
 import { PreviewEmpty } from "../components";
 import { useScrollTriggeredAnimation } from "app/lib/components/motions";
@@ -29,13 +29,13 @@ interface PreviewProps {
   height?: number;
 }
 
-type EsBuildContentIframeProps = Omit<ResponsiveContentIframeProps, "type"> & {
+type EsBuildContentIframeProps = Omit<ScalingContentProps, "type"> & {
   type: "esbuild";
 };
 
 type Subscenario =
   | StaticPreviewProps
-  | ResponsiveContentIframeProps
+  | ScalingContentProps
   | EsBuildContentIframeProps;
 
 type Props = PreviewProps & Subscenario;
@@ -81,7 +81,7 @@ function Content(props: Props) {
   const _DEFAULT_BORDER_RADIUS = 4;
 
   switch (props.type) {
-    case "responsive": {
+    case "scaling": {
       return (
         // TODO: replace InteractiveCanvas from module designto-code/@editor-packages
         <InteractiveCanvas defaultSize={props.origin_size}>

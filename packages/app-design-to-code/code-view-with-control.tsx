@@ -13,7 +13,7 @@ import {
   EK_GENERATED_CODE_PLAIN,
   EK_IMAGE_ASSET_REPOSITORY_MAP,
 } from "@core/constant";
-import { repo_assets } from "@design-sdk/core";
+import * as repo_assets from "@design-sdk/asset-repository";
 import { assistant as analytics } from "@analytics.bridged.xyz/internal";
 import { CodeSessionCacheStorage } from "./code-session-cache-storage";
 import { PreferFramework } from "@app/preferences";

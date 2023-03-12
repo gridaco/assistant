@@ -1,15 +1,9 @@
 [submodule "packages/lint"]
 	path = packages/lint
 	url = https://github.com/reflect-ui/design-lint
-[submodule "packages/design-sdk"]
-	path = packages/design-sdk
-	url = https://github.com/gridaco/design-sdk
 [submodule "packages/base-sdk"]
 	path = packages/base-sdk
 	url = https://github.com/gridaco/base-sdk
-[submodule "packages/reflect-core"]
-	path = packages/reflect-core
-	url = https://github.com/reflect-ui/reflect-core-ts
 [submodule "packages/reflect-ui-generator"]
 	path = packages/reflect-ui-generator
 	url = https://github.com/reflect-ui/reflect-ui-generator

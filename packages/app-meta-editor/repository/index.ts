@@ -2,7 +2,7 @@ import { ASSISTANT_PLUGIN_NAMESPACE__NOCHANGE } from "@core/constant";
 import { MetaDataMockDataProvider } from "../mock";
 import { TargetPlatform, target_platform } from "@plugin-sdk/core";
 import { PluginSdk } from "@plugin-sdk/app";
-import { figma } from "@design-sdk/figma";
+import { plugin as figma } from "@design-sdk/figma";
 export class MetaDataRepositoryFactory {
   static layer(layer: string) {
     throw "not implemented";
