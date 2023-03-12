@@ -1,19 +1,19 @@
 import React, { useEffect, useMemo } from "react";
 import styled from "@emotion/styled";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bubble, GroupLabel } from "./components";
+import { Bubble, GroupLabel } from "../components";
 import { PromptInputBox } from "@ui/ai";
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import ReactMarkdown from "react-markdown";
-import type { Message } from "./core/conversation";
+import type { Message } from "../core/conversation";
 import { useHistory } from "react-router-dom";
-import * as api from "./client";
+import * as api from "../client";
 import {
   remarkColorPlugin,
   remarkGradientPlugin,
   remarkQuotationPlugin,
-} from "./plugins";
-import { ColorChip } from "./blocks";
+} from "../plugins";
+import { ColorChip } from "../blocks";
 
 export function ChatScreen() {
   const history = useHistory();
