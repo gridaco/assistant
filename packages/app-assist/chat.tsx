@@ -225,89 +225,91 @@ const Messages = React.forwardRef(function Messages(
                     {emoji}
                   </div>
                   <p>
-                    <MarkdownView
-                      remarkPlugins={[
-                        remarkQuotationPlugin,
-                        remarkGradientPlugin,
-                        remarkColorPlugin,
-                      ]}
-                      disallowedElements={[]}
-                      components={{
-                        data: ({ node, ...props }) => {
-                          alert(JSON.stringify(node));
-                          return <strong {...props}></strong>;
-                        },
-                        img: ({ node, ...props }) => (
-                          <CustomGraphic {...props} />
-                        ),
-                        h1: ({ node, ...props }) => (
-                          // p
-                          <strong>
+                    <MarkdownView>
+                      <ReactMarkdown
+                        remarkPlugins={[
+                          remarkQuotationPlugin,
+                          remarkGradientPlugin,
+                          remarkColorPlugin,
+                        ]}
+                        disallowedElements={[]}
+                        components={{
+                          data: ({ node, ...props }) => {
+                            alert(JSON.stringify(node));
+                            return <strong {...props}></strong>;
+                          },
+                          img: ({ node, ...props }) => (
+                            <CustomGraphic {...props} />
+                          ),
+                          h1: ({ node, ...props }) => (
+                            // p
+                            <strong>
+                              <p {...props} />
+                            </strong>
+                          ),
+                          h2: ({ node, ...props }) => (
+                            // p
+                            <strong>
+                              <p {...props} />
+                            </strong>
+                          ),
+                          h3: ({ node, ...props }) => (
+                            // p
                             <p {...props} />
-                          </strong>
-                        ),
-                        h2: ({ node, ...props }) => (
-                          // p
-                          <strong>
+                          ),
+                          h4: ({ node, ...props }) => (
+                            // p
                             <p {...props} />
-                          </strong>
-                        ),
-                        h3: ({ node, ...props }) => (
-                          // p
-                          <p {...props} />
-                        ),
-                        h4: ({ node, ...props }) => (
-                          // p
-                          <p {...props} />
-                        ),
-                        h5: ({ node, ...props }) => (
-                          // p
-                          <p {...props} />
-                        ),
-                        h6: ({ node, ...props }) => (
-                          // p
-                          <p {...props} />
-                        ),
-                        li: ({ node, ...props }) => (
-                          <ActionableListItem {...props} />
-                        ),
-                        ul: ({ node, ...props }) => (
-                          <ul
-                            style={{
-                              margin: 0,
-                            }}
-                            {...props}
-                          />
-                        ),
-                        code: ({ node, ...props }) => (
-                          <code
-                            style={{
-                              background: "rgba(0,0,0,0.1)",
-                              padding: 4,
-                              borderRadius: 4,
-                              fontFamily: "monospace",
-                              fontSize: 14,
-                              display: "inline-block",
-                              whiteSpace: "pre-wrap",
-                              wordBreak: "break-word",
-                              wordWrap: "break-word",
-                              overflowWrap: "break-word",
-                              hyphens: "auto",
-                              lineHeight: 1.5,
-                              overflowX: "auto",
-                              boxShadow: "0 0 0 1px rgba(0,0,0,0.1)",
-                              color: "rgba(0,0,0,0.8)",
-                              border: "none",
-                              outline: "none",
-                              resize: "none",
-                              verticalAlign: "top",
-                            }}
-                            {...props}
-                          />
-                        ),
-                      }}
-                    >
-                      {content}
+                          ),
+                          h5: ({ node, ...props }) => (
+                            // p
+                            <p {...props} />
+                          ),
+                          h6: ({ node, ...props }) => (
+                            // p
+                            <p {...props} />
+                          ),
+                          li: ({ node, ...props }) => (
+                            <ActionableListItem {...props} />
+                          ),
+                          ul: ({ node, ...props }) => (
+                            <ul
+                              style={{
+                                margin: 0,
+                              }}
+                              {...props}
+                            />
+                          ),
+                          code: ({ node, ...props }) => (
+                            <code
+                              style={{
+                                background: "rgba(0,0,0,0.1)",
+                                padding: 4,
+                                borderRadius: 4,
+                                fontFamily: "monospace",
+                                fontSize: 14,
+                                display: "inline-block",
+                                whiteSpace: "pre-wrap",
+                                wordBreak: "break-word",
+                                wordWrap: "break-word",
+                                overflowWrap: "break-word",
+                                hyphens: "auto",
+                                lineHeight: 1.5,
+                                overflowX: "auto",
+                                boxShadow: "0 0 0 1px rgba(0,0,0,0.1)",
+                                color: "rgba(0,0,0,0.8)",
+                                border: "none",
+                                outline: "none",
+                                resize: "none",
+                                verticalAlign: "top",
+                              }}
+                              {...props}
+                            />
+                          ),
+                        }}
+                      >
+                        {content}
+                      </ReactMarkdown>
                     </MarkdownView>
                   </p>
                 </Bubble>
@@ -364,7 +366,7 @@ function CustomGraphic({
   }
 }
 
-const MarkdownView = styled(ReactMarkdown)`
+const MarkdownView = styled.div`
   ul,
   ol {
     padding-inline-start: 0px;
