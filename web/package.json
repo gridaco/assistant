@@ -8,6 +8,7 @@
     "start": "next start -p 3303"
   },
   "dependencies": {
+    "@segment/snippet": "^4.15.3",
     "app": "0.0.1",
     "languagedetect": "^2.0.0",
     "next": "^13.1.6",
