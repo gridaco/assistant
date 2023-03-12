@@ -4,6 +4,7 @@
     "module": "commonjs",
     "lib": ["es2019", "es2017", "es7", "es6", "dom", "dom.iterable"],
     "jsx": "react",
+    "resolveJsonModule": true,
     "esModuleInterop": true,
     "outDir": "dist",
     "allowSyntheticDefaultImports": true,

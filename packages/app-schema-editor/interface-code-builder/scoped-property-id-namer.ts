@@ -1,5 +1,5 @@
 import { ScopedVariableNamer } from "@coli.codes/naming";
-import { ReservedKeywordPlatformPresets } from "@coli.codes/naming/reserved";
+import { ReservedKeywordPlatformPresets } from "coli";
 
 const _default_key_val = "property-key";
 export const reactNamer = (scope: string = _default_key_val) =>

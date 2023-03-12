@@ -1,4 +1,6 @@
-import { schema } from "coli";
+// TODO: use coli expression when ready
+type IProperty = any;
+// import { schema } from "coli";
 
 /**
  * Storable object. this is stored to layer's metadata. do not modify this.
@@ -18,7 +20,7 @@ export interface ISingleLayerPropertyMapping {
      */
     propertyType?: PropertyAccessors;
   };
-  schema: schema.IProperty;
+  schema: IProperty;
 }
 
 type LocateMode =

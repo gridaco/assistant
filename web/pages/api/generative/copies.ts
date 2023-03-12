@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import openai from "service/providers/openai";
+import { completion, chatcompletion } from "service/completion";
 
 export default async function handler(
   req: NextApiRequest,
@@ -7,7 +7,6 @@ export default async function handler(
 ) {
   const q = req.query.q as string;
   const t = req.query.t as string;
-  const model = "text-davinci-003";
 
   if (!q) {
     res.status(400).json({
@@ -41,20 +40,8 @@ output:
     }
   }
 
-  // TODO: add support for stream.
-
-  const { data } = await openai.createCompletion({
-    prompt: prompt,
-    model: model,
-    temperature: 0.7,
-    max_tokens: 256,
-    top_p: 1,
-    n: 3,
-  });
-
-  const { choices } = data;
-
-  const texts = choices.map((c) => c.text.trim());
+  // const { texts, model } = await completion({ prompt });
+  const { texts, model } = await chatcompletion({ prompt });
 
   switch (req.method) {
     case "GET": {

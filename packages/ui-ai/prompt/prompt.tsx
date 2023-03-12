@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 import { LightningBoltIcon } from "@radix-ui/react-icons";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import withStyles from "@material-ui/core/styles/withStyles";
+import TiptapInput from "./tiptap";
 
 const LoadingIndicator = withStyles((theme) => ({
   root: {},
@@ -21,6 +22,10 @@ export function PromptInputBox({
   canSubmit = true,
   autofocus = true,
   prompting = false,
+  submit: submitConfig,
+  style = {},
+  onPreviousPrompt,
+  onNextPrompt,
 }: {
   readonly?: boolean;
   onSubmit?: () => void;
@@ -30,6 +35,12 @@ export function PromptInputBox({
   prompting?: boolean;
   placeholder?: string;
   autofocus?: boolean;
+  submit?: {
+    icon?: React.ReactNode;
+  };
+  style?: React.CSSProperties;
+  onPreviousPrompt?: () => void;
+  onNextPrompt?: () => void;
 }) {
   const [focused, setFocused] = React.useState(false);
   const ref = React.useRef<HTMLTextAreaElement>(null);
@@ -50,17 +61,36 @@ export function PromptInputBox({
       data-readonly={readonly}
       data-prompting={prompting}
       data-focused={focused}
+      style={style}
+      onKeyDown={(e) => {
+        // if shift + enter, new line
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          submit();
+        }
+
+        if (value.trim().length === 0) {
+          if (e.key === "ArrowUp") {
+            e.preventDefault();
+            onPreviousPrompt?.();
+          }
+          if (e.key === "ArrowDown") {
+            e.preventDefault();
+            onNextPrompt?.();
+          }
+        }
+      }}
     >
+      {/* <TiptapInput
+        placeholder={placeholder}
+        autofocus={autofocus}
+        onSubmit={submit}
+        onChange={onChange}
+        value={value}
+      /> */}
       <TextareaAutosize
         ref={ref}
         onChange={(e) => onChange?.(e.target.value)}
-        onKeyDown={(e) => {
-          // if shift + enter, new line
-          if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            submit();
-          }
-        }}
         value={value}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
@@ -81,7 +111,13 @@ export function PromptInputBox({
           {prompting ? (
             <LoadingIndicator className="icon" size={15} />
           ) : (
-            <LightningBoltIcon className="icon" />
+            <>
+              {submitConfig?.icon ? (
+                <div className="icon">{submitConfig.icon}</div>
+              ) : (
+                <LightningBoltIcon className="icon" />
+              )}
+            </>
           )}
         </button>
       </div>

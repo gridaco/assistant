@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import styled from "@emotion/styled";
 import { motion, AnimatePresence } from "framer-motion";
-import { PromptInputBox, Bubble, GroupLabel } from "./components";
+import { Bubble, GroupLabel } from "./components";
+import { PromptInputBox } from "@ui/ai";
 import { LightningBoltIcon, ListBulletIcon } from "@radix-ui/react-icons";
 import { EK_APPLY_TEXT_CHARACTERS } from "@core/constant";
 import * as api from "./client";
 import { useSingleSelection } from "plugin-app";
-import { IReflectNodeReference } from "@design-sdk/figma-node";
 
 interface ReplaceTextCharactersProps {
   type: "selection" | "id";
@@ -74,7 +74,7 @@ export function CopywriterScreen() {
     setResults([]);
 
     api
-      .prompt({ q: prompt })
+      .copies({ q: prompt })
       .then(({ texts }) => {
         setResults(texts);
       })

@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 import { UploadSteps } from "@ui/flow-steps";
 import { BlackButtonStyle } from "@ui/core/button-style";
 import { finalize_temporary_assets_with_prefixed_static_string_keys__dangerously } from "@code-features/assets";
-import { repo_assets } from "@design-sdk/core";
+import { ImageHostingRepository } from "@design-sdk/asset-repository";
 import { publishPage } from "../api";
 
 export async function publishFigmaFrameAsPage({
@@ -16,7 +16,7 @@ export async function publishFigmaFrameAsPage({
     raw: string;
   };
 }) {
-  const images = repo_assets.ImageHostingRepository.imageRepostory.images;
+  const images = ImageHostingRepository.imageRepostory.images;
   const assets = images.reduce((p, c, i) => {
     const key = c.key + ".png";
     return {
