@@ -51,8 +51,9 @@ export const remarkColorPlugin = () => {
   return (tree) => {
     visit(tree, ["code", "text"], (node: any) => {
       const pattern_hex = /#[0-9a-fA-F]{6}/g;
-      const pattern_rgb = /rgb\(\d{1,3},\d{1,3},\d{1,3}\)/g;
-      const pattern_rgba = /rgba\(\d{1,3},\d{1,3},\d{1,3},\d{1,3}\)/g;
+      const pattern_rgb = /rgb\(\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\)/g;
+      const pattern_rgba =
+        /rgba\(\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\)/g;
 
       const match_hex = node.value.match(pattern_hex);
       const match_rgb = node.value.match(pattern_rgb);

@@ -13,7 +13,7 @@ import {
   remarkGradientPlugin,
   remarkQuotationPlugin,
 } from "../plugins";
-import { ColorChip } from "../blocks";
+import { ColorChip, ResponseActionableListItem } from "../blocks";
 
 export function ChatScreen() {
   const history = useHistory();
@@ -270,7 +270,7 @@ const Messages = React.forwardRef(function Messages(
                             <p {...props} />
                           ),
                           li: ({ node, ...props }) => (
-                            <ActionableListItem {...props} />
+                            <ResponseActionableListItem {...props} />
                           ),
                           ul: ({ node, ...props }) => (
                             <ul
@@ -370,17 +370,5 @@ const MarkdownView = styled.div`
   ul,
   ol {
     padding-inline-start: 0px;
-  }
-`;
-
-const ActionableListItem = styled.li`
-  list-style: none;
-  margin: 8px;
-  border-radius: 4px;
-  padding: 8px;
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
-
-  &:hover {
-    box-shadow: 0 4px 4px 1px rgba(0, 0, 0, 0.1);
   }
 `;
