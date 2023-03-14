@@ -5,9 +5,10 @@ export interface UserMessage {
   content: string;
 }
 
-export type ResponseMessage = {
+export type ResponseMessage<T = any> = {
   role: "assistant";
   content: string;
+  meta?: T;
 };
 
 export class Conversation {
