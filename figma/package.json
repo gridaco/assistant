@@ -9,10 +9,10 @@
   },
   "scripts": {
     "clean": "rimraf dist",
-    "build": "yarn clean && webpack --env mode=production --env host=production && yarn optimize",
     "optimize": "node scripts/optimize.js",
+    "build": "yarn clean && webpack --env mode=production --env host=production && yarn optimize",
     "build:staging": "yarn clean && webpack --env mode=production --env host=staging",
-    "build:dev": "webpack --env mode=development --env host=dev",
+    "build:dev": "yarn clean && webpack --env mode=development --env host=dev",
     "watch": "webpack --watch",
     "dev": "yarn watch"
   },
