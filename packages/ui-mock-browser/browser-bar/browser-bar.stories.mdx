@@ -1,0 +1,27 @@
+import { Meta, Story, Preview, Props } from "@storybook/addon-docs/blocks";
+import { BrowserBar } from "../browser-bar";
+
+<Meta title="browser-bar" />
+
+# Preview
+
+<Preview>
+  <Story name="based">
+    <div style={{ height: "50px", width: "100%" }}>
+      <BrowserBar
+        closeHistory={{ forward: true, back: true }}
+        handleHistory={(isBack) => {
+          console.log(`clicked isBack : ${isBack}`);
+        }}
+        address="loading"
+        handleRefresh={() => {
+          console.log("refresh");
+        }}
+      />
+    </div>
+  </Story>
+</Preview>
+
+# Props
+
+<Props of={BrowserBar} />

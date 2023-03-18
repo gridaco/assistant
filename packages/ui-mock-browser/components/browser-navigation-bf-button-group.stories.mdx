@@ -1,0 +1,59 @@
+import { Meta, Story, Preview, Props } from "@storybook/addon-docs/blocks";
+import {
+  BrowserNavigationBfButton,
+  BrowserNavigationBfButtonGroup,
+} from "./browser-navigation-bf-button-group";
+
+<Meta title="component/browser-navigation-bf-button-group" />
+
+# Preview
+
+<Preview>
+  <Story name="forward">
+    <BrowserNavigationBfButton
+      hasHistory={true}
+      onClick={(isBack) => {
+        console.log(isBack);
+      }}
+    />
+  </Story>
+  <Story name="back">
+    <BrowserNavigationBfButton
+      isBack={true}
+      hasHistory={true}
+      onClick={(isBack) => {
+        console.log(isBack);
+      }}
+    />
+  </Story>
+  <Story name="no history">
+    <BrowserNavigationBfButton
+      isBack={false}
+      hasHistory={false}
+      onClick={(isBack) => {
+        console.log(isBack);
+      }}
+    />
+    <BrowserNavigationBfButton
+      isBack={true}
+      hasHistory={false}
+      onClick={(isBack) => {
+        console.log(isBack);
+      }}
+    />
+  </Story>
+  <Story name="group">
+    <BrowserNavigationBfButtonGroup
+      forwardEnable={true}
+      backEnable={true}
+      handleClick={(isBack) => {
+        console.log(isBack);
+      }}
+    />
+  </Story>
+</Preview>
+
+# Props
+
+<Props of={BrowserNavigationBfButton} />
+<Props of={BrowserNavigationBfButtonGroup} />
