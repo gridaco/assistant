@@ -1,20 +1,28 @@
-///
-///
-///
-import { PluginSdk } from "@plugin-sdk/app";
-
-/** Preserve value: Do not change value */
-const _ASSISTANT_GRIDA_AUTHENTICATION_CREDENTIAL_KEY =
-  "co.grida.assistant/user-auth";
+import * as k from "./k";
 
 type Credential = string;
 
 function saveAuthCredential(credential: Credential) {
-  PluginSdk.setItem(_ASSISTANT_GRIDA_AUTHENTICATION_CREDENTIAL_KEY, credential);
+  // usees localstorage
+  localStorage.setItem(
+    k.ASSISTANT_GRIDA_AUTHENTICATION_CREDENTIAL_KEY,
+    credential
+  );
+
+  // propagate event (this is required since we're listening in same window)
+  // although, caution required since this will trigger multiple times if listening in other windows
+  // ref: https://stackoverflow.com/questions/35865481/storage-event-not-firing
+  const event = new StorageEvent("storage", {
+    key: k.ASSISTANT_GRIDA_AUTHENTICATION_CREDENTIAL_KEY,
+    oldValue: null,
+    newValue: credential,
+  });
+  window.dispatchEvent(event);
 }
 
 async function getAuthCredential(): Promise<Credential> {
-  return PluginSdk.getItem(_ASSISTANT_GRIDA_AUTHENTICATION_CREDENTIAL_KEY);
+  // usees localstorage
+  return localStorage.getItem(k.ASSISTANT_GRIDA_AUTHENTICATION_CREDENTIAL_KEY);
 }
 
 function saveProfile(profile) {
