@@ -26,7 +26,7 @@ import { ToolboxScreen } from "../pages/tool-box";
 import { FontReplacerScreen } from "@toolbox/font-replacer";
 import { CodeScreen } from "@app/design-to-code";
 import { AboutScreen } from "../pages/about";
-import { SigninScreen } from "@app/auth";
+import { AuthGuard, SigninScreen } from "@app/auth";
 import { UpgradePage } from "@assistant-fp/early-access";
 import { ToolboxHome } from "@app/toolbox";
 import { LiveSessionPage } from "@app/live";
@@ -310,28 +310,33 @@ export default function App(props: { platform: TargetPlatform }) {
   return (
     <RecoilRoot>
       <PluginApp platform={props.platform}>
-        {/* @ts-ignore */}
-        <Router>
-          <Switch>
-            {/* # region unique route section */}
-            {standalone_pages.map((p) => {
-              return (
-                <Route
-                  key={p.id}
-                  path={p.path}
-                  render={() => {
-                    return <Screen screen={p.id} />;
-                  }}
-                />
-              );
-            })}
-            {/* # endregion unique route section */}
-            {/* dynamic route shall be placed at the last point, since it overwrites other routes */}
-            <Route path="/:workmode/:work" component={RouterTabNavigationApp} />
-            <Route path="/" component={Home} />
-            {/* 👆 this is for preventing blank page on book up. this will be fixed and removed.*/}
-          </Switch>
-        </Router>
+        <AuthGuard required>
+          {/* @ts-ignore */}
+          <Router>
+            <Switch>
+              {/* # region unique route section */}
+              {standalone_pages.map((p) => {
+                return (
+                  <Route
+                    key={p.id}
+                    path={p.path}
+                    render={() => {
+                      return <Screen screen={p.id} />;
+                    }}
+                  />
+                );
+              })}
+              {/* # endregion unique route section */}
+              {/* dynamic route shall be placed at the last point, since it overwrites other routes */}
+              <Route
+                path="/:workmode/:work"
+                component={RouterTabNavigationApp}
+              />
+              <Route path="/" component={Home} />
+              {/* 👆 this is for preventing blank page on book up. this will be fixed and removed.*/}
+            </Switch>
+          </Router>
+        </AuthGuard>
       </PluginApp>
     </RecoilRoot>
   );
