@@ -11,9 +11,9 @@
   "license": "https://github.com/bridgedxyz/contributing-and-license",
   "author": "bridged.xyz by softmarshmallow <woojoo@softmarshmallow.com>",
   "dependencies": {
-    "app": "^0.0.1",
+    "app": "*",
     "figma-js": "^1.13.0",
-    "figma-core": "0.0.0"
+    "figma-core": "*"
   },
   "scripts": {
     "webpack:watch": "webpack --watch",

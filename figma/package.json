@@ -5,7 +5,7 @@
   "version": "0.0.0",
   "private": false,
   "dependencies": {
-    "@ui/skeleton": "0.0.0"
+    "@ui/skeleton": "*"
   },
   "scripts": {
     "clean": "rimraf dist",
