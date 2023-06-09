@@ -101,3 +101,6 @@ export async function getUserProfile() {
     throw error;
   }
 }
+
+export { AuthStorage } from "./storage";
+export * as k from "./k";

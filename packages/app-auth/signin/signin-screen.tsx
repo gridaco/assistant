@@ -100,13 +100,13 @@ export function SigninScreen({
   const history = useHistory();
 
   const close = () => {
-    onClose ? onClose?.() : history.goBack();
+    onClose ? onClose?.() : history?.goBack?.();
   };
 
   return (
     <>
       <ContentWrap>
-        <RouteBackButton onClick={close} />
+        {onClose && <RouteBackButton onClick={close} />}
         <Inner>
           {!isAuthenticated ? (
             !isLoading ? (
