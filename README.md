@@ -9,7 +9,6 @@ title: Grida Assistant for Figma
 
 ![Grida assistant](./branding/assistant-cover-v2021.8.0.png)
 
-
 # Grdia Assistant plugin (figma to flutter & react)
 
 > Any design to high quality code, with live preview.
@@ -24,6 +23,10 @@ title: Grida Assistant for Figma
 - ✅ Cloud Resource Copy. Copy your resource in 1 second. (No need to download images and move under `res/`)
 - ✅ Live preview via [console](https://console.grida.co) - compiles output source remotely makes design to living application within seconds
 - ✅ Context detection - Grida assistant understands the design, than converts it into a hight quality code. we don't generate rect and text code for a button. We generate button code for a button.
+
+## Devmode
+
+WIP
 
 ## Usage
 
