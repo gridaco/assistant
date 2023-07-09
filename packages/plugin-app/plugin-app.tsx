@@ -21,7 +21,7 @@ export function PluginApp(props: {
   const [booting, setBooting] = useState(true);
   useEffect(() => {
     console.log("start initializing plugin app...");
-
+    PluginSdk.getItem("figma.ediorType").then((a) => PluginSdk.notify(a, 10));
     PluginSdk.initializeWindow(parent);
     window.addEventListener("message", (ev: MessageEvent) => {
       const message: TransportPluginEvent = ev.data.pluginMessage;

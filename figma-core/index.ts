@@ -42,15 +42,52 @@ figma.on("currentpagechange", () => {
   console.log("currentpagechange");
 });
 
+// codegen
+figma.codegen.on("generate", async (event) => {
+  return [
+    {
+      title: "Hello",
+      code: "code should appear here",
+      language: "TYPESCRIPT",
+    },
+  ];
+});
+
+figma.codegen.on("preferenceschange", async (event) => {
+  return;
+});
+
 /// ============================================================
 // MAIN INITIALIZATION
 import { showUI } from "./code-thread/show-ui";
 import { provideFigma } from "@design-sdk/figma";
 
-function main() {
-  MainImageRepository.instance = new ImageRepositories();
-  provideFigma(figma);
-  showUI();
+async function main() {
+  // provide figma editor type
+  await figma.clientStorage.setAsync("figma.editorType", figma.editorType);
+
+  switch (figma.editorType) {
+    case "figma": {
+      MainImageRepository.instance = new ImageRepositories();
+      provideFigma(figma);
+      showUI();
+      break;
+    }
+    case "figjam": {
+      break;
+    }
+    case "dev": {
+      MainImageRepository.instance = new ImageRepositories();
+      provideFigma(figma);
+      figma.notify("dev mode");
+      showUI();
+      break;
+    }
+    default: {
+      throw "unsupported editor type" + figma.editorType;
+    }
+  }
+
   // disabled on staging ----
   // create primary visual store
   // import { createPrimaryVisualStorePageIfNonExists } from "./physical-visual-store/page-manager/craete-page-if-non-exist";
