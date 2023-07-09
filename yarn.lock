@@ -1783,10 +1783,10 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.3.0.tgz#ea89004119dc42db2e1dba0f97d553f7372f6fcb"
   integrity sha512-AHPmaAx+RYfZz0eYu6Gviiagpmiyw98ySSlQvCUhVGDRtDFe4DBS0x1bSjdF3gqUDYOczB+yYvBTtEylYSdRhg==
 
-"@figma/plugin-typings@^1.58.0":
-  version "1.61.0"
-  resolved "https://registry.yarnpkg.com/@figma/plugin-typings/-/plugin-typings-1.61.0.tgz#34abfea24013bbc9897b182713a8f7fc23c5261f"
-  integrity sha512-qgnu96PY+eIMnqF2OorwLdSTdLT+HpZXAarOMjNkqEqBylVfSvc0f/qZpbKCTNDBM0blb3kayQoR8BwjM+0xmA==
+"@figma/plugin-typings@^1.70.0":
+  version "1.70.0"
+  resolved "https://registry.yarnpkg.com/@figma/plugin-typings/-/plugin-typings-1.70.0.tgz#0e11bc4c5d90c4e37b0bbb99fabe60fa46906169"
+  integrity sha512-dN/ehVt40WDSjuf6+vICw1Btq8yKNvKSo5xl1qk8jfRaOdaN88QOYgODEVUGp9gSzlyUEhUKng0YMKg/doBpEg==
 
 "@firebase/analytics-types@0.4.0":
   version "0.4.0"

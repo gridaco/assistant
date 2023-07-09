@@ -17,8 +17,8 @@
       "packages/*",
       "packages/base-sdk/*",
       "packages/base-sdk/_firstparty/*",
-      "packages/design-to-code/packages/*",
-      "packages/design-to-code/editor-packages/*"
+      "lib/code/packages/*",
+      "lib/code/editor-packages/*"
     ]
   },
   "repository": "https://github.com/gridaco/assistant",
@@ -51,7 +51,7 @@
     "react-dom": "^18.2.0",
     "@types/react": "18.0.24",
     "@types/react-dom": "^18.0.8",
-    "@figma/plugin-typings": "^1.58.0",
+    "@figma/plugin-typings": "^1.70.0",
     "ts-loader": "8.4.0",
     "typescript": "4.9.5",
     "coli": "0.0.32",
