@@ -6,6 +6,7 @@ const transpile_packages = [
 
   // UI
   "@ui/core",
+  "@ui/ai",
   "@ui/previewer",
   "@ui/codebox",
   "@ui/flow-steps",
